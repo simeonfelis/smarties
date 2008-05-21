@@ -204,18 +204,30 @@ typedef enum rotencoder_t {
 	RE_BOTH
 } rotencoder;
 
-// Menu
+/**
+ * \brief The menu structure
+ * 
+ * Stucture:
+ * \code
+ *   menu_entry11 --next--> menu_entry12 --next--> menu_entry13
+ *    |
+ *    submenu -> menu_entry21 --next--> menu_entry22 --next--> menu_entry23
+ *    |
+ *    submenu -> menu_entry31 --next--> menu_entry32 
+ * \endcode  
+ */
 typedef struct menu_entry_t {
-	void (*function);
-	void (*leftaction);
-	void (*rightaction);
-	char * text;
-	void * topmenu;
-	void * submenu;
-	void * prev;
-	void * next;
+	void (*function);		//!< If push button pressed, this function will be executed (if available)
+	void (*leftaction);		//!< If rotary encoder turned left, this function will be executed (if available)
+	void (*rightaction);	//!< If rotary encoder turned right, this function will be executed (if available)
+	char * text;			//!< Text on Display (TODO: Max 20 Characters)
+	void * topmenu;			//!< The menu item above of current menu item
+	void * submenu;			//!< The menu item below of current menu item
+	void * prev;			//!< Previous Menu item
+	void * next;			//!< Next menu item
 } menu_entry;
 
+//! \brief All supported colors
 typedef enum smartie_color_t {
 	col_yellow = 0,
 	col_red,
@@ -226,16 +238,18 @@ typedef enum smartie_color_t {
 	col_unknown
 } smartie_color;
 
-// one smartie
+//! \brief Properties a smartie can have 
 typedef struct Smartie_t {
-	uint8_t filled;
-	smartie_color color;
-	smartie_color color1;
-	smartie_color color2;
+	uint8_t filled;			//!< If this is actually a smartie or not or empty transporter
+	smartie_color color;	//!< Merged color
+	smartie_color color1;	//!< From analogue color sensor
+	smartie_color color2;	//!< From digital color sensor
 } Smartie;
 
-// Needed to assign the menu_entry's function pointer to a normally declerated function
-// Necessary to execute this function
+/**
+ * \brief Needed to assign the menu_entry's function pointer to a normally 
+ * declerated function Necessary to execute this function
+ */
 void (*menu_action)(void);
 
 // Prototypes
