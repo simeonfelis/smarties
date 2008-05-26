@@ -1,71 +1,18 @@
 #include "smarties2.h"
 #include "system.h"
 
-extern system_mode mode;
-extern uint8_t rot_pos;
-
-user_event get_user_action()
-{
-	user_event ret = EV_NO_EVENT;
-	
-	uint8_t rot_pos_new = get_rotencoder_position();
-	
-	if (rot_pos_new != rot_pos) {
-		if (rot_pos == RE_NONE) {
-			if (rot_pos_new == RE_A)
-				ret = EV_ROTATE_RIGHT;
-			if (rot_pos_new == RE_B)
-				ret = EV_ROTATE_LEFT;
-		}
-		if (rot_pos == RE_A) {
-			if (rot_pos_new == RE_BOTH)
-				ret = EV_ROTATE_RIGHT;
-			if (rot_pos_new == RE_NONE)
-				ret = EV_ROTATE_LEFT;
-		}
-		if (rot_pos == RE_BOTH) {
-			if (rot_pos_new == RE_B)
-				ret = EV_ROTATE_RIGHT;
-			if (rot_pos_new)
-				ret = EV_ROTATE_LEFT;
-		}
-		if (rot_pos == RE_B) {
-			if (rot_pos_new == RE_NONE)
-				ret = EV_ROTATE_RIGHT;
-			if (rot_pos_new == RE_BOTH)
-				ret = EV_ROTATE_LEFT;
-		}
-	}
-	
-	rot_pos = rot_pos_new;
-	
-	return ret;
-}
-
-rotencoder get_rotencoder_position()
-{
-	rotencoder ret = RE_NONE;
-	
-	if (IS_ROTENC_A)
-		ret = RE_A;
-	if (IS_ROTENC_B)
-		ret = RE_B;
-	if (IS_ROTENC_A && IS_ROTENC_B)
-		ret = RE_BOTH;
-	
-	return ret;
-}
+extern smartie_sorter ss;
 
 void sys_pause()
 {
-	if (mode == SYS_MODE_PAUSE)
+	if (ss.mode == SYS_MODE_PAUSE)
 		return;
-	mode = SYS_MODE_PAUSE;
+	ss.mode = SYS_MODE_PAUSE;
 }
 
 void sys_resume()
 {
-	if (mode == SYS_MODE_RUNNING)
+	if (ss.mode == SYS_MODE_RUNNING)
 		return;
 	
 }
@@ -116,7 +63,12 @@ smartie_color get_catcher_position()
 {
 	return 0;
 }
-
+/**
+ * \brief Rotates the catcher to a certain position
+ * 
+ * This function will rotate the catcher to position specified by the a color
+ * 
+ */
 void catcher_rotate_absolute(smartie_color color_new)
 {
 	smartie_color color_tmp = 0;
@@ -143,9 +95,16 @@ void catcher_rotate_absolute(smartie_color color_new)
 	catcher_rotate_relative(steps);
 }
 
-void catcher_rotate_relative(float f_steps)
+/**
+ * \brief rotates the catcher by some steps
+ * 
+ * \param catcher
+ * The amount of catcher which must pass the light barrier
+ *  
+ */
+void catcher_rotate_relative(uint16_t catcher)
 {
-	uint16_t i;
+/*	uint16_t i;
 	uint16_t u_steps;
 	///! round the value steps
 	f_steps += 0.5;
@@ -162,6 +121,24 @@ void catcher_rotate_relative(float f_steps)
 		}
 	} // for ()
 	CATCH_DIS();
+*/
+}
+
+uint8_t catcher_rotate_steps (uint16_t f_steps)
+{
+/*	extern engine eng_catcher;
+	
+	if (eng_catcher.eng_stat != eng_stop)
+		return FALSE;
+	
+	//TODO: ramp for 
+	
+	eng_catcher.eng_stat = eng_rotate;
+	eng_catcher.tar_pos = eng_catcher.cur_pos + f_steps;
+	
+	CATCH_START_ROTATING();
+*/
+	return 0;
 }
 
 void revolver_rotate_absolute(uint8_t abs_pos)

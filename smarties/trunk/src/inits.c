@@ -15,7 +15,7 @@ void init_all()
 
 void init_io()
 {
-	extern rotencoder rot_pos;
+	extern smartie_sorter ss;
 	
 	STEPPER_PORT &= ~((1 << REV_CLK_BIT) | (1<<REV_CW_BIT) | (1<<REV_EN_BIT) | (1<<CATCH_CLK_BIT) | (1<<CATCH_CW_BIT) | (1<<CATCH_EN_BIT));
 	STEPPER_DDR |= (1 << REV_CLK_BIT) | (1<<REV_CW_BIT) | (1<<REV_EN_BIT) | (1<<CATCH_CLK_BIT) | (1<<CATCH_CW_BIT) | (1<<CATCH_EN_BIT);
@@ -26,7 +26,15 @@ void init_io()
 	
 	TCS_IN_DDR &= ~(1<<TCS_IN_ICP);
 	
-	rot_pos = get_rotencoder_position();
+	// get current rotary encoder position
+	if (IS_ROTENC_A)
+		ss.rotenc.rottmp = ROTENC_A;
+	else if (IS_ROTENC_B)
+		ss.rotenc.rottmp = ROTENC_B;
+	else if (IS_ROTENC_BOTH)
+		ss.rotenc.rottmp = ROTENC_BOTH;
+	else if (IS_ROTENC_NONE)
+		ss.rotenc.rottmp = ROTENC_NONE;
 }
 void init_timer()
 {
@@ -67,8 +75,8 @@ void init_menu()
 	entry1.function = sys_pause;
 	entry2.function = sys_resume;
 	entry3.function = 0;
-	entry30.function = sys_rotate_revolver;
-	entry31.function = sys_rotate_catcher;
+	//entry30.function = 
+	//entry31.function = sys_rotate_catcher;
 	entry32.function = 0;
 	
 	entry1.submenu = 0;

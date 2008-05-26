@@ -151,6 +151,8 @@
 */
 #define IS_ROTENC_A			(ROTENC_AB_PIN & (1<<ROTENC_A_BIT))
 #define IS_ROTENC_B			(ROTENC_AB_PIN & (1<<ROTENC_B_BIT))
+#define IS_ROTENC_BOTH		(IS_ROTENC_A && IS_ROTENC_B)
+#define IS_ROTENC_NONE		(!IS_ROTENC_A && !IS_ROTENC_B)
 #define IS_ROTENC_PUSH		(ROTENC_PUSH_PIN &(1<<ROTENC_PUSH_BIT))
 
 // The Light barrieres (LB)
@@ -184,10 +186,10 @@ typedef enum system_step_description_t {
 
 // The current step of the running mode
 typedef struct system_step_t {
-	uint8_t I;			///< detecting colors
-	uint8_t II;			///< positioning catcher
-	uint8_t III;		///< positioning revolver
-	uint8_t IV;			///< begin new mode cycle
+	system_step_description I;			///< detecting colors
+	system_step_description II;			///< positioning catcher
+	system_step_description III;		///< positioning revolver
+	system_step_description IV;			///< begin new mode cycle
 } system_step;
 
 typedef enum user_event_t {
@@ -197,12 +199,21 @@ typedef enum user_event_t {
 	EV_ROTATE_RIGHT
 } user_event;
 
-typedef enum rotencoder_t {
-	RE_NONE = 1,
-	RE_A,
-	RE_B,
-	RE_BOTH
-} rotencoder;
+typedef enum rotary_encoder_status_t {
+	ROTENC_NONE = 0,
+	ROTENC_PUSH,
+	ROTENC_A,
+	ROTENC_B,
+	ROTENC_BOTH
+} rotary_encoder_status;
+
+typedef struct rotary_encoder_t {
+	uint8_t push;			//!< The amount of detected pushes
+	uint8_t right;			//!< The amount of detected right turns
+	uint8_t left;			//!< The amount of detected left turns
+	uint8_t pushtmp;		//!< Stores temporarely status of pushbutton
+	uint8_t rottmp;			//!< Stores temporarely status of rotation
+} rotary_encoder;
 
 /**
  * \brief The menu structure
@@ -235,7 +246,7 @@ typedef enum smartie_color_t {
 	col_brown,
 	col_green,
 	col_purple,
-	col_unknown
+	col_unknown					//!< Indexed as last color (highest counter). Insert new colors above this one!
 } smartie_color;
 
 //! \brief Properties a smartie can have 
@@ -245,6 +256,56 @@ typedef struct Smartie_t {
 	smartie_color color1;	//!< From analogue color sensor
 	smartie_color color2;	//!< From digital color sensor
 } Smartie;
+
+typedef enum common_stat_t {
+	idle = 0,
+	working,
+	finished
+} common_stat;
+
+typedef enum engine_status_t {
+	engineStat_stop = 0,
+	engineStat_rotate
+} engine_status;
+
+typedef struct engine_t {
+	engine_status status;		//!< Status
+	uint16_t currentPos;		//!< Current position
+	uint16_t targetPos;			//!< Target position
+} engine;
+
+typedef struct color_sensor_t {
+	common_stat status;
+	smartie_color value;
+} color_sensor;
+
+typedef enum lightbarrier_status_t {
+	lb_free = 0,
+	lb_blocked
+} lightbarrier_status;
+
+typedef struct lightbarrier_t {
+	lightbarrier_status status;
+	uint8_t passes;
+} lightbarrier;
+
+typedef struct shaker_t {
+	common_stat status;
+	uint16_t duration;
+} shaker;
+
+typedef struct smartie_sorter_t {
+	system_mode mode;
+	system_step step;
+	color_sensor colSensor_ADJD;
+	color_sensor colSensor_TMS;
+	engine catcher_Engine;
+	engine revolver_Engine;
+	lightbarrier catcher_LB;
+	lightbarrier revolver_LB;
+	shaker shkr;
+	rotary_encoder rotenc;
+} smartie_sorter;
 
 /**
  * \brief Needed to assign the menu_entry's function pointer to a normally 
@@ -289,23 +350,6 @@ void sys_resume();
 void sys_rotate_revolver();
 
 /**
- * \brief Rotates the catcher in Pause Mode
- * 
- * This function will rotate the catcher for one position, so that the 
- * next smartie is loaded and/or the next smartie will be underlying the
- * color sensor.
- * 
- * It will check the light barrier for this position rather than counting 
- * or calculating degrees and steps
- * 
- * This function is intened for manual usage and therefor is not available
- * during normal running mode SYS_MODE_RUNNING, only during SYS_MODE_PAUSE. 
- * 
- */
-void sys_rotate_catcher();
-
-
-/**
  * \brief Waits a time in microseconds
  * 
  * It executes a couple of nop's so that at any CPU speed it waits always waits 
@@ -321,13 +365,12 @@ void start_shaker();
 void start_get_color_1();
 void start_get_color_2();
 void catcher_rotate_absolute(smartie_color color_now);
-void catcher_rotate_relative(float f_steps);
+void catcher_rotate_relative(uint16_t);
 void revolver_rotate_absolute(uint8_t abs_pos);
 void revolver_rotate_relative(uint8_t rel_pos);
 
 smartie_color make_color_merge(smartie_color color1, smartie_color color2);
 
-rotencoder get_rotencoder_position();
 user_event get_user_action();
 
 

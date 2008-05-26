@@ -41,16 +41,20 @@
  * - values which are set in defines are written in upper case letters e.g. REVOLVER_SIZE 
  * - makros are written with capitals for each word, e.g. CatcherEnable()
  * 
+ * Prefixes
+ * \todo doku Prefixes
+ * 
  */
 
 #include "smarties2.h"
 #include "system.h"
 #include "inits.h"
 
-system_mode mode;
-system_step step;
+//system_mode mode;
+//system_step step;
 //user_event event;
-rotencoder rot_pos;
+
+smartie_sorter ss;
 
 menu_entry entry0;
 menu_entry entry1;
@@ -75,9 +79,9 @@ menu_entry entry32;
   */
 int main(void)
 {	
-	mode = SYS_MODE_INIT;
+	ss.mode = SYS_MODE_INIT;
 	menu_entry * current_menu = &entry0; 
-	user_event event;
+	//user_event event;
 	uint8_t RevPos = 0;
 	Smartie smartie[REVOLVER_SIZE];
 	
@@ -93,91 +97,97 @@ int main(void)
  
     while(1)
     {
-    	switch (mode) {
+    	switch (ss.mode) {
     	case SYS_MODE_INIT:
     		break;
     	case SYS_MODE_PAUSE:
 			break;
 		case SYS_MODE_RUNNING:
-			if (step.I == SYS_STEP_AWAITED) {
-				step.I = SYS_STEP_RUNNING;
-				start_get_color_1();
-				start_get_color_2();
-				catcher_rotate_absolute(smartie[POS_SMARTIE_OUT-1].color);
-			}
-			if (step.I == SYS_STEP_RUNNING) {
-//TODO:			if (get_color_1_complete && get_color_2_complete && catcher_rotate_complete) {
-					make_color_merge (
-						smartie[POS_SMARTIE_OUT-1].color1, 
-						smartie[POS_SMARTIE_OUT-1].color2);			
-					step.I = SYS_STEP_COMPLETED;
-					step.II = SYS_STEP_AWAITED;				
-//				}
-			}
-			if (step.II == SYS_STEP_AWAITED) {
-				step.II = SYS_STEP_RUNNING;
+			if (ss.step.I == SYS_STEP_AWAITED)
+				ss.step.I = SYS_STEP_RUNNING;
+			
+			if (ss.step.I == SYS_STEP_RUNNING) 
+			{
+				// color sensor stuff
+				if (ss.colSensor_ADJD.status == idle)
+					ss.colSensor_ADJD.status = working;	//will start SPI detection
+				if (ss.colSensor_ADJD.status == working)
+					;//TODO: check if SPI reception complete, set col_sens_finished
 				
-				start_shaker();
+				
+				// catcher preparation
+				ss.catcher_Engine.targetPos = smartie[POS_SMARTIE_OUT-1].color;
+				if (ss.catcher_Engine.status == engineStat_stop)
+					if (ss.catcher_Engine.currentPos != ss.catcher_Engine.targetPos)
+						ss.catcher_Engine.status = engineStat_rotate;	//will start rotating the catcher
+				if (ss.catcher_Engine.status == engineStat_rotate)
+				{
+					if (ss.catcher_LB.passes > 0)						//FIXME: check multiple passes
+					{
+						ss.catcher_Engine.currentPos++;
+						if (ss.catcher_Engine.currentPos == col_unknown) // reset counter
+							ss.catcher_Engine.currentPos = 0;
+						ss.catcher_LB.passes = 0;
+					}
+					if (ss.catcher_Engine.currentPos == ss.catcher_Engine.targetPos)
+						ss.catcher_Engine.status = engineStat_stop;
+				}
+				
+				// finishing step I, entering step II
+				if ((ss.catcher_Engine.status == engineStat_stop) &&
+						(ss.colSensor_ADJD.status == finished))
+				{
+					ss.colSensor_ADJD.status = idle;
+					ss.step.I = SYS_STEP_COMPLETED;
+					ss.step.II = SYS_STEP_AWAITED;
+				}				
+			} // if (ss.step.I == SYS_STEP_RUNNING) 
+			
+			if (ss.step.II == SYS_STEP_AWAITED) 
+				ss.step.II = SYS_STEP_RUNNING;
+							
+			if (ss.step.II == SYS_STEP_RUNNING) {
+				if (ss.shkr.status == idle)
+					ss.shkr.status = working;
+				if (ss.shkr.duration == 0)
+					ss.shkr.status = finished;
+					
+
 				revolver_rotate_relative(1);
 				RevPos++;
 				if (RevPos == REVOLVER_SIZE)
 					RevPos = 0;
 				
-				step.II = SYS_STEP_COMPLETED;
-				step.III = SYS_STEP_AWAITED;
+				if (ss.shkr.status == finished)
+				{
+					ss.shkr.status = idle;
+					ss.step.II = SYS_STEP_COMPLETED;
+					ss.step.III = SYS_STEP_AWAITED;
+				}
 			}
-			if (step.II == SYS_STEP_RUNNING) {
-//TODO:			if (shaker_finished && revolver_rotate_complete) {
-					step.II = SYS_STEP_COMPLETED;
-					step.III = SYS_STEP_AWAITED;
-//				}
-			}
-			if (step.III == SYS_STEP_AWAITED) {
-				step.III = SYS_STEP_RUNNING;
+			if (ss.step.III == SYS_STEP_AWAITED) {
+				ss.step.III = SYS_STEP_RUNNING;
 				
-				step.III = SYS_STEP_COMPLETED;
-				step.I = SYS_STEP_AWAITED;
+				ss.step.III = SYS_STEP_COMPLETED;
+				ss.step.I = SYS_STEP_AWAITED;
 			}
     		break;
     	default:
 			break;
 		} // switch (state)
     	
-    	event = get_user_action();
-		switch (event) {
-		case EV_PUSH_BUTTON:
-			if (current_menu->function) {
-				menu_action = current_menu->function;
-				menu_action();
-			}
-			else if (current_menu->submenu) {
-				current_menu = current_menu->submenu;
-			}
-			else if (current_menu->topmenu) {
-				current_menu = current_menu->topmenu;
-			}
-			break;
-		case EV_ROTATE_LEFT:
-/*	Not implemented yet
- * 			if (current_menu->leftaction) {
-				menu_action = current_menu->leftaction;
-				menu_action();
-			}
-*/
-			current_menu = current_menu->prev;
-			break;
-		case EV_ROTATE_RIGHT:
-/*	Not implemented yet
- * 			if (current_menu->rightaction) {
-				menu_action = current_menu->rightaction;
-				menu_action();
-			}
-*/
-			current_menu = current_menu->next;
-			break;
-		default:
-			break;
-		} // switch (event)
+    	//handle user inputs
+    	if (ss.mode == SYS_MODE_RUNNING)
+    		if (ss.rotenc.push)
+    		{
+    			ss.mode = SYS_MODE_PAUSE;
+    			ss.rotenc.push = 0;
+    		}
+    	if (ss.mode == SYS_MODE_PAUSE)
+    	{
+    		//do stuff with menu
+    	}
+    	
 	} // while (1)
 	return 0;
 }
