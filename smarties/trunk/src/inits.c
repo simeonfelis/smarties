@@ -56,6 +56,48 @@ void init_adc()
 
 void init_menu()
 {
+	extern menu_entry entries[3][3];
+	
+	entries[0][0].text = "MAIN MENU";
+	entries[0][0].next = &entries[0][1];
+	entries[0][0].prev = &entries[0][1];
+	entries[0][0].submenu = &entries[1][0];
+	entries[0][0].function = men_enter_submenu;
+	
+	entries[0][1].text = "RESUME";
+	entries[0][1].next = &entries[0][0];
+	entries[0][1].prev = &entries[0][0];
+	entries[0][1].function = sys_resume;
+	
+	entries[1][0].text = "ROTATE";
+	entries[1][0].next = &entries[1][1];
+	entries[1][0].prev = &entries[1][1];
+	entries[1][0].submenu = &entries[2][0];
+	entries[1][0].function = men_enter_submenu;
+	
+	entries[1][1].text = "BACK";
+	entries[1][1].next = &entries[1][0];
+	entries[1][1].prev = &entries[1][0];
+	entries[1][1].topmenu = &entries[0][0];
+	entries[1][1].function = men_enter_topmenu;
+	
+	entries[2][0].text = "REVOLVER";
+	entries[2][0].next = &entries[2][1];
+	entries[2][0].prev = &entries[2][2];
+	entries[2][0].function = sys_rotate_revolver;
+	
+	entries[2][1].text = "CATCHER";
+	entries[2][1].next = &entries[2][2];
+	entries[2][1].prev = &entries[2][0];
+	entries[2][1].function = sys_rotate_catcher;
+	
+	entries[2][2].text = "BACK";
+	entries[2][2].next = &entries[2][0];
+	entries[2][2].prev = &entries[2][1];
+	entries[2][2].topmenu = &entries[1][0];
+	entries[2][2].function = men_enter_topmenu;
+	
+	/* deprecated
 	extern menu_entry entry0;
 	extern menu_entry entry1;
 	extern menu_entry entry2;
@@ -63,6 +105,7 @@ void init_menu()
 	extern menu_entry entry30;
 	extern menu_entry entry31;
 	extern menu_entry entry32;
+	
 	
 	entry0.text = "Main Menu";
 	entry1.text = "Pause";
@@ -111,4 +154,5 @@ void init_menu()
 	entry30.prev = (void *) &entry32;
 	entry31.prev = (void *) &entry30;
 	entry32.prev = (void *) &entry30;
+	*/
 }

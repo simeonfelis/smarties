@@ -19,6 +19,12 @@
  * 
  * @section arch Architecture
  * 
+ * Goal of this application is a state machine controlled by status flags.
+ * The main() function controls the program flow by reading and setting status
+ * flags. These status flags are polled each millisecond in an timer interrupt 
+ * routine. This timer interrupt routine reads and sets the IO ports and sets 
+ * corresponding status flags.
+ * 
  * The application entry point is located is the smarties2.c file.
  * - The main function first performs the initialization of inputs and outputs
  * - It handles the modes of the smartie sorter
@@ -41,6 +47,8 @@
  * - values which are set in defines are written in upper case letters e.g. REVOLVER_SIZE 
  * - makros are written with capitals for each word, e.g. CatcherEnable()
  * 
+ * \image html test.svg
+ * 
  * Prefixes
  * \todo doku Prefixes
  * 
@@ -50,19 +58,17 @@
 #include "system.h"
 #include "inits.h"
 
-//system_mode mode;
-//system_step step;
-//user_event event;
-
 smartie_sorter ss;
 
-menu_entry entry0;
+menu_entry entries[3][3];
+/* deprecated
 menu_entry entry1;
 menu_entry entry2;
 menu_entry entry3;
 menu_entry entry30;
 menu_entry entry31;
 menu_entry entry32;
+*/
 
 /**
   * \brief  Entry functin for smarties2
@@ -80,7 +86,7 @@ menu_entry entry32;
 int main(void)
 {	
 	ss.mode = SYS_MODE_INIT;
-	menu_entry * current_menu = &entry0; 
+	//menu_entry * current_menu = &entry0; 
 	//user_event event;
 	uint8_t RevPos = 0;
 	Smartie smartie[REVOLVER_SIZE];
@@ -117,10 +123,10 @@ int main(void)
 				
 				// catcher preparation
 				ss.catcher_Engine.targetPos = smartie[POS_SMARTIE_OUT-1].color;
-				if (ss.catcher_Engine.status == engineStat_stop)
+				if (ss.catcher_Engine.status == idle)
 					if (ss.catcher_Engine.currentPos != ss.catcher_Engine.targetPos)
-						ss.catcher_Engine.status = engineStat_rotate;	//will start rotating the catcher
-				if (ss.catcher_Engine.status == engineStat_rotate)
+						ss.catcher_Engine.status = start_working;	//will start rotating the catcher
+				if (ss.catcher_Engine.status == working) // status working will be entered automatically
 				{
 					if (ss.catcher_LB.passes > 0)						//FIXME: check multiple passes
 					{
@@ -130,14 +136,19 @@ int main(void)
 						ss.catcher_LB.passes = 0;
 					}
 					if (ss.catcher_Engine.currentPos == ss.catcher_Engine.targetPos)
-						ss.catcher_Engine.status = engineStat_stop;
+					{
+						ss.catcher_Engine.status_tmp = working;
+						ss.catcher_Engine.status = stop_working;
+					}
 				}
 				
 				// finishing step I, entering step II
-				if ((ss.catcher_Engine.status == engineStat_stop) &&
+				if ((ss.catcher_Engine.status == finished) &&
 						(ss.colSensor_ADJD.status == finished))
 				{
 					ss.colSensor_ADJD.status = idle;
+					ss.catcher_Engine.status = idle;
+					ss.catcher_Engine.status_tmp = finished;
 					ss.step.I = SYS_STEP_COMPLETED;
 					ss.step.II = SYS_STEP_AWAITED;
 				}				
@@ -146,7 +157,8 @@ int main(void)
 			if (ss.step.II == SYS_STEP_AWAITED) 
 				ss.step.II = SYS_STEP_RUNNING;
 							
-			if (ss.step.II == SYS_STEP_RUNNING) {
+			if (ss.step.II == SYS_STEP_RUNNING) 
+			{
 				if (ss.shkr.status == idle)
 					ss.shkr.status = working;
 				if (ss.shkr.duration == 0)
@@ -161,13 +173,14 @@ int main(void)
 				if (ss.shkr.status == finished)
 				{
 					ss.shkr.status = idle;
+					ss.shkr.statustmp = idle;
 					ss.step.II = SYS_STEP_COMPLETED;
 					ss.step.III = SYS_STEP_AWAITED;
 				}
 			}
-			if (ss.step.III == SYS_STEP_AWAITED) {
+			if (ss.step.III == SYS_STEP_AWAITED) 
+			{
 				ss.step.III = SYS_STEP_RUNNING;
-				
 				ss.step.III = SYS_STEP_COMPLETED;
 				ss.step.I = SYS_STEP_AWAITED;
 			}

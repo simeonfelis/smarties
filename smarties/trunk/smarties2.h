@@ -18,6 +18,8 @@
 #include <avr/io.h>
 #include "lcd_display.h"	// display driver
 #include "system.h"
+#include "abstraction.h"
+#include "menu.h"
 
 
 

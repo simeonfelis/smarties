@@ -19,6 +19,8 @@
 #ifndef SYSTEM_H_
 #define SYSTEM_H_
 
+#include "menu.h"
+
 /// CPU Frequency
 #define F_CPU 8000000
 #define REVOLVER_SIZE		12
@@ -88,31 +90,42 @@
 	} while (0)
 
 // STEPPER MOTORS
-#define STEPPER_PORT		PORTD		///! Output port for stepper motors
-#define STEPPER_DDR			DDRD		///! Port direction for stepper motors
-#define STEPPER_PIN			PIND		///! For reading the state of stepper motors
+#define STEPPER_PORT		PORTD		//!< Output port for stepper motors
+#define STEPPER_DDR			DDRD		//!< Port direction for stepper motors
+#define STEPPER_PIN			PIND		//!< For reading the state of stepper motors
 // Stepper motor for revolver
-#define REV_EN_BIT			PD7			///! Enable driver for revolver stepper motor 
-#define REV_CW_BIT			PD6			///! Rotate direction for revolver stepper motor (CW/CCW)
-#define REV_CLK_BIT			PD5			///! Clock signal for driver for revolver stepper motor
-// Stepper motor for catcher
-#define CATCH_EN_BIT		PD4			///! Enable driver for catcher stepper motor
-#define CATCH_CW_BIT		PD3			///! Rotate direction for catcher stepper motor (CW/CC
-#define CATCH_CLK_BIT		PD2			///! Clock signal for driver for catcher stepper motorW)
+#define REV_EN_BIT			PD7			//!< Enable driver for revolver stepper motor 
+#define REV_CW_BIT			PD6			//!< Rotate direction for revolver stepper motor (CW/CCW)
+#define REV_CLK_BIT			PD5			//!< Clock signal for driver for revolver stepper motor
 
 #define REV_EN()			(STEPPER_PORT |= (1<<REV_EN_BIT))
+#define REV_DIS()			(STEPPER_PORT &= ~(1<<REV_EN_BIT))
+#define REV_MOVE_STEP()		(STEPPER_PORT ^= (1<<REV_CLK_BIT))	//!< Move the revolver stepper motor for one single step
+
+#define REV_STEP_DURATION	32			//!< Duration of one step in milliseconds	
+#define REV_RAMP_DURATION	4			//!< Duration of the ramp up or ramp down in steps
+
+// Stepper motor for catcher
+#define CATCH_EN_BIT		PD4			//!< Enable driver for catcher stepper motor
+#define CATCH_CW_BIT		PD3			//!< Rotate direction for catcher stepper motor (CW/CC
+#define CATCH_CLK_BIT		PD2			//!< Clock signal for driver for catcher stepper motorW)
 
 #define CATCH_EN()			(STEPPER_PORT |= (1<<CATCH_EN_BIT))
 #define CATCH_DIS()			(STEPPER_PORT &= ~(1<<CATCH_EN_BIT))
-#define CATCH_MOVE_STEP()	(STEPPER_PORT ^= (1<<CATCH_CLK_BIT))
+#define CATCH_MOVE_STEP()	(STEPPER_PORT ^= (1<<CATCH_CLK_BIT))	//!< Move the catcher steper motor for one single step
+
+#define CATCH_STEP_DURATION 32			//!< Duration of one step in one Millisecond 
+#define CATCH_RAMP_DURATION 5			//!< Duration of the ramp up or ramp down in steps
 
 
 // Miscaleous input output
-//Vibrator 
+// Shaker 
 #define VIBR_PORT			PORTB
 #define VIBR_DDR			DDRB
 #define VIBR_PIN			PINB		///!< The the Vibrator state pin
 #define VIBRATOR			PB1 		///!< The Vibrator Portbit
+
+#define SHAKE_DURATION		500			//!< Default duration for shaker (vibrator)
 
 // Input rotary encoder
 #define ROTENC_AB_PORT		PORTD		//!< Rotary encoder port (output) for AB signals
@@ -126,15 +139,9 @@
 #define ROTENC_B_BIT		PD2			//!< Rotary encoder signal B (Pin TODO of connector)
 #define ROTENC_PUSH_BIT		PB1			//!< Rotary encoder pushbutton signal (Pin TODO of connector)
 
-/* maybe later
-#define ROTENC_MASK_NONE	0x00
-#define ROTENC_MASK_A		0x08
-#define ROTENC_MASK_AB		0x0C
-#define ROTENC_MASK_B		0x04
-*/
+
 /**
  * \brief Initializes input periphals for Rotary encoder
- * \param None
  */
 #define ROTENC_INIT()		\
 	do {													\
@@ -142,13 +149,6 @@
 		ROTENC_PUSH_DDR &= ~(1<<ROTENC_PUSH_BIT); 						\
 }while(0)
 
-/* deprecated
-#define FL_PUSH_BUTTON		0x01
-#define FL_ROTATE_LEFT		0x02
-#define FL_ROTATE_RIGHT		0x04
-#define FL_ROTATE_LEFT_TMP	0x08
-#define FL_ROTATE_RIGTH_TMP 0x10
-*/
 #define IS_ROTENC_A			(ROTENC_AB_PIN & (1<<ROTENC_A_BIT))
 #define IS_ROTENC_B			(ROTENC_AB_PIN & (1<<ROTENC_B_BIT))
 #define IS_ROTENC_BOTH		(IS_ROTENC_A && IS_ROTENC_B)
@@ -159,8 +159,8 @@
 #define LB_PORT				PORTC
 #define LB_DDR				DDRC
 #define LB_PIN				PINC
-#define LB_CATCH_BIT		PC7			///! Lightbarriere Catcher Positinoer
-#define LB_REV_BIT			PC6			///! Lightbarriere Revolver Positioner
+#define LB_CATCH_BIT		PC7			//!< Lightbarriere Catcher Positinoer Portbit
+#define LB_REV_BIT			PC6			//!< Lightbarriere Revolver Positioner Portbit
 
 #define IS_LB_CATCHER		(LB_PIN & (1<<LB_CATCH_BIT))
 #define IS_LB_REVOLVER		(LB_PIN & (1<<LB_REV_BIT))
@@ -176,7 +176,7 @@ typedef enum system_mode_t {
 } system_mode;
 
 /**
- * \brief The single steps during running mode SYS_MODE_RUNNING
+ * \brief The step description during running mode SYS_MODE_RUNNING
  */ 
 typedef enum system_step_description_t {
 	SYS_STEP_COMPLETED = 0,		//!< If current step is completed the make the next step
@@ -184,7 +184,9 @@ typedef enum system_step_description_t {
 	SYS_STEP_AWAITED			//!< This step is awaited now to be done next
 } system_step_description;
 
-// The current step of the running mode
+/**
+ *  \brief The single steps during running mode SYS_MODE_RUNNING
+ */
 typedef struct system_step_t {
 	system_step_description I;			///< detecting colors
 	system_step_description II;			///< positioning catcher
@@ -192,21 +194,21 @@ typedef struct system_step_t {
 	system_step_description IV;			///< begin new mode cycle
 } system_step;
 
-typedef enum user_event_t {
-	EV_NO_EVENT = 0,
-	EV_PUSH_BUTTON,
-	EV_ROTATE_LEFT,
-	EV_ROTATE_RIGHT
-} user_event;
 
+/**
+ * \brief The rotary encoder's elements can have following status
+ */
 typedef enum rotary_encoder_status_t {
-	ROTENC_NONE = 0,
-	ROTENC_PUSH,
-	ROTENC_A,
-	ROTENC_B,
-	ROTENC_BOTH
+	ROTENC_NONE = 0,		//!< Applicable for Push button, A-Pin and B-Pin
+	ROTENC_PUSH,			//!< The Button is pushed
+	ROTENC_A,				//!< Currently only the A-Pin of the rotary encoder is set 
+	ROTENC_B,				//!< Currently only the B-Pin of the rotary encoder is set
+	ROTENC_BOTH				//!< Currently both, the A-Pin and B-Pin of the rotary encoder are set
 } rotary_encoder_status;
 
+/**
+ * \brief The rotary encoder (user input device) structure 
+ */
 typedef struct rotary_encoder_t {
 	uint8_t push;			//!< The amount of detected pushes
 	uint8_t right;			//!< The amount of detected right turns
@@ -214,29 +216,6 @@ typedef struct rotary_encoder_t {
 	uint8_t pushtmp;		//!< Stores temporarely status of pushbutton
 	uint8_t rottmp;			//!< Stores temporarely status of rotation
 } rotary_encoder;
-
-/**
- * \brief The menu structure
- * 
- * Stucture:
- * \code
- *   menu_entry11 --next--> menu_entry12 --next--> menu_entry13
- *    |
- *    submenu -> menu_entry21 --next--> menu_entry22 --next--> menu_entry23
- *    |
- *    submenu -> menu_entry31 --next--> menu_entry32 
- * \endcode  
- */
-typedef struct menu_entry_t {
-	void (*function);		//!< If push button pressed, this function will be executed (if available)
-	void (*leftaction);		//!< If rotary encoder turned left, this function will be executed (if available)
-	void (*rightaction);	//!< If rotary encoder turned right, this function will be executed (if available)
-	char * text;			//!< Text on Display (TODO: Max 20 Characters)
-	void * topmenu;			//!< The menu item above of current menu item
-	void * submenu;			//!< The menu item below of current menu item
-	void * prev;			//!< Previous Menu item
-	void * next;			//!< Next menu item
-} menu_entry;
 
 //! \brief All supported colors
 typedef enum smartie_color_t {
@@ -246,7 +225,7 @@ typedef enum smartie_color_t {
 	col_brown,
 	col_green,
 	col_purple,
-	col_unknown					//!< Indexed as last color (highest counter). Insert new colors above this one!
+	col_unknown				//!< Indexed as last color (highest counter). Insert new colors above this one!
 } smartie_color;
 
 //! \brief Properties a smartie can have 
@@ -257,21 +236,31 @@ typedef struct Smartie_t {
 	smartie_color color2;	//!< From digital color sensor
 } Smartie;
 
+/**
+ * \brief The status a device can have
+ * 
+ * The different modules of the smartie sorter can have different operating 
+ * status. But mainly they all have common status like working or finished.  
+ */
 typedef enum common_stat_t {
-	idle = 0,
-	working,
-	finished
+	idle = 0,			//!< The module/device is doing nothing and is ready for a new job
+	start_working,		//!< This will initiate the any work the device can have 
+	working,			//!< Indicates the device is busy. The device will automatically change to this state
+	stop_working,		//!< Setting a device to this state will stop the device 
+	finished			//!< Indicates the device is finished. The device will automatically change to this state
 } common_stat;
 
-typedef enum engine_status_t {
-	engineStat_stop = 0,
-	engineStat_rotate
-} engine_status;
-
+/**
+ * \brief The stepper motor
+ */
 typedef struct engine_t {
-	engine_status status;		//!< Status
-	uint16_t currentPos;		//!< Current position
-	uint16_t targetPos;			//!< Target position
+	common_stat status;			//!< Status
+	common_stat status_tmp; 	//!< The last status (before the current one)
+	uint16_t currentPos;		//!< Current position (\ref smartie_color can also be used)
+	uint16_t targetPos;			//!< Target position (\ref smartie_color can also be used)
+	uint16_t cycle_counter;		//!< One cycle takes 1 millisecond
+	uint8_t rampup_steps;		//!< One step takes \ref CATCH_STEP_DURATION or \ref REV_STEP_DURATION steps
+	uint8_t rampdown_steps;		//!< Steps used for ramping down 
 } engine;
 
 typedef struct color_sensor_t {
@@ -280,23 +269,29 @@ typedef struct color_sensor_t {
 } color_sensor;
 
 typedef enum lightbarrier_status_t {
-	lb_free = 0,
-	lb_blocked
+	lb_free = 0,						//!< Nothing inbetween the lightbarrier
+	lb_blocked							//!< The lightbarrier is blocked
 } lightbarrier_status;
 
 typedef struct lightbarrier_t {
-	lightbarrier_status status;
-	uint8_t passes;
+	lightbarrier_status status;			//!< The actual status of the lightbarrier
+	lightbarrier_status status_tmp;		//!< For recognising a pass
+	uint8_t passes;						//!< The amount of recognized passes through the lightbarrier
 } lightbarrier;
 
+//! \brief Properties the shaker (virbrator) can have 
 typedef struct shaker_t {
-	common_stat status;
-	uint16_t duration;
+	common_stat status;					//!< Status
+	common_stat statustmp;				//!< The last status (before current)
+	uint16_t duration;					//!< How long to vibrate the shaker (\ref SHAKER_DURATION)
 } shaker;
 
+
+//! \brief All devices from the smartie sorter collected to one bundle
 typedef struct smartie_sorter_t {
 	system_mode mode;
 	system_step step;
+	menu_entry * current_menu;
 	color_sensor colSensor_ADJD;
 	color_sensor colSensor_TMS;
 	engine catcher_Engine;
@@ -307,13 +302,10 @@ typedef struct smartie_sorter_t {
 	rotary_encoder rotenc;
 } smartie_sorter;
 
-/**
- * \brief Needed to assign the menu_entry's function pointer to a normally 
- * declerated function Necessary to execute this function
- */
-void (*menu_action)(void);
 
-// Prototypes
+//////////////////////////////////////////////////////////////////////////////////
+//////////////////////////// P R O T O T Y P E S /////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
 /**
  * \brief Will Enter the pause mode 
  * 
@@ -349,6 +341,8 @@ void sys_resume();
  */
 void sys_rotate_revolver();
 
+void sys_rotate_catcher();
+
 /**
  * \brief Waits a time in microseconds
  * 
@@ -364,14 +358,27 @@ void sys_wait(uint16_t time);
 void start_shaker();
 void start_get_color_1();
 void start_get_color_2();
+
+/**
+ * \brief Rotates the catcher to a certain position
+ * 
+ * This function will rotate the catcher to position specified by the a color
+ * 
+ */
 void catcher_rotate_absolute(smartie_color color_now);
+
+/**
+ * \brief rotates the catcher by some steps
+ * 
+ * \param catcher
+ * The amount of catcher which must pass the light barrier
+ */
 void catcher_rotate_relative(uint16_t);
 void revolver_rotate_absolute(uint8_t abs_pos);
 void revolver_rotate_relative(uint8_t rel_pos);
 
 smartie_color make_color_merge(smartie_color color1, smartie_color color2);
 
-user_event get_user_action();
 
 
 

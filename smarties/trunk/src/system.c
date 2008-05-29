@@ -63,12 +63,7 @@ smartie_color get_catcher_position()
 {
 	return 0;
 }
-/**
- * \brief Rotates the catcher to a certain position
- * 
- * This function will rotate the catcher to position specified by the a color
- * 
- */
+
 void catcher_rotate_absolute(smartie_color color_new)
 {
 	smartie_color color_tmp = 0;
@@ -95,13 +90,7 @@ void catcher_rotate_absolute(smartie_color color_new)
 	catcher_rotate_relative(steps);
 }
 
-/**
- * \brief rotates the catcher by some steps
- * 
- * \param catcher
- * The amount of catcher which must pass the light barrier
- *  
- */
+
 void catcher_rotate_relative(uint16_t catcher)
 {
 /*	uint16_t i;
