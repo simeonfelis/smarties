@@ -60,15 +60,11 @@
 
 smartie_sorter ss;
 
+menu_entry *menu_current;
+menu_entry men_initializing;
+menu_entry men_running;
+menu_entry men_pausing;
 menu_entry entries[3][3];
-/* deprecated
-menu_entry entry1;
-menu_entry entry2;
-menu_entry entry3;
-menu_entry entry30;
-menu_entry entry31;
-menu_entry entry32;
-*/
 
 /**
   * \brief  Entry functin for smarties2
@@ -79,8 +75,8 @@ menu_entry entry32;
   * 
   * This function also handles the user inputs.
   * 
-  * The subfunctions for driving the periphals are collected in system.h. The 
-  * LCD menu is controlled by functions collected in lcd_display.h. 
+  * The subfunctions for driving the periphals are collected in \ref system.h. The 
+  * LCD menu is controlled by functions collected in \ref lcd_display.h. 
   * 
   */
 int main(void)
@@ -190,17 +186,12 @@ int main(void)
 		} // switch (state)
     	
     	//handle user inputs
-    	if (ss.mode == SYS_MODE_RUNNING)
-    		if (ss.rotenc.push)
-    		{
-    			ss.mode = SYS_MODE_PAUSE;
-    			ss.rotenc.push = 0;
-    		}
-    	if (ss.mode == SYS_MODE_PAUSE)
+    	if (ss.rotenc.push)
     	{
-    		//do stuff with menu
+    		menu_action = (*menu_current).function;
+    		menu_action();
+    		ss.rotenc.push = 0;
     	}
-    	
 	} // while (1)
 	return 0;
 }

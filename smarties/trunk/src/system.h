@@ -19,8 +19,6 @@
 #ifndef SYSTEM_H_
 #define SYSTEM_H_
 
-#include "menu.h"
-
 /// CPU Frequency
 #define F_CPU 8000000
 #define REVOLVER_SIZE		12
@@ -291,7 +289,6 @@ typedef struct shaker_t {
 typedef struct smartie_sorter_t {
 	system_mode mode;
 	system_step step;
-	menu_entry * current_menu;
 	color_sensor colSensor_ADJD;
 	color_sensor colSensor_TMS;
 	engine catcher_Engine;

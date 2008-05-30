@@ -230,11 +230,6 @@ void lightbarrier_stuff ()
 	}
 }
 
-void display_stuff ()
-{
-	
-}
-
 void sensor_stuff ()
 {
 	
@@ -258,4 +253,22 @@ void shaker_stuff ()
 			ss.shkr.statustmp = working;
 		}
 	}
+}
+void display_stuff ()
+{
+	
+}
+void disp_set_mode ()
+{
+	
+}
+
+void disp_set_title ()
+{
+	
+}
+
+void disp_set_color ()
+{
+	
 }

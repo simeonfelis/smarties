@@ -1,9 +1,24 @@
-void men_enter_submenu ()
+//#include "system.h"
+#include "menu.h"
+
+extern menu_entry *menu_current;
+
+void menu_enter_submenu ()
 {
-	
+	menu_current = menu_current->submenu;
 }
 
-void men_enter_topmenu()
+void menu_enter_topmenu()
 {
-	
+	menu_current = menu_current->topmenu;
+}
+
+void menu_enter_nextmenu ()
+{
+	menu_current = menu_current->next;
+}
+
+void menu_enter_prevmenu ()
+{
+	menu_current = menu_current->prev;
 }
