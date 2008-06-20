@@ -11,18 +11,20 @@
  
 void lcd_data(unsigned char temp1)
 {
-   unsigned char temp2 = temp1;
+   unsigned char temp2;
+   temp1 = swap_byte(temp1);
+   temp2 = temp1;
  
    LCD_PORT |= (1<<LCD_RS);        // RS auf 1 setzen
  
    temp1 = temp1 >> 4;
    temp1 = temp1 & 0x0F;
-   LCD_PORT &= 0xF0;
+   LCD_PORT &= ((1<<LCD_RS) | (1<<LCD_EN));
    LCD_PORT |= temp1;               // setzen
    lcd_enable();
  
    temp2 = temp2 & 0x0F;
-   LCD_PORT &= 0xF0;
+   LCD_PORT &= ((1<<LCD_RS) | (1<<LCD_EN));
    LCD_PORT |= temp2;               // setzen
    lcd_enable();
    
@@ -33,18 +35,20 @@ void lcd_data(unsigned char temp1)
  
 void lcd_command(unsigned char temp1)
 {
-   unsigned char temp2 = temp1;
+   unsigned char temp2;
+   temp1 = swap_byte (temp1);
+   temp2 = temp1;
  
    LCD_PORT &= ~(1<<LCD_RS);        // RS auf 0 setzen
  
    temp1 = temp1 >> 4;              // oberes Nibble holen
    temp1 = temp1 & 0x0F;            // maskieren
-   LCD_PORT &= 0xF0;
+   LCD_PORT &= ((1<<LCD_RS) | (1<<LCD_EN));
    LCD_PORT |= temp1;               // setzen
    lcd_enable();
  
    temp2 = temp2 & 0x0F;            // unteres Nibble holen und maskieren
-   LCD_PORT &= 0xF0;
+   LCD_PORT &= ((1<<LCD_RS) | (1<<LCD_EN));
    LCD_PORT |= temp2;               // setzen
    lcd_enable();
    
@@ -68,13 +72,16 @@ void lcd_enable(void)
  
 void lcd_init(void)
 {
-   LCD_DDR = LCD_DDR | 0x0F | (1<<LCD_RS) | (1<<LCD_EN);   // Port auf Ausgang schalten
+	// Port auf Ausgang schalten
+	LCD_DDR |= (
+			(1<<LCD_DB4) | (1<<LCD_DB5) | (1<<LCD_DB6) | (1<<LCD_DB7) | 
+			(1<<LCD_EN) | (1<<LCD_RS));
  
    // muss 3mal hintereinander gesendet werden zur Initialisierung
  
-   _delay_ms(15);
-   LCD_PORT &= 0xF0;
-   LCD_PORT |= 0x03;            
+   _delay_ms(15); 
+   LCD_PORT &= ((1<<LCD_EN) | (1<<LCD_RS));
+   LCD_PORT |= ((1<<LCD_DB4) | (1<<LCD_DB5));
    LCD_PORT &= ~(1<<LCD_RS);      // RS auf 0
    lcd_enable();
  
@@ -86,8 +93,8 @@ void lcd_init(void)
    _delay_ms(1);
  
    // 4 Bit Modus aktivieren 
-   LCD_PORT &= 0xF0;
-   LCD_PORT |= 0x02;
+   LCD_PORT &= ((1<<LCD_EN) | (1<<LCD_RS));// 0xF0;
+   LCD_PORT |= (1<<LCD_DB5); //0x02;
    lcd_enable();
    _delay_ms(1);
  
@@ -144,3 +151,51 @@ void lcd_string(char *data)
     }
 }
 
+/**
+ * \brief Helper function due to hardware bug
+ * 
+ * The connection is intend to be:
+ * \code
+ *  MC     DISPLAY
+ * Px0  ->   DB4
+ * Px1  ->   DB5 
+ * Px2  ->   DB6
+ * Px3  ->   DB7
+ * Px4  ->   RS
+ * Px5  ->   EN
+ * \endcode
+ * 
+ * However it is like this:
+ * \code
+ *  MC     DISPLAY
+ * Px3  ->   DB4
+ * Px2  ->   DB5 
+ * Px1  ->   DB6
+ * Px0  ->   DB7
+ * Px4  ->   RS
+ * Px5  ->   EN
+ * \endcode
+ * 
+ * So both nibbles of byte are swapped.
+ * 
+ * \param data to swap
+ * \return The swapped byte 
+ */
+uint8_t swap_byte(uint8_t data)
+{
+	uint8_t ret=0;
+	
+	// low nibble
+	ret |= (data & 0x01) << 4;
+	ret |= (data & 0x02) << 2;
+	ret |= (data & 0x04) >> 2;
+	ret |= (data & 0x08) >> 4;
+	
+	// high nibble
+	ret |= (data & 0x10) << 4;
+	ret |= (data & 0x20) << 2;
+	ret |= (data & 0x40) >> 2;
+	ret |= (data & 0x80) >> 4;
+	
+	return ret;
+}
