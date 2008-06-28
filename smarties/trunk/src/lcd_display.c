@@ -1,14 +1,60 @@
-// Ansteuerung eines HD44780 kompatiblen LCD im 4-Bit-Interfacemodus
-// http://www.mikrocontroller.net/articles/AVR-GCC-Tutorial
-//
-// Die Pinbelegung ist über defines in lcd-routines.h einstellbar
+/**
+ * @file lcd_display.c
+ * 
+ * Copyright (c) 2008 Simeon Felis
+ * 
+ * @brief Control functions for Alphanumeric LCD display
+ * 
+ * @section intro License
+ * 
+ * Copied from http://www.mikrocontroller.net/articles/AVR-GCC-Tutorial
+ * 
+ * @section install Description
+ * 
+ * This is the API for the alphanumeric LCD display. The connected portbits are
+ * defined in \ref lcd_display.h. This software should be compatible to HD44780 
+ * LCDs in 4-Bit-Interfacemode. 
+ * 
+ * The Display has two lines with 24 characters. The layout for different
+ * modes are draftly described in file \ref menu.h 
+ * 
+ * Here the exact layout:
+ * \code
+ *      1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
+ *    + -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  - +
+ *  1 |                            T  I  T  L  E                               |
+ *  2 |[   M  O  D  E      ]                                [ C  O  L  O  R   ]|
+ *    + -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  - +
+ * \endcode
+ * 
+ * - Line 1: Column 1 to 24 is reserved for the title. If the push button is 
+ * pressed, the action described by the title will be executed.
+ * - Line 2: 
+ *   - Column 1 to 6 is reserved for the current mode. Following modes 
+ * can be displayed: 
+ *     - PAUSE
+ *     - RUNNING
+ *   - Column 19 to 21 is reserved for the folling colors:
+ *     - yellow: YELLOW
+ *     - red: RED
+ *     - blue: BLUE
+ *     - brown: BROWN
+ *     - green: GREEN
+ *     - purple: PURPLE
+ *     - unknown: UNKNOWN
+ * 
+ * For some setting possibilties have a look at \ref lcd_display.h
+ */
  
 #include <smarties2.h>
 #include "lcd_display.h"
 #include <util/delay.h>
  
-// sendet ein Datenbyte an das LCD
- 
+/**
+ * \brief Sends a databyte to display on the LCD
+ * 
+ * \param temp1 The character to display
+ */
 void lcd_data(unsigned char temp1)
 {
    unsigned char temp2;
@@ -31,8 +77,13 @@ void lcd_data(unsigned char temp1)
    _delay_us(42);
 }
  
-// sendet einen Befehl an das LCD
- 
+/**
+ * \brief Send a command to the LCD.
+ * 
+ * \param temp1 Command to send. Prepared commands are
+ * - \ref CLEAR_DISPLAY
+ * - \ref CURSOR_HOME
+ */
 void lcd_command(unsigned char temp1)
 {
    unsigned char temp2;
@@ -55,7 +106,9 @@ void lcd_command(unsigned char temp1)
    _delay_us(42);
 }
  
-// erzeugt den Enable-Puls
+/**
+ * \brief Creates Enable - slope
+ */
 void lcd_enable(void)
 {
    // Bei Problemen ggf. Pause gemäß Datenblatt des LCD Controllers einfügen
@@ -67,11 +120,15 @@ void lcd_enable(void)
    LCD_PORT &= ~(1<<LCD_EN);
 }
  
-// Initialisierung: 
-// Muss ganz am Anfang des Programms aufgerufen werden.
- 
+/**
+ * \brief Init function for LCD display.
+ * 
+ * Must be called once after Power up or reset
+ */
 void lcd_init(void)
 {
+	uint8_t temp;
+	
 	// Port auf Ausgang schalten
 	LCD_DDR |= (
 			(1<<LCD_DB4) | (1<<LCD_DB5) | (1<<LCD_DB6) | (1<<LCD_DB7) | 
@@ -80,7 +137,7 @@ void lcd_init(void)
    // muss 3mal hintereinander gesendet werden zur Initialisierung
  
    _delay_ms(15); 
-   LCD_PORT &= ((1<<LCD_EN) | (1<<LCD_RS));
+   LCD_PORT |= ((1<<LCD_EN) | (1<<LCD_RS));
    LCD_PORT |= ((1<<LCD_DB4) | (1<<LCD_DB5));
    LCD_PORT &= ~(1<<LCD_RS);      // RS auf 0
    lcd_enable();
@@ -94,7 +151,8 @@ void lcd_init(void)
  
    // 4 Bit Modus aktivieren 
    LCD_PORT &= ((1<<LCD_EN) | (1<<LCD_RS));// 0xF0;
-   LCD_PORT |= (1<<LCD_DB5); //0x02;
+   temp = swap_byte(1<<LCD_DB5);
+   LCD_PORT |= (temp); //0x02;
    lcd_enable();
    _delay_ms(1);
  
@@ -110,24 +168,30 @@ void lcd_init(void)
    lcd_clear();
 }
  
-// Sendet den Befehl zur Löschung des Displays
- 
+/**
+ * \brief Will clear the display
+ */ 
 void lcd_clear(void)
 {
    lcd_command(CLEAR_DISPLAY);
    _delay_ms(5);
 }
  
-// Sendet den Befehl: Cursor Home
- 
+/**
+ * \brief Will set the cursor to Home position
+ */
 void lcd_home(void)
 {
    lcd_command(CURSOR_HOME);
    _delay_ms(5);
 }
  
-// setzt den Cursor in Zeile y (1..4) Spalte x (0..15)
- 
+/**
+ * \brief Set the cursor to a defined position
+ * 
+ * \param x The column
+ * \param y The line
+ */
 void set_cursor(uint8_t x, uint8_t y)
 {
   uint8_t tmp;
@@ -141,8 +205,11 @@ void set_cursor(uint8_t x, uint8_t y)
   lcd_command(tmp);
 }
  
-// Schreibt einen String auf das LCD
- 
+/**
+ * \brief Writes the string to the current cursor position
+ * 
+ * \param *data String to write on display
+ */
 void lcd_string(char *data)
 {
     while(*data) {
@@ -161,6 +228,7 @@ void lcd_string(char *data)
  * Px1  ->   DB5 
  * Px2  ->   DB6
  * Px3  ->   DB7
+ * 
  * Px4  ->   RS
  * Px5  ->   EN
  * \endcode
@@ -172,13 +240,14 @@ void lcd_string(char *data)
  * Px2  ->   DB5 
  * Px1  ->   DB6
  * Px0  ->   DB7
+ * 
  * Px4  ->   RS
  * Px5  ->   EN
  * \endcode
  * 
  * So both nibbles of byte are swapped.
  * 
- * \param data to swap
+ * \param data Value to swap
  * \return The swapped byte 
  */
 uint8_t swap_byte(uint8_t data)

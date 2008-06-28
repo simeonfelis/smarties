@@ -77,15 +77,15 @@
  * \endcode
  */
 
-// menu length (21)				"                     "
-#define MEN_TITLE_MAIN_MENU 	"     MAIN MENU       "
-#define MEN_TITLE_RESUME		"       RESUME        "
-#define MEN_TITLE_ROTATE		"       ROTATE        "
-#define MEN_TITLE_REVOLVER		"      REVOLVER       "
-#define MEN_TITLE_CATCHER		"       CATCHER       "
-#define MEN_TITLE_BACK			"        BACK         "
-#define MEN_TITLE_INITIALIZING  "    INITIALIZING     "
-#define MEN_TITLE_ENTER_PAUSE	"     ENTER PAUSE     "
+// menu length (24)				"                        "
+#define MEN_TITLE_MAIN_MENU 	"        MAIN MENU       "
+#define MEN_TITLE_RESUME		"         RESUME         "
+#define MEN_TITLE_ROTATE		"         ROTATE         "
+#define MEN_TITLE_REVOLVER		"        REVOLVER        "
+#define MEN_TITLE_CATCHER		"        CATCHER         "
+#define MEN_TITLE_BACK			"          BACK          "
+#define MEN_TITLE_INITIALIZING  "      INITIALIZING      "
+#define MEN_TITLE_ENTER_PAUSE	"       ENTER PAUSE      "
 
 
 /**

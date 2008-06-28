@@ -1,80 +1,31 @@
 /**
- * @file lcd_display.h
+ * \file lcd_display.h
  * 
- * Copyright (c) 2008 Simeon Felis
+ * \brief Settings and commands for LCD display
  * 
- * @brief Control functions for Alphanumeric LCD display
+ * Mostly from http://www.mikrocontroller.net/articles/AVR-GCC-Tutorial
  * 
- * @section intro License
+ * Portbit settings can be found below. Due to a hardware bug (portbits 
+ * missmatched) the function \ref swap_byte() is needed.
  * 
- * Copied from http://www.mikrocontroller.net/articles/AVR-GCC-Tutorial
- * 
- * @section install Description
- * 
- * This is the API for the alphanumeric LCD display. The connected portbits are
- * defined here
- * 
- * The Display has two lines with 24 characters. The layout for different
- * modes are draftly described in file \ref menu.h
- * 
- * Here the exact layout:
- * \code
- *      1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
- *    + -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  - +
- *  1 |                            T  I  T  L  E                               |
- *  2 |[   M  O  D  E      ]                                [ C  O  L  O  R   ]|
- *    + -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  - +
- * \endcode
- * 
- * - Line 1: Column 1 to 24 is reserved for the title. If the push button is 
- * pressed, the action described by the title will be executed.
- * - Line 2: 
- *   - Column 1 to 6 is reserved for the current mode. Following modes 
- * can be displayed: 
- *     - PAUSE
- *     - RUNNING
- *   - Column 19 to 21 is reserved for the folling colors:
- *     - yellow: YELLOW
- *     - red: RED
- *     - blue: BLUE
- *     - brown: BROWN
- *     - green: GREEN
- *     - purple: PURPLE
- *     - unknown: UNKNOWN
+ * Further documentation can be found in \ref lcd_display.c
  */
 #ifndef LCD_DISPLAY_H_
 #define LCD_DISPLAY_H_
 
 #include "smarties2.h"
 
-
-// Ansteuerung eines HD44780 kompatiblen LCD im 4-Bit-Interfacemodus
-// http://www.mikrocontroller.net/articles/AVR-GCC-Tutorial
-//
-
 /////////////// P R O T O T Y P E S /////////////
 
-/**
-  * \brief  Prints temp1 on Display
-  *
-  * \param      temp1		Character to print
-  * \return                 void
-  *
-  */
+
 void lcd_data(unsigned char temp1);
 // TODO: Documentation
 void lcd_string(char *data);
-// TODO: Documentation
 void lcd_command(unsigned char temp1);
-// TODO: Documentation
 void lcd_enable(void);
-// TODO: Documentation
 void lcd_init(void);
-// TODO: Documentation
 void lcd_home(void);
-// TODO: Documentation
 void lcd_clear(void);
-// TODO: Documentation
 void set_cursor(uint8_t x, uint8_t y);
 
 uint8_t swap_byte (uint8_t data); 
@@ -85,12 +36,13 @@ uint8_t swap_byte (uint8_t data);
 ////////////// D E F I N E S ///////////////////
 
 // LCD COMMANDS 
-#define CLEAR_DISPLAY 0x01
-#define CURSOR_HOME   0x02
+#define CLEAR_DISPLAY 0x01		//!< Clear display command
+#define CURSOR_HOME   0x02		//!< Set cursor to home position (1x1)
  
 // Pin configuration for LCD 
 #define LCD_PORT      PORTC
 #define LCD_DDR       DDRC
+
 #define LCD_RS        PC7
 #define LCD_EN        PC6
 

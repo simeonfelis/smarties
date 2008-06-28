@@ -25,6 +25,16 @@
  * routine. This timer interrupt routine reads and sets the IO ports and sets 
  * corresponding status flags.
  * 
+ * Following image clarifies the structure of the software:
+ * 
+ * \image html api-layer.png
+ * 
+ * The task of the differen layers, high level, abstraction layer and low level can be described
+ * like in following image:
+ * 
+ * \image html state-machine.png
+ * 
+ * 
  * The application entry point is located is the smarties2.c file.
  * - The main function first performs the initialization of inputs and outputs
  * - It handles the modes of the smartie sorter
@@ -39,18 +49,6 @@
  * 
  * Minor configurations are made in smarties2.h
  * 
- * The format conventions are like this:
- * - functions are descriptive names with several words divided by underscores written in small letters
- *   e.g. revolver_rotate_abolute()
- * - local variables TODO
- * - global variables TODO
- * - values which are set in defines are written in upper case letters e.g. REVOLVER_SIZE 
- * - makros are written with capitals for each word, e.g. CatcherEnable()
- * 
- * \image html test.svg
- * 
- * Prefixes
- * \todo doku Prefixes
  * 
  */
 

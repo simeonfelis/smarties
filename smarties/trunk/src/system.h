@@ -164,7 +164,7 @@
 #define IS_LB_REVOLVER		(LB_PIN & (1<<LB_REV_BIT))
 
 /**
- * \brief The state of the machine
+ * \brief The mode of the machine
  */
 typedef enum system_mode_t {
 	SYS_MODE_INIT = 0, 		//!< After reset or power on
@@ -215,18 +215,22 @@ typedef struct rotary_encoder_t {
 	uint8_t rottmp;			//!< Stores temporarely status of rotation
 } rotary_encoder;
 
-//! \brief All supported colors
+/**
+ *  \brief All supported colors
+ */
 typedef enum smartie_color_t {
-	col_yellow = 0,
-	col_red,
-	col_blue,
-	col_brown,
-	col_green,
-	col_purple,
+	col_yellow = 0,			//!< Yellow
+	col_red,				//!< Red
+	col_blue,				//!< Blue
+	col_brown,				//!< Brown
+	col_green,				//!< Green
+	col_purple,				//!< Purple
 	col_unknown				//!< Indexed as last color (highest counter). Insert new colors above this one!
 } smartie_color;
 
-//! \brief Properties a smartie can have 
+/**
+ *  \brief Properties a smartie can have
+ */ 
 typedef struct Smartie_t {
 	uint8_t filled;			//!< If this is actually a smartie or not or empty transporter
 	smartie_color color;	//!< Merged color
@@ -261,16 +265,25 @@ typedef struct engine_t {
 	uint8_t rampdown_steps;		//!< Steps used for ramping down 
 } engine;
 
+/**
+ * \brief Describes a color sensor
+ */
 typedef struct color_sensor_t {
-	common_stat status;
-	smartie_color value;
+	common_stat status;			//!< The current status of the color senso
+	smartie_color value;		//!< The value from the last color detection
 } color_sensor;
 
+/**
+ * \brief The status a lightbarrier can have
+ */
 typedef enum lightbarrier_status_t {
 	lb_free = 0,						//!< Nothing inbetween the lightbarrier
 	lb_blocked							//!< The lightbarrier is blocked
 } lightbarrier_status;
 
+/**
+ * \brief Describes the component 'lightbarrier'
+ */ 
 typedef struct lightbarrier_t {
 	lightbarrier_status status;			//!< The actual status of the lightbarrier
 	lightbarrier_status status_tmp;		//!< For recognising a pass
@@ -285,18 +298,20 @@ typedef struct shaker_t {
 } shaker;
 
 
-//! \brief All devices from the smartie sorter collected to one bundle
+/**
+ *  \brief All devices from the smartie sorter collected to one bundle
+ */
 typedef struct smartie_sorter_t {
-	system_mode mode;
-	system_step step;
-	color_sensor colSensor_ADJD;
-	color_sensor colSensor_TMS;
-	engine catcher_Engine;
-	engine revolver_Engine;
-	lightbarrier catcher_LB;
-	lightbarrier revolver_LB;
-	shaker shkr;
-	rotary_encoder rotenc;
+	system_mode mode;					//!< Stores the current mode
+	system_step step;					//!< Stores the current step of the mode
+	color_sensor colSensor_ADJD;		//!< Digital color sensor
+	color_sensor colSensor_TMS;			//!< Analog color sensor
+	engine catcher_Engine;				//!< Stepper motor for the catcher area
+	engine revolver_Engine;				//!< Stepper motor for the revolver
+	lightbarrier catcher_LB;			//!< Lightbarrier for the catcher
+	lightbarrier revolver_LB;			//!< Lightbarrier for the revolver
+	shaker shkr;						//!< Shaker (or vibrator)
+	rotary_encoder rotenc;				//!< The rotary encoder (user input)
 } smartie_sorter;
 
 

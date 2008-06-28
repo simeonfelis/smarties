@@ -26,13 +26,13 @@
 <builder buildPath="${workspace_loc:/smarties2/Debug}" id="de.innot.avreclipse.target.builder.winavr.app.debug.1257331098" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="AVR GNU Make Builder" superClass="de.innot.avreclipse.target.builder.winavr.app.debug"/>
 <tool id="de.innot.avreclipse.tool.assembler.winavr.app.debug.1451599621" name="AVR Assembler" superClass="de.innot.avreclipse.tool.assembler.winavr.app.debug">
 <option id="de.innot.avreclipse.assembler.option.debug.level.61417123" name="Generate Debugging Info" superClass="de.innot.avreclipse.assembler.option.debug.level"/>
-<option id="de.innot.avreclipse.asm.option.usecpp.778919593" superClass="de.innot.avreclipse.asm.option.usecpp"/>
-<option id="de.innot.avreclipse.asm.option.warnings.nowarn.1538945438" superClass="de.innot.avreclipse.asm.option.warnings.nowarn"/>
-<option id="de.innot.avreclipse.assembler.option.xflags.697554904" superClass="de.innot.avreclipse.assembler.option.xflags"/>
-<option id="de.innot.avreclipse.asm.option.flags.1754643859" superClass="de.innot.avreclipse.asm.option.flags"/>
-<option id="de.innot.avreclipse.asm.option.include.paths.1440302779" superClass="de.innot.avreclipse.asm.option.include.paths"/>
-<option id="de.innot.avreclipse.assembler.option.debug.type.1479588487" superClass="de.innot.avreclipse.assembler.option.debug.type"/>
-<option id="de.innot.avreclipse.asm.option.targetmcu.2026651551" superClass="de.innot.avreclipse.asm.option.targetmcu"/>
+<option id="de.innot.avreclipse.asm.option.usecpp.778919593" name="Use preprocessor" superClass="de.innot.avreclipse.asm.option.usecpp"/>
+<option id="de.innot.avreclipse.asm.option.warnings.nowarn.1538945438" name="Suppress warnings (-W)" superClass="de.innot.avreclipse.asm.option.warnings.nowarn"/>
+<option id="de.innot.avreclipse.assembler.option.xflags.697554904" name="(-Xassembler) options" superClass="de.innot.avreclipse.assembler.option.xflags"/>
+<option id="de.innot.avreclipse.asm.option.flags.1754643859" name="Other GCC Flags" superClass="de.innot.avreclipse.asm.option.flags"/>
+<option id="de.innot.avreclipse.asm.option.include.paths.1440302779" name="Include paths (-I)" superClass="de.innot.avreclipse.asm.option.include.paths"/>
+<option id="de.innot.avreclipse.assembler.option.debug.type.1479588487" name="Debug Info Format" superClass="de.innot.avreclipse.assembler.option.debug.type"/>
+<option id="de.innot.avreclipse.asm.option.targetmcu.2026651551" name="MCU Type" superClass="de.innot.avreclipse.asm.option.targetmcu"/>
 <inputType id="de.innot.avreclipse.tool.assembler.input.686648393" superClass="de.innot.avreclipse.tool.assembler.input"/>
 </tool>
 <tool id="de.innot.avreclipse.tool.compiler.winavr.app.debug.1745800966" name="AVR Compiler" superClass="de.innot.avreclipse.tool.compiler.winavr.app.debug">
@@ -49,8 +49,8 @@
 <option id="de.innot.avreclipse.compiler.option.allwarn.697010958" name="All Warnings (-Wall)" superClass="de.innot.avreclipse.compiler.option.allwarn"/>
 <option id="de.innot.avreclipse.compiler.option.warnerr.1551506824" name="Warnings as Errors (-Werror)" superClass="de.innot.avreclipse.compiler.option.warnerr"/>
 <option id="de.innot.avreclipse.compiler.option.debug.type.1158610313" name="Debug Info Format" superClass="de.innot.avreclipse.compiler.option.debug.type"/>
-<option id="de.innot.avreclipse.compiler.option.optimize.packstruct.1065914640" name="Pack structs (-fpack-struct)" superClass="de.innot.avreclipse.compiler.option.optimize.packstruct"/>
-<option id="de.innot.avreclipse.compiler.option.optimize.shortenums.1977305499" name="Short enums (-fshort-enums)" superClass="de.innot.avreclipse.compiler.option.optimize.shortenums"/>
+<option id="de.innot.avreclipse.compiler.option.optimize.packstruct.1065914640" name="Pack structs (-fpack-struct)" superClass="de.innot.avreclipse.compiler.option.optimize.packstruct" value="false" valueType="boolean"/>
+<option id="de.innot.avreclipse.compiler.option.optimize.shortenums.1977305499" name="Short enums (-fshort-enums)" superClass="de.innot.avreclipse.compiler.option.optimize.shortenums" value="false" valueType="boolean"/>
 <option id="de.innot.avreclipse.compiler.option.optimize.other.748784820" name="Other Optimization Flags" superClass="de.innot.avreclipse.compiler.option.optimize.other"/>
 <option id="de.innot.avreclipse.compiler.option.std.1811853541" name="Language Standard" superClass="de.innot.avreclipse.compiler.option.std"/>
 <option id="de.innot.avreclipse.compiler.option.language.uchar.136512731" name="char is unsigned (-funsigned-char)" superClass="de.innot.avreclipse.compiler.option.language.uchar"/>
