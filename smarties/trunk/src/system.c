@@ -3,6 +3,13 @@
 
 extern smartie_sorter ss;
 
+/**
+ * \brief Will Enter the pause mode 
+ * 
+ * This function will enter the pause mode after the current function is finished. This function 
+ * is usually called from the lcd menu. This function is only available in the 
+ * mode SYS_MODE_RUNNING
+ */
 void sys_pause()
 {
 	if (ss.mode == SYS_MODE_PAUSE)
@@ -10,6 +17,14 @@ void sys_pause()
 	ss.mode = SYS_MODE_PAUSE;
 }
 
+/**
+ * \brief Leave the pause mode
+ * 
+ * This function will leave the pause mode. This function 
+ * is usually called from the lcd menu. This function is only available in the 
+ * mode \ref SYS_MODE_PAUSE
+ * 
+ */
 void sys_resume()
 {
 	if (ss.mode == SYS_MODE_RUNNING)
@@ -17,6 +32,20 @@ void sys_resume()
 	
 }
 
+/**
+ * \brief Rotates the revolver in Pause Mode
+ * 
+ * This function will rotate the revolver for one position, so that the 
+ * next smartie is loaded and/or the next smartie will be underlying the
+ * color sensor.
+ * 
+ * It will check the light barrier for this position rather than counting 
+ * or calculating degrees and steps
+ * 
+ * This function is intened for manual usage and therefor is not available
+ * during normal running mode SYS_MODE_RUNNING, only during SYS_MODE_PAUSE. 
+ * 
+ */
 void sys_rotate_revolver()
 {
 	
@@ -27,6 +56,16 @@ void sys_rotate_catcher()
 	
 }
 
+/**
+ * \brief Waits a time in microseconds
+ * 
+ * It executes a couple of nop's so that at any CPU speed it waits always waits 
+ * about time in microseconds until it returns
+ * 
+ * \param time
+ * Time in microseconds
+ * 
+ */
 void sys_wait(uint16_t time)
 {
 	float f_cycles;
@@ -64,6 +103,12 @@ smartie_color get_catcher_position()
 	return 0;
 }
 
+/**
+ * \brief Rotates the catcher to a certain position
+ * 
+ * This function will rotate the catcher to position specified by the a color
+ * 
+ */
 void catcher_rotate_absolute(smartie_color color_new)
 {
 	smartie_color color_tmp = 0;
@@ -90,7 +135,12 @@ void catcher_rotate_absolute(smartie_color color_new)
 	catcher_rotate_relative(steps);
 }
 
-
+/**
+ * \brief rotates the catcher by some steps
+ * 
+ * \param catcher
+ * The amount of catcher which must pass the light barrier
+ */
 void catcher_rotate_relative(uint16_t catcher)
 {
 /*	uint16_t i;

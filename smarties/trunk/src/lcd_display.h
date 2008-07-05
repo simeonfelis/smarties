@@ -19,7 +19,6 @@
 
 
 void lcd_data(unsigned char temp1);
-// TODO: Documentation
 void lcd_string(char *data);
 void lcd_command(unsigned char temp1);
 void lcd_enable(void);
@@ -36,8 +35,9 @@ uint8_t swap_byte (uint8_t data);
 ////////////// D E F I N E S ///////////////////
 
 // LCD COMMANDS 
-#define CLEAR_DISPLAY 0x01		//!< Clear display command
-#define CURSOR_HOME   0x02		//!< Set cursor to home position (1x1)
+#define LC_CLEAR_DISPLAY 	0x01		//!< Clear display command
+#define LC_CURSOR_HOME		0x02		//!< Set cursor to home position (1x1)
+#define LC_4_BIT_MODE		0x20		//!< Command for 4 Bit mode
  
 // Pin configuration for LCD 
 #define LCD_PORT      PORTC
@@ -53,6 +53,7 @@ uint8_t swap_byte (uint8_t data);
 #define LCD_DB7		  PC5
  
 
-
+#define LCD_CLEAR_DATABUS	(LCD_PORT &= ~((1<<LCD_DB4) | (1<<LCD_DB5) | (1<<LCD_DB6) | (1<<LCD_DB7)))
+#define LCD_COMMAND			(LCD_PORT &= ~(1<<LCD_RS))
 
 #endif /*LCD_DISPLAY_H_*/

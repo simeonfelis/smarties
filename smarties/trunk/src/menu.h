@@ -18,7 +18,7 @@
  * entered as soon as the smartie sorter is in \ref SYS_MODE_PAUSE. 
  * Otherwise the lcd displays some status information: 
  * 
- * During \ref SYS_MODE_INIT:
+ * During \ref SYS_MODE_INIT :
  * \code
  *  +--------------+
  *  | INITIALIZING |
@@ -26,7 +26,7 @@
  *  +--------------+
  * \endcode
  * 
- * During SYS_MODE_RUNNING:
+ * During \ref SYS_MODE_RUNNING :
  * \code
  *  +--------------+
  *  | ENTER PAUSE  |
@@ -34,7 +34,7 @@
  *  +--------------+
  * \endcode
  *   
- * During \ref SYS_MODE_PAUSE:
+ * During \ref SYS_MODE_PAUSE :
  * \code
  *   right     +--------------+    right     +--------------+   right
  * <---------> |   MAIN MENU  | <----------> |    RESUME    | <--------->

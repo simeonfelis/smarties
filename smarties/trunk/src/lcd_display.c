@@ -58,7 +58,7 @@
 void lcd_data(unsigned char temp1)
 {
    unsigned char temp2;
-   temp1 = swap_byte(temp1);
+   //temp1 = swap_byte(temp1);
    temp2 = temp1;
  
    LCD_PORT |= (1<<LCD_RS);        // RS auf 1 setzen
@@ -81,29 +81,30 @@ void lcd_data(unsigned char temp1)
  * \brief Send a command to the LCD.
  * 
  * \param temp1 Command to send. Prepared commands are
- * - \ref CLEAR_DISPLAY
- * - \ref CURSOR_HOME
+ * - \ref LS_CLEAR_DISPLAY
+ * - \ref LS_CURSOR_HOME
  */
 void lcd_command(unsigned char temp1)
 {
-   unsigned char temp2;
-   temp1 = swap_byte (temp1);
-   temp2 = temp1;
+	unsigned char temp2;
+	//temp1 = swap_byte (temp1);
+	temp2 = temp1;
+
+	LCD_CLEAR_DATABUS;
+	LCD_COMMAND;
  
-   LCD_PORT &= ~(1<<LCD_RS);        // RS auf 0 setzen
- 
-   temp1 = temp1 >> 4;              // oberes Nibble holen
-   temp1 = temp1 & 0x0F;            // maskieren
-   LCD_PORT &= ((1<<LCD_RS) | (1<<LCD_EN));
-   LCD_PORT |= temp1;               // setzen
-   lcd_enable();
- 
-   temp2 = temp2 & 0x0F;            // unteres Nibble holen und maskieren
-   LCD_PORT &= ((1<<LCD_RS) | (1<<LCD_EN));
-   LCD_PORT |= temp2;               // setzen
-   lcd_enable();
+	temp1 = temp1 >> 2;              // oberes Nibble holen
+	temp1 = temp1 & 0x3B;            // maskieren
+	LCD_PORT |= temp1;               // setzen
+	lcd_enable();
+   
+	temp2 = temp2 << 2;				// unteres Nibble holen 
+	temp2 = temp2 & 0x3B;            // maskieren
+	LCD_PORT |= temp2;               // setzen
+	lcd_enable();
    
    _delay_us(42);
+   
 }
  
 /**
@@ -126,44 +127,60 @@ void lcd_enable(void)
  * Must be called once after Power up or reset
  */
 void lcd_init(void)
-{
-	uint8_t temp;
-	
+{	
+	// sorry to say, the lcd is on the jtag pins
+	MCUCSR |= (1<<JTD);	//Disable the JTAG interface
+	MCUCSR |= (1<<JTD);	//Disable the JTAG interface twice!
+
+	_delay_ms(15); 
+	   
 	// Port auf Ausgang schalten
-	LCD_DDR |= (
+	LCD_DDR |= 
 			(1<<LCD_DB4) | (1<<LCD_DB5) | (1<<LCD_DB6) | (1<<LCD_DB7) | 
-			(1<<LCD_EN) | (1<<LCD_RS));
- 
-   // muss 3mal hintereinander gesendet werden zur Initialisierung
- 
-   _delay_ms(15); 
-   LCD_PORT |= ((1<<LCD_EN) | (1<<LCD_RS));
-   LCD_PORT |= ((1<<LCD_DB4) | (1<<LCD_DB5));
-   LCD_PORT &= ~(1<<LCD_RS);      // RS auf 0
-   lcd_enable();
- 
-   _delay_ms(5);
-   lcd_enable();
- 
-   _delay_ms(1);
-   lcd_enable();
-   _delay_ms(1);
- 
-   // 4 Bit Modus aktivieren 
-   LCD_PORT &= ((1<<LCD_EN) | (1<<LCD_RS));// 0xF0;
-   temp = swap_byte(1<<LCD_DB5);
-   LCD_PORT |= (temp); //0x02;
-   lcd_enable();
-   _delay_ms(1);
+			(1<<LCD_EN) | (1<<LCD_RS);
+	
+	_delay_ms(15);
+
+	// 4 Bit Modus aktivieren 
+	// muss 3mal hintereinander gesendet werden zur Initialisierung
+
+	LCD_CLEAR_DATABUS;
+	LCD_PORT |= (1<<LCD_DB5);	//4 Bit;
+	LCD_COMMAND;
+	lcd_enable();
+	_delay_ms(1);
+
+	lcd_enable();
+	_delay_ms(1);
+	
+	lcd_enable();
+	_delay_ms(1);
+	
+	lcd_command(0x26); // 4 Bit; 2 Lines; 5x7 Dots
+	_delay_ms(5);
+	
+	lcd_enable();
+	_delay_ms(1);
+	
+	lcd_enable();
+	_delay_ms(1);
+	
+	
+	LCD_CLEAR_DATABUS;
+	lcd_command(0x0f); // display on; cursor on; cursor blink on;
+	_delay_ms(1);
+	lcd_enable();
+
+	_delay_ms(1);
  
    // 4Bit / 2 Zeilen / 5x7
-   lcd_command(0x28);
+//   lcd_command(0x28);
     
    // Display ein / Cursor aus / kein Blinken
-   lcd_command(0x0C); 
+//   lcd_command(0x0C); 
  
    // inkrement / kein Scrollen
-   lcd_command(0x06);
+//   lcd_command(0x06);
  
    lcd_clear();
 }
@@ -173,7 +190,7 @@ void lcd_init(void)
  */ 
 void lcd_clear(void)
 {
-   lcd_command(CLEAR_DISPLAY);
+   lcd_command(LC_CLEAR_DISPLAY);
    _delay_ms(5);
 }
  
@@ -182,7 +199,7 @@ void lcd_clear(void)
  */
 void lcd_home(void)
 {
-   lcd_command(CURSOR_HOME);
+   lcd_command(LC_CURSOR_HOME);
    _delay_ms(5);
 }
  
@@ -236,20 +253,21 @@ void lcd_string(char *data)
  * However it is like this:
  * \code
  *  MC     DISPLAY
- * Px3  ->   DB4
- * Px2  ->   DB5 
- * Px1  ->   DB6
- * Px0  ->   DB7
+ * PC2  ->   DB4
+ * PC3  ->   DB5 
+ * PC4  ->   DB6
+ * PC5  ->   DB7
  * 
- * Px4  ->   RS
- * Px5  ->   EN
+ * Px6  ->   EN
+ * Px7  ->   RS
  * \endcode
  * 
- * So both nibbles of byte are swapped.
+ * So the databyte will be shifted a bit
  * 
  * \param data Value to swap
  * \return The swapped byte 
  */
+/*
 uint8_t swap_byte(uint8_t data)
 {
 	uint8_t ret=0;
@@ -268,3 +286,4 @@ uint8_t swap_byte(uint8_t data)
 	
 	return ret;
 }
+*/
