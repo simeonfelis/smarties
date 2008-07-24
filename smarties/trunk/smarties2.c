@@ -5,26 +5,6 @@
  * 
  * \brief Entry file for Smarties project
  * 
- * The state machine is devided into two sections, the mode and steps. Modes
- * are represented as an enum \ref system_mode_t and the steps as an struct \ref system_step_t
- * 
- * The modes are changed depending on the user inputs or after powering on/reseting. The 
- * next picture clarifies the modes of the state machine.
- * 
- * \image html state-machine-modes.png
- * 
- * The mode \ref SYS_MODE_RUNNING equals the automatic mode, where everything is 
- * controlled in several steps. The last step, step III, is a transition step to
- * begin from the start again. See next picture for the overview of the steps.
- * 
- * \image html state-machine-steps.png
- * 
- * Each steps starts several tasks and waits until they are finished. Then the next
- * step will be entered. 
- * 
- * To see what is happening exactly in the different steps, please have a look at the 
- * sourcecode.
- * 
  * \version 0.1
  * 
  * \mainpage Smarties2 software
@@ -54,8 +34,33 @@
  * 
  * \image html state-machine.png
  * 
- * For a more detailed description of the state machine, the different step and modes,
- * refere to \ref smarties2.c
+ * The state machine is devided into two sections, the mode and steps. Modes
+ * are represented as an enum \ref system_mode_t and the steps as an struct \ref system_step_t
+ * 
+ * The modes are changed depending on the user inputs or after powering on/reseting. The 
+ * next picture clarifies the modes of the state machine.
+ * 
+ * \image html state-machine-modes.png
+ * 
+ * The mode \ref SYS_MODE_RUNNING equals the automatic mode, where everything is 
+ * controlled in several steps. The last step, step III, is a transition step to
+ * begin from the start again. See next picture for the overview of the steps.
+ * 
+ * \image html state-machine-steps.png
+ * 
+ * Each steps starts several tasks and waits until they are finished. Then the next
+ * step will be entered. 
+ * 
+ * To see what is happening exactly in the different steps, please have a look at the 
+ * sourcecode.
+ * 
+ * The modes, steps and all input/output related parts of the Smartie sorter are administrated
+ * within struct. The structs are organized like in the following picture.
+ * 
+ * \image html objects-overview.png
+ * 
+ * Note that this picture doesn't show all objects and all elements. It's just a draft overview.
+ * For the detailed overview please refere to the code and documentation of \ref smartie_sorter_t. 
  * 
  * The application entry point is located is the \ref smarties2.c file.
  * - The main function first performs the initialization of inputs and outputs
@@ -106,17 +111,17 @@ int main(void)
 	uint8_t RevPos = 0;
 	Smartie smartie[REVOLVER_SIZE];
 	
-	lcd_init();
+	lcd_init(LCD_DISP_ON_CURSOR_BLINK);
+    lcd_data('T');
+    lcd_data('e');
+    lcd_data('s');
+    lcd_data('t');
 
 	while (1)
 	{
 		
 	}
 	return 0;
-    lcd_data('T');
-    lcd_data('e');
-    lcd_data('s');
-    lcd_data('t');
 	
 	
 	init_all();
