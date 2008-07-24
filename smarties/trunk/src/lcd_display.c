@@ -87,17 +87,18 @@ void lcd_data(unsigned char temp1)
 void lcd_command(unsigned char temp1)
 {
 	unsigned char temp2;
-	//temp1 = swap_byte (temp1);
 	temp2 = temp1;
 
 	LCD_CLEAR_DATABUS;
 	LCD_COMMAND;
  
-	temp1 = temp1 >> 2;              // oberes Nibble holen
-	temp1 = temp1 & 0x3B;            // maskieren
-	LCD_PORT |= temp1;               // setzen
+	temp1 = temp1 & 0xf0;
+	temp1 = temp1 >> 2;				// oberes Nibble holen
+	temp1 = temp1 & 0x3B;          	// maskieren
+	LCD_PORT |= temp1;             	// setzen
 	lcd_enable();
    
+	temp2 = temp2 & 0x0f;
 	temp2 = temp2 << 2;				// unteres Nibble holen 
 	temp2 = temp2 & 0x3B;            // maskieren
 	LCD_PORT |= temp2;               // setzen
@@ -148,16 +149,19 @@ void lcd_init(void)
 	LCD_PORT |= (1<<LCD_DB5);	//4 Bit;
 	LCD_COMMAND;
 	lcd_enable();
-	_delay_ms(1);
+	_delay_ms(5);
 
 	lcd_enable();
-	_delay_ms(1);
+	_delay_ms(5);
 	
 	lcd_enable();
-	_delay_ms(1);
-	
-	lcd_command(0x26); // 4 Bit; 2 Lines; 5x7 Dots
 	_delay_ms(5);
+	
+	
+	lcd_command(0x08); // 4 Bit; 2 Lines; 5x7 Dots
+	_delay_ms(5);
+	
+	return;
 	
 	lcd_enable();
 	_delay_ms(1);
@@ -167,7 +171,7 @@ void lcd_init(void)
 	
 	
 	LCD_CLEAR_DATABUS;
-	lcd_command(0x0f); // display on; cursor on; cursor blink on;
+	lcd_command(0x30); // display on; cursor on; cursor blink on;
 	_delay_ms(1);
 	lcd_enable();
 
@@ -267,23 +271,3 @@ void lcd_string(char *data)
  * \param data Value to swap
  * \return The swapped byte 
  */
-/*
-uint8_t swap_byte(uint8_t data)
-{
-	uint8_t ret=0;
-	
-	// low nibble
-	ret |= (data & 0x01) << 4;
-	ret |= (data & 0x02) << 2;
-	ret |= (data & 0x04) >> 2;
-	ret |= (data & 0x08) >> 4;
-	
-	// high nibble
-	ret |= (data & 0x10) << 4;
-	ret |= (data & 0x20) << 2;
-	ret |= (data & 0x40) >> 2;
-	ret |= (data & 0x80) >> 4;
-	
-	return ret;
-}
-*/

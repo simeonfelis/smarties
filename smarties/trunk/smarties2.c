@@ -1,23 +1,43 @@
 /**
- * @file smarties2.c
+ * \file smarties2.c
  * 
  * Copyright (c) 2008 Simeon Felis
  * 
- * @brief Entry file for Smarties project
+ * \brief Entry file for Smarties project
  * 
- * @version 0.1
+ * The state machine is devided into two sections, the mode and steps. Modes
+ * are represented as an enum \ref system_mode_t and the steps as an struct \ref system_step_t
  * 
- * @mainpage Smarties2 software
+ * The modes are changed depending on the user inputs or after powering on/reseting. The 
+ * next picture clarifies the modes of the state machine.
  * 
- * @section intro License
+ * \image html state-machine-modes.png
+ * 
+ * The mode \ref SYS_MODE_RUNNING equals the automatic mode, where everything is 
+ * controlled in several steps. The last step, step III, is a transition step to
+ * begin from the start again. See next picture for the overview of the steps.
+ * 
+ * \image html state-machine-steps.png
+ * 
+ * Each steps starts several tasks and waits until they are finished. Then the next
+ * step will be entered. 
+ * 
+ * To see what is happening exactly in the different steps, please have a look at the 
+ * sourcecode.
+ * 
+ * \version 0.1
+ * 
+ * \mainpage Smarties2 software
+ * 
+ * \section intro License
  * 
  * GPL2 Licence
  * 
- * @section install Description
+ * \section install Description
  * 
  * This is the Source code's API and flow documentation  for Smarties2
  * 
- * @section arch Architecture
+ * \section arch Architecture
  * 
  * Goal of this application is a state machine controlled by status flags.
  * The main() function controls the program flow by reading and setting status
@@ -34,22 +54,22 @@
  * 
  * \image html state-machine.png
  * 
+ * For a more detailed description of the state machine, the different step and modes,
+ * refere to \ref smarties2.c
  * 
- * The application entry point is located is the smarties2.c file.
+ * The application entry point is located is the \ref smarties2.c file.
  * - The main function first performs the initialization of inputs and outputs
  * - It handles the modes of the smartie sorter
- * - It handles the single steps of each mode
+ * - It handles the state machine
  * 
- * The LCD controlling is done with the lcd_display.h
+ * The LCD controlling is done with the \ref lcd_display.h
  * 
- * The system related IO actions are all defined in system.h There are controlled
+ * The system related IO actions are all defined in \ref system.h There are controlled
  * - moving the revolver
  * - moving the catcher
  * - user input controlls
  * 
- * Minor configurations are made in smarties2.h
- * 
- * 
+ * Minor configurations are made in \ref smarties2.h
  */
 
 #include "smarties2.h"
@@ -79,17 +99,27 @@ menu_entry entries[3][3];
   */
 int main(void)
 {	
+	
 	ss.mode = SYS_MODE_INIT;
 	//menu_entry * current_menu = &entry0; 
 	//user_event event;
 	uint8_t RevPos = 0;
 	Smartie smartie[REVOLVER_SIZE];
 	
-	init_all();
+	lcd_init();
+
+	while (1)
+	{
+		
+	}
+	return 0;
     lcd_data('T');
     lcd_data('e');
     lcd_data('s');
     lcd_data('t');
+	
+	
+	init_all();
  
     set_cursor(0,2);
  

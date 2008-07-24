@@ -37,7 +37,7 @@
 </tool>
 <tool id="de.innot.avreclipse.tool.compiler.winavr.app.debug.1745800966" name="AVR Compiler" superClass="de.innot.avreclipse.tool.compiler.winavr.app.debug">
 <option id="de.innot.avreclipse.compiler.option.debug.level.559570449" name="Generate Debugging Info" superClass="de.innot.avreclipse.compiler.option.debug.level"/>
-<option id="de.innot.avreclipse.compiler.option.optimize.1130816674" name="Optimization Level" superClass="de.innot.avreclipse.compiler.option.optimize" value="de.innot.avreclipse.compiler.optimize.size" valueType="enumerated"/>
+<option id="de.innot.avreclipse.compiler.option.optimize.1130816674" name="Optimization Level" superClass="de.innot.avreclipse.compiler.option.optimize" value="de.innot.avreclipse.compiler.optimize.two" valueType="enumerated"/>
 <option id="de.innot.avreclipse.compiler.option.incpath.366813937" name="Include Paths (-I)" superClass="de.innot.avreclipse.compiler.option.incpath" valueType="includePath">
 <listOptionValue builtIn="false" value="&quot;${workspace_loc:/smarties2/src}&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${workspace_loc:/smarties2}&quot;"/>
@@ -85,7 +85,12 @@
 <option id="de.innot.avreclipse.objdump.option.output.1331250582" name="Output Filename" superClass="de.innot.avreclipse.objdump.option.output"/>
 <option id="de.innot.avreclipse.objdump.option.input.321171136" name="Input File" superClass="de.innot.avreclipse.objdump.option.input"/>
 </tool>
-<tool id="de.innot.avreclipse.tool.objcopy.flash.winavr.app.debug.1628441758" name="AVR Create Flash image" superClass="de.innot.avreclipse.tool.objcopy.flash.winavr.app.debug"/>
+<tool id="de.innot.avreclipse.tool.objcopy.flash.winavr.app.debug.1628441758" name="AVR Create Flash image" superClass="de.innot.avreclipse.tool.objcopy.flash.winavr.app.debug">
+<option id="de.innot.avreclipse.objcopy.option.flash.stdopts.800852544" name="Options to create flash image" superClass="de.innot.avreclipse.objcopy.option.flash.stdopts"/>
+<option id="de.innot.avreclipse.objcopy.option.flash.addopts.1850992277" name="Additional Options for objcopy" superClass="de.innot.avreclipse.objcopy.option.flash.addopts"/>
+<option id="de.innot.avreclipse.objcopy.flash.option.output.728533222" name="Output Filename" superClass="de.innot.avreclipse.objcopy.flash.option.output"/>
+<option id="de.innot.avreclipse.objcopy.flash.option.input.782626690" name="Input File" superClass="de.innot.avreclipse.objcopy.flash.option.input"/>
+</tool>
 <tool id="de.innot.avreclipse.tool.objcopy.eeprom.winavr.app.debug.191374778" name="AVR Create EEPROM image" superClass="de.innot.avreclipse.tool.objcopy.eeprom.winavr.app.debug"/>
 <tool id="de.innot.avreclipse.tool.size.winavr.app.debug.482420916" name="Print Size" superClass="de.innot.avreclipse.tool.size.winavr.app.debug">
 <option id="de.innot.avreclipse.size.option.format.1707222726" name="Size Format" superClass="de.innot.avreclipse.size.option.format"/>
