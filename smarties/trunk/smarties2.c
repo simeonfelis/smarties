@@ -80,6 +80,7 @@
 #include "smarties2.h"
 #include "system.h"
 #include "inits.h"
+#include <avr/interrupt.h>
 
 smartie_sorter ss;
 
@@ -89,7 +90,6 @@ menu_entry men_running;
 menu_entry men_pausing;
 menu_entry entries[3][3];
 
-#define DDR(x) (*(&x - 1))      /* address of data direction register of port x */
 
 /**
   * \brief  Entry functin for smarties2
@@ -113,13 +113,45 @@ int main(void)
 	uint8_t RevPos = 0;
 	Smartie smartie[REVOLVER_SIZE];
 
-	lcd_init();
+	init_all();
+	sei();
+	lcd_puts("Nothing pressed");
 	
-	while (1)
+	while (1) /* Testing loop */
 	{
-		
-	}
-	return 0;
+		if (ss.rotenc.left > 0)
+		{
+			lcd_home();
+			lcd_puts(MEN_TITLE_EMPTY);
+			lcd_home();
+			lcd_puts("left");
+			if (IS_ROTENC_A)
+				lcd_puts("A");
+			if (IS_ROTENC_B)
+				lcd_puts("B");
+			ss.rotenc.left = 0;
+		}
+		if (ss.rotenc.right > 0)
+		{
+			lcd_home();
+			lcd_puts(MEN_TITLE_EMPTY);
+			lcd_home();
+			lcd_puts("right");
+			if (IS_ROTENC_A)
+				lcd_puts("A");
+			if (IS_ROTENC_B)
+				lcd_puts("B");
+			ss.rotenc.right = 0;
+		}
+		if (ss.rotenc.push > 0)
+		{
+			lcd_home();
+			lcd_puts(MEN_TITLE_EMPTY);
+			lcd_home();
+			lcd_puts("push");
+			ss.rotenc.push = 0;
+		}
+	} /* Testing loop end */
 	
 	
 	init_all();

@@ -110,7 +110,6 @@ void engine_stuff ()
 	}
 }
 
-
 void rotary_encoder_stuff ()
 {
 	if (IS_ROTENC_PUSH)

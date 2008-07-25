@@ -50,19 +50,19 @@ void init_timer()
 	/* Output compare register: after 250 * 62.5E-9 = 1ms a compare match */
 	//OCR0 = 250;
 	
-#if 0
 	/* Prescaler 8 */
 	TCCR0 |= (1<<CS01);
-#endif
-
+#if 0
 	/* Prescaler 64 */
 	TCCR0 |= (1<<CS01) | (1<<CS00);
+#endif
 	/* CTC mode */
 	//TCCR0 |= (1<<WGM01);
 	/* enable overflow interrupt */
 	TIMSK |= (1<<TOIE0);
 	
 }
+
 void init_interrupts()
 {
 	

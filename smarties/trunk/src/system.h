@@ -20,7 +20,7 @@
 #define SYSTEM_H_
 
 /// CPU Frequency
-#define F_CPU 8000000
+#define F_CPU 16000000
 #define REVOLVER_SIZE		12
 #define CATCHER_SIZE		8
 
