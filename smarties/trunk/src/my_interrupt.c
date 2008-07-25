@@ -20,9 +20,9 @@ ISR (TIMER0_OVF_vect)
 	// display stuff
 	// sensor stuff
 	// engine stuff
-	engine_stuff();
+	//engine_stuff();
 	
 	// shaker stuff
-	shaker_stuff();
+	//shaker_stuff();
 	
 }

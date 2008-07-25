@@ -115,119 +115,67 @@ void rotary_encoder_stuff ()
 {
 	if (IS_ROTENC_PUSH)
 		ss.rotenc.pushtmp = ROTENC_PUSH;
-	else if (ss.rotenc.pushtmp == ROTENC_PUSH)
+
+	/* After button released, then count a single button press */
+	if (ss.rotenc.pushtmp == ROTENC_PUSH && !IS_ROTENC_PUSH)
 	{
 		ss.rotenc.push++;
 		ss.rotenc.pushtmp = ROTENC_NONE;
 	}
-
-	if (IS_ROTENC_A)
-	{
-		if (ss.rotenc.rottmp == ROTENC_B)
-		{
-			ss.rotenc.left++;
-			ss.rotenc.rottmp = ROTENC_A;	//store current position
-		}
-		else if (ss.rotenc.rottmp == ROTENC_BOTH)
-		{
-			ss.rotenc.right++;
-			ss.rotenc.rottmp = ROTENC_A;	//store current position
-		}
-		else if (ss.rotenc.rottmp == ROTENC_NONE) // undecidable, choose myself
-		{
-			ss.rotenc.right++;
-			ss.rotenc.rottmp = ROTENC_A;
-		}
-	}
-	else if (IS_ROTENC_B)
-	{
-		if (ss.rotenc.rottmp == ROTENC_BOTH)
-		{
-			ss.rotenc.left++;
-			ss.rotenc.rottmp = ROTENC_B;	//store current position
-		}
-		else if (ss.rotenc.rottmp == ROTENC_A)
-		{
-			ss.rotenc.right++;
-			ss.rotenc.rottmp = ROTENC_B;	//store current position
-		}
-		else if (ss.rotenc.rottmp == ROTENC_B) // undecidable, choose myself
-		{
-			ss.rotenc.right++;
-			ss.rotenc.rottmp = ROTENC_B;
-		}
-	}
-	else if (IS_ROTENC_BOTH)
-	{
-		if (ss.rotenc.rottmp == ROTENC_NONE)
-		{
-			ss.rotenc.left++;
-			ss.rotenc.rottmp = ROTENC_BOTH;	//store current position
-		}
-		else if (ss.rotenc.rottmp == ROTENC_B)
-		{
-			ss.rotenc.right++;
-			ss.rotenc.rottmp = ROTENC_BOTH;	//store current position
-		}
-		else if (ss.rotenc.rottmp == ROTENC_A) // undecidable, choose myself
-		{
-			ss.rotenc.right++;
-			ss.rotenc.rottmp = ROTENC_BOTH;
-		}
-	}
-	else if (IS_ROTENC_NONE)
+	
+	if (IS_ROTENC_NONE)
 	{
 		if (ss.rotenc.rottmp == ROTENC_A)
-		{
 			ss.rotenc.left++;
-			ss.rotenc.rottmp = ROTENC_NONE;	//store current position
-		}
-		else if (ss.rotenc.rottmp == ROTENC_BOTH)
-		{
+		
+		if (ss.rotenc.rottmp == ROTENC_B) // store current position
 			ss.rotenc.right++;
-			ss.rotenc.rottmp = ROTENC_NONE;	//store current position
-		}
-		else if (ss.rotenc.rottmp == ROTENC_B) // undecidable, choose myself
-		{
+
+		if (ss.rotenc.rottmp == ROTENC_BOTH) //choose myself
 			ss.rotenc.right++;
-			ss.rotenc.rottmp = ROTENC_NONE;
-		}
+
+		ss.rotenc.rottmp = ROTENC_NONE;	//store current position
+	}
+	if (IS_ROTENC_A)
+	{
+		if (ss.rotenc.rottmp == ROTENC_BOTH)
+			ss.rotenc.left++;
+		
+		if (ss.rotenc.rottmp == ROTENC_NONE) // store current position
+			ss.rotenc.right++;
+
+		if (ss.rotenc.rottmp == ROTENC_B) //choose myself
+			ss.rotenc.right++;
+
+		ss.rotenc.rottmp = ROTENC_A;
+	}	
+	if (IS_ROTENC_BOTH)
+	{
+		if (ss.rotenc.rottmp == ROTENC_B)
+			ss.rotenc.left++;
+		
+		if (ss.rotenc.rottmp == ROTENC_A) // store current position
+			ss.rotenc.right++;
+
+		if (ss.rotenc.rottmp == ROTENC_NONE) //choose myself
+			ss.rotenc.right++;
+
+		ss.rotenc.rottmp = ROTENC_BOTH;
 	}
 
-}
+	if (IS_ROTENC_B)
+	{
+		if (ss.rotenc.rottmp == ROTENC_NONE)
+			ss.rotenc.left++;
+		
+		if (ss.rotenc.rottmp == ROTENC_BOTH) // store current position
+			ss.rotenc.right++;
 
+		if (ss.rotenc.rottmp == ROTENC_A) //choose myself
+			ss.rotenc.right++;
 
-void lightbarrier_stuff ()
-{
-	if (IS_LB_CATCHER)
-	{
-		ss.catcher_LB.status = lb_blocked;
-		ss.catcher_LB.status_tmp = lb_blocked; 
-	}
-	else
-	{
-		ss.catcher_LB.status = lb_free;
-		if (ss.catcher_LB.status_tmp == lb_blocked)
-		{
-			ss.catcher_LB.status_tmp = lb_free;
-			ss.catcher_LB.passes++;
-		}
-	}
-	
-	if (IS_LB_REVOLVER)
-	{
-		ss.revolver_LB.status = lb_blocked;
-		ss.revolver_LB.status_tmp = lb_blocked;
-	}
-	else
-	{
-		ss.revolver_LB.status = lb_free;
-		if (ss.revolver_LB.status_tmp == lb_blocked)
-		{
-			ss.catcher_LB.status_tmp = lb_free;
-			ss.catcher_LB.passes++;
-		}
-	}
+		ss.rotenc.rottmp = ROTENC_B;
+	}	
 }
 
 void sensor_stuff ()

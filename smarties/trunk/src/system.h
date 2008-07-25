@@ -126,32 +126,25 @@
 #define SHAKER_DURATION		500			//!< Default duration for shaker (vibrator)
 
 // Input rotary encoder
-#define ROTENC_AB_PORT		PORTD		//!< Rotary encoder port (output) for AB signals
-#define ROTENC_AB_PIN		PIND		//!< Rotary encoder port (input) for AB signals
-#define ROTENC_AB_DDR		DDRD		//!< Rotary encoder port direction for AB signals
-#define ROTENC_PUSH_PORT	PORTB		//!< Rotary encoder port (output) for pushbutton
-#define ROTENC_PUSH_PIN		PINB		//!< Rotary encoder port (input) for pushbutton
-#define ROTENC_PUSH_DDR		DDRB		//!< Rotary encoder port direction for pushbutton 
+#define ROTENC_PORT		PORTB		//!< Rotary encoder port (output) for AB signals
+#define ROTENC_PIN		PINB		//!< Rotary encoder port (input) for AB signals
+#define ROTENC_DDR		DDRB		//!< Rotary encoder port direction for AB signals 
 
-#define ROTENC_A_BIT		PD3			//!< Rotary encoder signal A (Pin TODO of connector)
-#define ROTENC_B_BIT		PD2			//!< Rotary encoder signal B (Pin TODO of connector)
-#define ROTENC_PUSH_BIT		PB1			//!< Rotary encoder pushbutton signal (Pin TODO of connector)
+#define ROTENC_A_BIT		0			//!< Rotary encoder signal A (Pin 5 of connector)
+#define ROTENC_B_BIT		1			//!< Rotary encoder signal B (Pin 4 of connector)
+#define ROTENC_PUSH_BIT		2			//!< Rotary encoder pushbutton signal (Pin 2 of connector)
 
 
 /**
  * \brief Initializes input periphals for Rotary encoder
  */
-#define ROTENC_INIT()		\
-	do {													\
-		ROTENC_AB_DDR   &= ~((1<<ROTENC_A_BIT) | (1<<ROTENC_B_BIT)); 	\
-		ROTENC_PUSH_DDR &= ~(1<<ROTENC_PUSH_BIT); 						\
-}while(0)
+#define ROTENC_INIT()		(ROTENC_DDR   &= ~((1<<ROTENC_A_BIT) | (1<<ROTENC_B_BIT) | (1<<ROTENC_PUSH_BIT)))
 
-#define IS_ROTENC_A			(ROTENC_AB_PIN & (1<<ROTENC_A_BIT))
-#define IS_ROTENC_B			(ROTENC_AB_PIN & (1<<ROTENC_B_BIT))
+#define IS_ROTENC_A			((ROTENC_PIN & (1<<ROTENC_A_BIT)))
+#define IS_ROTENC_B			((ROTENC_PIN & (1<<ROTENC_B_BIT)))
 #define IS_ROTENC_BOTH		(IS_ROTENC_A && IS_ROTENC_B)
 #define IS_ROTENC_NONE		(!IS_ROTENC_A && !IS_ROTENC_B)
-#define IS_ROTENC_PUSH		(ROTENC_PUSH_PIN &(1<<ROTENC_PUSH_BIT))
+#define IS_ROTENC_PUSH		(ROTENC_PIN & (1<<ROTENC_PUSH_BIT))
 
 // The Light barrieres (LB)
 #define LB_PORT				PORTC

@@ -78,6 +78,7 @@
  */
 
 // menu length (24)				"                        "
+#define MEN_TITLE_EMPTY			"                        "
 #define MEN_TITLE_MAIN_MENU 	"        MAIN MENU       "
 #define MEN_TITLE_RESUME		"         RESUME         "
 #define MEN_TITLE_ROTATE		"         ROTATE         "

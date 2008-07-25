@@ -8,7 +8,7 @@ void init_all()
 {
 	init_io();
 	init_menu();
-	//lcd_init();
+	lcd_init(LCD_DISP_ON);
 	init_timer();
 	init_interrupts();
 	init_positions();
@@ -33,18 +33,34 @@ void init_io()
 	
 	TCS_IN_DDR &= ~(1<<TCS_IN_ICP);
 	
+	ROTENC_INIT();
+	
 	// get current rotary encoder position
 	if (IS_ROTENC_A)
 		ss.rotenc.rottmp = ROTENC_A;
-	else if (IS_ROTENC_B)
+	if (IS_ROTENC_B)
 		ss.rotenc.rottmp = ROTENC_B;
-	else if (IS_ROTENC_BOTH)
+	if (IS_ROTENC_BOTH)
 		ss.rotenc.rottmp = ROTENC_BOTH;
-	else if (IS_ROTENC_NONE)
+	if (IS_ROTENC_NONE)
 		ss.rotenc.rottmp = ROTENC_NONE;
 }
 void init_timer()
 {
+	/* Output compare register: after 250 * 62.5E-9 = 1ms a compare match */
+	//OCR0 = 250;
+	
+#if 0
+	/* Prescaler 8 */
+	TCCR0 |= (1<<CS01);
+#endif
+
+	/* Prescaler 64 */
+	TCCR0 |= (1<<CS01) | (1<<CS00);
+	/* CTC mode */
+	//TCCR0 |= (1<<WGM01);
+	/* enable overflow interrupt */
+	TIMSK |= (1<<TOIE0);
 	
 }
 void init_interrupts()
