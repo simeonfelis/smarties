@@ -80,7 +80,6 @@
 #include "smarties2.h"
 #include "system.h"
 #include "inits.h"
-#include <avr/io.h>
 
 smartie_sorter ss;
 
@@ -114,7 +113,7 @@ int main(void)
 	uint8_t RevPos = 0;
 	Smartie smartie[REVOLVER_SIZE];
 
-	lcd_init(LCD_DISP_ON);
+	lcd_init();
 	
 	while (1)
 	{
