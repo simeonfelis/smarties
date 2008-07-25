@@ -1,12 +1,25 @@
 /**
  * \file lcd_display.h
  * 
- * \brief Settings and commands for LCD display
+ * @brief Basic routines for interfacing a HD44780U-based text LCD display
  * 
- * Mostly from http://www.mikrocontroller.net/articles/AVR-GCC-Tutorial
+ * @section intro License
+ * \code
+ Originally based on Volker Oth's LCD library,
+ changed lcd_init(), added additional constants for lcd_command(), 
+ added 4-bit I/O mode, improved and optimized code.
+       
+ Library can be operated in memory mapped mode (LCD_IO_MODE=0) or in 
+ 4-bit IO port mode (LCD_IO_MODE=1). 8-bit IO port mode not supported.
+
+ Memory mapped mode compatible with Kanda STK200, but supports also 
+ generation of R/W signal through A8 address line.
+ \endcode
+ *
+ * @author Peter Fleury pfleury@gmx.ch http://jump.to/fleury
  * 
- * Portbit settings can be found below. Due to a hardware bug (portbits 
- * missmatched) the function \ref swap_byte() is needed.
+ * @see The chapter <a href="http://homepage.sunrise.ch/mysunrise/peterfleury/avr-lcd44780.html" target="_blank">Interfacing a HD44780 Based LCD to an AVR</a>
+ * on my home page.
  * 
  * Further documentation can be found in \ref lcd_display.c
  */
@@ -20,30 +33,6 @@
  Hardware:  any AVR device, memory mapped mode only for AT90S4414/8515/Mega
 ***************************************************************************/
 
-/**
- @defgroup pfleury_lcd LCD library
- @code #include <lcd.h> @endcode
- 
- @brief Basic routines for interfacing a HD44780U-based text LCD display
-
- Originally based on Volker Oth's LCD library,
- changed lcd_init(), added additional constants for lcd_command(), 
- added 4-bit I/O mode, improved and optimized code.
-       
- Library can be operated in memory mapped mode (LCD_IO_MODE=0) or in 
- 4-bit IO port mode (LCD_IO_MODE=1). 8-bit IO port mode not supported.
-
- Memory mapped mode compatible with Kanda STK200, but supports also 
- generation of R/W signal through A8 address line.
-       
- @author Peter Fleury pfleury@gmx.ch http://jump.to/fleury
- 
- @see The chapter <a href="http://homepage.sunrise.ch/mysunrise/peterfleury/avr-lcd44780.html" target="_blank">Interfacing a HD44780 Based LCD to an AVR</a>
-      on my home page.
-
-*/
-
-/*@{*/
 
 #if (__GNUC__ * 100 + __GNUC_MINOR__) < 303
 #error "This library requires AVR-GCC 3.3 or later, update to newer AVR-GCC compiler !"
