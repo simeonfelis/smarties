@@ -1,0 +1,4 @@
+#Thu Jul 24 15:35:07 CEST 2008
+avrtarget/ClockFrequency=16000000
+avrtarget/MCUType=atmega32
+eclipse.preferences.version=1
