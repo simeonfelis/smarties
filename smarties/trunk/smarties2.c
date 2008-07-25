@@ -80,6 +80,7 @@
 #include "smarties2.h"
 #include "system.h"
 #include "inits.h"
+#include <avr/io.h>
 
 smartie_sorter ss;
 
@@ -88,6 +89,8 @@ menu_entry men_initializing;
 menu_entry men_running;
 menu_entry men_pausing;
 menu_entry entries[3][3];
+
+#define DDR(x) (*(&x - 1))      /* address of data direction register of port x */
 
 /**
   * \brief  Entry functin for smarties2
@@ -110,13 +113,9 @@ int main(void)
 	//user_event event;
 	uint8_t RevPos = 0;
 	Smartie smartie[REVOLVER_SIZE];
-	
-	lcd_init(LCD_DISP_ON_CURSOR_BLINK);
-    lcd_data('T');
-    lcd_data('e');
-    lcd_data('s');
-    lcd_data('t');
 
+	lcd_init(LCD_DISP_ON);
+	
 	while (1)
 	{
 		
@@ -125,10 +124,6 @@ int main(void)
 	
 	
 	init_all();
- 
-    set_cursor(0,2);
- 
-    lcd_string("Hello World!");
  
     while(1)
     {

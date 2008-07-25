@@ -8,7 +8,7 @@ void init_all()
 {
 	init_io();
 	init_menu();
-	lcd_init();
+	//lcd_init();
 	init_timer();
 	init_interrupts();
 	init_positions();
@@ -18,6 +18,12 @@ void init_io()
 {
 	extern smartie_sorter ss;
 	
+    /*
+     *  sorry to say, the lcd is on the jtag pins
+     */
+	MCUCSR |= (1<<JTD);	
+	MCUCSR |= (1<<JTD);	/* disable the JTAG interface twice! */
+
 	STEPPER_PORT &= ~((1 << REV_CLK_BIT) | (1<<REV_CW_BIT) | (1<<REV_EN_BIT) | (1<<CATCH_CLK_BIT) | (1<<CATCH_CW_BIT) | (1<<CATCH_EN_BIT));
 	STEPPER_DDR |= (1 << REV_CLK_BIT) | (1<<REV_CW_BIT) | (1<<REV_EN_BIT) | (1<<CATCH_CLK_BIT) | (1<<CATCH_CW_BIT) | (1<<CATCH_EN_BIT);
 	

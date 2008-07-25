@@ -67,8 +67,9 @@
  
 #include <inttypes.h>
 #include <avr/io.h>
+#include <util/delay.h>
 #include <avr/pgmspace.h>
-#include "lcd.h"
+#include "lcd_display.h"
 
 
 
@@ -153,7 +154,21 @@ static inline void _delayFourCycles(unsigned int __count)
 delay for a minimum of <us> microseconds
 the number of loops is calculated at compile-time from MCU clock frequency
 *************************************************************************/
+#if 0
 #define delay(us)  _delayFourCycles( ( ( 1*(XTAL/4000) )*us)/1000 )
+#endif
+void delay(double us)
+{
+	if (us < 1000)
+	{
+		_delay_us(us);
+	}
+	else
+	{
+		us = us/1000.0;
+		_delay_ms(us);
+	}
+}
 
 
 #if LCD_IO_MODE

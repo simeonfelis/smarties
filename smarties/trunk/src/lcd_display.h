@@ -106,8 +106,8 @@
 #define LCD_DATA3_PIN    5            /**< pin for 4bit data bit 3  */
 #define LCD_RS_PORT      LCD_PORT     /**< port for RS line         */
 #define LCD_RS_PIN       7            /**< pin  for RS line         */
-#define LCD_RW_PORT      LCD_PORT     /**< port for RW line         */
-#define LCD_RW_PIN       5            /**< pin  for RW line         */
+#define LCD_RW_PORT      PORTD        /**< port for RW line         */
+#define LCD_RW_PIN       3            /**< pin  for RW line         */
 #define LCD_E_PORT       LCD_PORT     /**< port for Enable line     */
 #define LCD_E_PIN        6            /**< pin  for Enable line     */
 
