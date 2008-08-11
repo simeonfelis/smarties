@@ -14,8 +14,11 @@ extern smartie_sorter ss;
 ISR (TIMER0_OVF_vect)
 // Interrupt routine, executed every millisecond
 {	
-	// user input (rotary encoder) stuff
+	/* user input (rotary encoder) stuff */
 	rotary_encoder_stuff();
+	
+	/* light barrier stuff */
+	lightbarrier_stuff ();
 	
 	// display stuff
 	// sensor stuff
@@ -24,5 +27,6 @@ ISR (TIMER0_OVF_vect)
 	
 	// shaker stuff
 	//shaker_stuff();
+	
 	
 }
