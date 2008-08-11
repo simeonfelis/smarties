@@ -4,11 +4,15 @@
 #include "system.h"
 #include "menu.h"
 
+extern smartie_sorter ss;
+
 void init_all()
 {
 	init_io();
-	init_menu();
 	lcd_init(LCD_DISP_ON);
+	init_menu();
+		lcd_clrscr();
+		lcd_puts(ss.menu.text);
 	init_timer();
 	init_interrupts();
 	init_positions();
@@ -16,7 +20,6 @@ void init_all()
 
 void init_io()
 {
-	extern smartie_sorter ss;
 	
     /*
      *  sorry to say, the lcd is on the jtag pins
@@ -27,23 +30,27 @@ void init_io()
 	STEPPER_PORT &= ~((1 << REV_CLK_BIT) | (1<<REV_CW_BIT) | (1<<REV_EN_BIT) | (1<<CATCH_CLK_BIT) | (1<<CATCH_CW_BIT) | (1<<CATCH_EN_BIT));
 	STEPPER_DDR |= (1 << REV_CLK_BIT) | (1<<REV_CW_BIT) | (1<<REV_EN_BIT) | (1<<CATCH_CLK_BIT) | (1<<CATCH_CW_BIT) | (1<<CATCH_EN_BIT);
 	
-	
+	/* the TCS color sensor */
 	TCS_OUT_PORT &= ~((1<<TCS_S0_BIT) | (1<<TCS_S1_BIT) | (1<<TCS_S2_BIT) | (1<<TCS_S3_BIT));
 	TCS_OUT_DDR |= (1<<TCS_S0_BIT) | (1<<TCS_S1_BIT) | (1<<TCS_S2_BIT) | (1<<TCS_S3_BIT);
 	
 	TCS_IN_DDR &= ~(1<<TCS_IN_ICP);
 	
+	/* rotatry encoder */
 	ROTENC_INIT();
 	
-	// get current rotary encoder position
+	/* get current rotary encoder position */
 	if (IS_ROTENC_A)
 		ss.rotenc.rottmp = ROTENC_A;
 	if (IS_ROTENC_B)
 		ss.rotenc.rottmp = ROTENC_B;
-	if (IS_ROTENC_BOTH)
+	if (IS_ROTENC_AB)
 		ss.rotenc.rottmp = ROTENC_BOTH;
 	if (IS_ROTENC_NONE)
 		ss.rotenc.rottmp = ROTENC_NONE;
+	
+	/* lightbarrier */
+	LB_DDR &= ~((1<<LB_BIT_CATCH) | (1<<LB_BIT_REV));
 }
 void init_timer()
 {
@@ -128,4 +135,6 @@ void init_menu()
 	entries[2][2].prev = &entries[2][1];
 	entries[2][2].topmenu = &entries[1][0];
 	entries[2][2].function = menu_enter_topmenu;
+	
+	ss.menu = men_initializing;
 }

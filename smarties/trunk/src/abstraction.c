@@ -176,6 +176,41 @@ void rotary_encoder_stuff ()
 	}	
 }
 
+void lightbarrier_stuff ()
+{
+	if (IS_LB_CATCHER) {
+		/* recognize status changes from free to blocked */
+		if (ss.lb_catcher.status_tmp == lb_free) {
+			ss.lb_catcher.status_tmp = lb_blocked;
+			ss.lb_catcher.status = lb_blocked;
+		}
+	}
+	else {
+		/* if status has changed fromm blocked to free, count a pass */
+		if (ss.lb_catcher.status_tmp == lb_blocked) {
+			ss.lb_catcher.status_tmp = lb_free;
+			ss.lb_catcher.status = lb_free;
+			ss.lb_catcher.passes++;
+		}
+	}
+
+	if (IS_LB_REVOLVER) {
+		/* recognize status changes from free to blocked */
+		if (ss.lb_revolver.status_tmp == lb_free) {
+			ss.lb_revolver.status_tmp = lb_blocked;
+			ss.lb_revolver.status = lb_blocked;
+		}
+	}
+	else {
+		/* if status has changed fromm blocked to free, count a pass */
+		if (ss.lb_revolver.status_tmp == lb_blocked) {
+			ss.lb_revolver.status_tmp = lb_free;
+			ss.lb_revolver.status = lb_free;
+			ss.lb_revolver.passes++;
+		}
+	}
+}
+
 void sensor_stuff ()
 {
 	
