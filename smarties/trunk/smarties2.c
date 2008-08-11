@@ -110,6 +110,7 @@ int main(void)
 {	
 	
 	ss.state.mode = SYS_MODE_INIT;
+	ss.state.modetmp = SYS_MODE_INIT;
 	//menu_entry * current_menu = &entry0; 
 	//user_event event;
 	uint8_t RevPos = 0;
@@ -118,7 +119,11 @@ int main(void)
 	init_all();
 	sei();
 	
-	/* initializing done, give notice to user */
+	/* initializing done, set state */
+	ss.state.modetmp = ss.state.mode;
+	ss.state.mode = SYS_MODE_RUNNING;
+
+	/* update menu, give notice to user */
 	ss.menu = men_running;
 	menu_current = &men_running;
 	lcd_clrscr();
@@ -130,17 +135,28 @@ int main(void)
 	
 	while (1) /* Testing loop */
 	{
-    	//handle user inputs
-    	if (ss.rotenc.push)
-    	{
-    		menu_action = (*menu_current).function;
-    		menu_action();
-    		ss.rotenc.push = 0;
-    	}
-    	if (ss.state.mode == SYS_MODE_PAUSE)
-    	{
+		/* handle user inputs, do corresponding menu function */
+		if (ss.rotenc.push) {
+			menu_action = ss.menu.function;
+			menu_action();
+			ss.rotenc.push = 0;
+		}
+    	if (ss.state.mode == SYS_MODE_PAUSE) {
+			if (ss.state.modetmp != SYS_MODE_PAUSE) {
+				lcd_clrscr();
+				lcd_puts(MEN_TITLE_MAIN_MENU);
+			}
+			ss.state.modetmp = SYS_MODE_PAUSE;
+		}
+    	if (ss.lb_revolver.passes > 0) {
     		lcd_clrscr();
-    		lcd_puts(MEN_MODE_RUNNING);
+    		lcd_puts ("Revolver One pass");
+    		ss.lb_revolver.passes = 0;
+    	}
+    	if (ss.lb_catcher.passes > 0) {
+    		lcd_clrscr();
+    		lcd_puts ("Catcher One pass");
+    		ss.lb_catcher.passes = 0;
     	}
 
 #if 0 /* testing */
@@ -217,12 +233,12 @@ int main(void)
 						ss.catcher_Engine.status = start_working;	//will start rotating the catcher
 				if (ss.catcher_Engine.status == working) // status working will be entered automatically
 				{
-					if (ss.catcher_LB.passes > 0)						//FIXME: check multiple passes
+					if (ss.lb_catcher.passes > 0)						//FIXME: check multiple passes
 					{
 						ss.catcher_Engine.currentPos++;
 						if (ss.catcher_Engine.currentPos == col_unknown) // reset counter
 							ss.catcher_Engine.currentPos = 0;
-						ss.catcher_LB.passes = 0;
+						ss.lb_catcher.passes = 0;
 					}
 					if (ss.catcher_Engine.currentPos == ss.catcher_Engine.targetPos)
 					{
