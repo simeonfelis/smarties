@@ -12,9 +12,10 @@ extern smartie_sorter ss;
  */
 void sys_pause()
 {
-	if (ss.mode == SYS_MODE_PAUSE)
+	if (ss.state.mode == SYS_MODE_PAUSE)
 		return;
-	ss.mode = SYS_MODE_PAUSE;
+	ss.state.modetmp = ss.state.mode;
+	ss.state.mode = SYS_MODE_PAUSE;
 }
 
 /**
@@ -27,7 +28,7 @@ void sys_pause()
  */
 void sys_resume()
 {
-	if (ss.mode == SYS_MODE_RUNNING)
+	if (ss.state.mode == SYS_MODE_RUNNING)
 		return;
 	
 }

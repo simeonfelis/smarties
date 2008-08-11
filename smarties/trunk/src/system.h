@@ -19,6 +19,8 @@
 #ifndef SYSTEM_H_
 #define SYSTEM_H_
 
+#include "menu.h"
+
 /// CPU Frequency
 #define F_CPU 16000000
 #define REVOLVER_SIZE		12
@@ -140,21 +142,21 @@
  */
 #define ROTENC_INIT()		(ROTENC_DDR   &= ~((1<<ROTENC_A_BIT) | (1<<ROTENC_B_BIT) | (1<<ROTENC_PUSH_BIT)))
 
-#define IS_ROTENC_A			((ROTENC_PIN & (1<<ROTENC_A_BIT)))
-#define IS_ROTENC_B			((ROTENC_PIN & (1<<ROTENC_B_BIT)))
-#define IS_ROTENC_BOTH		(IS_ROTENC_A && IS_ROTENC_B)
-#define IS_ROTENC_NONE		(!IS_ROTENC_A && !IS_ROTENC_B)
-#define IS_ROTENC_PUSH		(ROTENC_PIN & (1<<ROTENC_PUSH_BIT))
+#define IS_ROTENC_A			((ROTENC_PIN & (1<<ROTENC_A_BIT)))		//!< Output status of rotary encoder
+#define IS_ROTENC_B			((ROTENC_PIN & (1<<ROTENC_B_BIT)))		//!< Output status of rotary encoder
+#define IS_ROTENC_AB		(IS_ROTENC_A && IS_ROTENC_B)			//!< Output status of rotary encoder
+#define IS_ROTENC_NONE		(!IS_ROTENC_A && !IS_ROTENC_B)			//!< Output status of rotary encoder
+#define IS_ROTENC_PUSH		(ROTENC_PIN & (1<<ROTENC_PUSH_BIT))		//!< Output status of rotary encoder
 
 // The Light barrieres (LB)
-#define LB_PORT				PORTC
-#define LB_DDR				DDRC
-#define LB_PIN				PINC
-#define LB_CATCH_BIT		PC7			//!< Lightbarriere Catcher Positinoer Portbit
-#define LB_REV_BIT			PC6			//!< Lightbarriere Revolver Positioner Portbit
+#define LB_PORT				PORTA		//!< Lightbarriere Port
+#define LB_DDR				DDRA		//!< Lightbarriere Port direction
+#define LB_PIN				PINA		//!< Lightbarriere Pin
+#define LB_BIT_CATCH		PA2			//!< Lightbarriere Catcher Positinoer Portbit
+#define LB_BIT_REV			PA1			//!< Lightbarriere Revolver Positioner Portbit
 
-#define IS_LB_CATCHER		(LB_PIN & (1<<LB_CATCH_BIT))
-#define IS_LB_REVOLVER		(LB_PIN & (1<<LB_REV_BIT))
+#define IS_LB_CATCHER		(!(LB_PIN & (1<<LB_BIT_CATCH)))
+#define IS_LB_REVOLVER		(!(LB_PIN & (1<<LB_BIT_REV)))
 
 /**
  * \brief The mode of the machine
@@ -163,7 +165,6 @@ typedef enum system_mode_t {
 	SYS_MODE_INIT = 0, 		//!< After reset or power on
 	SYS_MODE_PAUSE,			//!< Pausing the smartie sorter and operated manually
 	SYS_MODE_RUNNING,		//!< Smartie sorter is running automatically
-	SYS_MODE_USER_EVENT		//!< TODO
 } system_mode;
 
 /**
@@ -185,6 +186,14 @@ typedef struct system_step_t {
 	system_step_description IV;			///< begin new mode cycle
 } system_step;
 
+/**
+ * \brief Grouping of mode and steps
+ */
+typedef struct system_state_t {
+	system_mode mode;				//!< Stores the current mode
+	system_mode modetmp;			//!< Stores the last mode for transition steps
+	system_step step;				//!< Stores the current step of the mode
+} system_state;
 
 /**
  * \brief The rotary encoder's elements can have following status
@@ -295,16 +304,20 @@ typedef struct shaker_t {
  *  \brief All devices from the smartie sorter collected to one bundle
  */
 typedef struct smartie_sorter_t {
-	system_mode mode;					//!< Stores the current mode
-	system_step step;					//!< Stores the current step of the mode
+	system_state state;					//!< Stores the current state
+#if 0 /* deprecated */
+	system_mode mode;					
+	system_step step;
+#endif
 	color_sensor colSensor_ADJD;		//!< Digital color sensor
 	color_sensor colSensor_TMS;			//!< Analog color sensor
 	engine catcher_Engine;				//!< Stepper motor for the catcher area
 	engine revolver_Engine;				//!< Stepper motor for the revolver
-	lightbarrier catcher_LB;			//!< Lightbarrier for the catcher
-	lightbarrier revolver_LB;			//!< Lightbarrier for the revolver
+	lightbarrier lb_catcher;			//!< Lightbarrier for the catcher
+	lightbarrier lb_revolver;			//!< Lightbarrier for the revolver
 	shaker shkr;						//!< Shaker (or vibrator)
 	rotary_encoder rotenc;				//!< The rotary encoder (user input)
+	menu_entry menu;					//!< The current displayed menu
 } smartie_sorter;
 
 
