@@ -2,7 +2,7 @@
 #include "avr/interrupt.h"
 
 /**
- * @file my_interrupt.c 
+ * @file interrupt.c 
  * 
  * Alle necessary interrupt routines. Please check the source code of
  * this file for more documentation.

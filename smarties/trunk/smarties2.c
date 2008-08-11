@@ -27,12 +27,14 @@
  * 
  * Following image clarifies the structure of the software:
  * 
- * \image html api-layer.png
+ * \image html api-layer.png "Layers of the software stack"
+ * \image latex api-layer.png "Layers of the software stacke" width=15cm
  * 
  * The task of the differen layers, high level, abstraction layer and low level can be described
  * like in following image:
  * 
- * \image html state-machine.png
+ * \image html state-machine.png "Executing the different layers"
+ * \image latex state-machine.png "Executing the different layers" width=15cm
  * 
  * The state machine is devided into two sections, the mode and steps. Modes
  * are represented as an enum \ref system_mode_t and the steps as an struct \ref system_step_t
@@ -40,13 +42,15 @@
  * The modes are changed depending on the user inputs or after powering on/reseting. The 
  * next picture clarifies the modes of the state machine.
  * 
- * \image html state-machine-modes.png
+ * \image html state-machine-modes.png "State diagram of the smartie sorter" 
+ * \image latex state-machine-modes.png "State diagram of the smartie sorter" width=10cm
  * 
  * The mode \ref SYS_MODE_RUNNING equals the automatic mode, where everything is 
  * controlled in several steps. The last step, step III, is a transition step to
  * begin from the start again. See next picture for the overview of the steps.
  * 
- * \image html state-machine-steps.png
+ * \image html state-machine-steps.png "Executing steps of the mode SYS_MODE_RUNNING"
+ * \image latex state-machine-steps.png "Executing steps of the mode SYS_MODE_RUNNING" width=10cm
  * 
  * Each steps starts several tasks and waits until they are finished. Then the next
  * step will be entered. 
@@ -57,7 +61,8 @@
  * The modes, steps and all input/output related parts of the Smartie sorter are administrated
  * within struct. The structs are organized like in the following picture.
  * 
- * \image html objects-overview.png
+ * \image html objects-overview.png "Brief overview of several objects (elements) of the smartie sorter"
+ * \image latex objects-overview.png "Brief overview of several objects (elements) of the smartie sorter" width=15cm
  * 
  * Note that this picture doesn't show all objects and all elements. It's just a draft overview.
  * For the detailed overview please refere to the code and documentation of \ref smartie_sorter_t. 

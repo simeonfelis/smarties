@@ -155,8 +155,8 @@
 #define LB_BIT_CATCH		PA2			//!< Lightbarriere Catcher Positinoer Portbit
 #define LB_BIT_REV			PA1			//!< Lightbarriere Revolver Positioner Portbit
 
-#define IS_LB_CATCHER		(!(LB_PIN & (1<<LB_BIT_CATCH)))
-#define IS_LB_REVOLVER		(!(LB_PIN & (1<<LB_BIT_REV)))
+#define IS_LB_CATCHER		(!(LB_PIN & (1<<LB_BIT_CATCH)))		//!< Returns true if lightbarrier is blocked
+#define IS_LB_REVOLVER		(!(LB_PIN & (1<<LB_BIT_REV)))		//!< Returns true if lightbarrier is blocked
 
 /**
  * \brief The mode of the machine
