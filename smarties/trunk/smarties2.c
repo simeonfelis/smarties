@@ -69,6 +69,8 @@
  * 
  * The LCD controlling is done with the \ref lcd_display.h
  * 
+ * The Menu structure is described in \ref menu.h
+ * 
  * The system related IO actions are all defined in \ref system.h There are controlled
  * - moving the revolver
  * - moving the catcher
@@ -107,7 +109,7 @@ menu_entry entries[3][3];
 int main(void)
 {	
 	
-	ss.mode = SYS_MODE_INIT;
+	ss.state.mode = SYS_MODE_INIT;
 	//menu_entry * current_menu = &entry0; 
 	//user_event event;
 	uint8_t RevPos = 0;
@@ -115,20 +117,46 @@ int main(void)
 
 	init_all();
 	sei();
+	
+	/* initializing done, give notice to user */
+	ss.menu = men_running;
+	menu_current = &men_running;
+	lcd_clrscr();
+	lcd_puts(ss.menu.text);
+	
+#if 0 /* testing */
 	lcd_puts("Nothing pressed");
+#endif
 	
 	while (1) /* Testing loop */
 	{
+    	//handle user inputs
+    	if (ss.rotenc.push)
+    	{
+    		menu_action = (*menu_current).function;
+    		menu_action();
+    		ss.rotenc.push = 0;
+    	}
+    	if (ss.state.mode == SYS_MODE_PAUSE)
+    	{
+    		lcd_clrscr();
+    		lcd_puts(MEN_MODE_RUNNING);
+    	}
+
+#if 0 /* testing */
 		if (ss.rotenc.left > 0)
 		{
 			lcd_home();
 			lcd_puts(MEN_TITLE_EMPTY);
 			lcd_home();
 			lcd_puts("left");
-			if (IS_ROTENC_A)
+			if (IS_ROTENC_AB)
+				lcd_puts("AB");
+			else if (IS_ROTENC_A)
 				lcd_puts("A");
-			if (IS_ROTENC_B)
+			else if (IS_ROTENC_B)
 				lcd_puts("B");
+			 
 			ss.rotenc.left = 0;
 		}
 		if (ss.rotenc.right > 0)
@@ -137,9 +165,11 @@ int main(void)
 			lcd_puts(MEN_TITLE_EMPTY);
 			lcd_home();
 			lcd_puts("right");
-			if (IS_ROTENC_A)
+			if (IS_ROTENC_AB)
+				lcd_puts("AB");
+			else if (IS_ROTENC_A)
 				lcd_puts("A");
-			if (IS_ROTENC_B)
+			else if (IS_ROTENC_B)
 				lcd_puts("B");
 			ss.rotenc.right = 0;
 		}
@@ -148,9 +178,11 @@ int main(void)
 			lcd_home();
 			lcd_puts(MEN_TITLE_EMPTY);
 			lcd_home();
-			lcd_puts("push");
-			ss.rotenc.push = 0;
+			lcd_puts("push ");
+			lcd_putc(ss.rotenc.push);
+			ss.rotenc.push --;
 		}
+#endif 
 	} /* Testing loop end */
 	
 	
@@ -158,16 +190,18 @@ int main(void)
  
     while(1)
     {
-    	switch (ss.mode) {
+    	switch (ss.state.mode) {
     	case SYS_MODE_INIT:
     		break;
     	case SYS_MODE_PAUSE:
+    		ss.menu = men_pausing;
+    		lcd_puts(ss.menu.text);
 			break;
 		case SYS_MODE_RUNNING:
-			if (ss.step.I == SYS_STEP_AWAITED)
-				ss.step.I = SYS_STEP_RUNNING;
+			if (ss.state.step.I == SYS_STEP_AWAITED)
+				ss.state.step.I = SYS_STEP_RUNNING;
 			
-			if (ss.step.I == SYS_STEP_RUNNING) 
+			if (ss.state.step.I == SYS_STEP_RUNNING) 
 			{
 				// color sensor stuff
 				if (ss.colSensor_ADJD.status == idle)
@@ -204,15 +238,15 @@ int main(void)
 					ss.colSensor_ADJD.status = idle;
 					ss.catcher_Engine.status = idle;
 					ss.catcher_Engine.status_tmp = finished;
-					ss.step.I = SYS_STEP_COMPLETED;
-					ss.step.II = SYS_STEP_AWAITED;
+					ss.state.step.I = SYS_STEP_COMPLETED;
+					ss.state.step.II = SYS_STEP_AWAITED;
 				}				
 			} // if (ss.step.I == SYS_STEP_RUNNING) 
 			
-			if (ss.step.II == SYS_STEP_AWAITED) 
-				ss.step.II = SYS_STEP_RUNNING;
+			if (ss.state.step.II == SYS_STEP_AWAITED) 
+				ss.state.step.II = SYS_STEP_RUNNING;
 							
-			if (ss.step.II == SYS_STEP_RUNNING) 
+			if (ss.state.step.II == SYS_STEP_RUNNING) 
 			{
 				if (ss.shkr.status == idle)
 					ss.shkr.status = working;
@@ -229,15 +263,15 @@ int main(void)
 				{
 					ss.shkr.status = idle;
 					ss.shkr.statustmp = idle;
-					ss.step.II = SYS_STEP_COMPLETED;
-					ss.step.III = SYS_STEP_AWAITED;
+					ss.state.step.II = SYS_STEP_COMPLETED;
+					ss.state.step.III = SYS_STEP_AWAITED;
 				}
 			}
-			if (ss.step.III == SYS_STEP_AWAITED) 
+			if (ss.state.step.III == SYS_STEP_AWAITED) 
 			{
-				ss.step.III = SYS_STEP_RUNNING;
-				ss.step.III = SYS_STEP_COMPLETED;
-				ss.step.I = SYS_STEP_AWAITED;
+				ss.state.step.III = SYS_STEP_RUNNING;
+				ss.state.step.III = SYS_STEP_COMPLETED;
+				ss.state.step.I = SYS_STEP_AWAITED;
 			}
     		break;
     	default:

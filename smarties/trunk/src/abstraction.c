@@ -135,20 +135,7 @@ void rotary_encoder_stuff ()
 
 		ss.rotenc.rottmp = ROTENC_NONE;	//store current position
 	}
-	if (IS_ROTENC_A)
-	{
-		if (ss.rotenc.rottmp == ROTENC_BOTH)
-			ss.rotenc.left++;
-		
-		if (ss.rotenc.rottmp == ROTENC_NONE) // store current position
-			ss.rotenc.right++;
-
-		if (ss.rotenc.rottmp == ROTENC_B) //choose myself
-			ss.rotenc.right++;
-
-		ss.rotenc.rottmp = ROTENC_A;
-	}	
-	if (IS_ROTENC_BOTH)
+	if (IS_ROTENC_AB)
 	{
 		if (ss.rotenc.rottmp == ROTENC_B)
 			ss.rotenc.left++;
@@ -161,8 +148,20 @@ void rotary_encoder_stuff ()
 
 		ss.rotenc.rottmp = ROTENC_BOTH;
 	}
+	else if (IS_ROTENC_A)
+	{
+		if (ss.rotenc.rottmp == ROTENC_BOTH)
+			ss.rotenc.left++;
+		
+		if (ss.rotenc.rottmp == ROTENC_NONE) // store current position
+			ss.rotenc.right++;
 
-	if (IS_ROTENC_B)
+		if (ss.rotenc.rottmp == ROTENC_B) //choose myself
+			ss.rotenc.right++;
+
+		ss.rotenc.rottmp = ROTENC_A;
+	}	
+	else if (IS_ROTENC_B)
 	{
 		if (ss.rotenc.rottmp == ROTENC_NONE)
 			ss.rotenc.left++;
