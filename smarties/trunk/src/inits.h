@@ -9,7 +9,7 @@ void init_io();
 void init_menu();
 void init_timer();
 void init_interrupts();
-void init_positions();
+void init_motors();
 void init_adc();
 
 

@@ -133,11 +133,7 @@ int main(void)
 	menu_current = &men_running;
 	lcd_clrscr();
 	lcd_puts(ss.menu.text);
-	
-#if 0 /* testing */
-	lcd_puts("Nothing pressed");
-#endif
-	
+		
 	while (1) /* Testing loop */
 	{
 		/* handle user inputs, do corresponding menu function */
@@ -163,47 +159,10 @@ int main(void)
     		lcd_puts ("Catcher One pass");
     		ss.lb_catcher.passes = 0;
     	}
-
-#if 0 /* testing */
-		if (ss.rotenc.left > 0)
-		{
-			lcd_home();
-			lcd_puts(MEN_TITLE_EMPTY);
-			lcd_home();
-			lcd_puts("left");
-			if (IS_ROTENC_AB)
-				lcd_puts("AB");
-			else if (IS_ROTENC_A)
-				lcd_puts("A");
-			else if (IS_ROTENC_B)
-				lcd_puts("B");
-			 
-			ss.rotenc.left = 0;
-		}
-		if (ss.rotenc.right > 0)
-		{
-			lcd_home();
-			lcd_puts(MEN_TITLE_EMPTY);
-			lcd_home();
-			lcd_puts("right");
-			if (IS_ROTENC_AB)
-				lcd_puts("AB");
-			else if (IS_ROTENC_A)
-				lcd_puts("A");
-			else if (IS_ROTENC_B)
-				lcd_puts("B");
-			ss.rotenc.right = 0;
-		}
-		if (ss.rotenc.push > 0)
-		{
-			lcd_home();
-			lcd_puts(MEN_TITLE_EMPTY);
-			lcd_home();
-			lcd_puts("push ");
-			lcd_putc(ss.rotenc.push);
-			ss.rotenc.push --;
-		}
-#endif 
+    	if (ss.mot_revolver.status != idle) {
+    		lcd_clrscr();
+    		lcd_puts("Revolver rotating");
+    	}
 	} /* Testing loop end */
 	
 	

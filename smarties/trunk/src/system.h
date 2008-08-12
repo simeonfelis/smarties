@@ -104,6 +104,7 @@
 
 #define REV_STEP_DURATION	32			//!< Duration of one step in milliseconds	
 #define REV_RAMP_DURATION	4			//!< Duration of the ramp up or ramp down in steps
+#define REV_MAX_SIZE		12			//1< The amount of smarties (holes) which fit into the revolver 
 
 // Stepper motor for catcher
 #define CATCH_BIT_EN		PD4			//!< Portbit for Enable driver for catcher stepper motor
@@ -116,6 +117,7 @@
 
 #define CATCH_STEP_DURATION 32			//!< Duration of one step in one Millisecond 
 #define CATCH_RAMP_DURATION 5			//!< Duration of the ramp up or ramp down in steps
+#define CATCH_MAX_SIZE		8			//!< The amount of catcher tubes for sorting the smarties
 
 
 // Miscaleous input output

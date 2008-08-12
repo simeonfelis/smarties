@@ -184,11 +184,32 @@ uint8_t catcher_rotate_steps (uint16_t f_steps)
 void revolver_rotate_absolute(uint8_t abs_pos)
 {
 	
+	
 }
 
+/**
+ * \brief Rotates the revolver from the current position to a relative next position
+ * regarding 'hole above hole'
+ * 
+ * Most of the work is being done in \ref motor_stuff.
+ * 
+ * Warning: This function does not check if the revolver is already working. Before 
+ * calling this function, check if the revolver has the status \ref idle. It
+ * also doesn't check the parameter, if the value is reasonable.
+ * 
+ * \param rel_pos  
+ * The position where to move to. Only if one whole turn will be fullfilled, 
+ * the target position will adjusted. The value of rel_pos will be not checked, so the 
+ * value must be lower than \ref REV_MAX_SIZE. 
+ */
 void revolver_rotate_relative(uint8_t rel_pos)
 {
+	if ( (ss.mot_revolver.currentPos + rel_pos) > REV_MAX_SIZE ) 
+		ss.mot_revolver.targetPos = REV_MAX_SIZE - rel_pos;
+	else 
+		ss.mot_revolver.targetPos = ss.mot_revolver.currentPos + rel_pos;
 	
+	ss.mot_revolver.status = start_working;
 }
 
 

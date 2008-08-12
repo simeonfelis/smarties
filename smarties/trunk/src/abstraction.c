@@ -67,46 +67,86 @@ void mot_stuff ()
 	} // ramp down end
 
 	
-	//     R E V O L V E R
-	if (ss.mot_revolver.status == start_working) // ramp up
-	{
-		//prepare ramp up
-		if (ss.mot_revolver.status_tmp == idle)
-		{
+	/**************************************************************************
+	 *                           R E V O L V E R                              *
+	 *************************************************************************/
+
+	ss.mot_revolver.cycle_counter++;
+	
+	/* start and ramp up */
+	if (ss.mot_revolver.status == start_working) {
+		REV_ENABLE;
+		/* if we just started to rotate, prepare ramp up */
+		if (ss.mot_revolver.status_tmp == idle) {
 			ss.mot_revolver.status_tmp = start_working;
-			ss.mot_revolver.rampup_steps = REV_RAMP_DURATION;
+			ss.mot_revolver.rampup_steps = REV_RAMP_DURATION; /* will be decreased during ramp up */
 			ss.mot_revolver.cycle_counter = 0;
 		}
 		
-		// do the ramp up
-		REV_MOVE_STEP;
-		ss.mot_revolver.cycle_counter++;
-		if (ss.mot_revolver.cycle_counter == 
-			REV_STEP_DURATION * ss.mot_revolver.rampup_steps )
-		{
+		/* do the ramp up */
+		if (ss.mot_revolver.cycle_counter
+				== (REV_STEP_DURATION * ss.mot_revolver.rampup_steps)) {
 			ss.mot_revolver.cycle_counter = 0;
 			ss.mot_revolver.rampup_steps--;
-			if (ss.mot_revolver.rampdown_steps == 0)
-			{
+			if (ss.mot_revolver.rampdown_steps == 0) {
 				ss.mot_revolver.status = working;
 				ss.mot_revolver.status_tmp = start_working;
 			}
+			REV_MOVE_STEP;
 		}
 	}
-	if (ss.mot_revolver.status == working) //just rotate
-	{
-		if (ss.mot_revolver.status_tmp == start_working)
-		{
+
+	/* just rotate */
+	if (ss.mot_revolver.status == working) {
+		if (ss.mot_revolver.status_tmp == start_working) {
 			ss.mot_revolver.status_tmp = working;
 			ss.mot_revolver.cycle_counter = 0;
 		}
-		
-		ss.mot_revolver.cycle_counter++;
-		if (ss.mot_revolver.cycle_counter == REV_STEP_DURATION)
-		{
+		if (ss.mot_revolver.cycle_counter == REV_STEP_DURATION) {
 			REV_MOVE_STEP;
 			ss.mot_revolver.cycle_counter = 0;
 		}
+		/* count the passes on the lightbarrier. One pass, one position */
+		if (ss.lb_revolver.passes > 0) {
+			ss.mot_revolver.currentPos++;
+			ss.lb_revolver.passes--;
+		}
+		/* before we reach the target position do the ramp down */
+		if ( ss.mot_revolver.currentPos == (ss.mot_revolver.targetPos-1) ) 
+			ss.mot_revolver.status = stop_working;
+	}
+	
+	/* ramp down */
+	if (ss.mot_revolver.status == stop_working) {
+		if (ss.mot_revolver.status_tmp == working) {
+			ss.mot_revolver.status_tmp = stop_working;
+			ss.mot_revolver.cycle_counter = 0;
+			ss.mot_revolver.rampdown_steps = 1;
+		}
+		
+		/* do the ramp down */
+		if (ss.mot_revolver.cycle_counter 
+				== (REV_STEP_DURATION * ss.mot_revolver.rampdown_steps)) {
+			ss.mot_revolver.cycle_counter = 0;
+			ss.mot_revolver.rampdown_steps++;
+			if (ss.mot_revolver.rampdown_steps == REV_RAMP_DURATION) {
+				/* go on rotating until we met the end position, indicated by the lightbarrier */
+				if (IS_LB_REVOLVER) {
+					ss.mot_revolver.status_tmp = ss.mot_revolver.status;
+					ss.mot_revolver.status = finished;
+				}
+			}
+			REV_MOVE_STEP;
+		}
+	}
+	
+	/* stop */
+	if (ss.mot_revolver.status == finished) {
+		if (ss.mot_revolver.status_tmp == stop_working) {
+			ss.mot_revolver.status_tmp = finished;
+		}
+		ss.mot_revolver.status = idle;
+		REV_DISABLE;
 	}
 }
 

@@ -15,7 +15,7 @@ void init_all()
 		lcd_puts(ss.menu.text);
 	init_timer();
 	init_interrupts();
-	init_positions();
+	init_motors();
 }
 
 void init_io()
@@ -74,8 +74,28 @@ void init_interrupts()
 {
 	
 }
-void init_positions()
+
+/**
+ * \brief Will throw out remaining smarties and put revolver and catcher to 
+ * defined positions
+ */
+void init_motors()
 {
+	//TODO: rotate catcher to a defined position
+	
+	/*************** R E V O L V E R *********************/
+	
+	ss.mot_revolver.status = idle;
+	ss.mot_revolver.status_tmp = idle;
+	
+	/* find the next defined position */
+#if TEMPORARLY	
+	if (!IS_LB_REVOLVER)
+		revolver_rotate_relative(1); 
+		/* this will put the revolver to a positon 'hole above hole' */
+#endif
+	/* this will throw out eventually remaining smarties */ 
+	revolver_rotate_relative(12);
 	
 }
 
