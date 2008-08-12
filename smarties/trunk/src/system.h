@@ -98,9 +98,17 @@
 #define REV_BIT_CW			PD6			//!< Portbit for Rotate direction for revolver stepper motor (CW/CCW)
 #define REV_BIT_CLK			PD5			//!< Portbit for Clock signal for driver for revolver stepper motor
 
+/**
+ * \brief Move the revolver stepper motor for one single step. 
+ */
+#define REV_MOVE_STEP							\
+	do {										\
+		STEPPER_PORT &= ~(1<<REV_BIT_CLK);		\
+		STEPPER_PORT |= (1<<REV_BIT_CLK);		\
+} while (0)
 #define REV_ENABLE			(STEPPER_PORT |= (1<<REV_BIT_EN))	//!< Enables the driver for the stepper motor 
 #define REV_DISABLE			(STEPPER_PORT &= ~(1<<REV_BIT_EN))	//!< Disables the driver for the steper motor
-#define REV_MOVE_STEP		(STEPPER_PORT ^= (1<<REV_BIT_CLK))	//!< Move the revolver stepper motor for one single step
+
 
 #define REV_STEP_DURATION	32			//!< Duration of one step in milliseconds	
 #define REV_RAMP_DURATION	4			//!< Duration of the ramp up or ramp down in steps

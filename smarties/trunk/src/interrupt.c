@@ -21,7 +21,7 @@ ISR (TIMER0_OVF_vect)
 	lightbarrier_stuff ();
 	
 	/* stepper motor stuff */
-	mot_stuff();
+	motor_stuff();
 	
 	// display stuff
 	// sensor stuff

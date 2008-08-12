@@ -9,34 +9,7 @@
  * 
  */
 
-/**
- * \brief Takes controll over the catcher and revolver stepper engines
- * 
- * The ramp up is made by linear shrinking the time period t for each step:
- * \code 
- *  Steps
- *  ^
- *  |         4t                 3t       2t   t  t  t  t
- *  *                       *           *     *  *  *  *  *
- *  |  
- *  +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+-> Time
- *  0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18
- * 
- * Symbolic diagram, no real values
- * \endcode
- * 
- * This function is expected to be called every millisecond to work properly.
- * 
- * Important setting values are:
- *  - CATCH_STEP_DURATION
- *  - CATCH_RAMP_DURATION
- *  - REV_STEP_DURATION
- *  - REV_RAMP_DURATION
- * 
- * See below for links to them.
- * 
- */
-void mot_stuff ();
+void motor_stuff ();
 
 /** \brief Takes controll over the rotary encoder (user input) device
  * 

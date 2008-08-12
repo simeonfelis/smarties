@@ -204,6 +204,9 @@ void revolver_rotate_absolute(uint8_t abs_pos)
  */
 void revolver_rotate_relative(uint8_t rel_pos)
 {
+	if (rel_pos == 0)
+		return;
+	
 	if ( (ss.mot_revolver.currentPos + rel_pos) > REV_MAX_SIZE ) 
 		ss.mot_revolver.targetPos = REV_MAX_SIZE - rel_pos;
 	else 

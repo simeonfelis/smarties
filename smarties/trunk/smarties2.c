@@ -159,9 +159,29 @@ int main(void)
     		lcd_puts ("Catcher One pass");
     		ss.lb_catcher.passes = 0;
     	}
-    	if (ss.mot_revolver.status != idle) {
+    	switch (ss.mot_revolver.status) {
+    	case idle:
     		lcd_clrscr();
-    		lcd_puts("Revolver rotating");
+    		lcd_puts("Revolver idle");
+    		break;
+    	case start_working:
+    		lcd_clrscr();
+    		lcd_puts("Revolver starts");
+    		break;
+    	case working:
+    		lcd_clrscr();
+    		lcd_puts("Revolver works");
+    		break;
+    	case stop_working:
+    		lcd_clrscr();
+    		lcd_puts("Revolver stops");
+    		break;
+    	case finished:
+    		lcd_clrscr();
+    		lcd_puts("Revolver finished");
+    		break;
+    	default: 
+    		break;
     	}
 	} /* Testing loop end */
 	

@@ -88,6 +88,8 @@ void init_motors()
 	ss.mot_revolver.status = idle;
 	ss.mot_revolver.status_tmp = idle;
 	
+	STEPPER_PORT |= (1<<REV_BIT_CLK); /* The clock signal should be high */
+	
 	/* find the next defined position */
 #if TEMPORARLY	
 	if (!IS_LB_REVOLVER)

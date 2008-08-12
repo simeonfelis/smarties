@@ -1,12 +1,38 @@
 #include "abstraction.h"
 #include "smarties2.h"
 
-
+#define TESTING_RAMPS 	1 /* temporarly only */
 
 extern smartie_sorter ss;
 
-
-void mot_stuff ()
+/**
+ * \brief Takes controll over the catcher and revolver stepper engines
+ * 
+ * The ramp up is made by linear shrinking the time period t for each step:
+ * \code 
+ *  Steps
+ *  ^
+ *  |         4t                 3t       2t   t  t  t  t
+ *  *                       *           *     *  *  *  *  *
+ *  |  
+ *  +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+-> Time
+ *  0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18
+ * 
+ * Symbolic diagram, no real values
+ * \endcode
+ * 
+ * This function is expected to be called every millisecond to work properly.
+ * 
+ * Important setting values are:
+ *  - CATCH_STEP_DURATION
+ *  - CATCH_RAMP_DURATION
+ *  - REV_STEP_DURATION
+ *  - REV_RAMP_DURATION
+ * 
+ * See below for links to them.
+ * 
+ */
+void motor_stuff ()
 {
 	//      C A T C H E R
 	if (ss.mot_catcher.status == start_working) // ramp up
@@ -71,8 +97,10 @@ void mot_stuff ()
 	 *                           R E V O L V E R                              *
 	 *************************************************************************/
 
-	ss.mot_revolver.cycle_counter++;
-	
+	if (ss.mot_revolver.status != idle)
+		ss.mot_revolver.cycle_counter++;
+		
+#if TESTING_RAMPS
 	/* start and ramp up */
 	if (ss.mot_revolver.status == start_working) {
 		REV_ENABLE;
@@ -95,7 +123,17 @@ void mot_stuff ()
 			REV_MOVE_STEP;
 		}
 	}
+#endif
 
+#if !TESTING_RAMPS
+	/* start rotating */
+	if (ss.mot_revolver.status == start_working) {
+		ss.mot_revolver.status_tmp = start_working;
+		ss.mot_revolver.status = working;
+		REV_ENABLE;
+	}
+#endif 
+	
 	/* just rotate */
 	if (ss.mot_revolver.status == working) {
 		if (ss.mot_revolver.status_tmp == start_working) {
@@ -116,6 +154,7 @@ void mot_stuff ()
 			ss.mot_revolver.status = stop_working;
 	}
 	
+#if TESTING_RAMPS
 	/* ramp down */
 	if (ss.mot_revolver.status == stop_working) {
 		if (ss.mot_revolver.status_tmp == working) {
@@ -130,23 +169,38 @@ void mot_stuff ()
 			ss.mot_revolver.cycle_counter = 0;
 			ss.mot_revolver.rampdown_steps++;
 			if (ss.mot_revolver.rampdown_steps == REV_RAMP_DURATION) {
-				/* go on rotating until we met the end position, indicated by the lightbarrier */
-				if (IS_LB_REVOLVER) {
-					ss.mot_revolver.status_tmp = ss.mot_revolver.status;
-					ss.mot_revolver.status = finished;
-				}
+				ss.mot_revolver.status_tmp = stop_working;
+				ss.mot_revolver.status = finished;
 			}
 			REV_MOVE_STEP;
 		}
 	}
+#endif
+	
+#if !TESTING_RAMPS
+	/* stop working */
+	if (ss.mot_revolver.status == stop_working) {
+		ss.mot_revolver.status_tmp = stop_working;
+		ss.mot_revolver.status = finished;
+	}
+#endif
 	
 	/* stop */
 	if (ss.mot_revolver.status == finished) {
 		if (ss.mot_revolver.status_tmp == stop_working) {
 			ss.mot_revolver.status_tmp = finished;
+			ss.mot_revolver.cycle_counter = 0;
 		}
-		ss.mot_revolver.status = idle;
-		REV_DISABLE;
+		/* go on rotating until we meet the end position, indicated by the lightbarrier */
+		/* but rotate slowly */
+		if (ss.mot_revolver.cycle_counter
+				== (REV_STEP_DURATION * REV_RAMP_DURATION)) {
+			ss.mot_revolver.cycle_counter = 0;
+			if (IS_LB_REVOLVER) {
+				ss.mot_revolver.status = idle;
+				REV_DISABLE;				
+			}
+		}
 	}
 }
 
