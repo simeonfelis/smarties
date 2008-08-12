@@ -6,106 +6,106 @@
 extern smartie_sorter ss;
 
 
-void engine_stuff ()
+void mot_stuff ()
 {
 	//      C A T C H E R
-	if (ss.catcher_Engine.status == start_working) // ramp up
+	if (ss.mot_catcher.status == start_working) // ramp up
 	{
 		// prepare the ramp up
-		if (ss.catcher_Engine.status_tmp == idle)
+		if (ss.mot_catcher.status_tmp == idle)
 		{
-			ss.catcher_Engine.status_tmp = start_working;
-			ss.catcher_Engine.rampup_steps = CATCH_RAMP_DURATION;
-			ss.catcher_Engine.cycle_counter = 0;
+			ss.mot_catcher.status_tmp = start_working;
+			ss.mot_catcher.rampup_steps = CATCH_RAMP_DURATION;
+			ss.mot_catcher.cycle_counter = 0;
 		}
 		
 		// do the ramp up
-		ss.catcher_Engine.cycle_counter++;
-		if (ss.catcher_Engine.cycle_counter
-				== CATCH_STEP_DURATION * ss.catcher_Engine.rampup_steps)
+		ss.mot_catcher.cycle_counter++;
+		if (ss.mot_catcher.cycle_counter
+				== CATCH_STEP_DURATION * ss.mot_catcher.rampup_steps)
 		{
-			CATCH_MOVE_STEP();
-			ss.catcher_Engine.cycle_counter = 0;
-			ss.catcher_Engine.rampup_steps--;
-			if (ss.catcher_Engine.rampup_steps == 0)
+			CATCH_MOVE_STEP;
+			ss.mot_catcher.cycle_counter = 0;
+			ss.mot_catcher.rampup_steps--;
+			if (ss.mot_catcher.rampup_steps == 0)
 			{
-				ss.catcher_Engine.status = working;
-				ss.catcher_Engine.status_tmp = start_working;
+				ss.mot_catcher.status = working;
+				ss.mot_catcher.status_tmp = start_working;
 			}
 		}
 	} // ramp up end
 
-	if (ss.catcher_Engine.status == working) // just rotate 
+	if (ss.mot_catcher.status == working) // just rotate 
 	{
-		ss.catcher_Engine.cycle_counter++;
-		if (ss.catcher_Engine.cycle_counter == CATCH_STEP_DURATION)
+		ss.mot_catcher.cycle_counter++;
+		if (ss.mot_catcher.cycle_counter == CATCH_STEP_DURATION)
 		{
-			ss.catcher_Engine.cycle_counter = 0;
-			CATCH_MOVE_STEP();
+			ss.mot_catcher.cycle_counter = 0;
+			CATCH_MOVE_STEP;
 		}
 	} // just rotate end
 
-	if (ss.catcher_Engine.status == stop_working) // ramp down
+	if (ss.mot_catcher.status == stop_working) // ramp down
 	{
 		// prepare ramp down
-		if (ss.catcher_Engine.status_tmp == working)
+		if (ss.mot_catcher.status_tmp == working)
 		{
-			ss.catcher_Engine.status_tmp = stop_working;
-			ss.catcher_Engine.rampdown_steps = 1;
-			ss.catcher_Engine.cycle_counter = 0;
+			ss.mot_catcher.status_tmp = stop_working;
+			ss.mot_catcher.rampdown_steps = 1;
+			ss.mot_catcher.cycle_counter = 0;
 		}
-		ss.catcher_Engine.cycle_counter++;
-		if (ss.catcher_Engine.cycle_counter
-				== CATCH_RAMP_DURATION * ss.catcher_Engine.rampdown_steps)
+		ss.mot_catcher.cycle_counter++;
+		if (ss.mot_catcher.cycle_counter
+				== CATCH_RAMP_DURATION * ss.mot_catcher.rampdown_steps)
 		{
-			CATCH_MOVE_STEP();
-			ss.catcher_Engine.cycle_counter = 0;
-			ss.catcher_Engine.rampdown_steps++;
-			if (ss.catcher_Engine.rampdown_steps == CATCH_RAMP_DURATION)
-				ss.catcher_Engine.status = finished;
+			CATCH_MOVE_STEP;
+			ss.mot_catcher.cycle_counter = 0;
+			ss.mot_catcher.rampdown_steps++;
+			if (ss.mot_catcher.rampdown_steps == CATCH_RAMP_DURATION)
+				ss.mot_catcher.status = finished;
 		}
 	} // ramp down end
 
 	
 	//     R E V O L V E R
-	if (ss.revolver_Engine.status == start_working) // ramp up
+	if (ss.mot_revolver.status == start_working) // ramp up
 	{
 		//prepare ramp up
-		if (ss.revolver_Engine.status_tmp == idle)
+		if (ss.mot_revolver.status_tmp == idle)
 		{
-			ss.revolver_Engine.status_tmp = start_working;
-			ss.revolver_Engine.rampup_steps = REV_RAMP_DURATION;
-			ss.revolver_Engine.cycle_counter = 0;
+			ss.mot_revolver.status_tmp = start_working;
+			ss.mot_revolver.rampup_steps = REV_RAMP_DURATION;
+			ss.mot_revolver.cycle_counter = 0;
 		}
 		
 		// do the ramp up
-		REV_MOVE_STEP();
-		ss.revolver_Engine.cycle_counter++;
-		if (ss.revolver_Engine.cycle_counter == 
-			REV_STEP_DURATION * ss.revolver_Engine.rampup_steps )
+		REV_MOVE_STEP;
+		ss.mot_revolver.cycle_counter++;
+		if (ss.mot_revolver.cycle_counter == 
+			REV_STEP_DURATION * ss.mot_revolver.rampup_steps )
 		{
-			ss.revolver_Engine.cycle_counter = 0;
-			ss.revolver_Engine.rampup_steps--;
-			if (ss.revolver_Engine.rampdown_steps == 0)
+			ss.mot_revolver.cycle_counter = 0;
+			ss.mot_revolver.rampup_steps--;
+			if (ss.mot_revolver.rampdown_steps == 0)
 			{
-				ss.revolver_Engine.status = working;
-				ss.revolver_Engine.status_tmp = start_working;
+				ss.mot_revolver.status = working;
+				ss.mot_revolver.status_tmp = start_working;
 			}
 		}
 	}
-	if (ss.revolver_Engine.status == working) //just rotate
+	if (ss.mot_revolver.status == working) //just rotate
 	{
-		if (ss.revolver_Engine.status_tmp == start_working)
+		if (ss.mot_revolver.status_tmp == start_working)
 		{
-			ss.revolver_Engine.status_tmp = working;
-			ss.revolver_Engine.cycle_counter = 0;
+			ss.mot_revolver.status_tmp = working;
+			ss.mot_revolver.cycle_counter = 0;
 		}
 		
-		ss.revolver_Engine.cycle_counter++;
-		if (ss.revolver_Engine.cycle_counter == REV_STEP_DURATION)
+		ss.mot_revolver.cycle_counter++;
+		if (ss.mot_revolver.cycle_counter == REV_STEP_DURATION)
 		{
-			REV_MOVE_STEP();
-			ss.revolver_Engine.cycle_counter = 0;
+			REV_MOVE_STEP;
+			ss.mot_revolver.cycle_counter = 0;
 		}
 	}
 }

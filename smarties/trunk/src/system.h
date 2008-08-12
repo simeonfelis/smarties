@@ -94,25 +94,25 @@
 #define STEPPER_DDR			DDRD		//!< Port direction for stepper motors
 #define STEPPER_PIN			PIND		//!< For reading the state of stepper motors
 // Stepper motor for revolver
-#define REV_EN_BIT			PD7			//!< Enable driver for revolver stepper motor 
-#define REV_CW_BIT			PD6			//!< Rotate direction for revolver stepper motor (CW/CCW)
-#define REV_CLK_BIT			PD5			//!< Clock signal for driver for revolver stepper motor
+#define REV_BIT_EN			PD7			//!< Portbit for Enable driver for revolver stepper motor 
+#define REV_BIT_CW			PD6			//!< Portbit for Rotate direction for revolver stepper motor (CW/CCW)
+#define REV_BIT_CLK			PD5			//!< Portbit for Clock signal for driver for revolver stepper motor
 
-#define REV_EN()			(STEPPER_PORT |= (1<<REV_EN_BIT))
-#define REV_DIS()			(STEPPER_PORT &= ~(1<<REV_EN_BIT))
-#define REV_MOVE_STEP()		(STEPPER_PORT ^= (1<<REV_CLK_BIT))	//!< Move the revolver stepper motor for one single step
+#define REV_ENABLE			(STEPPER_PORT |= (1<<REV_BIT_EN))	//!< Enables the driver for the stepper motor 
+#define REV_DISABLE			(STEPPER_PORT &= ~(1<<REV_BIT_EN))	//!< Disables the driver for the steper motor
+#define REV_MOVE_STEP		(STEPPER_PORT ^= (1<<REV_BIT_CLK))	//!< Move the revolver stepper motor for one single step
 
 #define REV_STEP_DURATION	32			//!< Duration of one step in milliseconds	
 #define REV_RAMP_DURATION	4			//!< Duration of the ramp up or ramp down in steps
 
 // Stepper motor for catcher
-#define CATCH_EN_BIT		PD4			//!< Enable driver for catcher stepper motor
-#define CATCH_CW_BIT		PD3			//!< Rotate direction for catcher stepper motor (CW/CC
-#define CATCH_CLK_BIT		PD2			//!< Clock signal for driver for catcher stepper motorW)
+#define CATCH_BIT_EN		PD4			//!< Portbit for Enable driver for catcher stepper motor
+#define CATCH_BIT_CW		PD3			//!< Portbit for Rotate direction for catcher stepper motor (CW/CC
+#define CATCH_BIT_CLK		PD2			//!< Portbit for Clock signal for driver for catcher stepper motorW)
 
-#define CATCH_EN()			(STEPPER_PORT |= (1<<CATCH_EN_BIT))
-#define CATCH_DIS()			(STEPPER_PORT &= ~(1<<CATCH_EN_BIT))
-#define CATCH_MOVE_STEP()	(STEPPER_PORT ^= (1<<CATCH_CLK_BIT))	//!< Move the catcher steper motor for one single step
+#define CATCH_ENABLE		(STEPPER_PORT |= (1<<CATCH_BIT_EN))		//!< Enables the driver for the steper motor
+#define CATCH_DISABLE		(STEPPER_PORT &= ~(1<<CATCH_BIT_EN))	//!< Disables the driver for the steper motor
+#define CATCH_MOVE_STEP		(STEPPER_PORT ^= (1<<CATCH_BIT_CLK))	//!< Move the catcher steper motor for one single step
 
 #define CATCH_STEP_DURATION 32			//!< Duration of one step in one Millisecond 
 #define CATCH_RAMP_DURATION 5			//!< Duration of the ramp up or ramp down in steps
@@ -257,7 +257,7 @@ typedef enum common_stat_t {
 /**
  * \brief The stepper motor
  */
-typedef struct engine_t {
+typedef struct stepper_motor_t {
 	common_stat status;			//!< Status
 	common_stat status_tmp; 	//!< The last status (before the current one)
 	uint16_t currentPos;		//!< Current position (\ref smartie_color_t can also be used)
@@ -265,7 +265,7 @@ typedef struct engine_t {
 	uint16_t cycle_counter;		//!< One cycle takes 1 millisecond
 	uint8_t rampup_steps;		//!< One step takes \ref CATCH_STEP_DURATION or \ref REV_STEP_DURATION steps
 	uint8_t rampdown_steps;		//!< Steps used for ramping down 
-} engine;
+} stepper_motor;
 
 /**
  * \brief Describes a color sensor
@@ -311,8 +311,8 @@ typedef struct smartie_sorter_t {
 #endif
 	color_sensor colSensor_ADJD;		//!< Digital color sensor
 	color_sensor colSensor_TMS;			//!< Analog color sensor
-	engine catcher_Engine;				//!< Stepper motor for the catcher area
-	engine revolver_Engine;				//!< Stepper motor for the revolver
+	stepper_motor mot_catcher;				//!< Stepper motor for the catcher area
+	stepper_motor mot_revolver;				//!< Stepper motor for the revolver
 	lightbarrier lb_catcher;			//!< Lightbarrier for the catcher
 	lightbarrier lb_revolver;			//!< Lightbarrier for the revolver
 	shaker shkr;						//!< Shaker (or vibrator)

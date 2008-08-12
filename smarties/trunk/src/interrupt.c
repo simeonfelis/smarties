@@ -20,10 +20,12 @@ ISR (TIMER0_OVF_vect)
 	/* light barrier stuff */
 	lightbarrier_stuff ();
 	
+	/* stepper motor stuff */
+	mot_stuff();
+	
 	// display stuff
 	// sensor stuff
 	// engine stuff
-	//engine_stuff();
 	
 	// shaker stuff
 	//shaker_stuff();

@@ -36,7 +36,7 @@
  * See below for links to them.
  * 
  */
-void engine_stuff ();
+void mot_stuff ();
 
 /** \brief Takes controll over the rotary encoder (user input) device
  * 

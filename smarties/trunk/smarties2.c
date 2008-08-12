@@ -232,33 +232,33 @@ int main(void)
 				
 				
 				// catcher preparation
-				ss.catcher_Engine.targetPos = smartie[POS_SMARTIE_OUT-1].color;
-				if (ss.catcher_Engine.status == idle)
-					if (ss.catcher_Engine.currentPos != ss.catcher_Engine.targetPos)
-						ss.catcher_Engine.status = start_working;	//will start rotating the catcher
-				if (ss.catcher_Engine.status == working) // status working will be entered automatically
+				ss.mot_catcher.targetPos = smartie[POS_SMARTIE_OUT-1].color;
+				if (ss.mot_catcher.status == idle)
+					if (ss.mot_catcher.currentPos != ss.mot_catcher.targetPos)
+						ss.mot_catcher.status = start_working;	//will start rotating the catcher
+				if (ss.mot_catcher.status == working) // status working will be entered automatically
 				{
 					if (ss.lb_catcher.passes > 0)						//FIXME: check multiple passes
 					{
-						ss.catcher_Engine.currentPos++;
-						if (ss.catcher_Engine.currentPos == col_unknown) // reset counter
-							ss.catcher_Engine.currentPos = 0;
+						ss.mot_catcher.currentPos++;
+						if (ss.mot_catcher.currentPos == col_unknown) // reset counter
+							ss.mot_catcher.currentPos = 0;
 						ss.lb_catcher.passes = 0;
 					}
-					if (ss.catcher_Engine.currentPos == ss.catcher_Engine.targetPos)
+					if (ss.mot_catcher.currentPos == ss.mot_catcher.targetPos)
 					{
-						ss.catcher_Engine.status_tmp = working;
-						ss.catcher_Engine.status = stop_working;
+						ss.mot_catcher.status_tmp = working;
+						ss.mot_catcher.status = stop_working;
 					}
 				}
 				
 				// finishing step I, entering step II
-				if ((ss.catcher_Engine.status == finished) &&
+				if ((ss.mot_catcher.status == finished) &&
 						(ss.colSensor_ADJD.status == finished))
 				{
 					ss.colSensor_ADJD.status = idle;
-					ss.catcher_Engine.status = idle;
-					ss.catcher_Engine.status_tmp = finished;
+					ss.mot_catcher.status = idle;
+					ss.mot_catcher.status_tmp = finished;
 					ss.state.step.I = SYS_STEP_COMPLETED;
 					ss.state.step.II = SYS_STEP_AWAITED;
 				}				
