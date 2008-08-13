@@ -29,7 +29,8 @@ void init_io()
 
 	STEPPER_PORT &= ~((1 << REV_BIT_CLK) | (1<<REV_BIT_CW) | (1<<REV_BIT_EN) | (1<<CATCH_BIT_CLK) | (1<<CATCH_BIT_CW) | (1<<CATCH_BIT_EN));
 	STEPPER_DDR |= (1 << REV_BIT_CLK) | (1<<REV_BIT_CW) | (1<<REV_BIT_EN) | (1<<CATCH_BIT_CLK) | (1<<CATCH_BIT_CW) | (1<<CATCH_BIT_EN);
-	
+	STEPPER_PORT |= (1<<REV_BIT_CLK) | (1<<CATCH_BIT_CLK); /* The clock signal should be high by default */
+
 	/* the TCS color sensor */
 	TCS_OUT_PORT &= ~((1<<TCS_S0_BIT) | (1<<TCS_S1_BIT) | (1<<TCS_S2_BIT) | (1<<TCS_S3_BIT));
 	TCS_OUT_DDR |= (1<<TCS_S0_BIT) | (1<<TCS_S1_BIT) | (1<<TCS_S2_BIT) | (1<<TCS_S3_BIT);
@@ -81,24 +82,33 @@ void init_interrupts()
  */
 void init_motors()
 {
-	//TODO: rotate catcher to a defined position
+	/***************** C A T C H E R **********************/
+
+	ss.mot_catcher.status = stat_idle;
+	ss.mot_catcher.status_tmp = stat_idle;
+	
+	/* find the next defined position */
+	if (!IS_LB_CATCHER)
+		catcher_rotate_relative(1);
+	
 	
 	/*************** R E V O L V E R *********************/
 	
 	ss.mot_revolver.status = stat_idle;
 	ss.mot_revolver.status_tmp = stat_idle;
-	
-	STEPPER_PORT |= (1<<REV_BIT_CLK); /* The clock signal should be high */
-	
+		
 	/* find the next defined position */
-#if TEMPORARLY	
 	if (!IS_LB_REVOLVER)
 		revolver_rotate_relative(1); 
 		/* this will put the revolver to a positon 'hole above hole' */
-#endif
+	
 	/* this will throw out eventually remaining smarties */ 
 	revolver_rotate_relative(12);
 	
+	
+	/* last, rotate the catcher to a position where it is possible 
+	 * to remove the possibly remaining smarties */
+	catcher_rotate_relative(4);
 }
 
 void init_adc()

@@ -159,26 +159,26 @@ int main(void)
     		lcd_puts ("Catcher One pass");
     		ss.lb_catcher.passes = 0;
     	}
-    	switch (ss.mot_revolver.status) {
+    	switch (ss.mot_catcher.status) {
     	case stat_idle:
     		lcd_clrscr();
-    		lcd_puts("Revolver idle");
+    		lcd_puts("idle");
     		break;
     	case stat_start_working:
     		lcd_clrscr();
-    		lcd_puts("Revolver starts");
+    		lcd_puts("starts");
     		break;
     	case stat_working:
     		lcd_clrscr();
-    		lcd_puts("Revolver works");
+    		lcd_puts("works");
     		break;
     	case stat_stop_working:
     		lcd_clrscr();
-    		lcd_puts("Revolver stops");
+    		lcd_puts("stops");
     		break;
     	case stat_finished:
     		lcd_clrscr();
-    		lcd_puts("Revolver finished");
+    		lcd_puts("finished");
     		break;
     	default: 
     		break;

@@ -110,20 +110,27 @@
 #define REV_DISABLE			(STEPPER_PORT &= ~(1<<REV_BIT_EN))	//!< Disables the driver for the steper motor
 
 
-#define REV_STEP_DURATION	32			//!< Duration of one step in milliseconds	
+#define REV_STEP_DURATION	32			//!< Duration of one step in milliseconds. This value controlles the rotating speed
 #define REV_RAMP_DURATION	4			//!< Duration of the ramp up or ramp down in steps
 #define REV_MAX_SIZE		12			//1< The amount of smarties (holes) which fit into the revolver 
 
 // Stepper motor for catcher
 #define CATCH_BIT_EN		PD4			//!< Portbit for Enable driver for catcher stepper motor
-#define CATCH_BIT_CW		PD3			//!< Portbit for Rotate direction for catcher stepper motor (CW/CC
-#define CATCH_BIT_CLK		PD2			//!< Portbit for Clock signal for driver for catcher stepper motorW)
+#define CATCH_BIT_CW		PD1			//!< Portbit for Rotate direction for catcher stepper motor (CW/CC
+#define CATCH_BIT_CLK		PD0			//!< Portbit for Clock signal for driver for catcher stepper motorW)
 
+/**
+ * \brief Move the catcher stepper motor for one single step. 
+ */
+#define CATCH_MOVE_STEP							\
+	do {										\
+		STEPPER_PORT &= ~(1<<CATCH_BIT_CLK);	\
+		STEPPER_PORT |= (1<<CATCH_BIT_CLK);		\
+} while (0)
 #define CATCH_ENABLE		(STEPPER_PORT |= (1<<CATCH_BIT_EN))		//!< Enables the driver for the steper motor
 #define CATCH_DISABLE		(STEPPER_PORT &= ~(1<<CATCH_BIT_EN))	//!< Disables the driver for the steper motor
-#define CATCH_MOVE_STEP		(STEPPER_PORT ^= (1<<CATCH_BIT_CLK))	//!< Move the catcher steper motor for one single step
 
-#define CATCH_STEP_DURATION 32			//!< Duration of one step in one Millisecond 
+#define CATCH_STEP_DURATION 32			//!< Duration of one step in one Millisecond. This value controlles the rotating speed
 #define CATCH_RAMP_DURATION 5			//!< Duration of the ramp up or ramp down in steps
 #define CATCH_MAX_SIZE		8			//!< The amount of catcher tubes for sorting the smarties
 

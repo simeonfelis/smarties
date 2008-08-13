@@ -29,69 +29,118 @@ extern smartie_sorter ss;
  *  - REV_STEP_DURATION
  *  - REV_RAMP_DURATION
  * 
- * See below for links to them.
- * 
  */
 void motor_stuff ()
 {
-	//      C A T C H E R
-	if (ss.mot_catcher.status == stat_start_working) // ramp up
-	{
-		// prepare the ramp up
-		if (ss.mot_catcher.status_tmp == stat_idle)
-		{
+	/**************************************************************************
+	 *                           C A T C H E R                                *
+	 *************************************************************************/
+
+	if (ss.mot_catcher.status != stat_idle)
+		ss.mot_catcher.cycle_counter++;
+		
+#if TESTING_RAMPS
+	/* start and ramp up */
+	if (ss.mot_catcher.status == stat_start_working) {
+		/* if we just started to rotate, start and prepare ramp up */
+		if (ss.mot_catcher.status_tmp == stat_idle) {
+			CATCH_ENABLE;
 			ss.mot_catcher.status_tmp = stat_start_working;
-			ss.mot_catcher.rampup_steps = CATCH_RAMP_DURATION;
+			ss.mot_catcher.rampup_steps = CATCH_RAMP_DURATION; /* will be decreased during ramp up */
 			ss.mot_catcher.cycle_counter = 0;
 		}
 		
-		// do the ramp up
-		ss.mot_catcher.cycle_counter++;
+		/* do the ramp up */
 		if (ss.mot_catcher.cycle_counter
-				== CATCH_STEP_DURATION * ss.mot_catcher.rampup_steps)
-		{
-			CATCH_MOVE_STEP;
+				== (CATCH_STEP_DURATION * ss.mot_catcher.rampup_steps)) {
 			ss.mot_catcher.cycle_counter = 0;
 			ss.mot_catcher.rampup_steps--;
-			if (ss.mot_catcher.rampup_steps == 0)
-			{
+			if (ss.mot_catcher.rampdown_steps == 0) {
 				ss.mot_catcher.status = stat_working;
 				ss.mot_catcher.status_tmp = stat_start_working;
 			}
-		}
-	} // ramp up end
-
-	if (ss.mot_catcher.status == stat_working) // just rotate 
-	{
-		ss.mot_catcher.cycle_counter++;
-		if (ss.mot_catcher.cycle_counter == CATCH_STEP_DURATION)
-		{
-			ss.mot_catcher.cycle_counter = 0;
 			CATCH_MOVE_STEP;
 		}
-	} // just rotate end
+	}
+#endif /* Testing ramps */
 
-	if (ss.mot_catcher.status == stat_stop_working) // ramp down
-	{
-		// prepare ramp down
-		if (ss.mot_catcher.status_tmp == stat_working)
-		{
+#if !TESTING_RAMPS
+	/* start rotating */
+	if (ss.mot_catcher.status == stat_start_working) {
+		ss.mot_catcher.status_tmp = stat_start_working;
+		ss.mot_catcher.status = stat_working;
+		CATCH_ENABLE;
+	}
+#endif 
+	
+	/* just rotate */
+	if (ss.mot_catcher.status == stat_working) {
+		if (ss.mot_catcher.status_tmp == stat_start_working) {
+			ss.mot_catcher.status_tmp = stat_working;
+			ss.mot_catcher.cycle_counter = 0;
+		}
+		if (ss.mot_catcher.cycle_counter == REV_STEP_DURATION) {
+			CATCH_MOVE_STEP;
+			ss.mot_catcher.cycle_counter = 0;
+		}
+		/* count the passes on the lightbarrier. One pass, one position */
+		if (ss.lb_catcher.passes > 0) {
+			ss.mot_catcher.currentPos++;
+			ss.lb_catcher.passes--;
+		}
+		/* before we reach the target position do the ramp down */
+		if ( ss.mot_catcher.currentPos == (ss.mot_catcher.targetPos-1) ) 
+			ss.mot_catcher.status = stat_stop_working;
+	}
+	
+#if TESTING_RAMPS
+	/* ramp down */
+	if (ss.mot_catcher.status == stat_stop_working) {
+		if (ss.mot_catcher.status_tmp == stat_working) {
 			ss.mot_catcher.status_tmp = stat_stop_working;
-			ss.mot_catcher.rampdown_steps = 1;
 			ss.mot_catcher.cycle_counter = 0;
+			ss.mot_catcher.rampdown_steps = 1;
 		}
-		ss.mot_catcher.cycle_counter++;
-		if (ss.mot_catcher.cycle_counter
-				== CATCH_RAMP_DURATION * ss.mot_catcher.rampdown_steps)
-		{
-			CATCH_MOVE_STEP;
+		
+		/* do the ramp down */
+		if (ss.mot_catcher.cycle_counter 
+				== (CATCH_STEP_DURATION * ss.mot_catcher.rampdown_steps)) {
 			ss.mot_catcher.cycle_counter = 0;
 			ss.mot_catcher.rampdown_steps++;
-			if (ss.mot_catcher.rampdown_steps == CATCH_RAMP_DURATION)
+			if (ss.mot_catcher.rampdown_steps == CATCH_RAMP_DURATION) {
+				ss.mot_catcher.status_tmp = stat_stop_working;
 				ss.mot_catcher.status = stat_finished;
+			}
+			CATCH_MOVE_STEP;
 		}
-	} // ramp down end
-
+	}
+#endif
+	
+#if !TESTING_RAMPS
+	/* stop working */
+	if (ss.mot_catcher.status == stat_stop_working) {
+		ss.mot_catcher.status_tmp = stat_stop_working;
+		ss.mot_catcher.status = stat_finished;
+	}
+#endif
+	
+	/* stop */
+	if (ss.mot_catcher.status == stat_finished) {
+		if (ss.mot_catcher.status_tmp == stat_stop_working) {
+			ss.mot_catcher.status_tmp = stat_finished;
+			ss.mot_catcher.cycle_counter = 0;
+		}
+		/* go on rotating until we meet the end position, indicated by the lightbarrier */
+		/* but rotate slowly */
+		if (ss.mot_catcher.cycle_counter
+				== (CATCH_STEP_DURATION * REV_RAMP_DURATION)) {
+			ss.mot_catcher.cycle_counter = 0;
+			if (IS_LB_CATCHER) {
+				ss.mot_catcher.status = stat_idle;
+				CATCH_DISABLE;				
+			}
+		}
+	}
 	
 	/**************************************************************************
 	 *                           R E V O L V E R                              *
@@ -103,9 +152,9 @@ void motor_stuff ()
 #if TESTING_RAMPS
 	/* start and ramp up */
 	if (ss.mot_revolver.status == stat_start_working) {
-		REV_ENABLE;
 		/* if we just started to rotate, prepare ramp up */
 		if (ss.mot_revolver.status_tmp == stat_idle) {
+			REV_ENABLE;
 			ss.mot_revolver.status_tmp = stat_start_working;
 			ss.mot_revolver.rampup_steps = REV_RAMP_DURATION; /* will be decreased during ramp up */
 			ss.mot_revolver.cycle_counter = 0;

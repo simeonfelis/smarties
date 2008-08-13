@@ -136,32 +136,18 @@ void catcher_rotate_absolute(smartie_color color_new)
 	catcher_rotate_relative(steps);
 }
 
-/**
- * \brief rotates the catcher by some steps
- * 
- * \param catcher
- * The amount of catcher which must pass the light barrier
- */
-void catcher_rotate_relative(uint16_t catcher)
+//TODO: Doku
+void catcher_rotate_relative(uint16_t rel_pos)
 {
-/*	uint16_t i;
-	uint16_t u_steps;
-	///! round the value steps
-	f_steps += 0.5;
-	u_steps = f_steps;
+	if (rel_pos == 0)
+		return;
 	
-	CATCH_EN();
-	for (i=u_steps; i>0; i-- ) {
-		CATCH_MOVE_STEP();
-		sys_wait(255);
-		if (i==3) {	// check for position towards the end
-			if (IS_LB_CATCHER) { // as soon as a positoner touches the lightbarrier
-				i = 0;
-			}			
-		}
-	} // for ()
-	CATCH_DIS();
-*/
+	if ( (ss.mot_catcher.currentPos + rel_pos) > CATCH_MAX_SIZE ) 
+		ss.mot_catcher.targetPos = CATCH_MAX_SIZE - rel_pos;
+	else 
+		ss.mot_catcher.targetPos = ss.mot_catcher.currentPos + rel_pos;
+	
+	ss.mot_catcher.status = stat_start_working;
 }
 
 uint8_t catcher_rotate_steps (uint16_t f_steps)
