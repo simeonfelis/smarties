@@ -41,15 +41,45 @@
 
 
 // COLOR SENSORS STUFF
-#define ADC_PORT			PORTA		/// TODO: Documentation
-#define ADC_DDR				DDRA		/// TODO: Documentation
-#define ADC_PIN				PINA		///! TODO: Documentation
-
+#define ADC_PORT			PORTA		//TODO: Documentation
+#define ADC_DDR				DDRA		//TODO: Documentation
+#define ADC_PIN				PINA		//TODO: Documentation
+//TODO: Documentation
 
 // COLOR SENSOR HDJD-S722 works with an analog output
-#define ADC_BLUE_PIN		PA2			///! TODO: Documentation
-#define ADC_GREEN_PIN		PA1			///! TODO: Documentation
-#define ADC_RED_PIN			PA0			///! TODO: Documentation
+//TODO: Documentation
+#define ADC_BLUE_PIN		PA2			
+#define ADC_GREEN_PIN		PA1			//TODO: Documentation
+#define ADC_RED_PIN			PA0			//TODO: Documentation
+
+// COLOR SENSOR ADJDS371 is a digital color sensor with own light source
+//TODO: Docs
+#define COL_SENS_ADJD_LED_PORT	PORTA
+#define COL_SENS_ADJD_LED_PIN	PINA
+#define COL_SENS_ADJD_LED_DDR	DDRA
+#define COL_SENS_ADJD_LED_BIT	PA0
+
+#define COL_SENS_ADJD_LED_ON		(COL_SENS_ADJD_LED_PORT |= (1<<COL_SENS_ADJD_LED_BIT))
+#define COL_SENS_ADJD_LED_OFF		(COL_SENS_ADJD_LED_PORT &= ~(1<<COL_SENS_ADJD_LED_BIT))
+
+#define COL_SENS_ADJD_DEVICE_ADDRESS	0x23
+
+//COLOR SENSOR ADJD i2c commands, registers, bits
+#define ADJD_REG_CTRL				0
+#define ADJD_REG_CONFIG				1
+#define ADJD_REG_CAP_RED			6
+#define ADJD_REG_CAP_GREEN			7
+#define ADJD_REG_CAP_BLUE			8
+#define ADJD_REG_CAP_CLEAR			9
+#define ADJD_REG_INT_RED_LO			10
+#define ADJD_REG_INT_RED_HI			11
+#define ADJD_REG_INT_GREEN_LO		12
+#define ADJD_REG_INT_GREEN_HI		13
+#define ADJD_REG_INT_BLUE_LO		14
+#define ADJD_REG_INT_BLUE_HI		15
+#define ADJD_REG_INT_CLEAR_LO		16
+#define ADJD_REG_INT_CLEAR_HI		17
+
 
 // COLOR SENSOR TCSS230 works with an clock output and color filters
 #define TCS_IN_PORT			PORTD		///! Input port for TCS color sensor
@@ -288,8 +318,10 @@ typedef struct stepper_motor_t {
  * \brief Describes a color sensor
  */
 typedef struct color_sensor_t {
-	common_stat status;			//!< The current status of the color senso
-	smartie_color value;		//!< The value from the last color detection
+	common_stat status;			//!< The current status of the color sensor
+	common_stat status_last;	//!< The status before current status
+	smartie_color color;		//!< The value from the last color detection
+	uint8_t ret;
 } color_sensor;
 
 /**
@@ -326,8 +358,8 @@ typedef struct smartie_sorter_t {
 	system_mode mode;					
 	system_step step;
 #endif
-	color_sensor colSensor_ADJD;		//!< Digital color sensor
-	color_sensor colSensor_TMS;			//!< Analog color sensor
+	color_sensor col_sens_ADJD;		//!< Digital color sensor
+	color_sensor col_sens_TMS;			//!< Analog color sensor
 	stepper_motor mot_catcher;				//!< Stepper motor for the catcher area
 	stepper_motor mot_revolver;				//!< Stepper motor for the revolver
 	lightbarrier lb_catcher;			//!< Lightbarrier for the catcher
@@ -348,7 +380,7 @@ void sys_rotate_revolver();
 void sys_rotate_catcher();
 void sys_wait(uint16_t time);
 void start_shaker();
-void start_get_color_1();
+void col_sens_adjd_get_color();
 void start_get_color_2();
 void catcher_rotate_absolute(smartie_color color_now);
 void catcher_rotate_relative(uint16_t);

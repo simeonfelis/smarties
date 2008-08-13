@@ -89,9 +89,9 @@ void start_shaker()
 	
 }
 
-void start_get_color_1()
+void col_sens_adjd_get_color()
 {
-	
+	ss.col_sens_ADJD.status = stat_start_working;
 }
 
 void start_get_color_2()

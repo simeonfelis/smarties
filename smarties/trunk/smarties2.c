@@ -113,7 +113,6 @@ menu_entry entries[3][3];
   */
 int main(void)
 {	
-	
 	ss.state.mode = SYS_MODE_INIT;
 	ss.state.modetmp = SYS_MODE_INIT;
 	//menu_entry * current_menu = &entry0; 
@@ -159,6 +158,44 @@ int main(void)
     		lcd_puts ("Catcher One pass");
     		ss.lb_catcher.passes = 0;
     	}
+    	if (ss.col_sens_ADJD.status == stat_idle) {
+    		col_sens_adjd_get_color();
+    		if (ss.col_sens_ADJD.status_last == stat_finished ) {
+    			ss.col_sens_ADJD.status_last = stat_idle;
+    			lcd_clrscr();
+    			switch (ss.col_sens_ADJD.color) {
+    			case col_blue:
+    				lcd_puts(MEN_COL_BLUE);
+    				break;
+    			case col_brown:
+    				lcd_puts(MEN_COL_BROWN);
+    				break;
+    			case col_green:
+    				lcd_puts(MEN_COL_GREEN);
+    				break;
+    			case col_purple:
+    				lcd_puts(MEN_COL_PURPLE);
+    				break;
+    			case col_red:
+    				lcd_puts(MEN_COL_RED);
+    				break;
+    			case col_yellow:
+    				lcd_puts(MEN_COL_YELLOW);
+    				break;
+    			case col_unknown:
+    				lcd_puts(MEN_COL_UNKNOWN);
+    				break;
+    			default:
+    				break;
+    			}
+    		}
+    		if (ss.col_sens_ADJD.ret) {
+    			lcd_clrscr();
+    			lcd_puts("Init failed");
+    		}
+    	}
+    		
+#if 0
     	switch (ss.mot_catcher.status) {
     	case stat_idle:
     		lcd_clrscr();
@@ -183,6 +220,7 @@ int main(void)
     	default: 
     		break;
     	}
+#endif 
 	} /* Testing loop end */
 	
 	
@@ -204,9 +242,9 @@ int main(void)
 			if (ss.state.step.I == SYS_STEP_RUNNING) 
 			{
 				// color sensor stuff
-				if (ss.colSensor_ADJD.status == stat_idle)
-					ss.colSensor_ADJD.status = stat_working;	//will start SPI detection
-				if (ss.colSensor_ADJD.status == stat_working)
+				if (ss.col_sens_ADJD.status == stat_idle)
+					ss.col_sens_ADJD.status = stat_working;	//will start SPI detection
+				if (ss.col_sens_ADJD.status == stat_working)
 					;//TODO: check if SPI reception complete, set col_sens_finished
 				
 				
@@ -233,9 +271,9 @@ int main(void)
 				
 				// finishing step I, entering step II
 				if ((ss.mot_catcher.status == stat_finished) &&
-						(ss.colSensor_ADJD.status == stat_finished))
+						(ss.col_sens_ADJD.status == stat_finished))
 				{
-					ss.colSensor_ADJD.status = stat_idle;
+					ss.col_sens_ADJD.status = stat_idle;
 					ss.mot_catcher.status = stat_idle;
 					ss.mot_catcher.status_tmp = stat_finished;
 					ss.state.step.I = SYS_STEP_COMPLETED;

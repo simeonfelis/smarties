@@ -3,6 +3,7 @@
 #include "inits.h"
 #include "system.h"
 #include "menu.h"
+#include "i2cmaster.h"
 
 extern smartie_sorter ss;
 
@@ -15,6 +16,8 @@ void init_all()
 		lcd_puts(ss.menu.text);
 	init_timer();
 	init_interrupts();
+	i2c_init();
+		ss.col_sens_ADJD.ret = i2c_start(COL_SENS_ADJD_DEVICE_ADDRESS + I2C_WRITE);
 	init_motors();
 }
 
@@ -31,6 +34,11 @@ void init_io()
 	STEPPER_DDR |= (1 << REV_BIT_CLK) | (1<<REV_BIT_CW) | (1<<REV_BIT_EN) | (1<<CATCH_BIT_CLK) | (1<<CATCH_BIT_CW) | (1<<CATCH_BIT_EN);
 	STEPPER_PORT |= (1<<REV_BIT_CLK) | (1<<CATCH_BIT_CLK); /* The clock signal should be high by default */
 
+	/* ADJD color sensor */
+	COL_SENS_ADJD_LED_OFF;  /* LED by default of */
+	COL_SENS_ADJD_LED_DDR |= (1<<COL_SENS_ADJD_LED_BIT);
+	/* some of the inits is done in the i2cmaster library */
+	
 	/* the TCS color sensor */
 	TCS_OUT_PORT &= ~((1<<TCS_S0_BIT) | (1<<TCS_S1_BIT) | (1<<TCS_S2_BIT) | (1<<TCS_S3_BIT));
 	TCS_OUT_DDR |= (1<<TCS_S0_BIT) | (1<<TCS_S1_BIT) | (1<<TCS_S2_BIT) | (1<<TCS_S3_BIT);

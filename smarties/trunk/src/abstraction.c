@@ -253,6 +253,12 @@ void motor_stuff ()
 	}
 }
 
+/** \brief Takes controll over the rotary encoder (user input) device
+ * 
+ * This function is expected to be called regulary. It polls the 
+ * input pins for the rotary encoder and sets the corresponding 
+ * flags of the rotary_encoder struct. 
+ */
 void rotary_encoder_stuff ()
 {
 	if (IS_ROTENC_PUSH)
@@ -319,6 +325,14 @@ void rotary_encoder_stuff ()
 	}	
 }
 
+/**
+ *  \brief Take control over the lightbarriers
+ * 
+ * This function is expected to be called regulary. It polls the
+ * input pins of the lightbarrier and sets the corresponding flags 
+ * of lightbarrier struct. This function assumes that lightbarriers
+ * are always enabled.
+ */
 void lightbarrier_stuff ()
 {
 	if (IS_LB_CATCHER) {
@@ -359,7 +373,32 @@ void sensor_stuff ()
 	
 }
 
+//TODO: Doku
+void sensor_adjd_stuff() {
+	if (ss.col_sens_ADJD.status == stat_start_working) {
+		/* if we just started to detect the color switch on the light first */
+		if (ss.col_sens_ADJD.status_last == stat_idle) {
+			ss.col_sens_ADJD.status = stat_working;
+			ss.col_sens_ADJD.status_last = stat_start_working;
+			COL_SENS_ADJD_LED_ON;
+		}
+	}
+	
+	if (ss.col_sens_ADJD.status == stat_working) {
+		if (ss.col_sens_ADJD.status_last == stat_start_working) {
+			/* if the light is on ask for the current color */
+		}
+	}
+}
 
+/**
+ *  \brief Takes control over the shaker (vibrator) device
+ * 
+ * This function is expected to be called regulary. It polls the
+ * input pins of the shaker and sets the corresponding flags 
+ * of the shaker struct. This function assumes that lightbarriers
+ * are always enabled.
+ */
 void shaker_stuff ()
 {
 	if (ss.shkr.statustmp == stat_idle)

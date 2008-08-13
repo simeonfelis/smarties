@@ -23,6 +23,9 @@ ISR (TIMER0_OVF_vect)
 	/* stepper motor stuff */
 	motor_stuff();
 	
+	/* color sensor ADJD (digital) stuff */
+	sensor_adjd_stuff();
+	
 	// display stuff
 	// sensor stuff
 	// engine stuff
