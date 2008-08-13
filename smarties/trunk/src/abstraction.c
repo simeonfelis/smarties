@@ -35,12 +35,12 @@ extern smartie_sorter ss;
 void motor_stuff ()
 {
 	//      C A T C H E R
-	if (ss.mot_catcher.status == start_working) // ramp up
+	if (ss.mot_catcher.status == stat_start_working) // ramp up
 	{
 		// prepare the ramp up
-		if (ss.mot_catcher.status_tmp == idle)
+		if (ss.mot_catcher.status_tmp == stat_idle)
 		{
-			ss.mot_catcher.status_tmp = start_working;
+			ss.mot_catcher.status_tmp = stat_start_working;
 			ss.mot_catcher.rampup_steps = CATCH_RAMP_DURATION;
 			ss.mot_catcher.cycle_counter = 0;
 		}
@@ -55,13 +55,13 @@ void motor_stuff ()
 			ss.mot_catcher.rampup_steps--;
 			if (ss.mot_catcher.rampup_steps == 0)
 			{
-				ss.mot_catcher.status = working;
-				ss.mot_catcher.status_tmp = start_working;
+				ss.mot_catcher.status = stat_working;
+				ss.mot_catcher.status_tmp = stat_start_working;
 			}
 		}
 	} // ramp up end
 
-	if (ss.mot_catcher.status == working) // just rotate 
+	if (ss.mot_catcher.status == stat_working) // just rotate 
 	{
 		ss.mot_catcher.cycle_counter++;
 		if (ss.mot_catcher.cycle_counter == CATCH_STEP_DURATION)
@@ -71,12 +71,12 @@ void motor_stuff ()
 		}
 	} // just rotate end
 
-	if (ss.mot_catcher.status == stop_working) // ramp down
+	if (ss.mot_catcher.status == stat_stop_working) // ramp down
 	{
 		// prepare ramp down
-		if (ss.mot_catcher.status_tmp == working)
+		if (ss.mot_catcher.status_tmp == stat_working)
 		{
-			ss.mot_catcher.status_tmp = stop_working;
+			ss.mot_catcher.status_tmp = stat_stop_working;
 			ss.mot_catcher.rampdown_steps = 1;
 			ss.mot_catcher.cycle_counter = 0;
 		}
@@ -88,7 +88,7 @@ void motor_stuff ()
 			ss.mot_catcher.cycle_counter = 0;
 			ss.mot_catcher.rampdown_steps++;
 			if (ss.mot_catcher.rampdown_steps == CATCH_RAMP_DURATION)
-				ss.mot_catcher.status = finished;
+				ss.mot_catcher.status = stat_finished;
 		}
 	} // ramp down end
 
@@ -97,16 +97,16 @@ void motor_stuff ()
 	 *                           R E V O L V E R                              *
 	 *************************************************************************/
 
-	if (ss.mot_revolver.status != idle)
+	if (ss.mot_revolver.status != stat_idle)
 		ss.mot_revolver.cycle_counter++;
 		
 #if TESTING_RAMPS
 	/* start and ramp up */
-	if (ss.mot_revolver.status == start_working) {
+	if (ss.mot_revolver.status == stat_start_working) {
 		REV_ENABLE;
 		/* if we just started to rotate, prepare ramp up */
-		if (ss.mot_revolver.status_tmp == idle) {
-			ss.mot_revolver.status_tmp = start_working;
+		if (ss.mot_revolver.status_tmp == stat_idle) {
+			ss.mot_revolver.status_tmp = stat_start_working;
 			ss.mot_revolver.rampup_steps = REV_RAMP_DURATION; /* will be decreased during ramp up */
 			ss.mot_revolver.cycle_counter = 0;
 		}
@@ -117,8 +117,8 @@ void motor_stuff ()
 			ss.mot_revolver.cycle_counter = 0;
 			ss.mot_revolver.rampup_steps--;
 			if (ss.mot_revolver.rampdown_steps == 0) {
-				ss.mot_revolver.status = working;
-				ss.mot_revolver.status_tmp = start_working;
+				ss.mot_revolver.status = stat_working;
+				ss.mot_revolver.status_tmp = stat_start_working;
 			}
 			REV_MOVE_STEP;
 		}
@@ -127,17 +127,17 @@ void motor_stuff ()
 
 #if !TESTING_RAMPS
 	/* start rotating */
-	if (ss.mot_revolver.status == start_working) {
-		ss.mot_revolver.status_tmp = start_working;
-		ss.mot_revolver.status = working;
+	if (ss.mot_revolver.status == stat_start_working) {
+		ss.mot_revolver.status_tmp = stat_start_working;
+		ss.mot_revolver.status = stat_working;
 		REV_ENABLE;
 	}
 #endif 
 	
 	/* just rotate */
-	if (ss.mot_revolver.status == working) {
-		if (ss.mot_revolver.status_tmp == start_working) {
-			ss.mot_revolver.status_tmp = working;
+	if (ss.mot_revolver.status == stat_working) {
+		if (ss.mot_revolver.status_tmp == stat_start_working) {
+			ss.mot_revolver.status_tmp = stat_working;
 			ss.mot_revolver.cycle_counter = 0;
 		}
 		if (ss.mot_revolver.cycle_counter == REV_STEP_DURATION) {
@@ -151,14 +151,14 @@ void motor_stuff ()
 		}
 		/* before we reach the target position do the ramp down */
 		if ( ss.mot_revolver.currentPos == (ss.mot_revolver.targetPos-1) ) 
-			ss.mot_revolver.status = stop_working;
+			ss.mot_revolver.status = stat_stop_working;
 	}
 	
 #if TESTING_RAMPS
 	/* ramp down */
-	if (ss.mot_revolver.status == stop_working) {
-		if (ss.mot_revolver.status_tmp == working) {
-			ss.mot_revolver.status_tmp = stop_working;
+	if (ss.mot_revolver.status == stat_stop_working) {
+		if (ss.mot_revolver.status_tmp == stat_working) {
+			ss.mot_revolver.status_tmp = stat_stop_working;
 			ss.mot_revolver.cycle_counter = 0;
 			ss.mot_revolver.rampdown_steps = 1;
 		}
@@ -169,8 +169,8 @@ void motor_stuff ()
 			ss.mot_revolver.cycle_counter = 0;
 			ss.mot_revolver.rampdown_steps++;
 			if (ss.mot_revolver.rampdown_steps == REV_RAMP_DURATION) {
-				ss.mot_revolver.status_tmp = stop_working;
-				ss.mot_revolver.status = finished;
+				ss.mot_revolver.status_tmp = stat_stop_working;
+				ss.mot_revolver.status = stat_finished;
 			}
 			REV_MOVE_STEP;
 		}
@@ -179,16 +179,16 @@ void motor_stuff ()
 	
 #if !TESTING_RAMPS
 	/* stop working */
-	if (ss.mot_revolver.status == stop_working) {
-		ss.mot_revolver.status_tmp = stop_working;
-		ss.mot_revolver.status = finished;
+	if (ss.mot_revolver.status == stat_stop_working) {
+		ss.mot_revolver.status_tmp = stat_stop_working;
+		ss.mot_revolver.status = stat_finished;
 	}
 #endif
 	
 	/* stop */
-	if (ss.mot_revolver.status == finished) {
-		if (ss.mot_revolver.status_tmp == stop_working) {
-			ss.mot_revolver.status_tmp = finished;
+	if (ss.mot_revolver.status == stat_finished) {
+		if (ss.mot_revolver.status_tmp == stat_stop_working) {
+			ss.mot_revolver.status_tmp = stat_finished;
 			ss.mot_revolver.cycle_counter = 0;
 		}
 		/* go on rotating until we meet the end position, indicated by the lightbarrier */
@@ -197,7 +197,7 @@ void motor_stuff ()
 				== (REV_STEP_DURATION * REV_RAMP_DURATION)) {
 			ss.mot_revolver.cycle_counter = 0;
 			if (IS_LB_REVOLVER) {
-				ss.mot_revolver.status = idle;
+				ss.mot_revolver.status = stat_idle;
 				REV_DISABLE;				
 			}
 		}
@@ -313,19 +313,19 @@ void sensor_stuff ()
 
 void shaker_stuff ()
 {
-	if (ss.shkr.statustmp == idle)
-		if (ss.shkr.status == working)
+	if (ss.shkr.statustmp == stat_idle)
+		if (ss.shkr.status == stat_working)
 		{
-			ss.shkr.statustmp = working;
+			ss.shkr.statustmp = stat_working;
 			ss.shkr.duration = 500; 		//500 ms
 		}
-	if (ss.shkr.status == working)
+	if (ss.shkr.status == stat_working)
 	{
 		ss.shkr.duration--;
 		if (ss.shkr.duration == 0)
 		{
-			ss.shkr.status = finished;
-			ss.shkr.statustmp = working;
+			ss.shkr.status = stat_finished;
+			ss.shkr.statustmp = stat_working;
 		}
 	}
 }

@@ -160,23 +160,23 @@ int main(void)
     		ss.lb_catcher.passes = 0;
     	}
     	switch (ss.mot_revolver.status) {
-    	case idle:
+    	case stat_idle:
     		lcd_clrscr();
     		lcd_puts("Revolver idle");
     		break;
-    	case start_working:
+    	case stat_start_working:
     		lcd_clrscr();
     		lcd_puts("Revolver starts");
     		break;
-    	case working:
+    	case stat_working:
     		lcd_clrscr();
     		lcd_puts("Revolver works");
     		break;
-    	case stop_working:
+    	case stat_stop_working:
     		lcd_clrscr();
     		lcd_puts("Revolver stops");
     		break;
-    	case finished:
+    	case stat_finished:
     		lcd_clrscr();
     		lcd_puts("Revolver finished");
     		break;
@@ -204,18 +204,18 @@ int main(void)
 			if (ss.state.step.I == SYS_STEP_RUNNING) 
 			{
 				// color sensor stuff
-				if (ss.colSensor_ADJD.status == idle)
-					ss.colSensor_ADJD.status = working;	//will start SPI detection
-				if (ss.colSensor_ADJD.status == working)
+				if (ss.colSensor_ADJD.status == stat_idle)
+					ss.colSensor_ADJD.status = stat_working;	//will start SPI detection
+				if (ss.colSensor_ADJD.status == stat_working)
 					;//TODO: check if SPI reception complete, set col_sens_finished
 				
 				
 				// catcher preparation
 				ss.mot_catcher.targetPos = smartie[POS_SMARTIE_OUT-1].color;
-				if (ss.mot_catcher.status == idle)
+				if (ss.mot_catcher.status == stat_idle)
 					if (ss.mot_catcher.currentPos != ss.mot_catcher.targetPos)
-						ss.mot_catcher.status = start_working;	//will start rotating the catcher
-				if (ss.mot_catcher.status == working) // status working will be entered automatically
+						ss.mot_catcher.status = stat_start_working;	//will start rotating the catcher
+				if (ss.mot_catcher.status == stat_working) // status working will be entered automatically
 				{
 					if (ss.lb_catcher.passes > 0)						//FIXME: check multiple passes
 					{
@@ -226,18 +226,18 @@ int main(void)
 					}
 					if (ss.mot_catcher.currentPos == ss.mot_catcher.targetPos)
 					{
-						ss.mot_catcher.status_tmp = working;
-						ss.mot_catcher.status = stop_working;
+						ss.mot_catcher.status_tmp = stat_working;
+						ss.mot_catcher.status = stat_stop_working;
 					}
 				}
 				
 				// finishing step I, entering step II
-				if ((ss.mot_catcher.status == finished) &&
-						(ss.colSensor_ADJD.status == finished))
+				if ((ss.mot_catcher.status == stat_finished) &&
+						(ss.colSensor_ADJD.status == stat_finished))
 				{
-					ss.colSensor_ADJD.status = idle;
-					ss.mot_catcher.status = idle;
-					ss.mot_catcher.status_tmp = finished;
+					ss.colSensor_ADJD.status = stat_idle;
+					ss.mot_catcher.status = stat_idle;
+					ss.mot_catcher.status_tmp = stat_finished;
 					ss.state.step.I = SYS_STEP_COMPLETED;
 					ss.state.step.II = SYS_STEP_AWAITED;
 				}				
@@ -248,10 +248,10 @@ int main(void)
 							
 			if (ss.state.step.II == SYS_STEP_RUNNING) 
 			{
-				if (ss.shkr.status == idle)
-					ss.shkr.status = working;
+				if (ss.shkr.status == stat_idle)
+					ss.shkr.status = stat_working;
 				if (ss.shkr.duration == 0)
-					ss.shkr.status = finished;
+					ss.shkr.status = stat_finished;
 					
 
 				revolver_rotate_relative(1);
@@ -259,10 +259,10 @@ int main(void)
 				if (RevPos == REVOLVER_SIZE)
 					RevPos = 0;
 				
-				if (ss.shkr.status == finished)
+				if (ss.shkr.status == stat_finished)
 				{
-					ss.shkr.status = idle;
-					ss.shkr.statustmp = idle;
+					ss.shkr.status = stat_idle;
+					ss.shkr.statustmp = stat_idle;
 					ss.state.step.II = SYS_STEP_COMPLETED;
 					ss.state.step.III = SYS_STEP_AWAITED;
 				}

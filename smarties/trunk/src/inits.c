@@ -85,8 +85,8 @@ void init_motors()
 	
 	/*************** R E V O L V E R *********************/
 	
-	ss.mot_revolver.status = idle;
-	ss.mot_revolver.status_tmp = idle;
+	ss.mot_revolver.status = stat_idle;
+	ss.mot_revolver.status_tmp = stat_idle;
 	
 	STEPPER_PORT |= (1<<REV_BIT_CLK); /* The clock signal should be high */
 	

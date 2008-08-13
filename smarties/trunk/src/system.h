@@ -257,11 +257,11 @@ typedef struct Smartie_t {
  * status. But mainly they all have common status like working or finished.  
  */
 typedef enum common_stat_t {
-	idle = 0,			//!< The module/device is doing nothing and is ready for a new job
-	start_working,		//!< This will initiate the any work the device can have 
-	working,			//!< Indicates the device is busy. The device will automatically change to this state
-	stop_working,		//!< Setting a device to this state will stop the device 
-	finished			//!< Indicates the device is finished. The device will automatically change to this state
+	stat_idle = 0,			//!< The module/device is doing nothing and is ready for a new job
+	stat_start_working,		//!< This will initiate the any work the device can have 
+	stat_working,			//!< Indicates the device is busy. The device will automatically change to this state
+	stat_stop_working,		//!< Setting a device to this state will stop the device 
+	stat_finished			//!< Indicates the device is finished. The device will automatically change to this state
 } common_stat;
 
 /**

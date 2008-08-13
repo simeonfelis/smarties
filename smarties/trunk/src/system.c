@@ -212,7 +212,7 @@ void revolver_rotate_relative(uint8_t rel_pos)
 	else 
 		ss.mot_revolver.targetPos = ss.mot_revolver.currentPos + rel_pos;
 	
-	ss.mot_revolver.status = start_working;
+	ss.mot_revolver.status = stat_start_working;
 }
 
 
