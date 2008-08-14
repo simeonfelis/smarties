@@ -14,7 +14,10 @@ extern smartie_sorter ss;
 /**
  * \brief Interrupt routine, executed every millisecond
  */
-ISR (TIMER0_OVF_vect) {	
+ISR (TIMER0_COMP_vect) {	
+	/* color sensor TCS stuff */
+	sensor_tcs_stuff();
+
 	/* user input (rotary encoder) stuff */
 	rotary_encoder_stuff();
 	
@@ -26,9 +29,6 @@ ISR (TIMER0_OVF_vect) {
 	
 	/* color sensor ADJD stuff */
 	sensor_adjd_stuff();
-	
-	/* color sensor TCS stuff */
-	sensor_tcs_stuff();
 	
 	// display stuff
 	// sensor stuff
@@ -43,5 +43,5 @@ ISR (TIMER0_OVF_vect) {
  * \brief Interupt routine for measuring frequency of color sensor TCS OUT pin
  */
 ISR (INT0_vect) {
-	ss.col_sens_TCS.filter_freq_temp++;
+	ss.sens_tcs.slopes++;
 }

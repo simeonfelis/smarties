@@ -94,7 +94,7 @@ void sensor_adjd_get_color() {
 }
 
 void sensor_tcs_get_color() {
-	ss.col_sens_TCS.status = stat_start_working;
+	ss.sens_tcs.status = stat_start_working;
 }
 
 smartie_color get_catcher_position()

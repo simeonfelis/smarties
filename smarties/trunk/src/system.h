@@ -97,9 +97,9 @@
 #define COL_SENS_TCS_SAMPLE_TIME	3			//!< Time to measure TCS OUT frequency in milliseconds
 
 #define COL_SENS_TCS_ENABLE			\
-	(COL_SENS_TCS_OUT_PORT |= (1<<COL_SENS_TCS_OE_BIT))		//!< Enables the TCS color sensor output clk
+	(COL_SENS_TCS_OUT_PORT &= ~(1<<COL_SENS_TCS_OE_BIT))	//!< Enables the TCS color sensor output clk
 #define COL_SENS_TCS_DISABLE		\
-	(COL_SENS_TCS_OUT_PORT &= ~(1<<COL_SENS_TCS_OE_BIT))	 //!< Disables the TCS color sensor output clk
+	(COL_SENS_TCS_OUT_PORT |= (1<<COL_SENS_TCS_OE_BIT))	 	//!< Disables the TCS color sensor output clk
 #define COL_SENS_TCS_FREQ_MESURE_EN (GICR |= (1<<INT0))		//!< Enables interrupt for counting slopes (falling) from the TCS OUT pin
 #define COL_SENS_TCS_FREQ_MESURE_DI (GICR &= ~(1<<INT0))	//!< Enables interrupt for counting slopes (falling) from the TCS OUT pin
 
@@ -374,11 +374,12 @@ typedef struct color_sensor_tcs_t {
 	common_stat status;			//!< The current status of the color sensor
 	common_stat status_last;	//!< The status before current status
 	smartie_color color;		//!< The value from the last color detection
-	uint16_t cycle_counter;		//!< Especially for the TCS frequency mesurement
-	uint16_t filter_freq_red;
-	uint16_t filter_freq_blue;
-	uint16_t filter_freq_green;
-	uint16_t filter_freq_temp;
+	int16_t time;				//!< Especially for the TCS frequency mesurement. In milliseconds
+	int16_t filter_freq_red;
+	int16_t filter_freq_blue;
+	int16_t filter_freq_green;
+	int16_t filter_freq_temp;
+	int16_t slopes;				//!< The amount of slopes recognised during \ref COL_SENS_TCS_SAMPLE_TIME
 	uint8_t ret;
 } color_sensor_tcs;
 
@@ -413,7 +414,7 @@ typedef struct shaker_t {
 typedef struct smartie_sorter_t {
 	system_state state;					//!< Stores the current state
 	color_sensor_adjd col_sens_ADJD;		//!< Digital color sensor
-	color_sensor_tcs col_sens_TCS;			//!< Analog color sensor
+	color_sensor_tcs sens_tcs;			//!< Analog color sensor
 	stepper_motor mot_catcher;				//!< Stepper motor for the catcher area
 	stepper_motor mot_revolver;				//!< Stepper motor for the revolver
 	lightbarrier lb_catcher;			//!< Lightbarrier for the catcher

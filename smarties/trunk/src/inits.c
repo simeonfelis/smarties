@@ -20,8 +20,8 @@ void init_all()
 		lcd_puts(ss.menu.text);
 	init_timer();
 	init_interrupts();
-	i2c_init();
-		ss.col_sens_ADJD.ret = i2c_start(COL_SENS_ADJD_DEVICE_ADDRESS + I2C_WRITE);
+	//i2c_init();
+	//	ss.col_sens_ADJD.ret = i2c_start(COL_SENS_ADJD_DEVICE_ADDRESS + I2C_WRITE);
 	init_sensor_tcs();
 	init_motors();
 }
@@ -48,13 +48,17 @@ void init_io()
 	COL_SENS_TCS_OUT_PORT &= ~(
 			(1<<COL_SENS_TCS_S0_BIT) | (1<<COL_SENS_TCS_S1_BIT) | 
 			(1<<COL_SENS_TCS_S2_BIT) | (1<<COL_SENS_TCS_S3_BIT));
+	COL_SENS_TCS_OUT_PORT |= (1<<COL_SENS_TCS_OE_BIT); /* active low */
 	COL_SENS_TCS_OUT_DDR |= 
 		(1<<COL_SENS_TCS_S0_BIT) | (1<<COL_SENS_TCS_S1_BIT) | 
-		(1<<COL_SENS_TCS_S2_BIT) | (1<<COL_SENS_TCS_S3_BIT);
+		(1<<COL_SENS_TCS_S2_BIT) | (1<<COL_SENS_TCS_S3_BIT) |
+		(1<<COL_SENS_TCS_OE_BIT);
 
 	COL_SENS_TCS_IN_DDR &= ~(1<<COL_SENS_TCS_IN_ICP);
 	
-	MCUCR |= (1<<ISC01); /* behavour of the interrupt sens for frequency measure: on falling edge */
+	/* interrupt on falling edge */
+	MCUCR &= ~((1<<ISC00) | (1<<ISC01));
+	MCUCR |= (1<<ISC01);
 	
 	/* rotatry encoder */
 	ROTENC_INIT();
@@ -78,24 +82,24 @@ void init_interrupts() {
 
 void init_sensor_tcs() {
 	COL_SENS_TCS_DISABLE;
-	COL_SENS_TCS_SET_FREQ_SCALE(20);
+	COL_SENS_TCS_SET_FREQ_SCALE(100);
 }
 
 void init_timer()
 {
-	/* Output compare register: after 250 * 62.5E-9 = 1ms a compare match */
-	//OCR0 = 250;
+	/* Output compare register */
+	OCR0 = 62;
 	
-	/* Prescaler 8 */
-	TCCR0 |= (1<<CS01);
-#if 0
 	/* Prescaler 64 */
-	TCCR0 |= (1<<CS01) | (1<<CS00);
-#endif
+	TCCR0 |= (1<<CS02);
+	TCCR0 &= ~((1<<CS00) | (1<<CS01));
+
 	/* CTC mode */
-	//TCCR0 |= (1<<WGM01);
-	/* enable overflow interrupt */
-	TIMSK |= (1<<TOIE0);
+	TCCR0 &= ~((1<<WGM00) | (1<<WGM00));
+	TCCR0 |= (1<<WGM01);
+
+	/* enable compare match interrupt */
+	TIMSK |= (1<<OCIE0);
 	
 }
 

@@ -398,69 +398,78 @@ void sensor_tcs_stuff() {
 	uint8_t y;
 	static uint16_t f_blu, f_gre, f_red;
 	
-	if (ss.col_sens_TCS.status == stat_start_working) {
-		if (ss.col_sens_TCS.status_last == stat_idle) {
+	if (ss.sens_tcs.status == stat_start_working) {
+		if (ss.sens_tcs.status_last == stat_idle) {
+			ss.sens_tcs.status_last = stat_start_working;
+			ss.sens_tcs.status = stat_working;
 			COL_SENS_TCS_ENABLE;
 			COL_SENS_TCS_SET_FILTER(col_unknown);
 			COL_SENS_TCS_FREQ_MESURE_EN;
-			ss.col_sens_TCS.cycle_counter = 0;
-			ss.col_sens_TCS.filter_freq_blue = 0;
-			ss.col_sens_TCS.filter_freq_green = 0;
-			ss.col_sens_TCS.filter_freq_red = 0;
+			ss.sens_tcs.time = 0;
+			ss.sens_tcs.slopes = 0;
+			ss.sens_tcs.filter_freq_blue = 0;
+			ss.sens_tcs.filter_freq_green = 0;
+			ss.sens_tcs.filter_freq_red = 0;
 		}
 	}
 
-	if (ss.col_sens_TCS.status == stat_working) {
-		ss.col_sens_TCS.cycle_counter++;
-		if (ss.col_sens_TCS.status_last == stat_idle) {
-			ss.col_sens_TCS.status_last = stat_working;
+	if (ss.sens_tcs.status == stat_working) {
+		ss.sens_tcs.time++;
+		if (ss.sens_tcs.status_last == stat_start_working) {
+			ss.sens_tcs.status_last = stat_working;
 			COL_SENS_TCS_SET_FILTER(col_blue);
 		}
 
-		if (ss.col_sens_TCS.cycle_counter == COL_SENS_TCS_SAMPLE_TIME) {
-			if (!ss.col_sens_TCS.filter_freq_blue) {
-				ss.col_sens_TCS.filter_freq_blue = ss.col_sens_TCS.filter_freq_temp;
+		if (ss.sens_tcs.time == COL_SENS_TCS_SAMPLE_TIME) {
+			if (ss.sens_tcs.filter_freq_blue == 0) {
+				ss.sens_tcs.filter_freq_blue = ss.sens_tcs.slopes / COL_SENS_TCS_SAMPLE_TIME;
+				//ss.sens_tcs.filter_freq_blue = 32000;
 				COL_SENS_TCS_SET_FILTER(col_green);
-				ss.col_sens_TCS.cycle_counter = 0;
+				ss.sens_tcs.time = 0;
+				ss.sens_tcs.slopes = 0;
 			}
-			else if (!ss.col_sens_TCS.filter_freq_green) {
-				ss.col_sens_TCS.filter_freq_green = ss.col_sens_TCS.filter_freq_temp;
+			else if (ss.sens_tcs.filter_freq_green == 0) {
+				ss.sens_tcs.filter_freq_green = ss.sens_tcs.slopes / COL_SENS_TCS_SAMPLE_TIME;
+				//ss.sens_tcs.filter_freq_green = 11;
 				COL_SENS_TCS_SET_FILTER(col_red);
-				ss.col_sens_TCS.cycle_counter = 0;
+				ss.sens_tcs.time = 0;
+				ss.sens_tcs.slopes = 0;
 			}
-			else if (!ss.col_sens_TCS.filter_freq_red) {
-				ss.col_sens_TCS.filter_freq_green = ss.col_sens_TCS.filter_freq_temp;
+			else if (ss.sens_tcs.filter_freq_red == 0) {
+				ss.sens_tcs.filter_freq_red = ss.sens_tcs.slopes / COL_SENS_TCS_SAMPLE_TIME;
+				//ss.sens_tcs.filter_freq_red = 100;
 				COL_SENS_TCS_SET_FILTER(col_red);
-				ss.col_sens_TCS.cycle_counter = 0;
-				ss.col_sens_TCS.status = stat_stop_working;
+				ss.sens_tcs.time = 0;
+				ss.sens_tcs.slopes = 0;
+				ss.sens_tcs.status = stat_stop_working;
 			}
 		}
 	}
 	
-	if (ss.col_sens_TCS.status == stat_stop_working) {
-		if (ss.col_sens_TCS.status_last == stat_working) {
-			ss.col_sens_TCS.status_last = stat_stop_working;
+	if (ss.sens_tcs.status == stat_stop_working) {
+		if (ss.sens_tcs.status_last == stat_working) {
+			ss.sens_tcs.status_last = stat_stop_working;
 			COL_SENS_TCS_FREQ_MESURE_DI;
 			COL_SENS_TCS_DISABLE;
-			f_blu = ss.col_sens_TCS.filter_freq_blue;
-			f_gre = ss.col_sens_TCS.filter_freq_green;
-			f_red = ss.col_sens_TCS.filter_freq_red;
+			f_blu = ss.sens_tcs.filter_freq_blue;
+			f_gre = ss.sens_tcs.filter_freq_green;
+			f_red = ss.sens_tcs.filter_freq_red;
 		}
 		/* Now detect colors */
 		for (y=0; y<col_unknown; y++) {
 			if ( ((f_blu > col_tab_blu[y][0]) && (f_blu < col_tab_blu[y][1])) && 
 					((f_gre > col_tab_gre[y][0]) && (f_gre < col_tab_gre[y][1])) &&
 					((f_red > col_tab_red[y][0]) && (f_red < col_tab_red[y][1])) ) {
-				ss.col_sens_TCS.color = y;
+				ss.sens_tcs.color = y;
 				break;
 			}
 		}
-		ss.col_sens_TCS.status = stat_finished;
+		ss.sens_tcs.status = stat_finished;
 	}
 	
-	if (ss.col_sens_TCS.status == stat_finished) {
-		ss.col_sens_TCS.status = stat_idle;
-		ss.col_sens_TCS.status_last = stat_finished;
+	if (ss.sens_tcs.status == stat_finished) {
+		ss.sens_tcs.status = stat_idle;
+		ss.sens_tcs.status_last = stat_finished;
 	}
 }
 
@@ -491,20 +500,6 @@ void shaker_stuff ()
 	}
 }
 void display_stuff ()
-{
-	
-}
-void disp_set_mode ()
-{
-	
-}
-
-void disp_set_title ()
-{
-	
-}
-
-void disp_set_color ()
 {
 	
 }

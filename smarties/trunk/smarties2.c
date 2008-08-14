@@ -88,6 +88,7 @@
 #include "system.h"
 #include "inits.h"
 #include <avr/interrupt.h>
+#include <stdlib.h>
 
 smartie_sorter ss;
 
@@ -114,6 +115,8 @@ menu_entry entries[3][3];
 int main(void) {
 	uint8_t RevPos = 0;
 	Smartie smartie[REVOLVER_SIZE];
+	
+	char s[7];
 
 	ss.state.mode = SYS_MODE_INIT;
 	ss.state.modetmp = SYS_MODE_INIT;
@@ -133,59 +136,76 @@ int main(void) {
 
 	while (1) /* Testing loop */
 	{
-		/* handle user inputs, do corresponding menu function */
-		if (ss.rotenc.push) {
-			menu_action = ss.menu.function;
-			menu_action();
-			ss.rotenc.push = 0;
+		switch (ss.sens_tcs.status) {
+		case stat_idle:
+			lcd_gotoxy(0,1);
+			lcd_puts("tcs idle    ");
+			break;
+		case stat_start_working:
+			lcd_gotoxy(0,1);
+			lcd_puts("tcs starting");
+			break;
+		case stat_working:
+			lcd_gotoxy(0,1);
+			lcd_puts("tcs working  t:");
+			lcd_puts(itoa(ss.sens_tcs.time,s,10));
+			lcd_puts("s:");
+			lcd_puts(itoa(ss.sens_tcs.slopes,s,10));
+			break;
+		case stat_stop_working:
+			lcd_gotoxy(0,1);
+			lcd_puts("tcs stoping  ");
+			break;
+		case stat_finished:
+			lcd_gotoxy(0,1);
+			lcd_puts("tcs finished  ");
+			break;
+		default:
+			break;
 		}
-		if (ss.state.mode == SYS_MODE_PAUSE) {
-			if (ss.state.modetmp != SYS_MODE_PAUSE) {
-				lcd_clrscr();
-				lcd_puts(MEN_TITLE_MAIN_MENU);
+		if (ss.sens_tcs.status == stat_idle) {
+			sensor_tcs_get_color();
+			if (ss.sens_tcs.status_last == stat_finished) {
+				ss.sens_tcs.status_last = stat_idle;
+				lcd_gotoxy(0,0);
+				lcd_puts("B:");
+				lcd_puts(itoa(ss.sens_tcs.filter_freq_blue, s, 10));
+				lcd_puts("G:");
+				lcd_puts(itoa(ss.sens_tcs.filter_freq_green, s, 10));
+				lcd_puts("R:");
+				lcd_puts(itoa(ss.sens_tcs.filter_freq_red, s, 10));
 			}
-			ss.state.modetmp = SYS_MODE_PAUSE;
-		}
-		if (ss.lb_revolver.passes > 0) {
-			lcd_clrscr();
-			lcd_puts("Revolver One pass");
-			ss.lb_revolver.passes = 0;
-		}
-		if (ss.lb_catcher.passes > 0) {
-			lcd_clrscr();
-			lcd_puts("Catcher One pass");
-			ss.lb_catcher.passes = 0;
 		}
 
 #if 0
-	switch (ss.mot_catcher.status) {
-		case stat_idle:
-		lcd_clrscr();
-		lcd_puts("idle");
-		break;
-		case stat_start_working:
-		lcd_clrscr();
-		lcd_puts("starts");
-		break;
-		case stat_working:
-		lcd_clrscr();
-		lcd_puts("works");
-		break;
-		case stat_stop_working:
-		lcd_clrscr();
-		lcd_puts("stops");
-		break;
-		case stat_finished:
-		lcd_clrscr();
-		lcd_puts("finished");
-		break;
-		default:
-		break;
-	}
+		switch (ss.mot_catcher.status) {
+			case stat_idle:
+			lcd_clrscr();
+			lcd_puts("idle");
+			break;
+			case stat_start_working:
+			lcd_clrscr();
+			lcd_puts("starts");
+			break;
+			case stat_working:
+			lcd_clrscr();
+			lcd_puts("works");
+			break;
+			case stat_stop_working:
+			lcd_clrscr();
+			lcd_puts("stops");
+			break;
+			case stat_finished:
+			lcd_clrscr();
+			lcd_puts("finished");
+			break;
+			default:
+			break;
+		}
 #endif 
-} /* Testing loop end */
+	} /* Testing loop end */
 
-init_all();
+	init_all();
  
     while(1)
     {
