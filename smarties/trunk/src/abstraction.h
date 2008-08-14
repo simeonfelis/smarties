@@ -15,6 +15,7 @@ void lightbarrier_stuff ();
 void display_stuff ();
 void sensor_stuff ();
 void sensor_adjd_stuff();
+void sensor_tcs_stuff();
 void shaker_stuff ();
 
 

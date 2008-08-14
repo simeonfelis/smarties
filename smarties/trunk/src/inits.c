@@ -7,6 +7,10 @@
 
 extern smartie_sorter ss;
 
+void init_adc()
+{	
+}
+
 void init_all()
 {
 	init_io();
@@ -18,6 +22,7 @@ void init_all()
 	init_interrupts();
 	i2c_init();
 		ss.col_sens_ADJD.ret = i2c_start(COL_SENS_ADJD_DEVICE_ADDRESS + I2C_WRITE);
+	init_sensor_tcs();
 	init_motors();
 }
 
@@ -40,10 +45,16 @@ void init_io()
 	/* some of the inits is done in the i2cmaster library */
 	
 	/* the TCS color sensor */
-	TCS_OUT_PORT &= ~((1<<TCS_S0_BIT) | (1<<TCS_S1_BIT) | (1<<TCS_S2_BIT) | (1<<TCS_S3_BIT));
-	TCS_OUT_DDR |= (1<<TCS_S0_BIT) | (1<<TCS_S1_BIT) | (1<<TCS_S2_BIT) | (1<<TCS_S3_BIT);
+	COL_SENS_TCS_OUT_PORT &= ~(
+			(1<<COL_SENS_TCS_S0_BIT) | (1<<COL_SENS_TCS_S1_BIT) | 
+			(1<<COL_SENS_TCS_S2_BIT) | (1<<COL_SENS_TCS_S3_BIT));
+	COL_SENS_TCS_OUT_DDR |= 
+		(1<<COL_SENS_TCS_S0_BIT) | (1<<COL_SENS_TCS_S1_BIT) | 
+		(1<<COL_SENS_TCS_S2_BIT) | (1<<COL_SENS_TCS_S3_BIT);
+
+	COL_SENS_TCS_IN_DDR &= ~(1<<COL_SENS_TCS_IN_ICP);
 	
-	TCS_IN_DDR &= ~(1<<TCS_IN_ICP);
+	MCUCR |= (1<<ISC01); /* behavour of the interrupt sens for frequency measure: on falling edge */
 	
 	/* rotatry encoder */
 	ROTENC_INIT();
@@ -61,6 +72,15 @@ void init_io()
 	/* lightbarrier */
 	LB_DDR &= ~((1<<LB_BIT_CATCH) | (1<<LB_BIT_REV));
 }
+
+void init_interrupts() {
+}
+
+void init_sensor_tcs() {
+	COL_SENS_TCS_DISABLE;
+	COL_SENS_TCS_SET_FREQ_SCALE(20);
+}
+
 void init_timer()
 {
 	/* Output compare register: after 250 * 62.5E-9 = 1ms a compare match */
@@ -76,11 +96,6 @@ void init_timer()
 	//TCCR0 |= (1<<WGM01);
 	/* enable overflow interrupt */
 	TIMSK |= (1<<TOIE0);
-	
-}
-
-void init_interrupts()
-{
 	
 }
 
@@ -117,11 +132,6 @@ void init_motors()
 	/* last, rotate the catcher to a position where it is possible 
 	 * to remove the possibly remaining smarties */
 	catcher_rotate_relative(4);
-}
-
-void init_adc()
-{
-	
 }
 
 void init_menu()

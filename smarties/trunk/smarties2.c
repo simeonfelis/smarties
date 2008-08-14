@@ -111,14 +111,12 @@ menu_entry entries[3][3];
   * LCD menu is controlled by functions collected in \ref lcd_display.h. 
   * 
   */
-int main(void)
-{	
-	ss.state.mode = SYS_MODE_INIT;
-	ss.state.modetmp = SYS_MODE_INIT;
-	//menu_entry * current_menu = &entry0; 
-	//user_event event;
+int main(void) {
 	uint8_t RevPos = 0;
 	Smartie smartie[REVOLVER_SIZE];
+
+	ss.state.mode = SYS_MODE_INIT;
+	ss.state.modetmp = SYS_MODE_INIT;
 
 	init_all();
 	sei();
@@ -132,7 +130,7 @@ int main(void)
 	menu_current = &men_running;
 	lcd_clrscr();
 	lcd_puts(ss.menu.text);
-		
+
 	while (1) /* Testing loop */
 	{
 		/* handle user inputs, do corresponding menu function */
@@ -141,90 +139,53 @@ int main(void)
 			menu_action();
 			ss.rotenc.push = 0;
 		}
-    	if (ss.state.mode == SYS_MODE_PAUSE) {
+		if (ss.state.mode == SYS_MODE_PAUSE) {
 			if (ss.state.modetmp != SYS_MODE_PAUSE) {
 				lcd_clrscr();
 				lcd_puts(MEN_TITLE_MAIN_MENU);
 			}
 			ss.state.modetmp = SYS_MODE_PAUSE;
 		}
-    	if (ss.lb_revolver.passes > 0) {
-    		lcd_clrscr();
-    		lcd_puts ("Revolver One pass");
-    		ss.lb_revolver.passes = 0;
-    	}
-    	if (ss.lb_catcher.passes > 0) {
-    		lcd_clrscr();
-    		lcd_puts ("Catcher One pass");
-    		ss.lb_catcher.passes = 0;
-    	}
-    	if (ss.col_sens_ADJD.status == stat_idle) {
-    		col_sens_adjd_get_color();
-    		if (ss.col_sens_ADJD.status_last == stat_finished ) {
-    			ss.col_sens_ADJD.status_last = stat_idle;
-    			lcd_clrscr();
-    			switch (ss.col_sens_ADJD.color) {
-    			case col_blue:
-    				lcd_puts(MEN_COL_BLUE);
-    				break;
-    			case col_brown:
-    				lcd_puts(MEN_COL_BROWN);
-    				break;
-    			case col_green:
-    				lcd_puts(MEN_COL_GREEN);
-    				break;
-    			case col_purple:
-    				lcd_puts(MEN_COL_PURPLE);
-    				break;
-    			case col_red:
-    				lcd_puts(MEN_COL_RED);
-    				break;
-    			case col_yellow:
-    				lcd_puts(MEN_COL_YELLOW);
-    				break;
-    			case col_unknown:
-    				lcd_puts(MEN_COL_UNKNOWN);
-    				break;
-    			default:
-    				break;
-    			}
-    		}
-    		if (ss.col_sens_ADJD.ret) {
-    			lcd_clrscr();
-    			lcd_puts("Init failed");
-    		}
-    	}
-    		
+		if (ss.lb_revolver.passes > 0) {
+			lcd_clrscr();
+			lcd_puts("Revolver One pass");
+			ss.lb_revolver.passes = 0;
+		}
+		if (ss.lb_catcher.passes > 0) {
+			lcd_clrscr();
+			lcd_puts("Catcher One pass");
+			ss.lb_catcher.passes = 0;
+		}
+
 #if 0
-    	switch (ss.mot_catcher.status) {
-    	case stat_idle:
-    		lcd_clrscr();
-    		lcd_puts("idle");
-    		break;
-    	case stat_start_working:
-    		lcd_clrscr();
-    		lcd_puts("starts");
-    		break;
-    	case stat_working:
-    		lcd_clrscr();
-    		lcd_puts("works");
-    		break;
-    	case stat_stop_working:
-    		lcd_clrscr();
-    		lcd_puts("stops");
-    		break;
-    	case stat_finished:
-    		lcd_clrscr();
-    		lcd_puts("finished");
-    		break;
-    	default: 
-    		break;
-    	}
+	switch (ss.mot_catcher.status) {
+		case stat_idle:
+		lcd_clrscr();
+		lcd_puts("idle");
+		break;
+		case stat_start_working:
+		lcd_clrscr();
+		lcd_puts("starts");
+		break;
+		case stat_working:
+		lcd_clrscr();
+		lcd_puts("works");
+		break;
+		case stat_stop_working:
+		lcd_clrscr();
+		lcd_puts("stops");
+		break;
+		case stat_finished:
+		lcd_clrscr();
+		lcd_puts("finished");
+		break;
+		default:
+		break;
+	}
 #endif 
-	} /* Testing loop end */
-	
-	
-	init_all();
+} /* Testing loop end */
+
+init_all();
  
     while(1)
     {

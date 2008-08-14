@@ -89,14 +89,12 @@ void start_shaker()
 	
 }
 
-void col_sens_adjd_get_color()
-{
+void sensor_adjd_get_color() {
 	ss.col_sens_ADJD.status = stat_start_working;
 }
 
-void start_get_color_2()
-{
-	
+void sensor_tcs_get_color() {
+	ss.col_sens_TCS.status = stat_start_working;
 }
 
 smartie_color get_catcher_position()
@@ -201,8 +199,39 @@ void revolver_rotate_relative(uint8_t rel_pos)
 	ss.mot_revolver.status = stat_start_working;
 }
 
-
+//TODO: docs
 smartie_color make_color_merge(smartie_color color1, smartie_color color2)
 {
 	return 0; 
 }
+
+//TODO: docs
+//{blue_lo_limit, blue_hi_limit}
+uint8_t col_tab_blu [6][2] = {
+		{0,0}, /* COL_INDEX_YELLOW */
+		{0,0}, /* COL_INDEX_RED */
+		{0,0}, /* COL_INDEX_BLUE */
+		{0,0}, /* COL_INDEX_BROWN */
+		{0,0}, /* COL_INDEX_GREEN */
+		{0,0} /* COL_INDEX_PURPLE */
+};
+
+//{green_lo_limit, green_hi_limit}
+uint8_t col_tab_gre [6][2] = {
+		{0,0}, /* COL_INDEX_YELLOW */
+		{0,0}, /* COL_INDEX_RED */
+		{0,0}, /* COL_INDEX_BLUE */
+		{0,0}, /* COL_INDEX_BROWN */
+		{0,0}, /* COL_INDEX_GREEN */
+		{0,0} /* COL_INDEX_PURPLE */
+};
+
+// {red_lo_limit, red_hi_limit}
+uint8_t col_tab_red [6][2] = {
+		{0,0}, /* COL_INDEX_YELLOW */
+		{0,0}, /* COL_INDEX_RED */
+		{0,0}, /* COL_INDEX_BLUE */
+		{0,0}, /* COL_INDEX_BROWN */
+		{0,0}, /* COL_INDEX_GREEN */
+		{0,0} /* COL_INDEX_PURPLE */
+};

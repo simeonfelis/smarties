@@ -82,42 +82,84 @@
 
 
 // COLOR SENSOR TCSS230 works with an clock output and color filters
-#define TCS_IN_PORT			PORTD		///! Input port for TCS color sensor
-#define TCS_IN_DDR			DDRD		///! Direction port for TCS color sensor
-#define TCS_IN_ICP			PD2			///! ICP pin for TCS color sensor (clock signal)
+#define COL_SENS_TCS_IN_PORT		PORTD		//!< Input port for TCS color sensor
+#define COL_SENS_TCS_IN_DDR			DDRD		//!< Direction port for TCS color sensor
+#define COL_SENS_TCS_IN_ICP			PD2			//!< ICP pin for TCS color sensor (clock signal)
 
-#define TCS_OUT_PORT		PORTA		///! Output port for TCS color sensor 
-#define TCS_OUT_DDR			DDRA		///! Direction port for TCS color sensor
-#define TCS_S2_BIT			PA7			///! S2 settings pin for TCS color sensor
-#define TCS_S0_BIT			PA6			///! S0 settings pin for TCS color sensor
-#define TCS_S3_BIT			PA5			///! S3 settings pin for TCS color sensor
-#define TCS_S1_BIT			PA4			///! S1 settings pin for TCS color sensor
-#define TCS_OE_BIT			PA3			///! Output enable for TCS color sensor
+#define COL_SENS_TCS_OUT_PORT		PORTA		//!< Output port for TCS color sensor 
+#define COL_SENS_TCS_OUT_DDR		DDRA		//!< Direction port for TCS color sensor
+#define COL_SENS_TCS_S2_BIT			PA7			//!< S2 settings pin for TCS color sensor
+#define COL_SENS_TCS_S0_BIT			PA6			//!< S0 settings pin for TCS color sensor
+#define COL_SENS_TCS_S3_BIT			PA5			//!< S3 settings pin for TCS color sensor
+#define COL_SENS_TCS_S1_BIT			PA4			//!< S1 settings pin for TCS color sensor
+#define COL_SENS_TCS_OE_BIT			PA3			//!< Output enable for TCS color sensor
 
-#define TCS_SET_FREQ_SCALE(percentage)			\
-	do {										\
-		TCS_OUT_PORT ~= (1<<TCS_S1_BIT); 		\
-		TCS_OUT_PORT ~= (1<<TCS_S0_BIT);	 	\
-		if (percentage == 2) {					\
-			TCS_OUT_PORT |= (1<<TCS_S1_BIT);	\
-		}										\
-		else if (percentage == 20) {			\
-			TCS_OUT_PORT |= (1<<TCS_S0_BIT);	\
-		}										\
-		else if (percentage == 100) {			\
-			TCS_OUT_PORT |= (1<<TCS_S0_BIT);	\
-			TCS_OUT_PORT |= (1<<TCS_S1_BIT);	\
-		}										\
+#define COL_SENS_TCS_SAMPLE_TIME	3			//!< Time to measure TCS OUT frequency in milliseconds
+
+#define COL_SENS_TCS_ENABLE			\
+	(COL_SENS_TCS_OUT_PORT |= (1<<COL_SENS_TCS_OE_BIT))		//!< Enables the TCS color sensor output clk
+#define COL_SENS_TCS_DISABLE		\
+	(COL_SENS_TCS_OUT_PORT &= ~(1<<COL_SENS_TCS_OE_BIT))	 //!< Disables the TCS color sensor output clk
+#define COL_SENS_TCS_FREQ_MESURE_EN (GICR |= (1<<INT0))		//!< Enables interrupt for counting slopes (falling) from the TCS OUT pin
+#define COL_SENS_TCS_FREQ_MESURE_DI (GICR &= ~(1<<INT0))	//!< Enables interrupt for counting slopes (falling) from the TCS OUT pin
+
+/**
+ * \brief Sets the frequency scaler for the TCS color sensor
+ * 
+ * \param percentage \b 2 2% \n
+ *                   \b 20 20% \n
+ *                   \b 100 100%
+ */
+#define COL_SENS_TCS_SET_FREQ_SCALE(percentage)					\
+	do {														\
+		COL_SENS_TCS_OUT_PORT &= ~(1<<COL_SENS_TCS_S1_BIT); 	\
+		COL_SENS_TCS_OUT_PORT &= ~(1<<COL_SENS_TCS_S0_BIT);	 	\
+		if (percentage == 2) {									\
+			COL_SENS_TCS_OUT_PORT |= (1<<COL_SENS_TCS_S1_BIT);	\
+		}														\
+		else if (percentage == 20) {							\
+			COL_SENS_TCS_OUT_PORT |= (1<<COL_SENS_TCS_S0_BIT);	\
+		}														\
+		else if (percentage == 100) {							\
+			COL_SENS_TCS_OUT_PORT |= (1<<COL_SENS_TCS_S0_BIT);	\
+			COL_SENS_TCS_OUT_PORT |= (1<<COL_SENS_TCS_S1_BIT);	\
+		}														\
 	} while (0)
 
-#define TCS_SET_FILTER(color)					\
-	do {										\
-		TCS_OUT_PORT ~= (1<<TCS_S2_BIT);		\
-		TCS_OUT_PORT ~= (1<<TCS_S3_BIT);		\
-		switch (color) {						\
-			case COLOR_RED:						\
-		}										\
+/**
+ * \brief Sets the color filter for the TCS color sensor
+ *
+ * \param color \b col_red Red filter \n
+ *              \b col_blue Blue filter \n
+ *              \b col_green Green filter on \n
+ *              \b col_unknown No filter 
+ */
+#define COL_SENS_TCS_SET_FILTER(color)							\
+	do {														\
+		if (color == col_red) {									\
+			COL_SENS_TCS_OUT_PORT &= ~(1<<COL_SENS_TCS_S2_BIT);	\
+			COL_SENS_TCS_OUT_PORT &= ~(1<<COL_SENS_TCS_S3_BIT);	\
+		}														\
+		else if (color == col_blue) {							\
+			COL_SENS_TCS_OUT_PORT &= ~(1<<COL_SENS_TCS_S2_BIT);	\
+			COL_SENS_TCS_OUT_PORT |= (1<<COL_SENS_TCS_S3_BIT);	\
+		}														\
+		else if (color == col_green) {							\
+			COL_SENS_TCS_OUT_PORT |= (1<<COL_SENS_TCS_S2_BIT);	\
+			COL_SENS_TCS_OUT_PORT |= (1<<COL_SENS_TCS_S3_BIT);	\
+		}														\
+		else if (color == col_unknown) {						\
+			COL_SENS_TCS_OUT_PORT |= (1<<COL_SENS_TCS_S2_BIT);	\
+			COL_SENS_TCS_OUT_PORT &= ~(1<<COL_SENS_TCS_S3_BIT);	\
+		}														\
 	} while (0)
+
+#define COL_INDEX_YELLOW		0
+#define COL_INDEX_RED			1
+#define COL_INDEX_BLUE			2
+#define COL_INDEX_BROWN			3
+#define COL_INDEX_GREEN			4
+#define COL_INDEX_PURPLE		5
 
 // STEPPER MOTORS
 #define STEPPER_PORT		PORTD		//!< Output port for stepper motors
@@ -315,14 +357,30 @@ typedef struct stepper_motor_t {
 } stepper_motor;
 
 /**
- * \brief Describes a color sensor
+ * \brief Describes the ADJD-S371 color sensor
  */
-typedef struct color_sensor_t {
+typedef struct color_sensor_adjd_t {
 	common_stat status;			//!< The current status of the color sensor
 	common_stat status_last;	//!< The status before current status
 	smartie_color color;		//!< The value from the last color detection
 	uint8_t ret;
-} color_sensor;
+} color_sensor_adjd;
+
+//TODO: docs
+/**
+ * \brief Describes the TCS230 color sensor
+ */
+typedef struct color_sensor_tcs_t {
+	common_stat status;			//!< The current status of the color sensor
+	common_stat status_last;	//!< The status before current status
+	smartie_color color;		//!< The value from the last color detection
+	uint16_t cycle_counter;		//!< Especially for the TCS frequency mesurement
+	uint16_t filter_freq_red;
+	uint16_t filter_freq_blue;
+	uint16_t filter_freq_green;
+	uint16_t filter_freq_temp;
+	uint8_t ret;
+} color_sensor_tcs;
 
 /**
  * \brief The status a lightbarrier can have
@@ -354,12 +412,8 @@ typedef struct shaker_t {
  */
 typedef struct smartie_sorter_t {
 	system_state state;					//!< Stores the current state
-#if 0 /* deprecated */
-	system_mode mode;					
-	system_step step;
-#endif
-	color_sensor col_sens_ADJD;		//!< Digital color sensor
-	color_sensor col_sens_TMS;			//!< Analog color sensor
+	color_sensor_adjd col_sens_ADJD;		//!< Digital color sensor
+	color_sensor_tcs col_sens_TCS;			//!< Analog color sensor
 	stepper_motor mot_catcher;				//!< Stepper motor for the catcher area
 	stepper_motor mot_revolver;				//!< Stepper motor for the revolver
 	lightbarrier lb_catcher;			//!< Lightbarrier for the catcher
@@ -380,8 +434,8 @@ void sys_rotate_revolver();
 void sys_rotate_catcher();
 void sys_wait(uint16_t time);
 void start_shaker();
-void col_sens_adjd_get_color();
-void start_get_color_2();
+void sensor_adjd_get_color();
+void sensor_tcs_get_color();
 void catcher_rotate_absolute(smartie_color color_now);
 void catcher_rotate_relative(uint16_t);
 void revolver_rotate_absolute(uint8_t abs_pos);
