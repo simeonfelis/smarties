@@ -250,6 +250,7 @@
 #define IS_LB_CATCHER		(!(LB_PIN & (1<<LB_BIT_CATCH)))		//!< Returns true if lightbarrier is blocked
 #define IS_LB_REVOLVER		(!(LB_PIN & (1<<LB_BIT_REV)))		//!< Returns true if lightbarrier is blocked
 
+//TODO: deprecated
 /**
  * \brief The mode of the machine
  */
@@ -269,13 +270,27 @@ typedef enum system_step_description_t {
 } system_step_description;
 
 /**
+ * \brief The status a device can have
+ * 
+ * The different modules of the smartie sorter can have different operating 
+ * status. But mainly they all have common status like working or finished.  
+ */
+typedef enum common_stat_t {
+	stat_idle = 0,			//!< The module/device is doing nothing and is ready for a new job
+	stat_start_working,		//!< This will initiate the any work the device can have 
+	stat_working,			//!< Indicates the device is busy. The device will automatically change to this state
+	stat_stop_working,		//!< Setting a device to this state will stop the device 
+	stat_finished			//!< Indicates the device is finished. The device will automatically change to this state
+} common_stat;
+
+/**
  *  \brief The single steps during running mode SYS_MODE_RUNNING
  */
 typedef struct system_step_t {
-	system_step_description I;			///< detecting colors
-	system_step_description II;			///< positioning catcher
-	system_step_description III;		///< positioning revolver
-	system_step_description IV;			///< begin new mode cycle
+	common_stat I;			///< detecting colors and position catcher
+	common_stat II;			///< positioning revolver
+	common_stat III;		///< begin new mode cycle
+	common_stat IV;			///< //TODO remove!
 } system_step;
 
 /**
@@ -325,26 +340,12 @@ typedef enum smartie_color_t {
 /**
  *  \brief Properties a smartie can have
  */ 
-typedef struct Smartie_t {
-	uint8_t filled;			//!< If this is actually a smartie or not or empty transporter
+typedef struct smartie_t {
+//	uint8_t filled;			//!< If this is actually a smartie or not or empty transporter
 	smartie_color color;	//!< Merged color
-	smartie_color color1;	//!< From analogue color sensor
-	smartie_color color2;	//!< From digital color sensor
-} Smartie;
-
-/**
- * \brief The status a device can have
- * 
- * The different modules of the smartie sorter can have different operating 
- * status. But mainly they all have common status like working or finished.  
- */
-typedef enum common_stat_t {
-	stat_idle = 0,			//!< The module/device is doing nothing and is ready for a new job
-	stat_start_working,		//!< This will initiate the any work the device can have 
-	stat_working,			//!< Indicates the device is busy. The device will automatically change to this state
-	stat_stop_working,		//!< Setting a device to this state will stop the device 
-	stat_finished			//!< Indicates the device is finished. The device will automatically change to this state
-} common_stat;
+	smartie_color color1;	//!< From TCS color sensor
+	smartie_color color2;	//!< From ADJD color sensor
+} smartie;
 
 /**
  * \brief The stepper motor
@@ -409,20 +410,32 @@ typedef struct shaker_t {
 	uint16_t duration;					//!< How long to vibrate the shaker in ms ( \ref SHAKER_DURATION )
 } shaker;
 
+//TODO: docs
+typedef struct catcher_t {
+	smartie_color position;
+} catcher;
+
+typedef struct revolver_t {
+	int8_t position;
+	smartie smart[REV_MAX_SIZE];
+} revolver;
+
 
 /**
  *  \brief All devices from the smartie sorter collected to one bundle
  */
 typedef struct smartie_sorter_t {
 	system_state state;					//!< Stores the current state
-	color_sensor_adjd col_sens_ADJD;		//!< Digital color sensor
+	color_sensor_adjd col_sens_ADJD;	//!< Digital color sensor
 	color_sensor_tcs sens_tcs;			//!< Analog color sensor
-	stepper_motor mot_catcher;				//!< Stepper motor for the catcher area
-	stepper_motor mot_revolver;				//!< Stepper motor for the revolver
+	stepper_motor mot_catcher;			//!< Stepper motor for the catcher area
+	stepper_motor mot_revolver;			//!< Stepper motor for the revolver
 	lightbarrier lb_catcher;			//!< Lightbarrier for the catcher
 	lightbarrier lb_revolver;			//!< Lightbarrier for the revolver
 	shaker shkr;						//!< Shaker (or vibrator)
 	rotary_encoder rotenc;				//!< The rotary encoder (user input)
+	catcher catch;
+	revolver rev;
 	menu_entry *menu;					//!< The current displayed menu
 } smartie_sorter;
 
@@ -441,9 +454,9 @@ void sys_wait(uint16_t time);
 void start_shaker();
 void sensor_adjd_get_color();
 void sensor_tcs_get_color();
-void catcher_rotate_absolute(smartie_color color_now);
-void catcher_rotate_relative(uint16_t);
-void revolver_rotate_absolute(uint8_t abs_pos);
+void catcher_rotate_absolute(smartie_color move_to);
+void catcher_rotate_relative(int8_t);
+void revolver_rotate_absolute(int8_t abs_pos);
 void revolver_rotate_relative(int8_t rel_pos);
 
 smartie_color make_color_merge(smartie_color color1, smartie_color color2);

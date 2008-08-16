@@ -134,8 +134,8 @@ void init_motors()
 	ss.mot_catcher.status_tmp = stat_idle;
 	
 	/* find the next defined position */
-//	if (!IS_LB_CATCHER)
-//		catcher_rotate_relative(1);
+	if (!IS_LB_CATCHER)
+		catcher_rotate_relative(1);
 	
 	
 	/*************** R E V O L V E R *********************/
@@ -154,7 +154,7 @@ void init_motors()
 	
 	/* last, rotate the catcher to a position where it is possible 
 	 * to remove the possibly remaining smarties */
-	catcher_rotate_relative(4);
+	//catcher_rotate_relative(4);
 }
 
 //TODO: docs

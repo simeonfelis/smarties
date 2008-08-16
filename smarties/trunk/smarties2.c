@@ -115,8 +115,12 @@ menu_entry men_lay_sub_color[3];
   * 
   */
 int main(void) {
-	uint8_t RevPos = 0;
-	Smartie smartie[REVOLVER_SIZE];
+	uint8_t temp = 1;
+	
+	int8_t index_temp;
+	smartie_color col_temp;
+
+	//smartie smart[REVOLVER_SIZE];
 	
 	char s[7];
 
@@ -124,11 +128,106 @@ int main(void) {
 	ss.state.modetmp = SYS_MODE_INIT;
 
 	init_all();
-	sei();
-	
+	sei	();
+
+	/* Wait for some init functions to be finished */
+	while (temp) {
+#if 1 /* catcher motor status output */
+    				switch (ss.mot_catcher.status) {
+    				case stat_idle:
+    					lcd_gotoxy(12,1); lcd_puts("idle");
+    					break;
+    				case stat_start_working:
+    					lcd_gotoxy(12,1); lcd_puts("start");
+    					break;
+    				case stat_working:
+    					lcd_gotoxy(12,1); lcd_puts("worki");
+    					break;
+    				case stat_stop_working:
+    					lcd_gotoxy(12,1); lcd_puts("stop");
+    					break;
+    				case stat_finished:
+    					lcd_gotoxy(12,1); lcd_puts("finish");
+    					break;
+    				default:
+    					break;
+    				}
+    				switch (ss.mot_catcher.status_tmp) {
+    				case stat_idle:
+    					lcd_gotoxy(18,1); lcd_puts("idle");
+    					break;
+    				case stat_start_working:
+    					lcd_gotoxy(18,1); lcd_puts("start");
+    					break;
+    				case stat_working:
+    					lcd_gotoxy(18,1); lcd_puts("worki");
+    					break;
+    				case stat_stop_working:
+    					lcd_gotoxy(18,1); lcd_puts("stop");
+    					break;
+    				case stat_finished:
+    					lcd_gotoxy(18,1); lcd_puts("finish");
+    					break;    				
+    				default:
+    					break;
+    				}
+#endif
+#if 1 /* revolver motor status output */
+    				switch (ss.mot_revolver.status) {
+    				case stat_idle:
+    					lcd_gotoxy(0,1); lcd_puts("idle");
+    					break;
+    				case stat_start_working:
+    					lcd_gotoxy(0,1); lcd_puts("start");
+    					break;
+    				case stat_working:
+    					lcd_gotoxy(0,1); lcd_puts("worki");
+    					break;
+    				case stat_stop_working:
+    					lcd_gotoxy(0,1); lcd_puts("stop");
+    					break;
+    				case stat_finished:
+    					lcd_gotoxy(0,1); lcd_puts("finish");
+    					break;
+    				default:
+    					break;
+    				}
+    				switch (ss.mot_revolver.status_tmp) {
+    				case stat_idle:
+    					lcd_gotoxy(6,1); lcd_puts("idle");
+    					break;
+    				case stat_start_working:
+    					lcd_gotoxy(6,1); lcd_puts("start");
+    					break;
+    				case stat_working:
+    					lcd_gotoxy(6,1); lcd_puts("worki");
+    					break;
+    				case stat_stop_working:
+    					lcd_gotoxy(6,1); lcd_puts("stop");
+    					break;
+    				case stat_finished:
+    					lcd_gotoxy(6,1); lcd_puts("finish");
+    					break;    				
+    				default:
+    					break;
+    				}
+#endif
+		if ( (ss.mot_revolver.status == stat_idle) 
+				&& (ss.mot_catcher.status == stat_idle) ) {
+			if ( (ss.mot_revolver.status_tmp != stat_idle) 
+					&& (ss.mot_catcher.status_tmp != stat_idle) ) {
+				ss.mot_catcher.status_tmp = stat_idle;
+				ss.mot_revolver.status_tmp = stat_idle;
+				lcd_puts("Init done");
+				temp = 0;
+			}
+		}
+	}
+
 	/* initializing done, set state */
 	ss.state.modetmp = ss.state.mode;
 	ss.state.mode = SYS_MODE_RUNNING;
+	ss.state.step.I = stat_start_working;
 
 	/* update menu, give notice to user */
 	menu_current = &men_running;
@@ -147,14 +246,15 @@ int main(void) {
     			ss.state.modetmp = SYS_MODE_PAUSE;
     			menu_current = &men_lay_greeting[0];
     			lcd_gotoxy(0,0); lcd_puts(menu_current->text[0]);
-    			lcd_gotoxy(0,1); lcd_puts(menu_current->text[1]);    			
+    			lcd_gotoxy(0,1); lcd_puts(menu_current->text[1]);
+    			ss.sens_tcs.status_last = stat_idle;
     		}
     		
     		/* color measure program tcs */
     		if (ss.sens_tcs.status == stat_idle) {
     			if (ss.sens_tcs.status_last == stat_finished) {
     				ss.sens_tcs.status_last = stat_idle;
-    				lcd_gotoxy(0,1); lcd_puts(MEN_TIT_EMPTY);
+    				//lcd_gotoxy(0,1); lcd_puts(MEN_TIT_EMPTY);
     				lcd_gotoxy(0,1);
     				lcd_puts("Blue:");
     				if (ss.sens_tcs.filter_freq_blue<10) lcd_puts(" ");
@@ -163,15 +263,65 @@ int main(void) {
     				if (ss.sens_tcs.filter_freq_green<10) lcd_puts(" ");
     				lcd_puts(itoa(ss.sens_tcs.filter_freq_green, s, 10));
     				lcd_puts(" Red:");
-    				if (ss.sens_tcs.filter_freq_red<10) lcd_puts(" ");
+    				if (ss.sens_tcs.filter_freq_red<10) lcd_puts("  ");
     				lcd_puts(itoa(ss.sens_tcs.filter_freq_red, s, 10));
     			}
     		}
+    		
     		/* rotate program revolver */
+    		if (ss.mot_revolver.status == stat_idle) {
+    			if (ss.mot_revolver.status_tmp == stat_finished) {
+    				ss.mot_revolver.status_tmp = stat_idle;
+    				lcd_gotoxy(9,1); lcd_puts("Pos:");
+    				if (ss.mot_revolver.currentPos<10) lcd_puts(" ");
+    				lcd_puts(itoa(ss.mot_revolver.currentPos, s, 10));
+    			}
+    		}
     		
+    		/* rotate program catcher */
+    		if (ss.mot_catcher.status == stat_idle) {
+    			if (ss.mot_catcher.status_tmp == stat_finished) {
+    				ss.mot_revolver.status_tmp = stat_idle;
+    				lcd_gotoxy(9,1); lcd_puts("Pos: ");
+    				lcd_puts(itoa(ss.mot_catcher.currentPos, s, 10));
+    			}
+    		}
     		
-			break;
+    		break; /* SYS_MODE_PAUSE */
 		case SYS_MODE_RUNNING:
+			if (ss.state.modetmp == !SYS_MODE_RUNNING) {
+				lcd_gotoxy(5,1); lcd_puts("RUN/  ");
+			}
+			if (ss.state.step.I == stat_start_working) {
+				lcd_gotoxy(9,1);
+				lcd_puts("I");
+				ss.state.step.I = stat_working;
+				/* Initiate all work to be done */
+				sensor_tcs_get_color();
+				/* We need the color from the smartie which is actually above the hole */
+				/* Therefore, we need the correct index: */
+				if ( (ss.rev.position + POS_SMARTIE_OUT) > REV_MAX_SIZE )
+					index_temp =  ss.rev.position - REV_MAX_SIZE + POS_SMARTIE_OUT; 
+				else
+					index_temp = ss.rev.position + POS_SMARTIE_OUT;
+				col_temp = ss.rev.smart[index_temp].color;
+				catcher_rotate_absolute(col_temp);
+			}
+			if (ss.state.step.I == stat_working) {
+				if ( (ss.sens_tcs.status == stat_idle)
+						&& (ss.mot_catcher.status == stat_idle)) {
+					if ( (ss.sens_tcs.status_last == stat_finished)
+							&& (ss.mot_catcher.status_tmp == stat_finished)) {
+						ss.sens_tcs.status_last = stat_idle;
+						ss.mot_catcher.status_tmp = stat_idle;
+						ss.state.step.I = stat_stop_working;
+					}
+				}
+			}
+			if (ss.state.step.I == stat_stop_working) {
+				ss.state.step.I = stat_idle;
+				ss.state.step.II = stat_start_working;
+			}
 			break;
 		default:
 			break;
@@ -196,33 +346,6 @@ int main(void) {
 			lcd_gotoxy(0,0); lcd_puts(menu_current->text[0]);
 			lcd_gotoxy(0,1); lcd_puts(menu_current->text[1]);    			
 		}
-
-#if 0
-		switch (ss.mot_catcher.status) {
-			case stat_idle:
-			lcd_clrscr();
-			lcd_puts("idle");
-			break;
-			case stat_start_working:
-			lcd_clrscr();
-			lcd_puts("starts");
-			break;
-			case stat_working:
-			lcd_clrscr();
-			lcd_puts("works");
-			break;
-			case stat_stop_working:
-			lcd_clrscr();
-			lcd_puts("stops");
-			break;
-			case stat_finished:
-			lcd_clrscr();
-			lcd_puts("finished");
-			break;
-			default:
-			break;
-		}
-#endif 
 	} /* Testing loop end */
 
 	init_all();
@@ -230,15 +353,7 @@ int main(void) {
     while(1)
     {
     	switch (ss.state.mode) {
-    	case SYS_MODE_INIT:
-    		break;
-    	case SYS_MODE_PAUSE:
-    		//TODO ss.menu = men_pausing;
-    		lcd_puts(ss.menu->text[0]);
-			break;
 		case SYS_MODE_RUNNING:
-			if (ss.state.step.I == SYS_STEP_AWAITED)
-				ss.state.step.I = SYS_STEP_RUNNING;
 			
 			if (ss.state.step.I == SYS_STEP_RUNNING) 
 			{
@@ -250,7 +365,7 @@ int main(void) {
 				
 				
 				// catcher preparation
-				ss.mot_catcher.targetPos = smartie[POS_SMARTIE_OUT-1].color;
+				//ss.mot_catcher.targetPos = smartie[POS_SMARTIE_OUT-1].color;
 				if (ss.mot_catcher.status == stat_idle)
 					if (ss.mot_catcher.currentPos != ss.mot_catcher.targetPos)
 						ss.mot_catcher.status = stat_start_working;	//will start rotating the catcher
@@ -294,9 +409,9 @@ int main(void) {
 					
 
 				revolver_rotate_relative(1);
-				RevPos++;
-				if (RevPos == REVOLVER_SIZE)
-					RevPos = 0;
+//				RevPos++;
+//				if (RevPos == REVOLVER_SIZE)
+//					RevPos = 0;
 				
 				if (ss.shkr.status == stat_finished)
 				{

@@ -58,7 +58,7 @@ void motor_stuff ()
 				== (CATCH_STEP_DURATION * ss.mot_catcher.rampup_steps)) {
 			ss.mot_catcher.cycle_counter = 0;
 			ss.mot_catcher.rampup_steps--;
-			if (ss.mot_catcher.rampdown_steps == 0) {
+			if (ss.mot_catcher.rampup_steps == 0) {
 				ss.mot_catcher.status = stat_working;
 				ss.mot_catcher.status_tmp = stat_start_working;
 			}
@@ -89,6 +89,8 @@ void motor_stuff ()
 		/* count the passes on the lightbarrier. One pass, one position */
 		if (ss.lb_catcher.passes > 0) {
 			ss.mot_catcher.currentPos++;
+			if (ss.mot_catcher.currentPos > CATCH_MAX_SIZE)
+				ss.mot_catcher.currentPos = 0;
 			ss.lb_catcher.passes--;
 		}
 		/* before we reach the target position do the ramp down */
@@ -117,7 +119,6 @@ void motor_stuff ()
 			CATCH_MOVE_STEP;
 		}
 	}
-#endif
 	
 #if !TESTING_RAMPS
 	/* stop working */
@@ -145,7 +146,7 @@ void motor_stuff ()
 			}
 		}
 	}
-	
+#endif	
 	/**************************************************************************
 	 *                           R E V O L V E R                              *
 	 *************************************************************************/
@@ -157,7 +158,7 @@ void motor_stuff ()
 	/* start and ramp up */
 	if (ss.mot_revolver.status == stat_start_working) {
 		/* if we just started to rotate, prepare ramp up */
-		if (ss.mot_revolver.status_tmp == stat_idle) {
+		if (ss.mot_revolver.status_tmp != stat_start_working) {
 			REV_ENABLE;
 			ss.mot_revolver.status_tmp = stat_start_working;
 			ss.mot_revolver.rampup_steps = REV_RAMP_DURATION; /* will be decreased during ramp up */
@@ -166,14 +167,14 @@ void motor_stuff ()
 		
 		/* do the ramp up */
 		if (ss.mot_revolver.cycle_counter
-				== (REV_STEP_DURATION * ss.mot_revolver.rampup_steps)) {
+				== (REV_RAMP_DURATION * ss.mot_revolver.rampup_steps)) {
 			ss.mot_revolver.cycle_counter = 0;
 			/* until the lightbarrier is free rotate slowly */
-			if (!IS_LB_REVOLVER)
+			//TODO !
+			//if (!IS_LB_REVOLVER)
 				ss.mot_revolver.rampup_steps--;
-			if (ss.mot_revolver.rampdown_steps == 0) {
+			if (ss.mot_revolver.rampup_steps == 0) {
 				ss.mot_revolver.status = stat_working;
-				ss.mot_revolver.status_tmp = stat_start_working;
 				ss.lb_revolver.passes = 0; /* dismiss passes when ramp up */
 			}
 			REV_MOVE_STEP;

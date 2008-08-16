@@ -107,48 +107,35 @@ void sensor_tcs_get_color() {
 	ss.sens_tcs.status = stat_start_working;
 }
 
-smartie_color get_catcher_position()
-{
-	return 0;
-}
-
 /**
  * \brief Rotates the catcher to a certain position
  * 
  * This function will rotate the catcher to position specified by the a color
- * 
  */
-void catcher_rotate_absolute(smartie_color color_new)
-{
-	smartie_color color_tmp = 0;
-	uint8_t color_count = 0;
-	float steps = 0;
-	uint16_t angle = 0;
+void catcher_rotate_absolute(smartie_color move_to) {
+	int8_t move_rel = 0;
 	
-	color_tmp = get_catcher_position();
-	
-	///! Calculate the difference to move the motor
-	while (color_tmp != color_new) {
-		color_tmp++;
-		if (color_tmp == col_unknown) {
-			color_tmp = 0;
-		}
-		color_count++;
+	if (move_to == ss.catch.position) {
+		/* just indicate we have done something */
+		ss.mot_catcher.status_tmp = stat_finished;
+		return;
 	}
+	if (move_to > ss.catch.position)
+		move_rel = move_to - ss.catch.position;
+	if (move_to < ss.catch.position)
+		move_rel = CATCH_MAX_SIZE - ss.catch.position - move_to;
 	
-	///! calculate steps needed for rotation
-	///! assuming full steps
-	angle = color_count * CATCHER_ANGLE_PER_COLOR;
-	steps = angle / CATCHER_ANGLE_PER_STEP;
-	
-	catcher_rotate_relative(steps);
+	catcher_rotate_relative(move_rel);
 }
 
 //TODO: Doku
-void catcher_rotate_relative(uint16_t rel_pos)
+void catcher_rotate_relative(int8_t rel_pos)
 {
-	if (rel_pos == 0)
+	if (rel_pos == 0) {
+		/* Pretend we have done something */
+		ss.mot_catcher.status_tmp = stat_finished;
 		return;
+	}
 	
 	if ( (ss.mot_catcher.currentPos + rel_pos) > CATCH_MAX_SIZE ) 
 		ss.mot_catcher.targetPos = CATCH_MAX_SIZE - rel_pos;
@@ -158,25 +145,8 @@ void catcher_rotate_relative(uint16_t rel_pos)
 	ss.mot_catcher.status = stat_start_working;
 }
 
-uint8_t catcher_rotate_steps (uint16_t f_steps)
-{
-/*	extern engine eng_catcher;
-	
-	if (eng_catcher.eng_stat != eng_stop)
-		return FALSE;
-	
-	//TODO: ramp for 
-	
-	eng_catcher.eng_stat = eng_rotate;
-	eng_catcher.tar_pos = eng_catcher.cur_pos + f_steps;
-	
-	CATCH_START_ROTATING();
-*/
-	return 0;
-}
 
-void revolver_rotate_absolute(uint8_t abs_pos)
-{
+void revolver_rotate_absolute(int8_t abs_pos) {
 	
 	
 }
@@ -195,10 +165,12 @@ void revolver_rotate_absolute(uint8_t abs_pos)
  * The position where to move to. The value of rel_pos will be not checked, so the 
  * value must be lower than \ref REV_MAX_SIZE. 
  */
-void revolver_rotate_relative(int8_t rel_pos)
-{
-	if (rel_pos == 0)
+void revolver_rotate_relative(int8_t rel_pos) {
+	if (rel_pos == 0) {
+		/* Pretend we have done something */
+		ss.mot_revolver.status_tmp = stat_finished;
 		return;
+	}
 	
 	if ( (ss.mot_revolver.currentPos + rel_pos) > REV_MAX_SIZE ) 
 		ss.mot_revolver.targetPos = ss.mot_revolver.currentPos - REV_MAX_SIZE + rel_pos;
