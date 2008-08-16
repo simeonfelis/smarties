@@ -76,6 +76,8 @@
  * 
  * The Menu structure is described in \ref menu.h
  * 
+ * For color measurement have a look at \ref col_tab_blu in \ref system.c
+ * 
  * The system related IO actions are all defined in \ref system.h There are controlled
  * - moving the revolver
  * - moving the catcher
@@ -125,14 +127,14 @@ int main(void) {
 	char s[7];
 
 	ss.state.mode = SYS_MODE_INIT;
-	ss.state.modetmp = SYS_MODE_INIT;
+	ss.state.mode_last = SYS_MODE_INIT;
 
 	init_all();
 	sei	();
 
 	/* Wait for some init functions to be finished */
 	while (temp) {
-#if 1 /* catcher motor status output */
+#if 0 /* catcher motor status output */
     				switch (ss.mot_catcher.status) {
     				case stat_idle:
     					lcd_gotoxy(12,1); lcd_puts("idle");
@@ -172,7 +174,7 @@ int main(void) {
     					break;
     				}
 #endif
-#if 1 /* revolver motor status output */
+#if 0 /* revolver motor status output */
     				switch (ss.mot_revolver.status) {
     				case stat_idle:
     					lcd_gotoxy(0,1); lcd_puts("idle");
@@ -214,10 +216,10 @@ int main(void) {
 #endif
 		if ( (ss.mot_revolver.status == stat_idle) 
 				&& (ss.mot_catcher.status == stat_idle) ) {
-			if ( (ss.mot_revolver.status_tmp != stat_idle) 
-					&& (ss.mot_catcher.status_tmp != stat_idle) ) {
-				ss.mot_catcher.status_tmp = stat_idle;
-				ss.mot_revolver.status_tmp = stat_idle;
+			if ( (ss.mot_revolver.status_last != stat_idle) 
+					&& (ss.mot_catcher.status_last != stat_idle) ) {
+				ss.mot_catcher.status_last = stat_idle;
+				ss.mot_revolver.status_last = stat_idle;
 				lcd_puts("Init done");
 				temp = 0;
 			}
@@ -225,7 +227,7 @@ int main(void) {
 	}
 
 	/* initializing done, set state */
-	ss.state.modetmp = ss.state.mode;
+	ss.state.mode_last = ss.state.mode;
 	ss.state.mode = SYS_MODE_RUNNING;
 	ss.state.step.I = stat_start_working;
 
@@ -235,15 +237,15 @@ int main(void) {
 	lcd_gotoxy(0,0); lcd_puts(menu_current->text[0]);
 	lcd_gotoxy(0,1); lcd_puts(menu_current->text[1]);
 		
-	while (1) /* Testing loop */
+	while (1) /* Main loop */
 	{
     	switch (ss.state.mode) {
     	case SYS_MODE_INIT:
     		break;
     	case SYS_MODE_PAUSE:
-    		if (ss.state.modetmp != SYS_MODE_PAUSE) {
+    		if (ss.state.mode_last != SYS_MODE_PAUSE) {
     			/* if we just entered that mode */
-    			ss.state.modetmp = SYS_MODE_PAUSE;
+    			ss.state.mode_last = SYS_MODE_PAUSE;
     			menu_current = &men_lay_greeting[0];
     			lcd_gotoxy(0,0); lcd_puts(menu_current->text[0]);
     			lcd_gotoxy(0,1); lcd_puts(menu_current->text[1]);
@@ -270,26 +272,26 @@ int main(void) {
     		
     		/* rotate program revolver */
     		if (ss.mot_revolver.status == stat_idle) {
-    			if (ss.mot_revolver.status_tmp == stat_finished) {
-    				ss.mot_revolver.status_tmp = stat_idle;
+    			if (ss.mot_revolver.status_last == stat_finished) {
+    				ss.mot_revolver.status_last = stat_idle;
     				lcd_gotoxy(9,1); lcd_puts("Pos:");
-    				if (ss.mot_revolver.currentPos<10) lcd_puts(" ");
-    				lcd_puts(itoa(ss.mot_revolver.currentPos, s, 10));
+    				if (ss.mot_revolver.current_pos<10) lcd_puts(" ");
+    				lcd_puts(itoa(ss.mot_revolver.current_pos, s, 10));
     			}
     		}
     		
     		/* rotate program catcher */
     		if (ss.mot_catcher.status == stat_idle) {
-    			if (ss.mot_catcher.status_tmp == stat_finished) {
-    				ss.mot_revolver.status_tmp = stat_idle;
+    			if (ss.mot_catcher.status_last == stat_finished) {
+    				ss.mot_revolver.status_last = stat_idle;
     				lcd_gotoxy(9,1); lcd_puts("Pos: ");
-    				lcd_puts(itoa(ss.mot_catcher.currentPos, s, 10));
+    				lcd_puts(itoa(ss.mot_catcher.current_pos, s, 10));
     			}
     		}
     		
     		break; /* SYS_MODE_PAUSE */
 		case SYS_MODE_RUNNING:
-			if (ss.state.modetmp == !SYS_MODE_RUNNING) {
+			if (ss.state.mode_last == !SYS_MODE_RUNNING) {
 				lcd_gotoxy(5,1); lcd_puts("RUN/  ");
 			}
 			if (ss.state.step.I == stat_start_working) {
@@ -300,10 +302,10 @@ int main(void) {
 				sensor_tcs_get_color();
 				/* We need the color from the smartie which is actually above the hole */
 				/* Therefore, we need the correct index: */
-				if ( (ss.rev.position + POS_SMARTIE_OUT) > REV_MAX_SIZE )
-					index_temp =  ss.rev.position - REV_MAX_SIZE + POS_SMARTIE_OUT; 
+				if ( (ss.rev.position + REV_POS_SMARTIE_OUT) > REV_MAX_SIZE )
+					index_temp =  ss.rev.position - REV_MAX_SIZE + REV_POS_SMARTIE_OUT; 
 				else
-					index_temp = ss.rev.position + POS_SMARTIE_OUT;
+					index_temp = ss.rev.position + REV_POS_SMARTIE_OUT;
 				col_temp = ss.rev.smart[index_temp].color;
 				catcher_rotate_absolute(col_temp);
 			}
@@ -311,9 +313,9 @@ int main(void) {
 				if ( (ss.sens_tcs.status == stat_idle)
 						&& (ss.mot_catcher.status == stat_idle)) {
 					if ( (ss.sens_tcs.status_last == stat_finished)
-							&& (ss.mot_catcher.status_tmp == stat_finished)) {
+							&& (ss.mot_catcher.status_last == stat_finished)) {
 						ss.sens_tcs.status_last = stat_idle;
-						ss.mot_catcher.status_tmp = stat_idle;
+						ss.mot_catcher.status_last = stat_idle;
 						ss.state.step.I = stat_stop_working;
 					}
 				}
@@ -346,61 +348,52 @@ int main(void) {
 			lcd_gotoxy(0,0); lcd_puts(menu_current->text[0]);
 			lcd_gotoxy(0,1); lcd_puts(menu_current->text[1]);    			
 		}
-	} /* Testing loop end */
-
-	init_all();
- 
-    while(1)
+	} /* Main loop end */
+	
+    while(1) /* deprecated */
     {
     	switch (ss.state.mode) {
 		case SYS_MODE_RUNNING:
 			
-			if (ss.state.step.I == SYS_STEP_RUNNING) 
+//			if (ss.state.step.I == SYS_STEP_RUNNING) 
 			{
-				// color sensor stuff
-				if (ss.col_sens_ADJD.status == stat_idle)
-					ss.col_sens_ADJD.status = stat_working;	//will start SPI detection
-				if (ss.col_sens_ADJD.status == stat_working)
-					;//TODO: check if SPI reception complete, set col_sens_finished
-				
-				
 				// catcher preparation
 				//ss.mot_catcher.targetPos = smartie[POS_SMARTIE_OUT-1].color;
 				if (ss.mot_catcher.status == stat_idle)
-					if (ss.mot_catcher.currentPos != ss.mot_catcher.targetPos)
+					if (ss.mot_catcher.current_pos != ss.mot_catcher.target_pos)
 						ss.mot_catcher.status = stat_start_working;	//will start rotating the catcher
 				if (ss.mot_catcher.status == stat_working) // status working will be entered automatically
 				{
 					if (ss.lb_catcher.passes > 0)						//FIXME: check multiple passes
 					{
-						ss.mot_catcher.currentPos++;
-						if (ss.mot_catcher.currentPos == col_unknown) // reset counter
-							ss.mot_catcher.currentPos = 0;
+						ss.mot_catcher.current_pos++;
+						if (ss.mot_catcher.current_pos == col_unknown) // reset counter
+							ss.mot_catcher.current_pos = 0;
 						ss.lb_catcher.passes = 0;
 					}
-					if (ss.mot_catcher.currentPos == ss.mot_catcher.targetPos)
+					if (ss.mot_catcher.current_pos == ss.mot_catcher.target_pos)
 					{
-						ss.mot_catcher.status_tmp = stat_working;
+						ss.mot_catcher.status_last = stat_working;
 						ss.mot_catcher.status = stat_stop_working;
 					}
 				}
 				
 				// finishing step I, entering step II
-				if ((ss.mot_catcher.status == stat_finished) &&
-						(ss.col_sens_ADJD.status == stat_finished))
-				{
-					ss.col_sens_ADJD.status = stat_idle;
-					ss.mot_catcher.status = stat_idle;
-					ss.mot_catcher.status_tmp = stat_finished;
-					ss.state.step.I = SYS_STEP_COMPLETED;
-					ss.state.step.II = SYS_STEP_AWAITED;
-				}				
+//				if ((ss.mot_catcher.status == stat_finished) &&
+//						(ss.col_sens_ADJD.status == stat_finished))
+//				{
+//					ss.col_sens_ADJD.status = stat_idle;
+//					ss.mot_catcher.status = stat_idle;
+//					ss.mot_catcher.status_last = stat_finished;
+//					ss.state.step.I = SYS_STEP_COMPLETED;
+//					ss.state.step.II = SYS_STEP_AWAITED;
+//				}				
 			} // if (ss.step.I == SYS_STEP_RUNNING) 
 			
-			if (ss.state.step.II == SYS_STEP_AWAITED) 
-				ss.state.step.II = SYS_STEP_RUNNING;
+//			if (ss.state.step.II == SYS_STEP_AWAITED) 
+//				ss.state.step.II = SYS_STEP_RUNNING;
 							
-			if (ss.state.step.II == SYS_STEP_RUNNING) 
+//			if (ss.state.step.II == SYS_STEP_RUNNING) 
 			{
 				if (ss.shkr.status == stat_idle)
 					ss.shkr.status = stat_working;
@@ -416,29 +409,21 @@ int main(void) {
 				if (ss.shkr.status == stat_finished)
 				{
 					ss.shkr.status = stat_idle;
-					ss.shkr.statustmp = stat_idle;
-					ss.state.step.II = SYS_STEP_COMPLETED;
-					ss.state.step.III = SYS_STEP_AWAITED;
+					ss.shkr.status_last = stat_idle;
+//					ss.state.step.II = SYS_STEP_COMPLETED;
+//					ss.state.step.III = SYS_STEP_AWAITED;
 				}
 			}
-			if (ss.state.step.III == SYS_STEP_AWAITED) 
+//			if (ss.state.step.III == SYS_STEP_AWAITED) 
 			{
-				ss.state.step.III = SYS_STEP_RUNNING;
-				ss.state.step.III = SYS_STEP_COMPLETED;
-				ss.state.step.I = SYS_STEP_AWAITED;
+//				ss.state.step.III = SYS_STEP_RUNNING;
+//				ss.state.step.III = SYS_STEP_COMPLETED;
+//				ss.state.step.I = SYS_STEP_AWAITED;
 			}
     		break;
     	default:
 			break;
 		} // switch (state)
-    	
-    	//handle user inputs
-    	if (ss.rotenc.push)
-    	{
-    		menu_action = (*ss.menu->function);
-    		menu_action();
-    		ss.rotenc.push = 0;
-    	}
 	} // while (1)
 	return 0;
 }

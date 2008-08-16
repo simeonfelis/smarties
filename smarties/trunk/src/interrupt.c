@@ -6,7 +6,6 @@
  * 
  * Alle necessary interrupt routines. Please check the source code of
  * this file for more documentation.
- * 
  */
 
 extern smartie_sorter ss;
@@ -16,7 +15,7 @@ extern smartie_sorter ss;
  */
 ISR (TIMER0_COMP_vect) {
 
-	/* color sensor TCS stuff */
+	/* color sensor TCS stuff first, needs to be accurate */
 	sensor_tcs_stuff();
 
 	/* user input (rotary encoder) stuff */
@@ -30,9 +29,6 @@ ISR (TIMER0_COMP_vect) {
 	
 	/* color sensor ADJD stuff */
 	sensor_adjd_stuff();
-	
-	/* display and menu stuff */
-	menu_stuff ();
 	
 	// sensor stuff
 	// engine stuff

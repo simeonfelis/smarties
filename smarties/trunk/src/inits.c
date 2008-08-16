@@ -131,7 +131,7 @@ void init_motors()
 	/***************** C A T C H E R **********************/
 
 	ss.mot_catcher.status = stat_idle;
-	ss.mot_catcher.status_tmp = stat_idle;
+	ss.mot_catcher.status_last = stat_idle;
 	
 	/* find the next defined position */
 	if (!IS_LB_CATCHER)
@@ -141,7 +141,7 @@ void init_motors()
 	/*************** R E V O L V E R *********************/
 	
 	ss.mot_revolver.status = stat_idle;
-	ss.mot_revolver.status_tmp = stat_idle;
+	ss.mot_revolver.status_last = stat_idle;
 		
 	/* find the next defined position */
 	if (!IS_LB_REVOLVER)
@@ -157,7 +157,12 @@ void init_motors()
 	//catcher_rotate_relative(4);
 }
 
-//TODO: docs
+/**
+ * \brief Creates the menu stucture and connections
+ * 
+ * The menu structure and functionality is explained in \ref menu.h in 
+ * detailed.
+ */
 void init_menu()
 {
 	extern menu_entry *menu_current;

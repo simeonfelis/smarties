@@ -25,19 +25,19 @@
 <targetPlatform id="de.innot.avreclipse.targetplatform.winavr.app.debug.1666995964" name="AVR Cross-Target" superClass="de.innot.avreclipse.targetplatform.winavr.app.debug"/>
 <builder buildPath="${workspace_loc:/smarties2/Debug}" id="de.innot.avreclipse.target.builder.winavr.app.debug.1257331098" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="AVR GNU Make Builder" superClass="de.innot.avreclipse.target.builder.winavr.app.debug"/>
 <tool id="de.innot.avreclipse.tool.assembler.winavr.app.debug.1451599621" name="AVR Assembler" superClass="de.innot.avreclipse.tool.assembler.winavr.app.debug">
-<option id="de.innot.avreclipse.assembler.option.debug.level.61417123" name="Generate Debugging Info" superClass="de.innot.avreclipse.assembler.option.debug.level"/>
+<option id="de.innot.avreclipse.assembler.option.debug.level.61417123" name="Generate Debugging Info" superClass="de.innot.avreclipse.assembler.option.debug.level" value="de.innot.avreclipse.assembler.option.debug.level.none" valueType="enumerated"/>
 <option id="de.innot.avreclipse.asm.option.usecpp.778919593" name="Use preprocessor" superClass="de.innot.avreclipse.asm.option.usecpp"/>
 <option id="de.innot.avreclipse.asm.option.warnings.nowarn.1538945438" name="Suppress warnings (-W)" superClass="de.innot.avreclipse.asm.option.warnings.nowarn"/>
 <option id="de.innot.avreclipse.assembler.option.xflags.697554904" name="(-Xassembler) options" superClass="de.innot.avreclipse.assembler.option.xflags"/>
 <option id="de.innot.avreclipse.asm.option.flags.1754643859" name="Other GCC Flags" superClass="de.innot.avreclipse.asm.option.flags"/>
 <option id="de.innot.avreclipse.asm.option.include.paths.1440302779" name="Include paths (-I)" superClass="de.innot.avreclipse.asm.option.include.paths"/>
-<option id="de.innot.avreclipse.assembler.option.debug.type.1479588487" name="Debug Info Format" superClass="de.innot.avreclipse.assembler.option.debug.type"/>
+<option id="de.innot.avreclipse.assembler.option.debug.type.1479588487" name="Debug Info Format" superClass="de.innot.avreclipse.assembler.option.debug.type" value="de.innot.avreclipse.assembler.option.debug.level.default" valueType="enumerated"/>
 <option id="de.innot.avreclipse.asm.option.targetmcu.2026651551" name="MCU Type" superClass="de.innot.avreclipse.asm.option.targetmcu"/>
 <inputType id="de.innot.avreclipse.tool.assembler.input.686648393" superClass="de.innot.avreclipse.tool.assembler.input"/>
 </tool>
 <tool id="de.innot.avreclipse.tool.compiler.winavr.app.debug.1745800966" name="AVR Compiler" superClass="de.innot.avreclipse.tool.compiler.winavr.app.debug">
-<option id="de.innot.avreclipse.compiler.option.debug.level.559570449" name="Generate Debugging Info" superClass="de.innot.avreclipse.compiler.option.debug.level" value="de.innot.avreclipse.compiler.option.debug.level.g2" valueType="enumerated"/>
-<option id="de.innot.avreclipse.compiler.option.optimize.1130816674" name="Optimization Level" superClass="de.innot.avreclipse.compiler.option.optimize" value="de.innot.avreclipse.compiler.optimize.two" valueType="enumerated"/>
+<option id="de.innot.avreclipse.compiler.option.debug.level.559570449" name="Generate Debugging Info" superClass="de.innot.avreclipse.compiler.option.debug.level" value="de.innot.avreclipse.compiler.option.debug.level.none" valueType="enumerated"/>
+<option id="de.innot.avreclipse.compiler.option.optimize.1130816674" name="Optimization Level" superClass="de.innot.avreclipse.compiler.option.optimize" value="de.innot.avreclipse.compiler.optimize.size" valueType="enumerated"/>
 <option id="de.innot.avreclipse.compiler.option.incpath.366813937" name="Include Paths (-I)" superClass="de.innot.avreclipse.compiler.option.incpath" valueType="includePath">
 <listOptionValue builtIn="false" value="&quot;${workspace_loc:/smarties2/src}&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${workspace_loc:/smarties2}&quot;"/>

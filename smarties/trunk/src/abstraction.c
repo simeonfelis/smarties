@@ -1,3 +1,11 @@
+/**
+ * @file abstraction.c
+ * 
+ * All these functions are expected to be called every millisecond by the function 
+ * ISR (TIMER0_OVF_vect) in the file my_interrupt.c
+ * 
+ */
+
 #include "abstraction.h"
 #include "smarties2.h"
 
@@ -46,9 +54,9 @@ void motor_stuff ()
 	/* start and ramp up */
 	if (ss.mot_catcher.status == stat_start_working) {
 		/* if we just started to rotate, start and prepare ramp up */
-		if (ss.mot_catcher.status_tmp == stat_idle) {
+		if (ss.mot_catcher.status_last == stat_idle) {
 			CATCH_ENABLE;
-			ss.mot_catcher.status_tmp = stat_start_working;
+			ss.mot_catcher.status_last = stat_start_working;
 			ss.mot_catcher.rampup_steps = CATCH_RAMP_DURATION; /* will be decreased during ramp up */
 			ss.mot_catcher.cycle_counter = 0;
 		}
@@ -60,7 +68,7 @@ void motor_stuff ()
 			ss.mot_catcher.rampup_steps--;
 			if (ss.mot_catcher.rampup_steps == 0) {
 				ss.mot_catcher.status = stat_working;
-				ss.mot_catcher.status_tmp = stat_start_working;
+				ss.mot_catcher.status_last = stat_start_working;
 			}
 			CATCH_MOVE_STEP;
 		}
@@ -70,7 +78,7 @@ void motor_stuff ()
 #if !TESTING_RAMPS
 	/* start rotating */
 	if (ss.mot_catcher.status == stat_start_working) {
-		ss.mot_catcher.status_tmp = stat_start_working;
+		ss.mot_catcher.status_last = stat_start_working;
 		ss.mot_catcher.status = stat_working;
 		CATCH_ENABLE;
 	}
@@ -78,8 +86,8 @@ void motor_stuff ()
 	
 	/* just rotate */
 	if (ss.mot_catcher.status == stat_working) {
-		if (ss.mot_catcher.status_tmp == stat_start_working) {
-			ss.mot_catcher.status_tmp = stat_working;
+		if (ss.mot_catcher.status_last == stat_start_working) {
+			ss.mot_catcher.status_last = stat_working;
 			ss.mot_catcher.cycle_counter = 0;
 		}
 		if (ss.mot_catcher.cycle_counter == REV_STEP_DURATION) {
@@ -88,21 +96,21 @@ void motor_stuff ()
 		}
 		/* count the passes on the lightbarrier. One pass, one position */
 		if (ss.lb_catcher.passes > 0) {
-			ss.mot_catcher.currentPos++;
-			if (ss.mot_catcher.currentPos > CATCH_MAX_SIZE)
-				ss.mot_catcher.currentPos = 0;
+			ss.mot_catcher.current_pos++;
+			if (ss.mot_catcher.current_pos > CATCH_MAX_SIZE)
+				ss.mot_catcher.current_pos = 0;
 			ss.lb_catcher.passes--;
 		}
 		/* before we reach the target position do the ramp down */
-		if ( ss.mot_catcher.currentPos == (ss.mot_catcher.targetPos-1) ) 
+		if ( ss.mot_catcher.current_pos == (ss.mot_catcher.target_pos-1) ) 
 			ss.mot_catcher.status = stat_stop_working;
 	}
 	
 #if TESTING_RAMPS
 	/* ramp down */
 	if (ss.mot_catcher.status == stat_stop_working) {
-		if (ss.mot_catcher.status_tmp == stat_working) {
-			ss.mot_catcher.status_tmp = stat_stop_working;
+		if (ss.mot_catcher.status_last == stat_working) {
+			ss.mot_catcher.status_last = stat_stop_working;
 			ss.mot_catcher.cycle_counter = 0;
 			ss.mot_catcher.rampdown_steps = 1;
 		}
@@ -113,7 +121,7 @@ void motor_stuff ()
 			ss.mot_catcher.cycle_counter = 0;
 			ss.mot_catcher.rampdown_steps++;
 			if (ss.mot_catcher.rampdown_steps == CATCH_RAMP_DURATION) {
-				ss.mot_catcher.status_tmp = stat_stop_working;
+				ss.mot_catcher.status_last = stat_stop_working;
 				ss.mot_catcher.status = stat_finished;
 			}
 			CATCH_MOVE_STEP;
@@ -123,15 +131,15 @@ void motor_stuff ()
 #if !TESTING_RAMPS
 	/* stop working */
 	if (ss.mot_catcher.status == stat_stop_working) {
-		ss.mot_catcher.status_tmp = stat_stop_working;
+		ss.mot_catcher.status_last = stat_stop_working;
 		ss.mot_catcher.status = stat_finished;
 	}
 #endif
 	
 	/* stop */
 	if (ss.mot_catcher.status == stat_finished) {
-		if (ss.mot_catcher.status_tmp == stat_stop_working) {
-			ss.mot_catcher.status_tmp = stat_finished;
+		if (ss.mot_catcher.status_last == stat_stop_working) {
+			ss.mot_catcher.status_last = stat_finished;
 			ss.mot_catcher.cycle_counter = 0;
 		}
 		/* go on rotating until we meet the end position, indicated by the lightbarrier */
@@ -158,9 +166,9 @@ void motor_stuff ()
 	/* start and ramp up */
 	if (ss.mot_revolver.status == stat_start_working) {
 		/* if we just started to rotate, prepare ramp up */
-		if (ss.mot_revolver.status_tmp != stat_start_working) {
+		if (ss.mot_revolver.status_last != stat_start_working) {
 			REV_ENABLE;
-			ss.mot_revolver.status_tmp = stat_start_working;
+			ss.mot_revolver.status_last = stat_start_working;
 			ss.mot_revolver.rampup_steps = REV_RAMP_DURATION; /* will be decreased during ramp up */
 			ss.mot_revolver.cycle_counter = 0;
 		}
@@ -185,7 +193,7 @@ void motor_stuff ()
 #if !TESTING_RAMPS
 	/* start rotating */
 	if (ss.mot_revolver.status == stat_start_working) {
-		ss.mot_revolver.status_tmp = stat_start_working;
+		ss.mot_revolver.status_last = stat_start_working;
 		ss.mot_revolver.status = stat_working;
 		REV_ENABLE;
 	}
@@ -193,8 +201,8 @@ void motor_stuff ()
 	
 	/* just rotate */
 	if (ss.mot_revolver.status == stat_working) {
-		if (ss.mot_revolver.status_tmp == stat_start_working) {
-			ss.mot_revolver.status_tmp = stat_working;
+		if (ss.mot_revolver.status_last == stat_start_working) {
+			ss.mot_revolver.status_last = stat_working;
 			ss.mot_revolver.cycle_counter = 0;
 		}
 		if (ss.mot_revolver.cycle_counter == REV_STEP_DURATION) {
@@ -203,21 +211,21 @@ void motor_stuff ()
 		}
 		/* count the passes on the lightbarrier. One pass, one position */
 		if (ss.lb_revolver.passes > 0) {
-			ss.mot_revolver.currentPos++;
-			if (ss.mot_revolver.currentPos>REV_MAX_SIZE)
-				ss.mot_revolver.currentPos = 0;
+			ss.mot_revolver.current_pos++;
+			if (ss.mot_revolver.current_pos>REV_MAX_SIZE)
+				ss.mot_revolver.current_pos = 0;
 			ss.lb_revolver.passes--;
 		}
 		/* before we reach the target position do the ramp down */
-		if ( ss.mot_revolver.currentPos == (ss.mot_revolver.targetPos-1) ) 
+		if ( ss.mot_revolver.current_pos == (ss.mot_revolver.target_pos-1) ) 
 			ss.mot_revolver.status = stat_stop_working;
 	}
 	
 #if TESTING_RAMPS
 	/* ramp down */
 	if (ss.mot_revolver.status == stat_stop_working) {
-		if (ss.mot_revolver.status_tmp == stat_working) {
-			ss.mot_revolver.status_tmp = stat_stop_working;
+		if (ss.mot_revolver.status_last == stat_working) {
+			ss.mot_revolver.status_last = stat_stop_working;
 			ss.mot_revolver.cycle_counter = 0;
 			ss.mot_revolver.rampdown_steps = 1;
 		}
@@ -228,7 +236,7 @@ void motor_stuff ()
 			ss.mot_revolver.cycle_counter = 0;
 			ss.mot_revolver.rampdown_steps++;
 			if (ss.mot_revolver.rampdown_steps == REV_RAMP_DURATION) {
-				ss.mot_revolver.status_tmp = stat_stop_working;
+				ss.mot_revolver.status_last = stat_stop_working;
 				ss.mot_revolver.status = stat_finished;
 			}
 			REV_MOVE_STEP;
@@ -239,15 +247,15 @@ void motor_stuff ()
 #if !TESTING_RAMPS
 	/* stop working */
 	if (ss.mot_revolver.status == stat_stop_working) {
-		ss.mot_revolver.status_tmp = stat_stop_working;
+		ss.mot_revolver.status_last = stat_stop_working;
 		ss.mot_revolver.status = stat_finished;
 	}
 #endif
 	
 	/* stop */
 	if (ss.mot_revolver.status == stat_finished) {
-		if (ss.mot_revolver.status_tmp == stat_stop_working) {
-			ss.mot_revolver.status_tmp = stat_finished;
+		if (ss.mot_revolver.status_last == stat_stop_working) {
+			ss.mot_revolver.status_last = stat_finished;
 			ss.mot_revolver.cycle_counter = 0;
 		}
 		/* go on rotating until we meet the end position, indicated by the lightbarrier */
@@ -258,9 +266,9 @@ void motor_stuff ()
 			REV_MOVE_STEP;
 			if (IS_LB_REVOLVER) {
 				ss.mot_revolver.status = stat_idle;
-				ss.mot_revolver.currentPos++;
-				if (ss.mot_revolver.currentPos > REV_MAX_SIZE) 
-					ss.mot_revolver.currentPos = 0;
+				ss.mot_revolver.current_pos++;
+				if (ss.mot_revolver.current_pos > REV_MAX_SIZE) 
+					ss.mot_revolver.current_pos = 0;
 				REV_DISABLE;				
 			}
 		}
@@ -343,15 +351,15 @@ void lightbarrier_stuff ()
 {
 	if (IS_LB_CATCHER) {
 		/* recognize status changes from free to blocked */
-		if (ss.lb_catcher.status_tmp == lb_free) {
-			ss.lb_catcher.status_tmp = lb_blocked;
+		if (ss.lb_catcher.status_last == lb_free) {
+			ss.lb_catcher.status_last = lb_blocked;
 			ss.lb_catcher.status = lb_blocked;
 		}
 	}
 	else {
 		/* if status has changed fromm blocked to free, count a pass */
-		if (ss.lb_catcher.status_tmp == lb_blocked) {
-			ss.lb_catcher.status_tmp = lb_free;
+		if (ss.lb_catcher.status_last == lb_blocked) {
+			ss.lb_catcher.status_last = lb_free;
 			ss.lb_catcher.status = lb_free;
 			ss.lb_catcher.passes++;
 		}
@@ -359,44 +367,48 @@ void lightbarrier_stuff ()
 
 	if (IS_LB_REVOLVER) {
 		/* recognize status changes from free to blocked */
-		if (ss.lb_revolver.status_tmp == lb_free) {
-			ss.lb_revolver.status_tmp = lb_blocked;
+		if (ss.lb_revolver.status_last == lb_free) {
+			ss.lb_revolver.status_last = lb_blocked;
 			ss.lb_revolver.status = lb_blocked;
 		}
 	}
 	else {
 		/* if status has changed fromm blocked to free, count a pass */
-		if (ss.lb_revolver.status_tmp == lb_blocked) {
-			ss.lb_revolver.status_tmp = lb_free;
+		if (ss.lb_revolver.status_last == lb_blocked) {
+			ss.lb_revolver.status_last = lb_free;
 			ss.lb_revolver.status = lb_free;
 			ss.lb_revolver.passes++;
 		}
 	}
 }
 
-void sensor_stuff ()
-{
-	
-}
-
 //TODO: Doku
 void sensor_adjd_stuff() {
-	if (ss.col_sens_ADJD.status == stat_start_working) {
+	if (ss.sens_adjd.status == stat_start_working) {
 		/* if we just started to detect the color switch on the light first */
-		if (ss.col_sens_ADJD.status_last == stat_idle) {
-			ss.col_sens_ADJD.status = stat_working;
-			ss.col_sens_ADJD.status_last = stat_start_working;
+		if (ss.sens_adjd.status_last == stat_idle) {
+			ss.sens_adjd.status = stat_working;
+			ss.sens_adjd.status_last = stat_start_working;
 			COL_SENS_ADJD_LED_ON;
 		}
 	}
 	
-	if (ss.col_sens_ADJD.status == stat_working) {
-		if (ss.col_sens_ADJD.status_last == stat_start_working) {
+	if (ss.sens_adjd.status == stat_working) {
+		if (ss.sens_adjd.status_last == stat_start_working) {
 			/* if the light is on ask for the current color */
 		}
 	}
 }
 
+/**
+ * \brief Takes control over the TCS color sensor
+ * 
+ * This function is expected to be called exectly every millisecond to
+ * work properly. This function will read the current color of the smartie.
+ * 
+ * More documentation about color values have a look at \ref col_tab_blu 
+ * in \ref system.c
+ */
 void sensor_tcs_stuff() {
 	uint8_t y;
 	static uint16_t f_blu, f_gre, f_red;
@@ -481,14 +493,13 @@ void sensor_tcs_stuff() {
  * 
  * This function is expected to be called regulary. It polls the
  * input pins of the shaker and sets the corresponding flags 
- * of the shaker struct. This function assumes that lightbarriers
- * are always enabled.
+ * of the shaker struct. This function assumes that 
  */
 void shaker_stuff () {
-	if (ss.shkr.statustmp == stat_idle)
+	if (ss.shkr.status_last == stat_idle)
 		if (ss.shkr.status == stat_working)
 		{
-			ss.shkr.statustmp = stat_working;
+			ss.shkr.status_last = stat_working;
 			ss.shkr.duration = 500; 		//500 ms
 		}
 	if (ss.shkr.status == stat_working)
@@ -497,17 +508,7 @@ void shaker_stuff () {
 		if (ss.shkr.duration == 0)
 		{
 			ss.shkr.status = stat_finished;
-			ss.shkr.statustmp = stat_working;
+			ss.shkr.status_last = stat_working;
 		}
 	}
-}
-
-//TODO docs
-void menu_stuff () {
-/* This takes too long: about 5 ms!
-	extern menu_entry *menu_current;
-
-	lcd_gotoxy(0,0); lcd_puts(menu_current->text[0]);  
-	lcd_gotoxy(0,1); lcd_puts(menu_current->text[1]);
- */
 }

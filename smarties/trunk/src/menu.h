@@ -174,10 +174,6 @@
  */
 typedef struct menu_entry_t {
 	void (*function)(void);		//!< If push button pressed, this function will be executed (if available)
-#if 0 /* deprecated */
-	void (*leftaction);		//!< If rotary encoder turned left, this function will be executed (if available)
-	void (*rightaction);	//!< If rotary encoder turned right, this function will be executed (if available)
-#endif
 	char * text[2];			//!< Text on Display (Max 24 Characters, 2 lines)
 	void * topmenu;			//!< The menu item above of current menu item
 	void * submenu;			//!< The menu item below of current menu item
