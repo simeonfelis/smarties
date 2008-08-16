@@ -14,7 +14,8 @@ extern smartie_sorter ss;
 /**
  * \brief Interrupt routine, executed every millisecond
  */
-ISR (TIMER0_COMP_vect) {	
+ISR (TIMER0_COMP_vect) {
+
 	/* color sensor TCS stuff */
 	sensor_tcs_stuff();
 
@@ -30,7 +31,9 @@ ISR (TIMER0_COMP_vect) {
 	/* color sensor ADJD stuff */
 	sensor_adjd_stuff();
 	
-	// display stuff
+	/* display and menu stuff */
+	menu_stuff ();
+	
 	// sensor stuff
 	// engine stuff
 	

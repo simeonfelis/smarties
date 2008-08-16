@@ -262,36 +262,32 @@ void motor_stuff ()
  * input pins for the rotary encoder and sets the corresponding 
  * flags of the rotary_encoder struct. 
  */
-void rotary_encoder_stuff ()
-{
+void rotary_encoder_stuff() {
 	if (IS_ROTENC_PUSH)
 		ss.rotenc.pushtmp = ROTENC_PUSH;
 
 	/* After button released, then count a single button press */
-	if (ss.rotenc.pushtmp == ROTENC_PUSH && !IS_ROTENC_PUSH)
-	{
+	if (ss.rotenc.pushtmp == ROTENC_PUSH && !IS_ROTENC_PUSH) {
 		ss.rotenc.push++;
 		ss.rotenc.pushtmp = ROTENC_NONE;
 	}
-	
-	if (IS_ROTENC_NONE)
-	{
+
+	if (IS_ROTENC_NONE) {
 		if (ss.rotenc.rottmp == ROTENC_A)
 			ss.rotenc.left++;
-		
+
 		if (ss.rotenc.rottmp == ROTENC_B) // store current position
 			ss.rotenc.right++;
 
 		if (ss.rotenc.rottmp == ROTENC_BOTH) //choose myself
 			ss.rotenc.right++;
 
-		ss.rotenc.rottmp = ROTENC_NONE;	//store current position
+		ss.rotenc.rottmp = ROTENC_NONE; //store current position
 	}
-	if (IS_ROTENC_AB)
-	{
+	if (IS_ROTENC_AB) {
 		if (ss.rotenc.rottmp == ROTENC_B)
 			ss.rotenc.left++;
-		
+
 		if (ss.rotenc.rottmp == ROTENC_A) // store current position
 			ss.rotenc.right++;
 
@@ -299,12 +295,10 @@ void rotary_encoder_stuff ()
 			ss.rotenc.right++;
 
 		ss.rotenc.rottmp = ROTENC_BOTH;
-	}
-	else if (IS_ROTENC_A)
-	{
+	} else if (IS_ROTENC_A) {
 		if (ss.rotenc.rottmp == ROTENC_BOTH)
 			ss.rotenc.left++;
-		
+
 		if (ss.rotenc.rottmp == ROTENC_NONE) // store current position
 			ss.rotenc.right++;
 
@@ -312,12 +306,10 @@ void rotary_encoder_stuff ()
 			ss.rotenc.right++;
 
 		ss.rotenc.rottmp = ROTENC_A;
-	}	
-	else if (IS_ROTENC_B)
-	{
+	} else if (IS_ROTENC_B) {
 		if (ss.rotenc.rottmp == ROTENC_NONE)
 			ss.rotenc.left++;
-		
+
 		if (ss.rotenc.rottmp == ROTENC_BOTH) // store current position
 			ss.rotenc.right++;
 
@@ -325,7 +317,7 @@ void rotary_encoder_stuff ()
 			ss.rotenc.right++;
 
 		ss.rotenc.rottmp = ROTENC_B;
-	}	
+	}
 }
 
 /**
@@ -414,6 +406,7 @@ void sensor_tcs_stuff() {
 	}
 
 	if (ss.sens_tcs.status == stat_working) {
+		VIBR_TOGGLE;
 		ss.sens_tcs.time++;
 		if (ss.sens_tcs.status_last == stat_start_working) {
 			ss.sens_tcs.status_last = stat_working;
@@ -456,7 +449,7 @@ void sensor_tcs_stuff() {
 			f_red = ss.sens_tcs.filter_freq_red;
 		}
 		/* Now detect colors */
-		for (y=0; y<col_unknown; y++) {
+		for (y=0; y<=col_unknown; y++) {
 			if ( ((f_blu > col_tab_blu[y][0]) && (f_blu < col_tab_blu[y][1])) && 
 					((f_gre > col_tab_gre[y][0]) && (f_gre < col_tab_gre[y][1])) &&
 					((f_red > col_tab_red[y][0]) && (f_red < col_tab_red[y][1])) ) {
@@ -481,8 +474,7 @@ void sensor_tcs_stuff() {
  * of the shaker struct. This function assumes that lightbarriers
  * are always enabled.
  */
-void shaker_stuff ()
-{
+void shaker_stuff () {
 	if (ss.shkr.statustmp == stat_idle)
 		if (ss.shkr.status == stat_working)
 		{
@@ -499,7 +491,11 @@ void shaker_stuff ()
 		}
 	}
 }
-void display_stuff ()
-{
-	
+
+//TODO docs
+void menu_stuff () {
+	extern menu_entry *menu_current;
+
+	lcd_gotoxy(0,0); lcd_puts(menu_current->text[0]);  
+	//lcd_gotoxy(0,1); lcd_puts(menu_current->text[1]);
 }

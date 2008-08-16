@@ -35,61 +35,119 @@
  * \endcode
  *   
  * During \ref SYS_MODE_PAUSE :
+ * Greeting menu:
  * \code
  *   right     +--------------+    right     +--------------+   right
- * <---------> |   MAIN MENU  | <----------> |    RESUME    | <--------->
- *   left      |<   PAUSE    >|    left      |<   PAUSE    >|   left
+ * <---------> |  ENTER MENU  | <----------> |    RESUME    | <--------->
+ *   left      |<prev   next >|    left      |<p          n>|   left
  *             +--------------+              +--------------+
  *               |                             |
  *               |enter_submenu()              |sys_resume()
- *               |
- *   right     +--------------+    right     +--------------+   right
- * <---------> |    ROTATE    | <----------> |     BACK     | <--------->
- *   left      |<   PAUSE    >|    left      |<   PAUSE    >|   left
- *             +--------------+              +--------------+
- *               |                             |
- *               |enter_submenu()              |enter_topmenu()
- *               |
+ * \endcode
+ * 
+ * MAIN menu:
+ * \code
+ *   right     +--------------+    right     +--------------+   right     +--------------+   right
+ * <---------> |    ROTATE    | <----------> |    COLORS    | <---------> |    Go Back   | <------->
+ *   left      |<p          n>|    left      |<p          n>|   left      |<p          n>|   left
+ *             +--------------+              +--------------+             +--------------+
+ *               |                             |                            |
+ *               |enter_submenu()              |enter_submenu()             |enter_topmenu()
+ * \endcode
+ * 
+ * ROTATE Submenu
+ * \code
  *   right     +--------------+   right      +--------------+   right     +--------------+   right
- * <---------> |   REVOLVER   | <----------> |    CATCHER   | <---------> |     BACK     | <--------->
- *   left      |<   PAUSE    >|   left       |<   PAUSE    >|   left      |<   PAUSE    >|   left
+ * <---------> |   REVOLVER   | <----------> |    CATCHER   | <---------> |    Go Back   | <--------->
+ *   left      |<p          n>|   left       |<p          n>|   left      |<p          n>|   left
  *             +--------------+              +--------------+             +--------------+
  *               |                             |                            |
  *               |rotate_revoler()             |rotate_catcher()            |enter_topmenu()
  * \endcode
  * 
- * The numbering system is like following
+ * COLOR submenu
+ * \code
+ *   right     +--------------+   right      +--------------+   right     +--------------+   right
+ * <---------> |  TCS colors  | <----------> | ADJD colors  | <---------> |    Go Back   | <--------->
+ *   left      |<p          n>|   left       |<p          n>|   left      |<p          n>|   left
+ *             +--------------+              +--------------+             +--------------+
+ *               |                             |                            |
+ *               |????????????????             |????????????????            |enter_topmenu()
+ * \endcode
+ * 
+ * Each menu layer has its own array:
+ * 
+ * MAIN menu
  * \code
  * +--------------+  +--------------+ 
- * |    [0][0]    |  |    [1][0]    | 
+ * |      [0]     |  |      [1]     | 
  * |              |  |              | 
  * +--------------+  +--------------+
+ * \endcode
  * 
- * +--------------+  +--------------+
- * |    [0][1]    |  |    [1][1]    |
- * |              |  |              |
- * +--------------+  +--------------+
- * 
+ * ROTATE menu
+ * \code
  * +--------------+  +--------------+  +--------------+
- * |    [0][2]    |  |    [1][2]    |  |    [2][2]    |
+ * |      [0]     |  |      [1]     |  |      [2]     |
  * |              |  |              |  |              |
  * +--------------+  +--------------+  +--------------+
  * \endcode
  * 
- * The excact layout with line and column numbers can be found in \ref lcd_display.c
+ * And so on.
+ * 
+ * The Display has two lines with 24 characters. Here the exact layout during SYS_MODE_RUNNING:
+ * \code
+ *      1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
+ *    + -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  - +
+ *  1 |                            T  I  T  L  E                               |
+ *  2 | S  T  A  T  : [   M  O  D  E      ]       C  O  L  :[ C  O  L  O  R   ]|
+ *    + -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  - +
+ * \endcode
+ * 
+ * - Line 1: Column 1 to 24 is reserved for the title. If the push button is 
+ * pressed, the action described by the title will be executed.
+ * - Line 2: 
+ *   - Column 6 to 12 is reserved for the current mode. Following modes 
+ * can be displayed: 
+ *     - PAUSE
+ *     - RUNNING
+ *   - Column 19 to 24 is reserved for the folling colors:
+ *     - yellow: YELLOW
+ *     - red: RED
+ *     - blue: BLUE
+ *     - brown: BROWN
+ *     - green: GREEN
+ *     - purple: PURPLE
+ *     - unknown: UNKNOWN
+ * 
+ * For some setting possibilties have a look at \ref lcd_display.h
+ * 
+ * For lcd control functions have a look at \ref lcd_display.c
+ * 
+ * The init of the menu is done in \ref inits.c
  * 
  */
 
 // menu length (24)				"                        "
-#define MEN_TITLE_EMPTY			"                        "
-#define MEN_TITLE_MAIN_MENU 	"        MAIN MENU       "
-#define MEN_TITLE_RESUME		"         RESUME         "
-#define MEN_TITLE_ROTATE		"         ROTATE         "
-#define MEN_TITLE_REVOLVER		"        REVOLVER        "
-#define MEN_TITLE_CATCHER		"        CATCHER         "
-#define MEN_TITLE_BACK			"          BACK          "
-#define MEN_TITLE_INITIALIZING  "      INITIALIZING      "
-#define MEN_TITLE_ENTER_PAUSE	"       ENTER PAUSE      "
+#define MEN_TIT_EMPTY			"                        "
+#define MEN_TIT_RESUME			"         RESUME         "
+#define MEN_TIT_BACK			"        Go back         "
+#define MEN_TIT_INITIALIZING	"      INITIALIZING      "
+
+#define MEN_TIT_RUNNING			"       ENTER PAUSE      "
+#define MEN_SUBTIT_RUNNING		"STAT:         COL:      "
+#define MEN_SUBTIT_PAUSE		"<prev              next>"
+
+#define MEN_TIT_GREETING		"      Enter Menu        "
+
+#define MEN_TIT_MAIN_ROTATE		"         ROTATE         "
+#define MEN_TIT_SUB_ROT_REV 	"        REVOLVER        "
+#define MEN_TIT_SUB_ROT_CATCH	"        CATCHER         "
+
+#define MEN_TIT_MAIN_COLOR		"         COLOR          "
+#define MEN_TIT_SUB_TCS			"       TCS colors       "
+#define MEN_TIT_SUB_ADJD		"      ADJD colors       "
+#define MEN_SUBTIT_COLOR		"Push:new measur Rot:next"  
 
 #define MEN_MODE_EMPTY			"       "
 #define MEN_MODE_RUNNING		"RUNNING"
@@ -120,7 +178,7 @@ typedef struct menu_entry_t {
 	void (*leftaction);		//!< If rotary encoder turned left, this function will be executed (if available)
 	void (*rightaction);	//!< If rotary encoder turned right, this function will be executed (if available)
 #endif
-	char * text;			//!< Text on Display (TODO: Max 20 Characters)
+	char * text[2];			//!< Text on Display (Max 24 Characters, 2 lines)
 	void * topmenu;			//!< The menu item above of current menu item
 	void * submenu;			//!< The menu item below of current menu item
 	void * prev;			//!< Previous Menu item
@@ -129,7 +187,8 @@ typedef struct menu_entry_t {
 
 /**
  * \brief Needed to assign the menu_entry's function pointer to a normally 
- * declerated function Necessary to execute this function
+ * declerated function. This is necessary to execute this function. Functions
+ * are set in \ref init_menu()
  */
 void (*menu_action)(void);
 

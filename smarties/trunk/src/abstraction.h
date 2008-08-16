@@ -12,7 +12,7 @@
 void motor_stuff ();
 void rotary_encoder_stuff ();
 void lightbarrier_stuff ();
-void display_stuff ();
+void menu_stuff ();
 void sensor_stuff ();
 void sensor_adjd_stuff();
 void sensor_tcs_stuff();

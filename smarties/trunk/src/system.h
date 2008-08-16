@@ -212,7 +212,10 @@
 #define VIBR_PORT			PORTB
 #define VIBR_DDR			DDRB
 #define VIBR_PIN			PINB		///!< The the Vibrator state pin
-#define VIBRATOR			PB1 		///!< The Vibrator Portbit
+#define VIBR_BIT			PB3 		///!< The Vibrator Portbit
+#define VIBR_START			(VIBR_PORT |= (1<<VIBR_BIT))
+#define VIBR_STOP			(VIBR_PORT &=~(1<<VIBR_BIT))
+#define VIBR_TOGGLE			(VIBR_PORT ^= (1<<VIBR_BIT))
 
 #define SHAKER_DURATION		500			//!< Default duration for shaker (vibrator)
 
@@ -375,10 +378,9 @@ typedef struct color_sensor_tcs_t {
 	common_stat status_last;	//!< The status before current status
 	smartie_color color;		//!< The value from the last color detection
 	int16_t time;				//!< Especially for the TCS frequency mesurement. In milliseconds
-	int16_t filter_freq_red;
-	int16_t filter_freq_blue;
-	int16_t filter_freq_green;
-	int16_t filter_freq_temp;
+	int16_t filter_freq_blue;	//!< The clock frequency in kHz measured with blue filter on
+	int16_t filter_freq_green;	//!< The clock frequency in kHz measured with green filter on
+	int16_t filter_freq_red;	//!< The clock frequency in kHz measured with red filter on
 	int16_t slopes;				//!< The amount of slopes recognised during \ref COL_SENS_TCS_SAMPLE_TIME
 	uint8_t ret;
 } color_sensor_tcs;
@@ -421,7 +423,7 @@ typedef struct smartie_sorter_t {
 	lightbarrier lb_revolver;			//!< Lightbarrier for the revolver
 	shaker shkr;						//!< Shaker (or vibrator)
 	rotary_encoder rotenc;				//!< The rotary encoder (user input)
-	menu_entry menu;					//!< The current displayed menu
+	menu_entry *menu;					//!< The current displayed menu
 } smartie_sorter;
 
 
@@ -433,6 +435,8 @@ void sys_pause();
 void sys_resume();
 void sys_rotate_revolver();
 void sys_rotate_catcher();
+void sys_measure_tcs();
+void sys_measure_adjd();
 void sys_wait(uint16_t time);
 void start_shaker();
 void sensor_adjd_get_color();

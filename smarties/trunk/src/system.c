@@ -33,6 +33,16 @@ void sys_resume()
 	
 }
 
+//TODO docs
+void sys_measure_tcs () {
+	ss.sens_tcs.status = stat_start_working;
+}
+
+//TODO docs
+void sys_measure_adjd () {
+	
+}
+
 /**
  * \brief Rotates the revolver in Pause Mode
  * 

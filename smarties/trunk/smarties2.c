@@ -95,8 +95,10 @@ smartie_sorter ss;
 menu_entry *menu_current;
 menu_entry men_initializing;
 menu_entry men_running;
-menu_entry men_pausing;
-menu_entry entries[3][3];
+menu_entry men_lay_greeting[2];
+menu_entry men_lay_main[3];
+menu_entry men_lay_sub_rotate[3];
+menu_entry men_lay_sub_color[3];
 
 
 /**
@@ -129,52 +131,54 @@ int main(void) {
 	ss.state.mode = SYS_MODE_RUNNING;
 
 	/* update menu, give notice to user */
-	ss.menu = men_running;
 	menu_current = &men_running;
-	lcd_clrscr();
-	lcd_puts(ss.menu.text);
 
 	while (1) /* Testing loop */
 	{
-		switch (ss.sens_tcs.status) {
-		case stat_idle:
-			lcd_gotoxy(0,1);
-			lcd_puts("tcs idle    ");
+    	switch (ss.state.mode) {
+    	case SYS_MODE_INIT:
+    		break;
+    	case SYS_MODE_PAUSE:
+    		if (ss.state.modetmp != SYS_MODE_PAUSE) {
+    			ss.state.modetmp = SYS_MODE_PAUSE;
+    			menu_current = &men_lay_greeting[0];
+    		}
+    		/* color measure program */
+    		if (ss.sens_tcs.status == stat_idle) {
+    			if (ss.sens_tcs.status_last == stat_finished) {
+    				ss.sens_tcs.status_last = stat_idle;
+    				lcd_gotoxy(0,1);
+    				lcd_puts("B:");
+    				if (ss.sens_tcs.filter_freq_blue<10) lcd_puts(" ");
+    				lcd_puts(itoa(ss.sens_tcs.filter_freq_blue, s, 10));
+    				lcd_puts("G:");
+    				if (ss.sens_tcs.filter_freq_green<10) lcd_puts(" ");
+    				lcd_puts(itoa(ss.sens_tcs.filter_freq_green, s, 10));
+    				lcd_puts("R:");
+    				if (ss.sens_tcs.filter_freq_red<10) lcd_puts(" ");
+    				lcd_puts(itoa(ss.sens_tcs.filter_freq_red, s, 10));
+    			}
+    		}
+    		
 			break;
-		case stat_start_working:
-			lcd_gotoxy(0,1);
-			lcd_puts("tcs starting");
-			break;
-		case stat_working:
-			lcd_gotoxy(0,1);
-			lcd_puts("tcs working  t:");
-			lcd_puts(itoa(ss.sens_tcs.time,s,10));
-			lcd_puts("s:");
-			lcd_puts(itoa(ss.sens_tcs.slopes,s,10));
-			break;
-		case stat_stop_working:
-			lcd_gotoxy(0,1);
-			lcd_puts("tcs stoping  ");
-			break;
-		case stat_finished:
-			lcd_gotoxy(0,1);
-			lcd_puts("tcs finished  ");
+		case SYS_MODE_RUNNING:
 			break;
 		default:
 			break;
+    	}
+    		
+		if (ss.rotenc.push) {
+			ss.rotenc.push = 0;
+			menu_action = (*menu_current).function;
+    		menu_action();
 		}
-		if (ss.sens_tcs.status == stat_idle) {
-			sensor_tcs_get_color();
-			if (ss.sens_tcs.status_last == stat_finished) {
-				ss.sens_tcs.status_last = stat_idle;
-				lcd_gotoxy(0,0);
-				lcd_puts("B:");
-				lcd_puts(itoa(ss.sens_tcs.filter_freq_blue, s, 10));
-				lcd_puts("G:");
-				lcd_puts(itoa(ss.sens_tcs.filter_freq_green, s, 10));
-				lcd_puts("R:");
-				lcd_puts(itoa(ss.sens_tcs.filter_freq_red, s, 10));
-			}
+		if (ss.rotenc.left) {
+			ss.rotenc.left = 0;
+			menu_current = menu_current->prev;
+		}
+		if (ss.rotenc.right) {
+			ss.rotenc.right = 0;
+			menu_current = menu_current->next;
 		}
 
 #if 0
@@ -213,8 +217,8 @@ int main(void) {
     	case SYS_MODE_INIT:
     		break;
     	case SYS_MODE_PAUSE:
-    		ss.menu = men_pausing;
-    		lcd_puts(ss.menu.text);
+    		//TODO ss.menu = men_pausing;
+    		lcd_puts(ss.menu->text[0]);
 			break;
 		case SYS_MODE_RUNNING:
 			if (ss.state.step.I == SYS_STEP_AWAITED)
@@ -300,7 +304,7 @@ int main(void) {
     	//handle user inputs
     	if (ss.rotenc.push)
     	{
-    		menu_action = (*menu_current).function;
+    		menu_action = (*ss.menu->function);
     		menu_action();
     		ss.rotenc.push = 0;
     	}

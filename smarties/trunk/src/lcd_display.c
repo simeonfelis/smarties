@@ -1,14 +1,6 @@
 /**
  * @file lcd_display.c
  * 
- * Copyright (c) 2008 Simeon Felis
- * 
- * @brief Control functions for Alphanumeric LCD display
- * 
- * @section intro License
- * 
- * This is the library from Peter Fleur. Original header:
- * \code
  Title	:   HD44780U LCD library
  Author:    Peter Fleury <pfleury@gmx.ch>  http://jump.to/fleury
  File:	    $Id: lcd.c,v 1.14.2.1 2006/01/29 12:16:41 peter Exp $
@@ -30,39 +22,6 @@
 
  USAGE
        See the C include lcd.h file for a description of each function       
- * \endcode
- * 
- * Configuration is made in file \ref lcd_display.h
- * 
- * The Display has two lines with 24 characters. The layout for different
- * modes are draftly described in file \ref menu.h 
- * 
- * Here the exact layout:
- * \code
- *      1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
- *    + -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  - +
- *  1 |                            T  I  T  L  E                               |
- *  2 |[   M  O  D  E      ]                                [ C  O  L  O  R   ]|
- *    + -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  - +
- * \endcode
- * 
- * - Line 1: Column 1 to 24 is reserved for the title. If the push button is 
- * pressed, the action described by the title will be executed.
- * - Line 2: 
- *   - Column 1 to 6 is reserved for the current mode. Following modes 
- * can be displayed: 
- *     - PAUSE
- *     - RUNNING
- *   - Column 19 to 21 is reserved for the folling colors:
- *     - yellow: YELLOW
- *     - red: RED
- *     - blue: BLUE
- *     - brown: BROWN
- *     - green: GREEN
- *     - purple: PURPLE
- *     - unknown: UNKNOWN
- * 
- * For some setting possibilties have a look at \ref lcd_display.h
  */
  
 #include <inttypes.h>
