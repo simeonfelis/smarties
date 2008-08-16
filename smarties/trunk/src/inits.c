@@ -1,3 +1,12 @@
+/**
+ * \file inits.c
+ * 
+ * Copyright (c) 2008 Simeon Felis
+ * 
+ * \brief Some init functions.
+ * 
+ * 
+ */
 #include "smarties2.h"
 #include "lcd_display.h"
 #include "inits.h"
@@ -6,6 +15,7 @@
 #include "i2cmaster.h"
 
 extern smartie_sorter ss;
+extern menu_entry *menu_current;
 
 void init_adc()
 {	
@@ -17,7 +27,7 @@ void init_all()
 	lcd_init(LCD_DISP_ON);
 	init_menu();
 		lcd_clrscr();
-		lcd_puts(ss.menu->text[0]);
+		lcd_puts(menu_current->text[0]);
 	init_timer();
 	init_interrupts();
 	//i2c_init();
@@ -37,7 +47,7 @@ void init_io()
 
 	STEPPER_PORT &= ~((1 << REV_BIT_CLK) | (1<<REV_BIT_CW) | (1<<REV_BIT_EN) | (1<<CATCH_BIT_CLK) | (1<<CATCH_BIT_CW) | (1<<CATCH_BIT_EN));
 	STEPPER_DDR |= (1 << REV_BIT_CLK) | (1<<REV_BIT_CW) | (1<<REV_BIT_EN) | (1<<CATCH_BIT_CLK) | (1<<CATCH_BIT_CW) | (1<<CATCH_BIT_EN);
-	STEPPER_PORT |= (1<<REV_BIT_CLK) | (1<<CATCH_BIT_CLK); /* The clock signal should be high by default */
+	// STEPPER_PORT |= (1<<REV_BIT_CLK) | (1<<CATCH_BIT_CLK); /* The clock signal should be high by default */
 
 	/* ADJD color sensor */
 	COL_SENS_ADJD_LED_OFF;  /* LED by default of */
@@ -85,14 +95,23 @@ void init_sensor_tcs() {
 	COL_SENS_TCS_SET_FREQ_SCALE(100);
 }
 
+/**
+ * \brief This will generate an Interrupt every millisecond by Timer 0 on 
+ * compare match
+ * 
+ * The interrupt settings are related like following:
+ * \f[
+ * T_{Compare Match} = (F_{CPU})^{-1} \cdot Prescaler \cdot (Register_{OutputCompare}) 
+ * \f]
+ */
 void init_timer()
 {
 	/* Output compare register */
-	OCR0 = 62;
+	OCR0 = 250;
 	
 	/* Prescaler 64 */
-	TCCR0 |= (1<<CS02);
-	TCCR0 &= ~((1<<CS00) | (1<<CS01));
+	TCCR0 &= ~((1<<CS00) | (1<<CS01) | (1<<CS02));
+	TCCR0 |= (1<<CS00) | (1<<CS01);
 
 	/* CTC mode */
 	TCCR0 &= ~((1<<WGM00) | (1<<WGM00));
@@ -115,8 +134,8 @@ void init_motors()
 	ss.mot_catcher.status_tmp = stat_idle;
 	
 	/* find the next defined position */
-	if (!IS_LB_CATCHER)
-		catcher_rotate_relative(1);
+//	if (!IS_LB_CATCHER)
+//		catcher_rotate_relative(1);
 	
 	
 	/*************** R E V O L V E R *********************/
@@ -130,7 +149,7 @@ void init_motors()
 		/* this will put the revolver to a positon 'hole above hole' */
 	
 	/* this will throw out eventually remaining smarties */ 
-	revolver_rotate_relative(12);
+	//revolver_rotate_relative(12);
 	
 	
 	/* last, rotate the catcher to a position where it is possible 
@@ -191,6 +210,25 @@ void init_menu()
 	men_lay_main[2].topmenu = &men_lay_greeting[0];
 	men_lay_main[2].function = menu_enter_topmenu;
 	
+	men_lay_sub_rotate[0].text[0] = MEN_TIT_SUB_ROT_REV;
+	men_lay_sub_rotate[0].text[1] = MEN_SUBTIT_PAUSE;
+	men_lay_sub_rotate[0].next = &men_lay_sub_rotate[1];
+	men_lay_sub_rotate[0].prev = &men_lay_sub_rotate[2];
+	men_lay_sub_rotate[0].function = sys_rotate_revolver;
+	
+	men_lay_sub_rotate[1].text[0] = MEN_TIT_SUB_ROT_CATCH;
+	men_lay_sub_rotate[1].text[1] = MEN_SUBTIT_PAUSE;
+	men_lay_sub_rotate[1].next = &men_lay_sub_rotate[2];
+	men_lay_sub_rotate[1].prev = &men_lay_sub_rotate[0];
+	men_lay_sub_rotate[1].function = sys_rotate_catcher;
+	
+	men_lay_sub_rotate[2].text[0] = MEN_TIT_BACK;
+	men_lay_sub_rotate[2].text[1] = MEN_SUBTIT_PAUSE;
+	men_lay_sub_rotate[2].next = &men_lay_sub_rotate[0];
+	men_lay_sub_rotate[2].prev = &men_lay_sub_rotate[1];
+	men_lay_sub_rotate[2].topmenu = &men_lay_main[0];
+	men_lay_sub_rotate[2].function = menu_enter_topmenu;
+	
 	men_lay_sub_color[0].text[0] = MEN_TIT_SUB_TCS;
 	men_lay_sub_color[0].text[1] = MEN_SUBTIT_COLOR;
 	men_lay_sub_color[0].next = &men_lay_sub_color[1];
@@ -207,6 +245,7 @@ void init_menu()
 	men_lay_sub_color[2].text[1] = MEN_SUBTIT_PAUSE;
 	men_lay_sub_color[2].next = &men_lay_sub_color[0];
 	men_lay_sub_color[2].prev = &men_lay_sub_color[1];
+	men_lay_sub_color[2].topmenu = &men_lay_main[0];
 	men_lay_sub_color[2].function = menu_enter_topmenu;
 		
 	menu_current = &men_initializing;

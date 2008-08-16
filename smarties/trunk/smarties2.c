@@ -132,7 +132,10 @@ int main(void) {
 
 	/* update menu, give notice to user */
 	menu_current = &men_running;
-
+	lcd_clrscr();
+	lcd_gotoxy(0,0); lcd_puts(menu_current->text[0]);
+	lcd_gotoxy(0,1); lcd_puts(menu_current->text[1]);
+		
 	while (1) /* Testing loop */
 	{
     	switch (ss.state.mode) {
@@ -140,25 +143,32 @@ int main(void) {
     		break;
     	case SYS_MODE_PAUSE:
     		if (ss.state.modetmp != SYS_MODE_PAUSE) {
+    			/* if we just entered that mode */
     			ss.state.modetmp = SYS_MODE_PAUSE;
     			menu_current = &men_lay_greeting[0];
+    			lcd_gotoxy(0,0); lcd_puts(menu_current->text[0]);
+    			lcd_gotoxy(0,1); lcd_puts(menu_current->text[1]);    			
     		}
-    		/* color measure program */
+    		
+    		/* color measure program tcs */
     		if (ss.sens_tcs.status == stat_idle) {
     			if (ss.sens_tcs.status_last == stat_finished) {
     				ss.sens_tcs.status_last = stat_idle;
+    				lcd_gotoxy(0,1); lcd_puts(MEN_TIT_EMPTY);
     				lcd_gotoxy(0,1);
-    				lcd_puts("B:");
+    				lcd_puts("Blue:");
     				if (ss.sens_tcs.filter_freq_blue<10) lcd_puts(" ");
     				lcd_puts(itoa(ss.sens_tcs.filter_freq_blue, s, 10));
-    				lcd_puts("G:");
+    				lcd_puts(" Green:");
     				if (ss.sens_tcs.filter_freq_green<10) lcd_puts(" ");
     				lcd_puts(itoa(ss.sens_tcs.filter_freq_green, s, 10));
-    				lcd_puts("R:");
+    				lcd_puts(" Red:");
     				if (ss.sens_tcs.filter_freq_red<10) lcd_puts(" ");
     				lcd_puts(itoa(ss.sens_tcs.filter_freq_red, s, 10));
     			}
     		}
+    		/* rotate program revolver */
+    		
     		
 			break;
 		case SYS_MODE_RUNNING:
@@ -171,14 +181,20 @@ int main(void) {
 			ss.rotenc.push = 0;
 			menu_action = (*menu_current).function;
     		menu_action();
+			lcd_gotoxy(0,0); lcd_puts(menu_current->text[0]);
+			lcd_gotoxy(0,1); lcd_puts(menu_current->text[1]);    			
 		}
 		if (ss.rotenc.left) {
 			ss.rotenc.left = 0;
 			menu_current = menu_current->prev;
+			lcd_gotoxy(0,0); lcd_puts(menu_current->text[0]);
+			lcd_gotoxy(0,1); lcd_puts(menu_current->text[1]);    			
 		}
 		if (ss.rotenc.right) {
 			ss.rotenc.right = 0;
 			menu_current = menu_current->next;
+			lcd_gotoxy(0,0); lcd_puts(menu_current->text[0]);
+			lcd_gotoxy(0,1); lcd_puts(menu_current->text[1]);    			
 		}
 
 #if 0

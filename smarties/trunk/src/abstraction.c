@@ -138,6 +138,7 @@ void motor_stuff ()
 		if (ss.mot_catcher.cycle_counter
 				== (CATCH_STEP_DURATION * REV_RAMP_DURATION)) {
 			ss.mot_catcher.cycle_counter = 0;
+			CATCH_MOVE_STEP;
 			if (IS_LB_CATCHER) {
 				ss.mot_catcher.status = stat_idle;
 				CATCH_DISABLE;				
@@ -167,10 +168,13 @@ void motor_stuff ()
 		if (ss.mot_revolver.cycle_counter
 				== (REV_STEP_DURATION * ss.mot_revolver.rampup_steps)) {
 			ss.mot_revolver.cycle_counter = 0;
-			ss.mot_revolver.rampup_steps--;
+			/* until the lightbarrier is free rotate slowly */
+			if (!IS_LB_REVOLVER)
+				ss.mot_revolver.rampup_steps--;
 			if (ss.mot_revolver.rampdown_steps == 0) {
 				ss.mot_revolver.status = stat_working;
 				ss.mot_revolver.status_tmp = stat_start_working;
+				ss.lb_revolver.passes = 0; /* dismiss passes when ramp up */
 			}
 			REV_MOVE_STEP;
 		}
@@ -199,6 +203,8 @@ void motor_stuff ()
 		/* count the passes on the lightbarrier. One pass, one position */
 		if (ss.lb_revolver.passes > 0) {
 			ss.mot_revolver.currentPos++;
+			if (ss.mot_revolver.currentPos>REV_MAX_SIZE)
+				ss.mot_revolver.currentPos = 0;
 			ss.lb_revolver.passes--;
 		}
 		/* before we reach the target position do the ramp down */
@@ -248,8 +254,12 @@ void motor_stuff ()
 		if (ss.mot_revolver.cycle_counter
 				== (REV_STEP_DURATION * REV_RAMP_DURATION)) {
 			ss.mot_revolver.cycle_counter = 0;
+			REV_MOVE_STEP;
 			if (IS_LB_REVOLVER) {
 				ss.mot_revolver.status = stat_idle;
+				ss.mot_revolver.currentPos++;
+				if (ss.mot_revolver.currentPos > REV_MAX_SIZE) 
+					ss.mot_revolver.currentPos = 0;
 				REV_DISABLE;				
 			}
 		}
@@ -406,7 +416,6 @@ void sensor_tcs_stuff() {
 	}
 
 	if (ss.sens_tcs.status == stat_working) {
-		VIBR_TOGGLE;
 		ss.sens_tcs.time++;
 		if (ss.sens_tcs.status_last == stat_start_working) {
 			ss.sens_tcs.status_last = stat_working;
@@ -494,8 +503,10 @@ void shaker_stuff () {
 
 //TODO docs
 void menu_stuff () {
+/* This takes too long: about 5 ms!
 	extern menu_entry *menu_current;
 
 	lcd_gotoxy(0,0); lcd_puts(menu_current->text[0]);  
-	//lcd_gotoxy(0,1); lcd_puts(menu_current->text[1]);
+	lcd_gotoxy(0,1); lcd_puts(menu_current->text[1]);
+ */
 }

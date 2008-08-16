@@ -59,12 +59,12 @@ void sys_measure_adjd () {
  */
 void sys_rotate_revolver()
 {
-	
+	revolver_rotate_relative(1);
 }
 
 void sys_rotate_catcher()
 {
-	
+	catcher_rotate_relative(1);
 }
 
 /**
@@ -192,17 +192,16 @@ void revolver_rotate_absolute(uint8_t abs_pos)
  * also doesn't check the parameter, if the value is reasonable.
  * 
  * \param rel_pos  
- * The position where to move to. Only if one whole turn will be fullfilled, 
- * the target position will adjusted. The value of rel_pos will be not checked, so the 
+ * The position where to move to. The value of rel_pos will be not checked, so the 
  * value must be lower than \ref REV_MAX_SIZE. 
  */
-void revolver_rotate_relative(uint8_t rel_pos)
+void revolver_rotate_relative(int8_t rel_pos)
 {
 	if (rel_pos == 0)
 		return;
 	
 	if ( (ss.mot_revolver.currentPos + rel_pos) > REV_MAX_SIZE ) 
-		ss.mot_revolver.targetPos = REV_MAX_SIZE - rel_pos;
+		ss.mot_revolver.targetPos = ss.mot_revolver.currentPos - REV_MAX_SIZE + rel_pos;
 	else 
 		ss.mot_revolver.targetPos = ss.mot_revolver.currentPos + rel_pos;
 	

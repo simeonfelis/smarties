@@ -184,7 +184,7 @@
 
 #define REV_STEP_DURATION	32			//!< Duration of one step in milliseconds. This value controlles the rotating speed
 #define REV_RAMP_DURATION	4			//!< Duration of the ramp up or ramp down in steps
-#define REV_MAX_SIZE		12			//1< The amount of smarties (holes) which fit into the revolver 
+#define REV_MAX_SIZE		12			//!< The amount of smarties (holes) which fit into the revolver 
 
 // Stepper motor for catcher
 #define CATCH_BIT_EN		PD4			//!< Portbit for Enable driver for catcher stepper motor
@@ -352,8 +352,8 @@ typedef enum common_stat_t {
 typedef struct stepper_motor_t {
 	common_stat status;			//!< Status
 	common_stat status_tmp; 	//!< The last status (before the current one)
-	uint16_t currentPos;		//!< Current position (\ref smartie_color_t can also be used)
-	uint16_t targetPos;			//!< Target position (\ref smartie_color_t can also be used)
+	int8_t currentPos;			//!< Current position (\ref smartie_color_t can also be used)
+	int8_t targetPos;			//!< Target position (\ref smartie_color_t can also be used)
 	uint16_t cycle_counter;		//!< One cycle takes 1 millisecond
 	uint8_t rampup_steps;		//!< One step takes \ref CATCH_STEP_DURATION or \ref REV_STEP_DURATION steps
 	uint8_t rampdown_steps;		//!< Steps used for ramping down 
@@ -444,7 +444,7 @@ void sensor_tcs_get_color();
 void catcher_rotate_absolute(smartie_color color_now);
 void catcher_rotate_relative(uint16_t);
 void revolver_rotate_absolute(uint8_t abs_pos);
-void revolver_rotate_relative(uint8_t rel_pos);
+void revolver_rotate_relative(int8_t rel_pos);
 
 smartie_color make_color_merge(smartie_color color1, smartie_color color2);
 
