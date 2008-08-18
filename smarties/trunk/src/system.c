@@ -61,6 +61,9 @@ void sys_measure_adjd () {
  * \ref SYS_MODE_PAUSE. 
  */
 void sys_rotate_revolver() {
+	if ( (ss.mot_revolver.status != stat_idle) && (ss.mot_revolver.status_last != stat_idle) )
+		return;
+	
 	revolver_rotate_relative(1);
 }
 
@@ -154,8 +157,7 @@ void catcher_rotate_absolute(smartie_color move_to) {
  *                   checked, so the value must be lower than \ref REV_MAX_SIZE or 
  *                   \ref CATCH_MAX_SIZE. 
  */
-void catcher_rotate_relative(int8_t rel_pos)
-{
+void catcher_rotate_relative(int8_t rel_pos) {
 	if (rel_pos == 0) {
 		/* Pretend we have done something */
 		ss.mot_catcher.status_last = stat_finished;
@@ -163,7 +165,7 @@ void catcher_rotate_relative(int8_t rel_pos)
 	}
 	
 	if ( (ss.mot_catcher.current_pos + rel_pos) > CATCH_MAX_SIZE ) 
-		ss.mot_catcher.target_pos = CATCH_MAX_SIZE - rel_pos;
+		ss.mot_catcher.target_pos = ss.mot_catcher.current_pos - CATCH_MAX_SIZE - rel_pos;
 	else 
 		ss.mot_catcher.target_pos = ss.mot_catcher.current_pos + rel_pos;
 	
@@ -221,26 +223,29 @@ smartie_color make_color_merge(smartie_color color1, smartie_color color2) {
  */
 uint8_t col_tab_blu [col_unknown][2] = {
 		/* {blue_lo_limit, blue_hi_limit} */
-		{0,0}, //!< Index \ref col_yellow
-		{0,0}, //!< Index \ref col_red
-		{0,0}, //!< Index \ref col_blue
-		{0,0}, //!< Index \ref col_brown
-		{0,0}, //!< Index \ref col_green
-		{0,0} //!< Index \ref col_purple
+		{ 8,10}, //!< Index \ref col_yellow
+		{ 6, 8}, //!< Index \ref col_red
+		{19,22}, //!< Index \ref col_blue
+		{ 5, 7}, //!< Index \ref col_orange
+		{ 2, 4}, //!< Index \ref col_brown
+		{ 6, 9}, //!< Index \ref col_green
+		{ 7, 9}, //!< Index \ref col_purple
+		{10,12} //!< Index \ref col_pink
 };
-
 
 /**
  * \brief See \ref col_tab_blu
  */
 uint8_t col_tab_gre [col_unknown][2] = {
 		/* {green_lo_limit, green_hi_limit} */
-		{0,0}, /* COL_INDEX_YELLOW */
-		{0,0}, /* COL_INDEX_RED */
-		{0,0}, /* COL_INDEX_BLUE */
-		{0,0}, /* COL_INDEX_BROWN */
-		{0,0}, /* COL_INDEX_GREEN */
-		{0,0} /* COL_INDEX_PURPLE */
+		{37,39}, // Index \ref col_yellow
+		{13,15}, // Index \ref col_red
+		{24,26}, // Index \ref col_blue
+		{17,19}, // Index \ref col_orange
+		{ 5, 8}, // Index \ref col_brown
+		{21,23}, // Index \ref col_green
+		{ 9,11}, // Index \ref col_purple
+		{15,17} // Index \ref col_pink
 };
 
 /**
@@ -248,10 +253,12 @@ uint8_t col_tab_gre [col_unknown][2] = {
  */
 uint8_t col_tab_red [col_unknown][2] = {
 		// {red_lo_limit, red_hi_limit}
-		{0,0}, /* COL_INDEX_YELLOW */
-		{0,0}, /* COL_INDEX_RED */
-		{0,0}, /* COL_INDEX_BLUE */
-		{0,0}, /* COL_INDEX_BROWN */
-		{0,0}, /* COL_INDEX_GREEN */
-		{0,0} /* COL_INDEX_PURPLE */
+		{50,52}, // Index \ref col_yellow
+		{47,50}, // Index \ref col_red
+		{30,32}, // Index \ref col_blue
+		{48,51}, // Index \ref col_orange
+		{17,19}, // Index \ref col_brown
+		{20,22}, // Index \ref col_green
+		{24,26}, // Index \ref col_purple
+		{45,47} // Index \ref col_pink
 };

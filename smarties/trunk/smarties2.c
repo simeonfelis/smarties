@@ -134,7 +134,7 @@ int main(void) {
 
 	/* Wait for some init functions to be finished */
 	while (temp) {
-#if 0 /* catcher motor status output */
+#if 1 /* catcher motor status output */
     				switch (ss.mot_catcher.status) {
     				case stat_idle:
     					lcd_gotoxy(12,1); lcd_puts("idle");
@@ -154,7 +154,7 @@ int main(void) {
     				default:
     					break;
     				}
-    				switch (ss.mot_catcher.status_tmp) {
+    				switch (ss.mot_catcher.status_last) {
     				case stat_idle:
     					lcd_gotoxy(18,1); lcd_puts("idle");
     					break;
@@ -174,7 +174,7 @@ int main(void) {
     					break;
     				}
 #endif
-#if 0 /* revolver motor status output */
+#if 1 /* revolver motor status output */
     				switch (ss.mot_revolver.status) {
     				case stat_idle:
     					lcd_gotoxy(0,1); lcd_puts("idle");
@@ -194,7 +194,7 @@ int main(void) {
     				default:
     					break;
     				}
-    				switch (ss.mot_revolver.status_tmp) {
+    				switch (ss.mot_revolver.status_last) {
     				case stat_idle:
     					lcd_gotoxy(6,1); lcd_puts("idle");
     					break;
@@ -287,6 +287,11 @@ int main(void) {
     				lcd_gotoxy(9,1); lcd_puts("Pos: ");
     				lcd_puts(itoa(ss.mot_catcher.current_pos, s, 10));
     			}
+    		}
+    		if (ss.mot_catcher.status != stat_idle) {
+    			lcd_gotoxy(6,1);
+    			if (ss.lb_catcher.passes > 9) lcd_puts(" ");
+    			lcd_puts(itoa(ss.lb_catcher.passes,s, 10));
     		}
     		
     		break; /* SYS_MODE_PAUSE */

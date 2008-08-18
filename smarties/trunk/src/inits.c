@@ -21,8 +21,7 @@ void init_adc()
 {	
 }
 
-void init_all()
-{
+void init_all() {
 	init_io();
 	lcd_init(LCD_DISP_ON);
 	init_menu();
@@ -133,6 +132,8 @@ void init_motors()
 	ss.mot_catcher.status = stat_idle;
 	ss.mot_catcher.status_last = stat_idle;
 	
+	CATCH_SET_CCW;
+	
 	/* find the next defined position */
 	if (!IS_LB_CATCHER)
 		catcher_rotate_relative(1);
@@ -142,6 +143,8 @@ void init_motors()
 	
 	ss.mot_revolver.status = stat_idle;
 	ss.mot_revolver.status_last = stat_idle;
+	
+	REV_SET_CCW;
 		
 	/* find the next defined position */
 	if (!IS_LB_REVOLVER)

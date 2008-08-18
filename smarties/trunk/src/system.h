@@ -146,11 +146,14 @@
 } while (0)
 #define REV_ENABLE			(STEPPER_PORT |= (1<<REV_BIT_EN))	//!< Enables the driver for the stepper motor 
 #define REV_DISABLE			(STEPPER_PORT &= ~(1<<REV_BIT_EN))	//!< Disables the driver for the stepper motor
+#define REV_SET_CW			(STEPPER_PORT &= ~(1<<REV_BIT_CW))	//!< Rotating direction clockwise
+#define REV_SET_CCW			(STEPPER_PORT |= (1<<REV_BIT_CW))	//!< Rotating directino conter clock wise
 
 
-#define REV_STEP_DURATION	32			//!< Duration of one step in milliseconds. This value controlles the rotating speed
-#define REV_RAMP_DURATION	4			//!< Duration of the ramp up or ramp down in steps
-#define REV_MAX_SIZE		12			//!< The amount of smarties (holes) which fit into the revolver 
+#define REV_STEP_DURATION	20			//!< Duration of one step in milliseconds. This value controlles the rotating speed
+#define REV_RAMP_DURATION	2			//!< Duration of the ramp up or ramp down in steps
+#define REV_MAX_SIZE		12			//!< The amount of smarties (holes) which fit into the revolver
+#define REV_STEPS_ESTIMATED	25			//!< Amount of steps for each positions 'hole abouve hole'
 
 #define REV_POS_SENS1			1
 #define REV_POS_SENS2			2
@@ -172,6 +175,8 @@
 } while (0)
 #define CATCH_ENABLE		(STEPPER_PORT |= (1<<CATCH_BIT_EN))		//!< Enables the driver for the steper motor
 #define CATCH_DISABLE		(STEPPER_PORT &= ~(1<<CATCH_BIT_EN))	//!< Disables the driver for the steper motor
+#define CATCH_SET_CW		(STEPPER_PORT &= ~(1<<CATCH_BIT_CW))	//!< Rotating direction clockwise
+#define CATCH_SET_CCW		(STEPPER_PORT |= (1<<CATCH_BIT_CW))	//!< Rotating directino conter clock wise
 
 #define CATCH_STEP_DURATION 32			//!< Duration of one step in one Millisecond. This value controlles the rotating speed
 #define CATCH_RAMP_DURATION 5			//!< Duration of the ramp up or ramp down in steps
@@ -295,13 +300,15 @@ typedef struct rotary_encoder_t {
  * If a smartie is detected to have \ref col_unknown, it will be handled as not present. 
  */
 typedef enum smartie_color_t {
-	col_yellow = 0,			//!< Yellow
-	col_red = 1,			//!< Red
-	col_blue = 2,			//!< Blue
-	col_brown = 3,			//!< Brown
-	col_green = 4,			//!< Green
-	col_purple = 5,			//!< Purple
-	col_unknown = 6			//!< Indexed as last color (highest counter). Insert colors above this one! 
+	col_yellow = 0,		//!< Yellow
+	col_red,			//!< Red
+	col_blue,			//!< Blue
+	col_orange, 		//!< Orange
+	col_brown,			//!< Brown
+	col_green,			//!< Green
+	col_purple,			//!< Purple
+	col_pink,			//!< Pink
+	col_unknown			//!< Indexed as last color (highest counter). Insert colors above this one! 
 } smartie_color;
 
 /**
@@ -322,6 +329,7 @@ typedef struct stepper_motor_t {
 	int8_t current_pos;			//!< Current position (\ref smartie_color_t can also be used)
 	int8_t target_pos;			//!< Target position (\ref smartie_color_t can also be used)
 	uint16_t cycle_counter;		//!< One cycle takes 1 millisecond. The duration of \ref REV_STEP_DURATION or \ref CATCH_STEP_DURATION cycles lasts one step
+	uint8_t steps;				//!< Count every step to estimate when to ramp down
 	uint8_t rampup_steps;		//!< One step takes \ref CATCH_STEP_DURATION or \ref REV_STEP_DURATION steps
 	uint8_t rampdown_steps;		//!< Steps used for ramping down
 	uint8_t ramp_steps;			//TODO! only this necessary!
