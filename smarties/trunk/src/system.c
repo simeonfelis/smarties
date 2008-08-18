@@ -216,10 +216,27 @@ smartie_color make_color_merge(smartie_color color1, smartie_color color2) {
  * is a graph of the determined colors:
  * 
  * \image html color-reference-tcs.png "Color reference graph for TCS sensor"
- * \image latex color-reference-tcs.pdf "Color reference graph for TCS sensor" width=15cm
+ * \image latex color-reference-tcs.png "Color reference graph for TCS sensor" width=15cm
+ * 
+ * The col_tab_* arrays can be accesed line by line, where each line has 
+ * two collumns, for a low and high value. The line's index represents
+ * the color when using the \ref smartie_color_t as variable type.
+ * 
+ * \code
+uint8_t col_tab_blu [col_unknown][2] = {
+		{LO,HI}, // Index ol_yellow
+		{ 6, 8}, // Index col_red
+		{19,22}, // Index col_blue
+		{ 5, 7}, // Index col_orange
+		{ 2, 4}, // Index col_brown
+		{ 6, 9}, // Index col_green
+		{ 7, 9}, // Index col_purple
+		{10,12} // Index col_pink
+};
+ * \endcode
  * 
  * Smarties detected as \ref col_unknown, which is out of the
- * index of these color tables, will be treeted as empty placeholders
+ * index of these color tables, will be treeted as empty carriers.
  */
 uint8_t col_tab_blu [col_unknown][2] = {
 		/* {blue_lo_limit, blue_hi_limit} */

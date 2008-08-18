@@ -158,9 +158,11 @@
 #define MEN_COL_YELLOW			"YELLOW"
 #define MEN_COL_RED				"   RED"
 #define MEN_COL_BLUE			"  BLUE"
+#define MEN_COL_ORANGE			"ORANGE"
 #define MEN_COL_BROWN			" BROWN"
 #define MEN_COL_GREEN			" GREEN"
 #define MEN_COL_PURPLE			"PURPLE"
+#define MEN_COL_PINK			"  PINK"
 #define MEN_COL_UNKNOWN			"UNKNOW"
 
 

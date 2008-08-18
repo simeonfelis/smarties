@@ -214,16 +214,17 @@ int main(void) {
     					break;
     				}
 #endif
-		if ( (ss.mot_revolver.status == stat_idle) 
-				&& (ss.mot_catcher.status == stat_idle) ) {
-			if ( (ss.mot_revolver.status_last != stat_idle) 
-					&& (ss.mot_catcher.status_last != stat_idle) ) {
-				ss.mot_catcher.status_last = stat_idle;
-				ss.mot_revolver.status_last = stat_idle;
-				lcd_puts("Init done");
-				temp = 0;
-			}
-		}
+		if ( (ss.mot_revolver.status == stat_idle)
+				&& (ss.mot_revolver.status != stat_idle) ) /* Wait until position is found */
+			ss.mot_revolver.status_last = stat_idle;
+
+		if ( (ss.mot_catcher.status_last == stat_idle)
+				&& (ss.mot_catcher.status_last != stat_idle) ) /* Wait until position is found */
+			ss.mot_catcher.status_last = stat_idle;
+
+		if ( (ss.mot_catcher.status_last == stat_idle) 
+				&& (ss.mot_revolver.status_last == stat_idle) )
+		temp = 0;
 	}
 
 	/* initializing done, set state */
@@ -315,25 +316,52 @@ int main(void) {
 				sensor_tcs_get_color();
 				/* Move the catcher to the right position. Therefore, */
 				/* we need the color from the smartie which will be above the hole */
-				/* Therefore, we need the correct index: */
-				if ( (ss.rev.position + REV_POS_SMARTIE_OUT) > REV_MAX_SIZE )
-					index_temp =  ss.rev.position - REV_MAX_SIZE + REV_POS_SMARTIE_OUT; 
+				/* Therefore, we need the correct index (use your brain!): */
+				if ( (REV_POS_SMARTIE_OUT - ss.mot_revolver.current_pos) < 0 )
+					index_temp =  REV_MAX_SIZE - REV_POS_SMARTIE_OUT - ss.mot_revolver.current_pos; 
 				else
-					index_temp = ss.rev.position + REV_POS_SMARTIE_OUT;
+					index_temp = REV_POS_SMARTIE_OUT - ss.mot_revolver.current_pos;
 				col_temp = ss.rev.smart[index_temp].color;
 				catcher_rotate_absolute(col_temp);
 			}
-			if (ss.state.step.I == stat_working) {
-				if ( (ss.sens_tcs.status == stat_idle)
-						&& (ss.mot_catcher.status == stat_idle)) {
-					if ( (ss.sens_tcs.status_last == stat_finished)
-							&& (ss.mot_catcher.status_last == stat_finished)) {
-						ss.sens_tcs.status_last = stat_idle;
-						ss.mot_catcher.status_last = stat_idle;
-						ss.state.step.I = stat_stop_working;
-						lcd_gotoxy(18,1); lcd_puts(MEN_COL_UNKNOWN);
+			if (ss.state.step.I == stat_working) { /* Wait until all is finished */
+				if ( (ss.sens_tcs.status == stat_idle) && (ss.sens_tcs.status_last != stat_idle)) {
+					ss.sens_tcs.status_last = stat_idle;
+					lcd_gotoxy(18,1); 
+					switch (ss.sens_tcs.color) {
+					case col_yellow:
+						lcd_puts(MEN_COL_YELLOW);
+						break;
+					case col_blue:
+						lcd_puts(MEN_COL_BLUE);
+						break;
+					case col_brown:
+						lcd_puts(MEN_COL_BROWN);
+						break;
+					case col_green:
+						lcd_puts(MEN_COL_GREEN);
+						break;
+					case col_orange:
+						lcd_puts(MEN_COL_ORANGE);
+						break;
+					case col_pink:
+						lcd_puts(MEN_COL_PINK);
+						break;
+					case col_purple:
+						lcd_puts(MEN_COL_PURPLE);
+						break;
+					case col_red:
+						lcd_puts(MEN_COL_RED);
+						break;
+					default:
+						lcd_puts(MEN_COL_UNKNOWN);
+						break;
 					}
 				}
+				if ( (ss.mot_catcher.status == stat_finished) && (ss.mot_catcher.status_last != stat_idle))
+						ss.mot_catcher.status_last = stat_idle;
+				if ( (ss.mot_catcher.status_last == stat_idle) && (ss.sens_tcs.status_last == stat_idle))
+						ss.state.step.I = stat_stop_working;
 			}
 			if (ss.state.step.I == stat_stop_working) {
 				ss.state.step.I = stat_idle;
@@ -342,7 +370,7 @@ int main(void) {
 			break;
 		default:
 			break;
-    	}
+    	} /* switch (ss.mode.state) */
     		
 		if (ss.rotenc.push) {
 			ss.rotenc.push = 0;
