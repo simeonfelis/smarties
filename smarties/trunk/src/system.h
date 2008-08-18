@@ -178,9 +178,10 @@
 #define CATCH_SET_CW		(STEPPER_PORT &= ~(1<<CATCH_BIT_CW))	//!< Rotating direction clockwise
 #define CATCH_SET_CCW		(STEPPER_PORT |= (1<<CATCH_BIT_CW))	//!< Rotating directino conter clock wise
 
-#define CATCH_STEP_DURATION 32			//!< Duration of one step in one Millisecond. This value controlles the rotating speed
-#define CATCH_RAMP_DURATION 5			//!< Duration of the ramp up or ramp down in steps
-#define CATCH_MAX_SIZE		8			//!< The amount of catcher tubes for sorting the smarties
+#define CATCH_STEP_DURATION 	32			//!< Duration of one step in one Millisecond. This value controlles the rotating speed
+#define CATCH_RAMP_DURATION	 	5			//!< Duration of the ramp up or ramp down in steps
+#define CATCH_MAX_SIZE			8			//!< The amount of catcher tubes for sorting the smarties
+#define CATCH_STEPS_ESTIMATED	15			//!< Amount of steps for each positions 'hole abouve hole'
 
 
 // Miscaleous input output

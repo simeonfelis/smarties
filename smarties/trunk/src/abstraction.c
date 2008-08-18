@@ -59,6 +59,7 @@ void motor_stuff ()
 			ss.mot_catcher.status_last = stat_start_working;
 			ss.mot_catcher.rampup_steps = CATCH_RAMP_DURATION; /* will be decreased during ramp up */
 			ss.mot_catcher.cycle_counter = 0;
+			ss.mot_catcher.steps = 0;
 			ss.lb_catcher.passes = 0; /* Dismiss passes before start rotating */
 		}
 		
@@ -71,7 +72,7 @@ void motor_stuff ()
 				ss.mot_catcher.status = stat_working;
 				//ss.lb_catcher.passes = 0; /* dismiss passes when ramp up */
 			}
-			CATCH_MOVE_STEP;
+			CATCH_MOVE_STEP; ss.mot_catcher.steps++;
 		}
 	}
 #endif /* Testing ramps */
@@ -92,19 +93,21 @@ void motor_stuff ()
 			ss.mot_catcher.cycle_counter = 0;
 		}
 		if (ss.mot_catcher.cycle_counter == CATCH_STEP_DURATION) {
-			CATCH_MOVE_STEP;
+			CATCH_MOVE_STEP; ss.mot_catcher.steps++;
 			ss.mot_catcher.cycle_counter = 0;
 		}
 		/* count the passes on the lightbarrier. One pass, one position */
 		if (ss.lb_catcher.passes > 0) {
+			ss.lb_catcher.passes--;
+			ss.mot_catcher.steps = 0;
 			ss.mot_catcher.current_pos++;
 			if (ss.mot_catcher.current_pos == CATCH_MAX_SIZE)
 				ss.mot_catcher.current_pos = 0;
-			ss.lb_catcher.passes--;
 		}
 		/* before we reach the target position do the ramp down */
-		if ( ss.mot_catcher.current_pos == (ss.mot_catcher.target_pos-1) ) 
-			ss.mot_catcher.status = stat_stop_working;
+		if ( ss.mot_catcher.current_pos == (ss.mot_catcher.target_pos-1) )
+			if (ss.mot_catcher.steps == CATCH_STEPS_ESTIMATED)
+				ss.mot_catcher.status = stat_stop_working;
 	}
 	
 #if TESTING_RAMPS
@@ -125,7 +128,7 @@ void motor_stuff ()
 				ss.mot_catcher.status_last = stat_stop_working;
 				ss.mot_catcher.status = stat_finished;
 			}
-			CATCH_MOVE_STEP;
+			CATCH_MOVE_STEP; ss.mot_catcher.steps++;
 		}
 	}
 	
@@ -148,13 +151,13 @@ void motor_stuff ()
 		if (ss.mot_catcher.cycle_counter
 				== (CATCH_STEP_DURATION * REV_RAMP_DURATION)) {
 			ss.mot_catcher.cycle_counter = 0;
-			CATCH_MOVE_STEP;
+			CATCH_MOVE_STEP; ss.mot_catcher.steps++;
 			if (IS_LB_CATCHER) {
 				ss.mot_catcher.status = stat_idle;
 				ss.mot_catcher.current_pos++;
 				if (ss.mot_catcher.current_pos == CATCH_MAX_SIZE)
 					ss.mot_catcher.current_pos = 0;
-				CATCH_DISABLE;				
+				CATCH_DISABLE;
 			}
 		}
 	}

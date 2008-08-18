@@ -228,11 +228,10 @@ int main(void) {
 
 	/* initializing done, set state */
 	ss.state.mode_last = ss.state.mode;
-	ss.state.mode = SYS_MODE_RUNNING;
-	ss.state.step.I = stat_start_working;
+	ss.state.mode = SYS_MODE_PAUSE;
 
 	/* update menu, give notice to user */
-	menu_current = &men_running;
+	menu_current = &men_lay_greeting[1];
 	lcd_clrscr();
 	lcd_gotoxy(0,0); lcd_puts(menu_current->text[0]);
 	lcd_gotoxy(0,1); lcd_puts(menu_current->text[1]);
@@ -243,12 +242,14 @@ int main(void) {
     	case SYS_MODE_INIT:
     		break;
     	case SYS_MODE_PAUSE:
-    		if (ss.state.mode_last != SYS_MODE_PAUSE) {
-    			/* if we just entered that mode */
-    			ss.state.mode_last = SYS_MODE_PAUSE;
+    		if (ss.state.mode_last != SYS_MODE_PAUSE) { /* if we just entered that mode */
     			menu_current = &men_lay_greeting[0];
+    			/* if we come from a reset */
+    			if (ss.state.mode_last == SYS_MODE_INIT)
+        			menu_current = &men_lay_greeting[1];    				
     			lcd_gotoxy(0,0); lcd_puts(menu_current->text[0]);
     			lcd_gotoxy(0,1); lcd_puts(menu_current->text[1]);
+    			ss.state.mode_last = SYS_MODE_PAUSE;
     			ss.sens_tcs.status_last = stat_idle;
     		}
     		
@@ -296,16 +297,24 @@ int main(void) {
     		
     		break; /* SYS_MODE_PAUSE */
 		case SYS_MODE_RUNNING:
-			if (ss.state.mode_last == !SYS_MODE_RUNNING) {
+			if (ss.state.mode_last != SYS_MODE_RUNNING) { /* if we just started to run */
+				ss.state.mode_last = SYS_MODE_RUNNING;
+				menu_current = &men_running;
+				lcd_gotoxy(0,0); lcd_puts(menu_current->text[0]);
+				lcd_gotoxy(0,1); lcd_puts(menu_current->text[1]);
 				lcd_gotoxy(5,1); lcd_puts("RUN/  ");
+				ss.state.step.I = stat_start_working;
+				ss.state.step.II = stat_idle;
+				ss.state.step.III = stat_idle;
 			}
 			if (ss.state.step.I == stat_start_working) {
 				lcd_gotoxy(9,1);
-				lcd_puts("I");
+				lcd_puts("I  ");
 				ss.state.step.I = stat_working;
 				/* Initiate all work to be done */
 				sensor_tcs_get_color();
-				/* We need the color from the smartie which is actually above the hole */
+				/* Move the catcher to the right position. Therefore, */
+				/* we need the color from the smartie which will be above the hole */
 				/* Therefore, we need the correct index: */
 				if ( (ss.rev.position + REV_POS_SMARTIE_OUT) > REV_MAX_SIZE )
 					index_temp =  ss.rev.position - REV_MAX_SIZE + REV_POS_SMARTIE_OUT; 
@@ -322,6 +331,7 @@ int main(void) {
 						ss.sens_tcs.status_last = stat_idle;
 						ss.mot_catcher.status_last = stat_idle;
 						ss.state.step.I = stat_stop_working;
+						lcd_gotoxy(18,1); lcd_puts(MEN_COL_UNKNOWN);
 					}
 				}
 			}

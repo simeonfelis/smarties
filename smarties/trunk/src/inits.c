@@ -22,6 +22,7 @@ void init_adc()
 }
 
 void init_all() {
+	uint8_t x;
 	init_io();
 	lcd_init(LCD_DISP_ON);
 	init_menu();
@@ -33,6 +34,12 @@ void init_all() {
 	//	ss.col_sens_ADJD.ret = i2c_start(COL_SENS_ADJD_DEVICE_ADDRESS + I2C_WRITE);
 	init_sensor_tcs();
 	init_motors();
+	
+	/* init memory */
+	for (x=0; x<REV_MAX_SIZE; x++)
+		ss.rev.smart[x].color = col_unknown;
+	ss.mot_catcher.current_pos = 0;
+	ss.mot_revolver.current_pos = col_yellow; /* col_yellow is in the smart_color enum 0 */
 }
 
 void init_io()
@@ -132,7 +139,7 @@ void init_motors()
 	ss.mot_catcher.status = stat_idle;
 	ss.mot_catcher.status_last = stat_idle;
 	
-	CATCH_SET_CCW;
+	CATCH_SET_CW;
 	
 	/* find the next defined position */
 	if (!IS_LB_CATCHER)
@@ -191,8 +198,9 @@ void init_menu()
 	men_lay_greeting[0].submenu = &men_lay_main[0];
 	men_lay_greeting[0].function = menu_enter_submenu;
 	
-	men_lay_greeting[1].text[0] = MEN_TIT_BACK;
-	men_lay_greeting[1].text[1] = MEN_TIT_RESUME;
+//	men_lay_greeting[1].text[0] = MEN_TIT_BACK;
+	men_lay_greeting[1].text[0] = MEN_TIT_RESUME;
+	men_lay_greeting[1].text[1] = MEN_SUBTIT_PAUSE;
 	men_lay_greeting[1].next = &men_lay_greeting[0];
 	men_lay_greeting[1].prev = &men_lay_greeting[0];
 	men_lay_greeting[1].function = sys_resume;
