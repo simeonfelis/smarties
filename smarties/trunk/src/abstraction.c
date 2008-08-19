@@ -64,7 +64,7 @@ void motor_universal_stuff (stepper_motor *this) {
 			this->ramp_steps = this->ramp_duration; /* will be decreased during ramp up */
 			this->cycle_counter = 0;
 			this->steps = 0;
-			this->lb->passes = 0; /* Dismiss passes before start rotating */
+//			this->lb->passes = 0; /* Dismiss passes before start rotating */
 		}
 		
 		/* do the ramp up */
@@ -107,6 +107,18 @@ void motor_universal_stuff (stepper_motor *this) {
 		if ( this->current_pos == (this->target_pos-1) )
 			if (this->steps == this->steps_estimated)
 				this->status = stat_stop_working;
+		
+		/* take care of if we are too far */
+		if (this->current_pos == this->target_pos) {
+			if (this->lb->is_blocked()) {
+				this->status = stat_stop_working;
+			}
+			else {
+				if (this->steps == this->steps_estimated) {
+					this->status = stat_stop_working;
+				}
+			}
+		}
 	}
 	
 
@@ -144,11 +156,12 @@ void motor_universal_stuff (stepper_motor *this) {
 		if (this->cycle_counter
 				== (this->step_duration * this->ramp_duration)) {
 			this->cycle_counter = 0;
-			sys_action = this->move_step;
-			sys_action();
+//			//sys_action = this->move_step; sys_action();
+			this->move_step();
 			this->steps++;
-			sys_action_return = this->lb->is_blocked;
-			if (sys_action_return()) {
+//			sys_action_return = this->lb->is_blocked;
+//			if (sys_action_return()) {
+			if (this->lb->is_blocked()) {
 				this->status = stat_idle;
 				this->current_pos++;
 				if (this->current_pos == this->max_size) 
