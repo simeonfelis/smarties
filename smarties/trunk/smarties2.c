@@ -135,96 +135,98 @@ int main(void) {
 	/* Wait for some init functions to be finished */
 	while (temp) {
 #if 1 /* catcher motor status output */
-    				switch (ss.mot_catcher.status) {
-    				case stat_idle:
-    					lcd_gotoxy(12,1); lcd_puts("idle");
-    					break;
-    				case stat_start_working:
-    					lcd_gotoxy(12,1); lcd_puts("start");
-    					break;
-    				case stat_working:
-    					lcd_gotoxy(12,1); lcd_puts("worki");
-    					break;
-    				case stat_stop_working:
-    					lcd_gotoxy(12,1); lcd_puts("stop");
-    					break;
-    				case stat_finished:
-    					lcd_gotoxy(12,1); lcd_puts("finish");
-    					break;
-    				default:
-    					break;
-    				}
-    				switch (ss.mot_catcher.status_last) {
-    				case stat_idle:
-    					lcd_gotoxy(18,1); lcd_puts("idle");
-    					break;
-    				case stat_start_working:
-    					lcd_gotoxy(18,1); lcd_puts("start");
-    					break;
-    				case stat_working:
-    					lcd_gotoxy(18,1); lcd_puts("worki");
-    					break;
-    				case stat_stop_working:
-    					lcd_gotoxy(18,1); lcd_puts("stop");
-    					break;
-    				case stat_finished:
-    					lcd_gotoxy(18,1); lcd_puts("finish");
-    					break;    				
-    				default:
-    					break;
-    				}
+		lcd_gotoxy(12,1); lcd_puts("c");
+		switch (ss.mot_catcher.status) {
+		case stat_idle:
+			lcd_gotoxy(13,1); lcd_puts("cidl");
+			break;
+		case stat_start_working:
+			lcd_gotoxy(13,1); lcd_puts("csta");
+			break;
+		case stat_working:
+			lcd_gotoxy(13,1); lcd_puts("cwor");
+			break;
+		case stat_stop_working:
+			lcd_gotoxy(13,1); lcd_puts("csto");
+			break;
+		case stat_finished:
+			lcd_gotoxy(13,1); lcd_puts("cfin");
+			break;
+		default:
+			break;
+		}
+		switch (ss.mot_catcher.status_last) {
+		case stat_idle:
+			lcd_gotoxy(19,1); lcd_puts("lidl");
+			break;
+		case stat_start_working:
+			lcd_gotoxy(19,1); lcd_puts("lsta");
+			break;
+		case stat_working:
+			lcd_gotoxy(19,1); lcd_puts("lwor");
+			break;
+		case stat_stop_working:
+			lcd_gotoxy(19,1); lcd_puts("lsto");
+			break;
+		case stat_finished:
+			lcd_gotoxy(19,1); lcd_puts("lfin");
+			break;    				
+		default:
+			break;
+		}
 #endif
 #if 1 /* revolver motor status output */
-    				switch (ss.mot_revolver.status) {
-    				case stat_idle:
-    					lcd_gotoxy(0,1); lcd_puts("idle");
-    					break;
-    				case stat_start_working:
-    					lcd_gotoxy(0,1); lcd_puts("start");
-    					break;
-    				case stat_working:
-    					lcd_gotoxy(0,1); lcd_puts("worki");
-    					break;
-    				case stat_stop_working:
-    					lcd_gotoxy(0,1); lcd_puts("stop");
-    					break;
-    				case stat_finished:
-    					lcd_gotoxy(0,1); lcd_puts("finish");
-    					break;
-    				default:
-    					break;
-    				}
-    				switch (ss.mot_revolver.status_last) {
-    				case stat_idle:
-    					lcd_gotoxy(6,1); lcd_puts("idle");
-    					break;
-    				case stat_start_working:
-    					lcd_gotoxy(6,1); lcd_puts("start");
-    					break;
-    				case stat_working:
-    					lcd_gotoxy(6,1); lcd_puts("worki");
-    					break;
-    				case stat_stop_working:
-    					lcd_gotoxy(6,1); lcd_puts("stop");
-    					break;
-    				case stat_finished:
-    					lcd_gotoxy(6,1); lcd_puts("finish");
-    					break;    				
-    				default:
-    					break;
-    				}
+		lcd_gotoxy(0,1); lcd_puts("r");
+		switch (ss.mot_revolver.status) {
+		case stat_idle:
+			lcd_gotoxy(1,1); lcd_puts("cidl");
+			break;
+		case stat_start_working:
+			lcd_gotoxy(1,1); lcd_puts("csta");
+			break;
+		case stat_working:
+			lcd_gotoxy(1,1); lcd_puts("cwor");
+			break;
+		case stat_stop_working:
+			lcd_gotoxy(1,1); lcd_puts("csto");
+			break;
+		case stat_finished:
+			lcd_gotoxy(1,1); lcd_puts("cfin");
+			break;
+		default:
+			break;
+		}
+		switch (ss.mot_revolver.status_last) {
+		case stat_idle:
+			lcd_gotoxy(7,1); lcd_puts("lidl");
+			break;
+		case stat_start_working:
+			lcd_gotoxy(7,1); lcd_puts("lsta");
+			break;
+		case stat_working:
+			lcd_gotoxy(7,1); lcd_puts("lwor");
+			break;
+		case stat_stop_working:
+			lcd_gotoxy(7,1); lcd_puts("lsto");
+			break;
+		case stat_finished:
+			lcd_gotoxy(7,1); lcd_puts("lfin");
+			break;    				
+		default:
+			break;
+		}
 #endif
 		if ( (ss.mot_revolver.status == stat_idle)
-				&& (ss.mot_revolver.status != stat_idle) ) /* Wait until position is found */
+				&& (ss.mot_revolver.status_last != stat_idle) ) /* Wait until position is found */
 			ss.mot_revolver.status_last = stat_idle;
 
-		if ( (ss.mot_catcher.status_last == stat_idle)
+		if ( (ss.mot_catcher.status == stat_idle)
 				&& (ss.mot_catcher.status_last != stat_idle) ) /* Wait until position is found */
 			ss.mot_catcher.status_last = stat_idle;
 
 		if ( (ss.mot_catcher.status_last == stat_idle) 
 				&& (ss.mot_revolver.status_last == stat_idle) )
-		temp = 0;
+			temp = 0;
 	}
 
 	/* initializing done, set state */

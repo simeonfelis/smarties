@@ -38,8 +38,6 @@ void init_all() {
 	/* init memory */
 	for (x=0; x<REV_MAX_SIZE; x++)
 		ss.rev.smart[x].color = col_unknown;
-	ss.mot_catcher.current_pos = 0;
-	ss.mot_revolver.current_pos = col_yellow; /* col_yellow is in the smart_color enum 0 */
 }
 
 void init_io()
@@ -132,39 +130,56 @@ void init_timer()
  * \brief Will throw out remaining smarties and put revolver and catcher to 
  * defined positions
  */
-void init_motors()
-{
+void init_motors() {
 	/***************** C A T C H E R **********************/
-
+	
 	ss.mot_catcher.status = stat_idle;
 	ss.mot_catcher.status_last = stat_idle;
+
+	ss.mot_catcher.enable = sys_catcher_enable;
+	ss.mot_catcher.disable = sys_catcher_disable;
+	ss.mot_catcher.move_step = sys_catcher_move_step;
+	ss.mot_catcher.lb = &ss.lb_catcher;
+	ss.mot_catcher.lb->is_blocked = sys_catcher_is_lb_blocked;
+	
+	ss.mot_catcher.max_size = CATCH_MAX_SIZE;
+	ss.mot_catcher.step_duration = CATCH_STEP_DURATION;
+	ss.mot_catcher.steps_estimated = CATCH_STEPS_ESTIMATED;
+	ss.mot_catcher.ramp_duration = CATCH_RAMP_DURATION;
+
 	
 	CATCH_SET_CW;
 	
 	/* find the next defined position */
 	if (!IS_LB_CATCHER)
 		catcher_rotate_relative(1);
+
+	ss.mot_catcher.current_pos = col_yellow; /* col_yellow is in the smart_color enum 0 */
 	
 	
 	/*************** R E V O L V E R *********************/
-	
+
 	ss.mot_revolver.status = stat_idle;
 	ss.mot_revolver.status_last = stat_idle;
 	
+	ss.mot_revolver.enable = sys_revolver_enable;
+	ss.mot_revolver.disable = sys_revolver_disable;
+	ss.mot_revolver.move_step = sys_revolver_move_step;
+	ss.mot_revolver.lb = &ss.lb_revolver;
+	ss.mot_revolver.lb->is_blocked = sys_revolver_is_lb_blocked;
+	
+	ss.mot_revolver.max_size = REV_MAX_SIZE;
+	ss.mot_revolver.step_duration = REV_STEP_DURATION;
+	ss.mot_revolver.steps_estimated = REV_STEPS_ESTIMATED;
+	ss.mot_revolver.ramp_duration = REV_RAMP_DURATION;
+		
 	REV_SET_CCW;
 		
 	/* find the next defined position */
 	if (!IS_LB_REVOLVER)
 		revolver_rotate_relative(1); 
-		/* this will put the revolver to a positon 'hole above hole' */
-	
-	/* this will throw out eventually remaining smarties */ 
-	//revolver_rotate_relative(12);
-	
-	
-	/* last, rotate the catcher to a position where it is possible 
-	 * to remove the possibly remaining smarties */
-	//catcher_rotate_relative(4);
+
+	ss.mot_revolver.current_pos = 0; 
 }
 
 /**

@@ -9,6 +9,39 @@
 
 extern smartie_sorter ss;
 
+//TODO: docs
+
+void sys_catcher_disable () {
+	CATCH_DISABLE;
+}
+void sys_catcher_enable () {
+	CATCH_ENABLE;
+}
+
+void sys_catcher_move_step () {
+	CATCH_MOVE_STEP;
+}
+
+int8_t sys_catcher_is_lb_blocked () {
+	return IS_LB_CATCHER;
+}
+
+void sys_revolver_disable () {
+	REV_DISABLE;
+}
+
+void sys_revolver_enable () {
+	REV_ENABLE;
+}
+
+void sys_revolver_move_step () {
+	REV_MOVE_STEP;
+}
+
+int8_t sys_revolver_is_lb_blocked () {
+	return IS_LB_REVOLVER;
+}
+
 /**
  * \brief Will Enter the pause mode 
  * 
@@ -75,6 +108,9 @@ void sys_rotate_revolver() {
  * \ref SYS_MODE_PAUSE. 
  */
 void sys_rotate_catcher() {
+	if ( (ss.mot_catcher.status != stat_idle) && (ss.mot_catcher.status_last != stat_idle) )
+		return;
+
 	catcher_rotate_relative(1);
 }
 
@@ -165,9 +201,11 @@ void catcher_rotate_relative(int8_t rel_pos) {
 	}
 	
 	if ( (ss.mot_catcher.current_pos + rel_pos) > CATCH_MAX_SIZE ) 
-		ss.mot_catcher.target_pos = ss.mot_catcher.current_pos - CATCH_MAX_SIZE - rel_pos;
+		ss.mot_catcher.target_pos = ss.mot_catcher.current_pos - CATCH_MAX_SIZE + rel_pos;
 	else 
 		ss.mot_catcher.target_pos = ss.mot_catcher.current_pos + rel_pos;
+	
+	//ss.mot_catcher.lb->passes = 0;
 	
 	ss.mot_catcher.status = stat_start_working;
 }
@@ -197,6 +235,8 @@ void revolver_rotate_relative(int8_t rel_pos) {
 		ss.mot_revolver.target_pos = ss.mot_revolver.current_pos - REV_MAX_SIZE + rel_pos;
 	else 
 		ss.mot_revolver.target_pos = ss.mot_revolver.current_pos + rel_pos;
+	
+//	ss.mot_revolver.lb->passes = 0;
 	
 	ss.mot_revolver.status = stat_start_working;
 }

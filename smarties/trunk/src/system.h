@@ -178,10 +178,10 @@
 #define CATCH_SET_CW		(STEPPER_PORT &= ~(1<<CATCH_BIT_CW))	//!< Rotating direction clockwise
 #define CATCH_SET_CCW		(STEPPER_PORT |= (1<<CATCH_BIT_CW))	//!< Rotating directino conter clock wise
 
-#define CATCH_STEP_DURATION 	32			//!< Duration of one step in one Millisecond. This value controlles the rotating speed
-#define CATCH_RAMP_DURATION	 	5			//!< Duration of the ramp up or ramp down in steps
+#define CATCH_STEP_DURATION 	9			//!< Duration of one step in one Millisecond. This value controlles the rotating speed
+#define CATCH_RAMP_DURATION	 	3			//!< Duration of the ramp up or ramp down in steps
 #define CATCH_MAX_SIZE			8			//!< The amount of catcher tubes for sorting the smarties
-#define CATCH_STEPS_ESTIMATED	15			//!< Amount of steps for each positions 'hole abouve hole'
+#define CATCH_STEPS_ESTIMATED	34			//!< Amount of steps for each positions 'hole abouve hole'
 
 
 // Miscaleous input output
@@ -321,6 +321,25 @@ typedef struct smartie_t {
 	smartie_color color2;	//!< From ADJD color sensor
 } smartie;
 
+
+/**
+ * \brief The status a lightbarrier can have
+ */
+typedef enum lightbarrier_status_t {
+	lb_free = 0,						//!< Nothing inbetween the lightbarrier
+	lb_blocked							//!< The lightbarrier is blocked
+} lightbarrier_status;
+
+/**
+ * \brief Describes the module lightbarrier
+ */ 
+typedef struct lightbarrier_t {
+	lightbarrier_status status;			//!< The actual status of the lightbarrier
+	lightbarrier_status status_last;	//!< For recognising a pass
+	uint8_t passes;						//!< The amount of recognized passes through the lightbarrier
+	int8_t (*is_blocked)();				//TODO
+} lightbarrier;
+
 /**
  * \brief The stepper motor
  */
@@ -334,6 +353,14 @@ typedef struct stepper_motor_t {
 	uint8_t rampup_steps;		//!< One step takes \ref CATCH_STEP_DURATION or \ref REV_STEP_DURATION steps
 	uint8_t rampdown_steps;		//!< Steps used for ramping down
 	uint8_t ramp_steps;			//TODO! only this necessary!
+	uint8_t ramp_duration;
+	uint8_t steps_estimated;
+	int8_t max_size;
+	int8_t step_duration;
+	lightbarrier *lb;			//TODO: docs
+	void (*enable)();			//TODO: docs
+	void (*disable) ();
+	void (*move_step) ();		//TODO: docs
 } stepper_motor;
 
 /**
@@ -358,23 +385,6 @@ typedef struct color_sensor_tcs_t {
 	int16_t filter_freq_red;	//!< The clock frequency in kHz measured with red filter on
 	int16_t slopes;				//!< The amount of slopes recognised during \ref COL_SENS_TCS_SAMPLE_TIME
 } color_sensor_tcs;
-
-/**
- * \brief The status a lightbarrier can have
- */
-typedef enum lightbarrier_status_t {
-	lb_free = 0,						//!< Nothing inbetween the lightbarrier
-	lb_blocked							//!< The lightbarrier is blocked
-} lightbarrier_status;
-
-/**
- * \brief Describes the module lightbarrier
- */ 
-typedef struct lightbarrier_t {
-	lightbarrier_status status;			//!< The actual status of the lightbarrier
-	lightbarrier_status status_last;	//!< For recognising a pass
-	uint8_t passes;						//!< The amount of recognized passes through the lightbarrier
-} lightbarrier;
 
 /**
  *  \brief Describes the virbrator (shaker) module
@@ -423,19 +433,32 @@ typedef struct smartie_sorter_t {
 //////////////////////////// P R O T O T Y P E S /////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
 
-void sys_pause();
-void sys_resume();
-void sys_rotate_revolver();
-void sys_rotate_catcher();
-void sys_measure_tcs();
-void sys_measure_adjd();
-void sys_wait(uint16_t time);
-void vibrator_start();
-void sensor_adjd_get_color();
-void sensor_tcs_get_color();
-void catcher_rotate_absolute(smartie_color move_to);
-void catcher_rotate_relative(int8_t);
-void revolver_rotate_relative(int8_t rel_pos);
+void 	(*sys_action)(void);
+int8_t 	(*sys_action_return)(void);
+
+void 	sys_catcher_enable ();
+void	sys_catcher_disable ();
+void 	sys_catcher_move_step ();
+int8_t 	sys_catcher_is_lb_blocked ();
+
+void 	sys_revolver_enable ();
+void 	sys_revolver_disable ();
+void 	sys_revolver_move_step ();
+int8_t 	sys_revolver_is_lb_blocked ();
+
+void 	sys_pause();
+void 	sys_resume();
+void 	sys_rotate_revolver();
+void 	sys_rotate_catcher();
+void 	sys_measure_tcs();
+void 	sys_measure_adjd();
+void 	sys_wait(uint16_t time);
+void 	vibrator_start();
+void 	sensor_adjd_get_color();
+void 	sensor_tcs_get_color();
+void 	catcher_rotate_absolute(smartie_color move_to);
+void 	catcher_rotate_relative(int8_t);
+void 	revolver_rotate_relative(int8_t rel_pos);
 
 smartie_color make_color_merge(smartie_color color1, smartie_color color2);
 
