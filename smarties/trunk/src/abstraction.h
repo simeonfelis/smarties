@@ -8,7 +8,7 @@ void rotary_encoder_stuff ();
 void lightbarrier_stuff ();
 void sensor_adjd_stuff();
 void sensor_tcs_stuff();
-void shaker_stuff ();
+void vibrator_stuff ();
 
 
 #endif /*ABSTRACTION_H_*/

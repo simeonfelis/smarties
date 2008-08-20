@@ -8,8 +8,19 @@
 #include "system.h"
 
 extern smartie_sorter ss;
+extern menu_entry *menu_current;
 
 //TODO: docs
+
+void sys_enter_topmenu () {
+	menu_current = menu_current->topmenu;
+	ss.prog = prog_none; /* exit any program if we were executing one */
+}
+
+void sys_enter_submenu () {
+	menu_current = menu_current->submenu;
+	ss.prog = prog_none; /* exit any program if we were executing one */
+}
 
 void sys_catcher_disable () {
 	CATCH_DISABLE;
@@ -20,6 +31,21 @@ void sys_catcher_enable () {
 
 void sys_catcher_move_step () {
 	CATCH_MOVE_STEP;
+}
+
+/**
+ * \brief Rotates the catcher for one position
+ * 
+ * This function is intened for manual usage and should not be used 
+ * during normal running mode \ref SYS_MODE_RUNNING, only during 
+ * \ref SYS_MODE_PAUSE. 
+ */
+void sys_catcher_rotate() {
+	if ( (ss.mot_catcher.status != stat_idle) && (ss.mot_catcher.status_last != stat_idle) )
+		return;
+	
+	ss.prog = prog_rotate_catcher;
+	catcher_rotate_relative(1);
 }
 
 int8_t sys_catcher_is_lb_blocked () {
@@ -34,6 +60,19 @@ void sys_revolver_enable () {
 	REV_ENABLE;
 }
 
+/**
+ * \brief Rotates the revolver for one position
+ * 
+ * This function is intened for manual usage and should not be used 
+ * during normal running mode \ref SYS_MODE_RUNNING, only during 
+ * \ref SYS_MODE_PAUSE. 
+ */
+void sys_revolver_rotate() {
+	if ( (ss.mot_revolver.status != stat_idle) && (ss.mot_revolver.status_last != stat_idle) )
+		return;
+	ss.prog = prog_rotate_revolver;
+	revolver_rotate_relative(1);
+}
 void sys_revolver_move_step () {
 	REV_MOVE_STEP;
 }
@@ -76,6 +115,7 @@ void sys_resume()
  * \brief Initiate a color measurement with the tcs color sensor.
  */
 void sys_measure_tcs () {
+	ss.prog = prog_color_tcs;
 	ss.sens_tcs.status = stat_start_working;
 }
 
@@ -83,35 +123,6 @@ void sys_measure_tcs () {
  * \brief Initiate a color measurement with the adjd color sensor.
  */
 void sys_measure_adjd () {
-	
-}
-
-/**
- * \brief Rotates the revolver for one position
- * 
- * This function is intened for manual usage and should not be used 
- * during normal running mode \ref SYS_MODE_RUNNING, only during 
- * \ref SYS_MODE_PAUSE. 
- */
-void sys_rotate_revolver() {
-	if ( (ss.mot_revolver.status != stat_idle) && (ss.mot_revolver.status_last != stat_idle) )
-		return;
-	
-	revolver_rotate_relative(1);
-}
-
-/**
- * \brief Rotates the catcher for one position
- * 
- * This function is intened for manual usage and should not be used 
- * during normal running mode \ref SYS_MODE_RUNNING, only during 
- * \ref SYS_MODE_PAUSE. 
- */
-void sys_rotate_catcher() {
-	if ( (ss.mot_catcher.status != stat_idle) && (ss.mot_catcher.status_last != stat_idle) )
-		return;
-
-	catcher_rotate_relative(1);
 }
 
 //TODO: deprecated
@@ -166,15 +177,20 @@ void sensor_tcs_get_color() {
 void catcher_rotate_absolute(smartie_color move_to) {
 	int8_t move_rel = 0;
 	
-	if (move_to == ss.catch.position) {
+	if (move_to == ss.mot_catcher.current_pos) {
 		/* just indicate we have done something */
 		ss.mot_catcher.status_last = stat_finished;
 		return;
 	}
-	if (move_to > ss.catch.position)
-		move_rel = move_to - ss.catch.position;
-	if (move_to < ss.catch.position)
-		move_rel = CATCH_MAX_SIZE - ss.catch.position - move_to;
+	if (move_to == col_unknown) { /* Treat as empty */
+		/* Pretend we have done something */
+		ss.mot_catcher.status_last = stat_finished;
+		return;
+	}
+	if (move_to > ss.mot_catcher.current_pos)
+		move_rel = move_to - ss.mot_catcher.current_pos;
+	if (move_to < ss.mot_catcher.current_pos)
+		move_rel = CATCH_MAX_SIZE - ss.mot_catcher.current_pos + move_to;
 	
 	catcher_rotate_relative(move_rel);
 }
@@ -200,7 +216,7 @@ void catcher_rotate_relative(int8_t rel_pos) {
 		return;
 	}
 	
-	if ( (ss.mot_catcher.current_pos + rel_pos) > CATCH_MAX_SIZE ) 
+	if ( (ss.mot_catcher.current_pos + rel_pos) >= CATCH_MAX_SIZE ) 
 		ss.mot_catcher.target_pos = ss.mot_catcher.current_pos - CATCH_MAX_SIZE + rel_pos;
 	else 
 		ss.mot_catcher.target_pos = ss.mot_catcher.current_pos + rel_pos;
@@ -231,7 +247,7 @@ void revolver_rotate_relative(int8_t rel_pos) {
 		return;
 	}
 	
-	if ( (ss.mot_revolver.current_pos + rel_pos) > REV_MAX_SIZE ) 
+	if ( (ss.mot_revolver.current_pos + rel_pos) >= REV_MAX_SIZE ) 
 		ss.mot_revolver.target_pos = ss.mot_revolver.current_pos - REV_MAX_SIZE + rel_pos;
 	else 
 		ss.mot_revolver.target_pos = ss.mot_revolver.current_pos + rel_pos;
@@ -280,14 +296,14 @@ uint8_t col_tab_blu [col_unknown][2] = {
  */
 uint8_t col_tab_blu [col_unknown][2] = {
 		/* {blue_lo_limit, blue_hi_limit} */
-		{ 8,10}, //!< Index \ref col_yellow
-		{ 6, 8}, //!< Index \ref col_red
-		{19,22}, //!< Index \ref col_blue
+		{ 7,10}, //!< Index \ref col_yellow
+		{ 4, 8}, //!< Index \ref col_red
+		{19,27}, //!< Index \ref col_blue
 		{ 5, 7}, //!< Index \ref col_orange
 		{ 2, 4}, //!< Index \ref col_brown
 		{ 6, 9}, //!< Index \ref col_green
-		{ 7, 9}, //!< Index \ref col_purple
-		{10,12} //!< Index \ref col_pink
+		{ 7,12}, //!< Index \ref col_purple
+		{ 8,12} //!< Index \ref col_pink
 };
 
 /**
@@ -295,14 +311,14 @@ uint8_t col_tab_blu [col_unknown][2] = {
  */
 uint8_t col_tab_gre [col_unknown][2] = {
 		/* {green_lo_limit, green_hi_limit} */
-		{37,39}, // Index \ref col_yellow
-		{13,15}, // Index \ref col_red
-		{24,26}, // Index \ref col_blue
-		{17,19}, // Index \ref col_orange
-		{ 5, 8}, // Index \ref col_brown
-		{21,23}, // Index \ref col_green
-		{ 9,11}, // Index \ref col_purple
-		{15,17} // Index \ref col_pink
+		{32,39}, // Index \ref col_yellow
+		{10,15}, // Index \ref col_red
+		{24,28}, // Index \ref col_blue
+		{16,19}, // Index \ref col_orange
+		{ 5, 9}, // Index \ref col_brown
+		{20,23}, // Index \ref col_green
+		{ 8,15}, // Index \ref col_purple
+		{12,17} // Index \ref col_pink
 };
 
 /**
@@ -310,12 +326,12 @@ uint8_t col_tab_gre [col_unknown][2] = {
  */
 uint8_t col_tab_red [col_unknown][2] = {
 		// {red_lo_limit, red_hi_limit}
-		{50,52}, // Index \ref col_yellow
-		{47,50}, // Index \ref col_red
-		{30,32}, // Index \ref col_blue
-		{48,51}, // Index \ref col_orange
+		{44,53}, // Index \ref col_yellow
+		{43,50}, // Index \ref col_red
+		{30,33}, // Index \ref col_blue
+		{42,51}, // Index \ref col_orange
 		{17,19}, // Index \ref col_brown
-		{20,22}, // Index \ref col_green
-		{24,26}, // Index \ref col_purple
-		{45,47} // Index \ref col_pink
+		{20,23}, // Index \ref col_green
+		{19,31}, // Index \ref col_purple
+		{39,47} // Index \ref col_pink
 };

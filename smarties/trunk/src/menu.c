@@ -13,17 +13,19 @@ extern menu_entry *menu_current;
 
 /**
  * \brief Enter the submenu
- */
+ *
 void menu_enter_submenu() {
 	menu_current = menu_current->submenu;
 }
+*/
 
 /**
  * \brief Enter the menu above
- */
+ *
 void menu_enter_topmenu() {
 	menu_current = menu_current->topmenu;
 }
+*/
 
 /**
  * Switches to the next menu entry on the right

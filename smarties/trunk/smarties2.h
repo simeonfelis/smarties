@@ -28,4 +28,8 @@
 #define FALSE	0			//!< Useful boolean values FALSE
 #define TRUE	1			//!< Useful boolean values TRUE
 
+
+// Small helper functions 
+void smartie_lcd_write_color ();
+
 #endif /*SMARTIES2_H_*/

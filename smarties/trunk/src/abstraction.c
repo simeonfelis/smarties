@@ -58,37 +58,32 @@ void motor_universal_stuff (stepper_motor *this) {
 	if (this->status == stat_start_working) {
 		/* if we just started to rotate, prepare ramp up */
 		if (this->status_last != stat_start_working) {
-			sys_action = this->enable;
-			sys_action();
+			this->enable();
 			this->status_last = stat_start_working;
 			this->ramp_steps = this->ramp_duration; /* will be decreased during ramp up */
 			this->cycle_counter = 0;
 			this->steps = 0;
-//			this->lb->passes = 0; /* Dismiss passes before start rotating */
 		}
 		
 		/* do the ramp up */
-		if (this->cycle_counter
-				== (this->step_duration * this->ramp_steps)) {
+		if (this->cycle_counter == (this->step_duration * this->ramp_steps)) {
 			this->cycle_counter = 0;
 			this->ramp_steps--;
 			if (this->ramp_steps == 0) {
 				this->status = stat_working;
-				//this->lb->passes = 0; /* dismiss passes when ramp up */
+//				this->lb->passes = 0; /* dismiss passes when ramp up */
 			}
-			sys_action = this->move_step; 
-			sys_action();
+			this->move_step();
 			this->steps++;
 		}
 	}
 	/* just rotate */
 	if (this->status == stat_working) {
-		if (this->status_last == stat_start_working) {
+		if (this->status_last != stat_working) {
 			this->status_last = stat_working;
 			this->cycle_counter = 0;
 		}
 		if (this->cycle_counter == this->step_duration) {
-			//sys_action = this->move_step; sys_action();
 			this->move_step();
 			this->steps++;
 			this->cycle_counter = 0;
@@ -120,7 +115,6 @@ void motor_universal_stuff (stepper_motor *this) {
 			}
 		}
 	}
-	
 
 	/* ramp down */
 	if (this->status == stat_stop_working) {
@@ -135,12 +129,12 @@ void motor_universal_stuff (stepper_motor *this) {
 				== (this->step_duration * this->ramp_steps)) {
 			this->cycle_counter = 0;
 			this->ramp_steps++;
-			if (this->ramp_steps == this->ramp_duration) {
+			if ( (this->ramp_steps == this->ramp_duration) 
+					|| (this->ramp_steps == this->ramp_duration+1) ) {
 				this->status_last = stat_stop_working;
 				this->status = stat_finished;
 			}
-			sys_action = this->move_step;
-			sys_action();
+			this->move_step();
 			this->steps++;
 		}
 	}
@@ -156,27 +150,17 @@ void motor_universal_stuff (stepper_motor *this) {
 		if (this->cycle_counter
 				== (this->step_duration * this->ramp_duration)) {
 			this->cycle_counter = 0;
-//			//sys_action = this->move_step; sys_action();
 			this->move_step();
 			this->steps++;
-//			sys_action_return = this->lb->is_blocked;
-//			if (sys_action_return()) {
 			if (this->lb->is_blocked()) {
 				this->status = stat_idle;
-				this->current_pos++;
-				if (this->current_pos == this->max_size) 
-					this->current_pos = 0;
-				sys_action = this->disable;
-				sys_action ();
+//				this->current_pos++;
+//				if (this->current_pos == this->max_size) 
+//					this->current_pos = 0;
+				this->disable();
 			}
 		}
 	}
-}
-
-void motor_catcher_stuff () {
-}
-
-void motor_revolver_stuff() {
 }
 
 /** \brief Takes controll over the rotary encoder (user input) device
@@ -319,8 +303,8 @@ void sensor_tcs_stuff() {
 	
 	if (ss.sens_tcs.status == stat_start_working) {
 		if (ss.sens_tcs.status_last == stat_idle) {
-			ss.sens_tcs.status_last = stat_start_working;
 			ss.sens_tcs.status = stat_working;
+			ss.sens_tcs.status_last = stat_start_working;
 			COL_SENS_TCS_ENABLE;
 			COL_SENS_TCS_SET_FILTER(col_unknown);
 			COL_SENS_TCS_FREQ_MESURE_EN;
@@ -341,7 +325,7 @@ void sensor_tcs_stuff() {
 
 		if (ss.sens_tcs.time == COL_SENS_TCS_SAMPLE_TIME) {
 			if (ss.sens_tcs.filter_freq_blue == 0) {
-				ss.sens_tcs.filter_freq_blue = ss.sens_tcs.slopes / COL_SENS_TCS_SAMPLE_TIME;
+				ss.sens_tcs.filter_freq_blue = ss.sens_tcs.slopes / COL_SENS_TCS_SAMPLE_TIME ;
 				//ss.sens_tcs.filter_freq_blue = 32000;
 				COL_SENS_TCS_SET_FILTER(col_green);
 				ss.sens_tcs.time = 0;
@@ -376,13 +360,13 @@ void sensor_tcs_stuff() {
 		}
 		/* Now detect colors */
 		for (y=0; y<=col_unknown; y++) {
-			if ( ((f_blu > col_tab_blu[y][0]) && (f_blu < col_tab_blu[y][1])) && 
-					((f_gre > col_tab_gre[y][0]) && (f_gre < col_tab_gre[y][1])) &&
-					((f_red > col_tab_red[y][0]) && (f_red < col_tab_red[y][1])) ) {
-				ss.sens_tcs.color = y;
+			if ( ((f_blu >= col_tab_blu[y][0]) && (f_blu <= col_tab_blu[y][1])) && 
+					((f_gre >= col_tab_gre[y][0]) && (f_gre <= col_tab_gre[y][1])) &&
+					((f_red >= col_tab_red[y][0]) && (f_red <= col_tab_red[y][1])) ) {
 				break;
 			}
 		}
+		ss.sens_tcs.color = y;
 		ss.sens_tcs.status = stat_finished;
 	}
 	
@@ -399,20 +383,35 @@ void sensor_tcs_stuff() {
  * input pins of the shaker and sets the corresponding flags 
  * of the shaker struct. This function assumes that 
  */
-void shaker_stuff () {
-	if (ss.shkr.status_last == stat_idle)
-		if (ss.shkr.status == stat_working)
-		{
-			ss.shkr.status_last = stat_working;
-			ss.shkr.duration = 500; 		//500 ms
+void vibrator_stuff () {
+	if (ss.vibr.status == stat_start_working) {
+		if (ss.vibr.status_last != stat_start_working) {
+			ss.vibr.status_last = stat_working;
+			ss.vibr.duration = VIBR_DURATION; 		//500 ms
+			VIBR_ON;
 		}
-	if (ss.shkr.status == stat_working)
-	{
-		ss.shkr.duration--;
-		if (ss.shkr.duration == 0)
-		{
-			ss.shkr.status = stat_finished;
-			ss.shkr.status_last = stat_working;
+	}
+	
+	if (ss.vibr.status == stat_working) {
+		if (ss.vibr.status_last != stat_working)
+			ss.vibr.status_last = stat_working;
+		
+		ss.vibr.duration--;
+		if (ss.vibr.duration == 0) {
+			ss.vibr.status = stat_stop_working;
 		}
+	}
+	
+	if (ss.vibr.status == stat_stop_working) {
+		if (ss.vibr.status_last != stat_stop_working)
+			ss.vibr.status_last = stat_stop_working;
+		VIBR_OFF;
+		ss.vibr.status = stat_finished;
+	}
+	
+	if (ss.vibr.status == stat_finished) {
+		if (ss.vibr.status_last != stat_finished)
+			ss.vibr.status_last = stat_finished;
+		ss.vibr.status = stat_idle;
 	}
 }

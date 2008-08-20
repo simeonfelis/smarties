@@ -18,23 +18,20 @@ ISR (TIMER0_COMP_vect) {
 	/* color sensor TCS stuff first, needs to be accurate */
 	sensor_tcs_stuff();
 
+	/* stepper motor stuff */
+	motor_stuff();
+	
 	/* user input (rotary encoder) stuff */
 	rotary_encoder_stuff();
 	
 	/* light barrier stuff */
 	lightbarrier_stuff ();
 	
-	/* stepper motor stuff */
-	motor_stuff();
-	
 	/* color sensor ADJD stuff */
 	sensor_adjd_stuff();
-	
-	// sensor stuff
-	// engine stuff
-	
-	// shaker stuff
-	//shaker_stuff();
+
+	/* vibrator stuff */
+	vibrator_stuff();
 		
 }
 

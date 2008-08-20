@@ -135,7 +135,7 @@
 #define MEN_TIT_INITIALIZING	"      INITIALIZING      "
 
 #define MEN_TIT_RUNNING			"       ENTER PAUSE      "
-#define MEN_SUBTIT_RUNNING		"STAT:         COL:      "
+#define MEN_SUBTIT_RUNNING		"COL IN:        O:       "
 #define MEN_SUBTIT_PAUSE		"<prev              next>"
 
 #define MEN_TIT_GREETING		"      Enter Menu        "
@@ -145,7 +145,7 @@
 #define MEN_TIT_SUB_ROT_CATCH	"        CATCHER         "
 
 #define MEN_TIT_MAIN_COLOR		"         COLOR          "
-#define MEN_TIT_SUB_TCS			"       TCS colors       "
+#define MEN_TIT_SUB_TCS			"   TCS colors:          "
 #define MEN_TIT_SUB_ADJD		"      ADJD colors       "
 #define MEN_SUBTIT_COLOR		"Push:new measur Rot:next"  
 
