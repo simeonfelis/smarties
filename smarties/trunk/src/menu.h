@@ -141,6 +141,8 @@
 #define MEN_TIT_GREETING		"      Enter Menu        "
 
 #define MEN_TIT_MAIN_ROTATE		"         ROTATE         "
+#define MEN_TIT_ROT_REV			"    Rotate Revolver     "
+#define MEN_TIT_ROT_CATCH		"    Rotate Catcher      "
 #define MEN_TIT_SUB_ROT_REV 	"        REVOLVER        "
 #define MEN_TIT_SUB_ROT_CATCH	"        CATCHER         "
 

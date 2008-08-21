@@ -45,8 +45,8 @@ void init_io()
     /*
      *  sorry to say, the lcd is on the jtag pins
      */
-//	MCUCSR |= (1<<JTD);	
-//	MCUCSR |= (1<<JTD);	/* disable the JTAG interface twice! */
+	MCUCSR |= (1<<JTD);	
+	MCUCSR |= (1<<JTD);	/* disable the JTAG interface twice! */
 
 	STEPPER_PORT &= ~((1 << REV_BIT_CLK) | (1<<REV_BIT_CW) | (1<<REV_BIT_EN) | (1<<CATCH_BIT_CLK) | (1<<CATCH_BIT_CW) | (1<<CATCH_BIT_EN));
 	STEPPER_DDR |= (1 << REV_BIT_CLK) | (1<<REV_BIT_CW) | (1<<REV_BIT_EN) | (1<<CATCH_BIT_CLK) | (1<<CATCH_BIT_CW) | (1<<CATCH_BIT_EN);
@@ -95,7 +95,7 @@ void init_interrupts() {
 
 void init_sensor_tcs() {
 	COL_SENS_TCS_DISABLE;
-	COL_SENS_TCS_SET_FREQ_SCALE(20);
+	COL_SENS_TCS_SET_FREQ_SCALE(100);
 }
 
 /**
@@ -144,12 +144,13 @@ void init_motors() {
 	ss.mot_catcher.max_size = CATCH_MAX_SIZE;
 	ss.mot_catcher.step_duration = CATCH_STEP_DURATION;
 	ss.mot_catcher.steps_estimated = CATCH_STEPS_ESTIMATED;
+	ss.mot_catcher.steps_estim_def = CATCH_STEPS_ESTIMATED;
 	ss.mot_catcher.ramp_duration = CATCH_RAMP_DURATION;
 	ss.mot_catcher.pause_duration = CATCH_PAUSE_DURATION;
 
 	
 	CATCH_SET_CW;
-//	CATCH_ENABLE;
+	CATCH_ENABLE;
 	
 	/* find the next defined position */
 	if (!IS_LB_CATCHER)
@@ -172,11 +173,12 @@ void init_motors() {
 	ss.mot_revolver.max_size = REV_MAX_SIZE;
 	ss.mot_revolver.step_duration = REV_STEP_DURATION;
 	ss.mot_revolver.steps_estimated = REV_STEPS_ESTIMATED;
+	ss.mot_revolver.steps_estim_def = REV_STEPS_ESTIMATED;
 	ss.mot_revolver.ramp_duration = REV_RAMP_DURATION;
 	ss.mot_revolver.pause_duration = REV_PAUSE_DURATION;
 		
 	REV_SET_CCW;
-//	REV_ENABLE;
+	REV_ENABLE;
 	ss.mot_revolver.current_pos = 0;
 	ss.lb_revolver.passes = 0;
 	/* find the next defined position */
@@ -197,9 +199,10 @@ void init_menu()
 	extern menu_entry men_initializing;
 	extern menu_entry men_running;
 	extern menu_entry men_lay_greeting[2];
-	extern menu_entry men_lay_main[3];
-	extern menu_entry men_lay_sub_rotate[3];
-	extern menu_entry men_lay_sub_color[3];
+//	extern menu_entry men_lay_main[3];
+	extern menu_entry men_lay_main[4];
+//	extern menu_entry men_lay_sub_rotate[3];
+//	extern menu_entry men_lay_sub_color[3];
 	
 	men_initializing.text[0] = MEN_TIT_INITIALIZING;
 	
@@ -216,72 +219,84 @@ void init_menu()
 	men_lay_greeting[0].submenu = &men_lay_main[0];
 	men_lay_greeting[0].function = sys_enter_submenu;
 	
-//	men_lay_greeting[1].text[0] = MEN_TIT_BACK;
 	men_lay_greeting[1].text[0] = MEN_TIT_RESUME;
 	men_lay_greeting[1].text[1] = MEN_SUBTIT_PAUSE;
 	men_lay_greeting[1].next = &men_lay_greeting[0];
 	men_lay_greeting[1].prev = &men_lay_greeting[0];
 	men_lay_greeting[1].function = sys_resume;
 	
-	men_lay_main[0].text[0] = MEN_TIT_MAIN_ROTATE;
+//	men_lay_main[0].text[0] = MEN_TIT_MAIN_ROTATE;
+	men_lay_main[0].text[0] = MEN_TIT_ROT_REV;
 	men_lay_main[0].text[1] = MEN_SUBTIT_PAUSE;
 	men_lay_main[0].next = &men_lay_main[1];
 	men_lay_main[0].prev = &men_lay_main[2];
-	men_lay_main[0].submenu = &men_lay_sub_rotate[0];
-	men_lay_main[0].function = sys_enter_submenu;
+//	men_lay_main[0].submenu = &men_lay_sub_rotate[0];
+//	men_lay_main[0].function = sys_enter_submenu;
+	men_lay_main[0].function = sys_revolver_rotate;
 	
-	men_lay_main[1].text[0] = MEN_TIT_MAIN_COLOR;
+//	men_lay_main[1].text[0] = MEN_TIT_MAIN_COLOR;
+	men_lay_main[1].text[0] = MEN_TIT_ROT_CATCH;
 	men_lay_main[1].text[1] = MEN_SUBTIT_PAUSE;
 	men_lay_main[1].next = &men_lay_main[2];
 	men_lay_main[1].prev = &men_lay_main[0];
-	men_lay_main[1].submenu = &men_lay_sub_color[0];
-	men_lay_main[1].function = sys_enter_submenu;
+//	men_lay_main[1].submenu = &men_lay_sub_color[0];
+	men_lay_main[1].function = sys_catcher_rotate;
 	
-	men_lay_main[2].text[0] = MEN_TIT_BACK;
+//	men_lay_main[2].text[0] = MEN_TIT_BACK;
+	men_lay_main[2].text[0] = MEN_TIT_SUB_TCS;
 	men_lay_main[2].text[1] = MEN_SUBTIT_PAUSE;
-	men_lay_main[2].next = &men_lay_main[0];
+//	men_lay_main[2].next = &men_lay_main[0];
+	men_lay_main[2].next = &men_lay_main[2];
 	men_lay_main[2].prev = &men_lay_main[1];
-	men_lay_main[2].topmenu = &men_lay_greeting[0];
-	men_lay_main[2].function = sys_enter_topmenu;
+//	men_lay_main[2].topmenu = &men_lay_greeting[0];
+//	men_lay_main[2].function = sys_enter_topmenu;
+	men_lay_main[2].function = sys_measure_tcs;
 	
-	men_lay_sub_rotate[0].text[0] = MEN_TIT_SUB_ROT_REV;
-	men_lay_sub_rotate[0].text[1] = MEN_SUBTIT_PAUSE;
-	men_lay_sub_rotate[0].next = &men_lay_sub_rotate[1];
-	men_lay_sub_rotate[0].prev = &men_lay_sub_rotate[2];
-	men_lay_sub_rotate[0].function = sys_revolver_rotate;
+	men_lay_main[3].text[0] = MEN_TIT_BACK;
+	men_lay_main[3].text[1] = MEN_SUBTIT_PAUSE;
+	men_lay_main[3].next = &men_lay_main[0];
+	men_lay_main[3].prev = &men_lay_main[2];
+	men_lay_main[3].topmenu = &men_lay_greeting[0];
+	men_lay_main[3].function = sys_enter_topmenu;
 	
-	men_lay_sub_rotate[1].text[0] = MEN_TIT_SUB_ROT_CATCH;
-	men_lay_sub_rotate[1].text[1] = MEN_SUBTIT_PAUSE;
-	men_lay_sub_rotate[1].next = &men_lay_sub_rotate[2];
-	men_lay_sub_rotate[1].prev = &men_lay_sub_rotate[0];
-	men_lay_sub_rotate[1].function = sys_catcher_rotate;
+//	men_lay_sub_rotate[0].text[0] = MEN_TIT_SUB_ROT_REV;
+//	men_lay_sub_rotate[0].text[1] = MEN_SUBTIT_PAUSE;
+//	men_lay_sub_rotate[0].next = &men_lay_sub_rotate[1];
+//	men_lay_sub_rotate[0].prev = &men_lay_sub_rotate[2];
+//	men_lay_sub_rotate[0].function = sys_revolver_rotate;
 	
-	men_lay_sub_rotate[2].text[0] = MEN_TIT_BACK;
-	men_lay_sub_rotate[2].text[1] = MEN_SUBTIT_PAUSE;
-	men_lay_sub_rotate[2].next = &men_lay_sub_rotate[0];
-	men_lay_sub_rotate[2].prev = &men_lay_sub_rotate[1];
-	men_lay_sub_rotate[2].topmenu = &men_lay_main[0];
-	men_lay_sub_rotate[2].function = sys_enter_topmenu;
+//	men_lay_sub_rotate[1].text[0] = MEN_TIT_SUB_ROT_CATCH;
+//	men_lay_sub_rotate[1].text[1] = MEN_SUBTIT_PAUSE;
+//	men_lay_sub_rotate[1].next = &men_lay_sub_rotate[2];
+//	men_lay_sub_rotate[1].prev = &men_lay_sub_rotate[0];
+//	men_lay_sub_rotate[1].function = sys_catcher_rotate;
 	
-	men_lay_sub_color[0].text[0] = MEN_TIT_SUB_TCS;
-	men_lay_sub_color[0].text[1] = MEN_SUBTIT_COLOR;
-	men_lay_sub_color[0].next = &men_lay_sub_color[1];
-	men_lay_sub_color[0].prev = &men_lay_sub_color[2];
-	men_lay_sub_color[0].function = sys_measure_tcs;
+//	men_lay_sub_rotate[2].text[0] = MEN_TIT_BACK;
+//	men_lay_sub_rotate[2].text[1] = MEN_SUBTIT_PAUSE;
+//	men_lay_sub_rotate[2].next = &men_lay_sub_rotate[0];
+//	men_lay_sub_rotate[2].prev = &men_lay_sub_rotate[1];
+//	men_lay_sub_rotate[2].topmenu = &men_lay_main[0];
+//	men_lay_sub_rotate[2].function = sys_enter_topmenu;
 	
-	men_lay_sub_color[1].text[0] = MEN_TIT_SUB_ADJD;
-	men_lay_sub_color[1].text[1] = MEN_SUBTIT_COLOR;
-	men_lay_sub_color[1].next = &men_lay_sub_color[2];
-	men_lay_sub_color[1].prev = &men_lay_sub_color[0];
-	men_lay_sub_color[1].function = sys_measure_adjd;
+//	men_lay_sub_color[0].text[0] = MEN_TIT_SUB_TCS;
+//	men_lay_sub_color[0].text[1] = MEN_SUBTIT_COLOR;
+//	men_lay_sub_color[0].next = &men_lay_sub_color[1];
+//	men_lay_sub_color[0].prev = &men_lay_sub_color[2];
+//	men_lay_sub_color[0].function = sys_measure_tcs;
 	
-	men_lay_sub_color[2].text[0] = MEN_TIT_BACK;
-	men_lay_sub_color[2].text[1] = MEN_SUBTIT_PAUSE;
-	men_lay_sub_color[2].next = &men_lay_sub_color[0];
-	men_lay_sub_color[2].prev = &men_lay_sub_color[1];
-	men_lay_sub_color[2].topmenu = &men_lay_main[0];
-	men_lay_sub_color[2].function = sys_enter_topmenu;
-		
+//	men_lay_sub_color[1].text[0] = MEN_TIT_SUB_ADJD;
+//	men_lay_sub_color[1].text[1] = MEN_SUBTIT_COLOR;
+//	men_lay_sub_color[1].next = &men_lay_sub_color[2];
+//	men_lay_sub_color[1].prev = &men_lay_sub_color[0];
+//	men_lay_sub_color[1].function = sys_measure_adjd;
+	
+//	men_lay_sub_color[2].text[0] = MEN_TIT_BACK;
+//	men_lay_sub_color[2].text[1] = MEN_SUBTIT_PAUSE;
+//	men_lay_sub_color[2].next = &men_lay_sub_color[0];
+//	men_lay_sub_color[2].prev = &men_lay_sub_color[1];
+//	men_lay_sub_color[2].topmenu = &men_lay_main[0];
+//	men_lay_sub_color[2].function = sys_enter_topmenu;
+
 	menu_current = &men_initializing;
 }
 

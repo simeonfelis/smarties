@@ -150,11 +150,11 @@
 #define REV_SET_CCW			(STEPPER_PORT |= (1<<REV_BIT_CW))	//!< Rotating directino conter clock wise
 
 
-#define REV_STEP_DURATION	35			//!< Duration of one step in milliseconds. This value controlles the rotating speed
+#define REV_STEP_DURATION	20			//!< Duration of one step in milliseconds. This value controlles the rotating speed
 #define REV_RAMP_DURATION	1			//!< Duration of the ramp up or ramp down in steps
 #define REV_MAX_SIZE		12			//!< The amount of smarties (holes) which fit into the revolver
-#define REV_STEPS_ESTIMATED	25			//!< Amount of steps for each positions 'hole abouve hole'
-#define REV_PAUSE_DURATION	200
+#define REV_STEPS_ESTIMATED	6			//!< Amount of steps for each positions 'hole abouve hole'
+#define REV_PAUSE_DURATION	500
 
 #define REV_POS_SENS1			1
 #define REV_POS_SENS2			1
@@ -179,11 +179,11 @@
 #define CATCH_SET_CW		(STEPPER_PORT &= ~(1<<CATCH_BIT_CW))	//!< Rotating direction clockwise
 #define CATCH_SET_CCW		(STEPPER_PORT |= (1<<CATCH_BIT_CW))	//!< Rotating directino conter clock wise
 
-#define CATCH_STEP_DURATION 	11			//!< Duration of one step in one Millisecond. This value controlles the rotating speed
+#define CATCH_STEP_DURATION 	10			//!< Duration of one step in one Millisecond. This value controlles the rotating speed
 #define CATCH_RAMP_DURATION	 	2			//!< Duration of the ramp up or ramp down in steps
 #define CATCH_MAX_SIZE			8			//!< The amount of catcher tubes for sorting the smarties
-#define CATCH_STEPS_ESTIMATED	34			//!< Amount of steps for each positions 'hole abouve hole'
-#define CATCH_PAUSE_DURATION	200
+#define CATCH_STEPS_ESTIMATED	14			//!< Amount of steps for each positions 'hole abouve hole'
+#define CATCH_PAUSE_DURATION	500
 
 // Miscaleous input output
 // Shaker 
@@ -311,12 +311,12 @@ typedef struct rotary_encoder_t {
  * If a smartie is detected to have \ref col_unknown, it will be handled as not present. 
  */
 typedef enum smartie_color_t {
-	col_yellow = 0,		//!< Yellow
+	col_blue = 0,		//!< Blue
+	col_green,			//!< Green
 	col_red,			//!< Red
-	col_blue,			//!< Blue
+	col_yellow,			//!< Yellow
 	col_orange, 		//!< Orange
 	col_brown,			//!< Brown
-	col_green,			//!< Green
 	col_purple,			//!< Purple
 	col_pink,			//!< Pink
 	col_unknown			//!< Indexed as last color (highest counter). Insert colors above this one! 
@@ -363,6 +363,7 @@ typedef struct stepper_motor_t {
 	uint8_t ramp_steps;			//!< One step takes \ref CATCH_STEP_DURATION or \ref REV_STEP_DURATION steps
 	uint8_t ramp_duration;
 	uint8_t steps_estimated;
+	uint8_t steps_estim_def;
 	int8_t max_size;
 	int8_t step_duration;
 	int16_t pause;				//!< The motor pauses as long as this is not zero
@@ -393,6 +394,7 @@ typedef struct color_sensor_tcs_t {
 	int16_t filter_freq_blue;	//!< The clock frequency in kHz measured with blue filter on
 	int16_t filter_freq_green;	//!< The clock frequency in kHz measured with green filter on
 	int16_t filter_freq_red;	//!< The clock frequency in kHz measured with red filter on
+	int16_t filter_freq_none;	//TODO docs
 	int16_t slopes;				//!< The amount of slopes recognised during \ref COL_SENS_TCS_SAMPLE_TIME
 } color_sensor_tcs;
 

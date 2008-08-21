@@ -10,11 +10,17 @@
 #include "smarties2.h"
 
 //#define TESTING_RAMPS 	1 /* temporarly only */
+#define PATH_DETECTION		0 /* way of color detection */
+#define TABLE_REFERENCE_DETECTION 1
 
 extern smartie_sorter ss;
-extern uint8_t col_tab_blu[6][2];
-extern uint8_t col_tab_gre[6][2];
-extern uint8_t col_tab_red[6][2];
+extern uint8_t col_tab_blu[col_unknown][2];
+extern uint8_t col_tab_gre[col_unknown][2];
+extern uint8_t col_tab_red[col_unknown][2];
+
+extern uint8_t col_path_blu[col_unknown];
+extern uint8_t col_path_gre[col_unknown];
+extern uint8_t col_path_red[col_unknown];
 
 void motor_universal_stuff (stepper_motor *this);
 
@@ -65,14 +71,15 @@ void motor_universal_stuff (stepper_motor *this) {
 			this->status_last = stat_start_working;
 			this->ramp_steps = this->ramp_duration; /* will be decreased during ramp up */
 			this->pause = this->pause_duration;
+			this->steps_estimated = this->steps_estim_def;
 			this->cycle_counter = 0;
 			this->steps = 0;
-			this->enable();
 		}
 		
 		/* do the ramp up */
 		if ( (this->cycle_counter == (this->step_duration * this->ramp_steps) )
-				&& (this->pause) ) {
+				&& !(this->pause) ) {
+//			this->enable();
 			this->cycle_counter = 0;
 			this->ramp_steps--;
 			if (this->ramp_steps == 0) {
@@ -102,45 +109,28 @@ void motor_universal_stuff (stepper_motor *this) {
 					this->current_pos = 0;
 			}
 		}
-		
-		/* before we reach the target position do the ramp down */
-		if ( this->current_pos == (this->target_pos-1) )
-			if (this->steps == this->steps_estimated)
-				this->status = stat_stop_working;
-		
+				
 		/* take care of if we are too far */
 		if (this->current_pos == this->target_pos) {
 			if (this->lb->is_blocked()) {
-				this->status = stat_stop_working;
-			}
-			else {
-				if (this->steps == this->steps_estimated) {
+				/* Do some more steps if we reached a difined position */
+				if (!this->steps_estimated)
 					this->status = stat_stop_working;
-				}
+				this->steps_estimated--;
 			}
 		}
 	}
 
-	/* ramp down */
+	/* pause down */
 	if (this->status == stat_stop_working) {
 		if (this->status_last == stat_working) {
 			this->status_last = stat_stop_working;
-			this->cycle_counter = 0;
-			this->ramp_steps = 1;
+			this->pause = this->pause_duration;
 		}
 		
-		/* do the ramp down */
-		if (this->cycle_counter 
-				== (this->step_duration * this->ramp_steps)) {
-			this->cycle_counter = 0;
-			this->ramp_steps++;
-			if ( (this->ramp_steps == this->ramp_duration) 
-					|| (this->ramp_steps == this->ramp_duration+1) ) {
-				this->status_last = stat_stop_working;
-				this->status = stat_finished;
-			}
-			this->move_step();
-			this->steps++;
+		/* stop */
+		if (!this->pause) { /* If pause is over */
+			this->status = stat_finished;
 		}
 	}
 	
@@ -150,21 +140,8 @@ void motor_universal_stuff (stepper_motor *this) {
 			this->status_last = stat_finished;
 			this->cycle_counter = 0;
 		}
-		/* go on rotating until we meet the end position, indicated by the lightbarrier */
-		/* but rotate slowly */
-		if (this->cycle_counter
-				== (this->step_duration * this->ramp_duration)) {
-			this->cycle_counter = 0;
-			this->move_step();
-			this->steps++;
-			if (this->lb->is_blocked()) {
-				this->status = stat_idle;
-//				this->current_pos++;
-//				if (this->current_pos == this->max_size) 
-//					this->current_pos = 0;
-				this->disable();
-			}
-		}
+		this->status = stat_idle;
+//		this->disable();
 	}
 }
 
@@ -306,6 +283,10 @@ void sensor_tcs_stuff() {
 	uint8_t y;
 	static uint16_t f_blu, f_gre, f_red;
 	
+#if PATH_DETECTION
+	int16_t col_path_dist[4] = { 1000, 1000, 1000, 1000 };
+#endif
+	
 	if (ss.sens_tcs.status == stat_start_working) {
 		if (ss.sens_tcs.status_last == stat_idle) {
 			ss.sens_tcs.status = stat_working;
@@ -318,6 +299,7 @@ void sensor_tcs_stuff() {
 			ss.sens_tcs.filter_freq_blue = 0;
 			ss.sens_tcs.filter_freq_green = 0;
 			ss.sens_tcs.filter_freq_red = 0;
+			ss.sens_tcs.filter_freq_none = 0;
 		}
 	}
 
@@ -331,24 +313,24 @@ void sensor_tcs_stuff() {
 		if (ss.sens_tcs.time == COL_SENS_TCS_SAMPLE_TIME) {
 			if (ss.sens_tcs.filter_freq_blue == 0) {
 				ss.sens_tcs.filter_freq_blue = ss.sens_tcs.slopes / COL_SENS_TCS_SAMPLE_TIME ;
-				//ss.sens_tcs.filter_freq_blue = 32000;
 				COL_SENS_TCS_SET_FILTER(col_green);
 				ss.sens_tcs.time = 0;
 				ss.sens_tcs.slopes = 0;
 			}
 			else if (ss.sens_tcs.filter_freq_green == 0) {
 				ss.sens_tcs.filter_freq_green = ss.sens_tcs.slopes / COL_SENS_TCS_SAMPLE_TIME;
-				//ss.sens_tcs.filter_freq_green = 11;
 				COL_SENS_TCS_SET_FILTER(col_red);
 				ss.sens_tcs.time = 0;
 				ss.sens_tcs.slopes = 0;
 			}
 			else if (ss.sens_tcs.filter_freq_red == 0) {
 				ss.sens_tcs.filter_freq_red = ss.sens_tcs.slopes / COL_SENS_TCS_SAMPLE_TIME;
-				//ss.sens_tcs.filter_freq_red = 100;
-				COL_SENS_TCS_SET_FILTER(col_red);
+				COL_SENS_TCS_SET_FILTER(col_unknown);
 				ss.sens_tcs.time = 0;
 				ss.sens_tcs.slopes = 0;
+			}
+			else if (ss.sens_tcs.filter_freq_none == 0) {
+				ss.sens_tcs.filter_freq_none = ss.sens_tcs.slopes / COL_SENS_TCS_SAMPLE_TIME;
 				ss.sens_tcs.status = stat_stop_working;
 			}
 		}
@@ -364,6 +346,13 @@ void sensor_tcs_stuff() {
 			f_red = ss.sens_tcs.filter_freq_red;
 		}
 		/* Now detect colors */
+#if PATH_DETECTION
+		for (y=0; y<=col_unknown; y++) {
+			if ( abs(f_blu - col_path_dist[col_blue]) < col_path_blu[col_blue] )
+				col_path_dist[col_blue] = f_blu;
+		}
+#endif
+#if TABLE_REFERENCE_DETECTION
 		for (y=0; y<=col_unknown; y++) {
 			if ( ((f_blu >= col_tab_blu[y][0]) && (f_blu <= col_tab_blu[y][1])) && 
 					((f_gre >= col_tab_gre[y][0]) && (f_gre <= col_tab_gre[y][1])) &&
@@ -372,6 +361,8 @@ void sensor_tcs_stuff() {
 			}
 		}
 		ss.sens_tcs.color = y;
+
+#endif
 		ss.sens_tcs.status = stat_finished;
 	}
 	

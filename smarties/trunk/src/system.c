@@ -280,12 +280,12 @@ smartie_color make_color_merge(smartie_color color1, smartie_color color2) {
  * 
  * \code
 uint8_t col_tab_blu [col_unknown][2] = {
-		{LO,HI}, // Index ol_yellow
+		{LO,HI}, // Index col_blue
+		{ 6, 9}, // Index col_green
 		{ 6, 8}, // Index col_red
-		{19,22}, // Index col_blue
+		{ 5, 5}, // Index ol_yellow
 		{ 5, 7}, // Index col_orange
 		{ 2, 4}, // Index col_brown
-		{ 6, 9}, // Index col_green
 		{ 7, 9}, // Index col_purple
 		{10,12} // Index col_pink
 };
@@ -296,14 +296,14 @@ uint8_t col_tab_blu [col_unknown][2] = {
  */
 uint8_t col_tab_blu [col_unknown][2] = {
 		/* {blue_lo_limit, blue_hi_limit} */
-		{ 7,10}, //!< Index \ref col_yellow
-		{ 4, 8}, //!< Index \ref col_red
-		{19,27}, //!< Index \ref col_blue
-		{ 5, 7}, //!< Index \ref col_orange
-		{ 2, 4}, //!< Index \ref col_brown
+		{29,33}, //!< Index \ref col_blue
 		{ 6, 9}, //!< Index \ref col_green
+		{ 5, 7}, //!< Index \ref col_red
+		{ 9,11}, //!< Index \ref col_yellow
+		{ 5, 8}, //!< Index \ref col_orange
+		{ 4, 8}, //!< Index \ref col_brown
 		{ 7,12}, //!< Index \ref col_purple
-		{ 8,12} //!< Index \ref col_pink
+		{12,15} //!< Index \ref col_pink
 };
 
 /**
@@ -311,12 +311,12 @@ uint8_t col_tab_blu [col_unknown][2] = {
  */
 uint8_t col_tab_gre [col_unknown][2] = {
 		/* {green_lo_limit, green_hi_limit} */
-		{32,39}, // Index \ref col_yellow
-		{10,15}, // Index \ref col_red
 		{24,28}, // Index \ref col_blue
-		{16,19}, // Index \ref col_orange
-		{ 5, 9}, // Index \ref col_brown
 		{20,23}, // Index \ref col_green
+		{ 9,11}, // Index \ref col_red
+		{32,35}, // Index \ref col_yellow
+		{12,17}, // Index \ref col_orange
+		{ 6,10}, // Index \ref col_brown
 		{ 8,15}, // Index \ref col_purple
 		{12,17} // Index \ref col_pink
 };
@@ -326,12 +326,68 @@ uint8_t col_tab_gre [col_unknown][2] = {
  */
 uint8_t col_tab_red [col_unknown][2] = {
 		// {red_lo_limit, red_hi_limit}
-		{44,53}, // Index \ref col_yellow
+		{30,34}, // Index \ref col_blue
+		{19,23}, // Index \ref col_green
 		{43,50}, // Index \ref col_red
-		{30,33}, // Index \ref col_blue
-		{42,51}, // Index \ref col_orange
-		{17,19}, // Index \ref col_brown
-		{20,23}, // Index \ref col_green
+		{37,45}, // Index \ref col_yellow
+		{41,49}, // Index \ref col_orange
+		{17,22}, // Index \ref col_brown
 		{19,31}, // Index \ref col_purple
-		{39,47} // Index \ref col_pink
+		{41,47} // Index \ref col_pink
 };
+
+uint8_t col_tab_non [col_unknown][2] = {
+		{10,96}, // Index \ref col_blue
+		{54,55}, // Index \ref col_green
+		{56,67}, // Index \ref col_red
+		{10,98}, // Index \ref col_yellow
+		{64,80}, // Index \ref col_orange
+		{31,44}, // Index \ref col_brown
+		{46,51}, // Index \ref col_purple
+		{73,81} // Index \ref col_pink		
+};
+
+uint8_t col_path_blu [col_unknown] = {
+		0, // Index \ref col_blue
+		0, // Index \ref col_green
+		0, // Index \ref col_red
+		0, // Index \ref col_yellow
+		0, // Index \ref col_orange
+		0, // Index \ref col_brown
+		0, // Index \ref col_purple
+		0 // Index \ref col_pink
+};
+
+uint8_t col_path_gre [col_unknown] = {
+		0, // Index \ref col_blue
+		0, // Index \ref col_green
+		0, // Index \ref col_red
+		0, // Index \ref col_yellow
+		0, // Index \ref col_orange
+		0, // Index \ref col_brown
+		0, // Index \ref col_purple
+		0 // Index \ref col_pink
+};
+
+uint8_t col_path_red [col_unknown] = {
+		0, // Index \ref col_blue
+		0, // Index \ref col_green
+		0, // Index \ref col_red
+		0, // Index \ref col_yellow
+		0, // Index \ref col_orange
+		0, // Index \ref col_brown
+		0, // Index \ref col_purple
+		0 // Index \ref col_pink
+};
+
+uint8_t col_path_non [col_unknown] = {
+		0, // Index \ref col_blue
+		0, // Index \ref col_green
+		0, // Index \ref col_red
+		0, // Index \ref col_yellow
+		0, // Index \ref col_orange
+		0, // Index \ref col_brown
+		0, // Index \ref col_purple
+		0 // Index \ref col_pink
+};
+
