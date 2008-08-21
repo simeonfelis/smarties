@@ -51,27 +51,32 @@ void motor_stuff () {
 }
 
 void motor_universal_stuff (stepper_motor *this) {
-	if (this->status != stat_idle)
-		this->cycle_counter++;
+	if (this->status != stat_idle) {
+		if (this->pause)    /* Count cycles/milliseconds for pause */
+			this->pause--;
+		else				/* If we are not in pause, we can count the milliseconds */
+			this->cycle_counter++;
+	}
 
 	/* start and ramp up */
 	if (this->status == stat_start_working) {
 		/* if we just started to rotate, prepare ramp up */
 		if (this->status_last != stat_start_working) {
-			this->enable();
 			this->status_last = stat_start_working;
 			this->ramp_steps = this->ramp_duration; /* will be decreased during ramp up */
+			this->pause = this->pause_duration;
 			this->cycle_counter = 0;
 			this->steps = 0;
+			this->enable();
 		}
 		
 		/* do the ramp up */
-		if (this->cycle_counter == (this->step_duration * this->ramp_steps)) {
+		if ( (this->cycle_counter == (this->step_duration * this->ramp_steps) )
+				&& (this->pause) ) {
 			this->cycle_counter = 0;
 			this->ramp_steps--;
 			if (this->ramp_steps == 0) {
 				this->status = stat_working;
-//				this->lb->passes = 0; /* dismiss passes when ramp up */
 			}
 			this->move_step();
 			this->steps++;

@@ -30,6 +30,6 @@
 
 
 // Small helper functions 
-void smartie_lcd_write_color ();
+void smartie_lcd_write_color (smartie_color color);
 
 #endif /*SMARTIES2_H_*/

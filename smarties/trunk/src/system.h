@@ -154,7 +154,7 @@
 #define REV_RAMP_DURATION	1			//!< Duration of the ramp up or ramp down in steps
 #define REV_MAX_SIZE		12			//!< The amount of smarties (holes) which fit into the revolver
 #define REV_STEPS_ESTIMATED	25			//!< Amount of steps for each positions 'hole abouve hole'
-#define REV_PAUSE_DURATION	1000
+#define REV_PAUSE_DURATION	200
 
 #define REV_POS_SENS1			1
 #define REV_POS_SENS2			1
@@ -183,7 +183,7 @@
 #define CATCH_RAMP_DURATION	 	2			//!< Duration of the ramp up or ramp down in steps
 #define CATCH_MAX_SIZE			8			//!< The amount of catcher tubes for sorting the smarties
 #define CATCH_STEPS_ESTIMATED	34			//!< Amount of steps for each positions 'hole abouve hole'
-#define CATCH_PAUSE_DURATION	1000
+#define CATCH_PAUSE_DURATION	200
 
 // Miscaleous input output
 // Shaker 
@@ -365,7 +365,7 @@ typedef struct stepper_motor_t {
 	uint8_t steps_estimated;
 	int8_t max_size;
 	int8_t step_duration;
-	int16_t pause;
+	int16_t pause;				//!< The motor pauses as long as this is not zero
 	int16_t pause_duration;
 	lightbarrier *lb;			//TODO: docs
 	void (*enable)();			//TODO: docs

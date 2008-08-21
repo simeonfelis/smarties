@@ -12,7 +12,6 @@
 #include "inits.h"
 #include "system.h"
 #include "menu.h"
-#include "i2cmaster.h"
 
 extern smartie_sorter ss;
 extern menu_entry *menu_current;
@@ -46,8 +45,8 @@ void init_io()
     /*
      *  sorry to say, the lcd is on the jtag pins
      */
-	MCUCSR |= (1<<JTD);	
-	MCUCSR |= (1<<JTD);	/* disable the JTAG interface twice! */
+//	MCUCSR |= (1<<JTD);	
+//	MCUCSR |= (1<<JTD);	/* disable the JTAG interface twice! */
 
 	STEPPER_PORT &= ~((1 << REV_BIT_CLK) | (1<<REV_BIT_CW) | (1<<REV_BIT_EN) | (1<<CATCH_BIT_CLK) | (1<<CATCH_BIT_CW) | (1<<CATCH_BIT_EN));
 	STEPPER_DDR |= (1 << REV_BIT_CLK) | (1<<REV_BIT_CW) | (1<<REV_BIT_EN) | (1<<CATCH_BIT_CLK) | (1<<CATCH_BIT_CW) | (1<<CATCH_BIT_EN);
