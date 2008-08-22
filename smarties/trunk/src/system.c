@@ -48,6 +48,11 @@ void sys_catcher_rotate() {
 	catcher_rotate_relative(1);
 }
 
+//TODO
+uint8_t sys_get_out_pos () {
+	return REV_POS_SMARTIE_OUT - ss.mot_revolver.current_pos;
+}
+
 int8_t sys_catcher_is_lb_blocked () {
 	return IS_LB_CATCHER;
 }
@@ -347,47 +352,47 @@ uint8_t col_tab_non [col_unknown][2] = {
 		{73,81} // Index \ref col_pink		
 };
 
-uint8_t col_path_blu [col_unknown] = {
-		0, // Index \ref col_blue
-		0, // Index \ref col_green
-		0, // Index \ref col_red
-		0, // Index \ref col_yellow
-		0, // Index \ref col_orange
-		0, // Index \ref col_brown
-		0, // Index \ref col_purple
-		0 // Index \ref col_pink
+float col_ava_blu [col_unknown] = {
+		30.00, // Index \ref col_blue
+		 9.00, // Index \ref col_green
+		 6.17, // Index \ref col_red
+		 9.83, // Index \ref col_yellow
+		 6.50, // Index \ref col_orange
+		 6.33, // Index \ref col_brown
+		11.50, // Index \ref col_purple
+		14.25 // Index \ref col_pink
 };
 
-uint8_t col_path_gre [col_unknown] = {
-		0, // Index \ref col_blue
-		0, // Index \ref col_green
-		0, // Index \ref col_red
-		0, // Index \ref col_yellow
-		0, // Index \ref col_orange
-		0, // Index \ref col_brown
-		0, // Index \ref col_purple
-		0 // Index \ref col_pink
+float col_ava_gre [col_unknown] = {
+		25.67, // Index \ref col_blue
+		19.83, // Index \ref col_green
+		 9.83, // Index \ref col_red
+		32.83, // Index \ref col_yellow
+		14.67, // Index \ref col_orange
+		 8.33, // Index \ref col_brown
+		10.63, // Index \ref col_purple
+		14.25 // Index \ref col_pink
 };
 
-uint8_t col_path_red [col_unknown] = {
-		0, // Index \ref col_blue
-		0, // Index \ref col_green
-		0, // Index \ref col_red
-		0, // Index \ref col_yellow
-		0, // Index \ref col_orange
-		0, // Index \ref col_brown
-		0, // Index \ref col_purple
-		0 // Index \ref col_pink
+float col_ava_red [col_unknown] = {
+		31.00, // Index \ref col_blue
+		19.17, // Index \ref col_green
+		39.67, // Index \ref col_red
+		44.33, // Index \ref col_yellow
+		44.17, // Index \ref col_orange
+		18.67, // Index \ref col_brown
+		23.25, // Index \ref col_purple
+		43.75 // Index \ref col_pink
 };
 
-uint8_t col_path_non [col_unknown] = {
-		0, // Index \ref col_blue
-		0, // Index \ref col_green
-		0, // Index \ref col_red
-		0, // Index \ref col_yellow
-		0, // Index \ref col_orange
-		0, // Index \ref col_brown
-		0, // Index \ref col_purple
-		0 // Index \ref col_pink
+double col_ava_bri [col_unknown] = {
+		.0, // Index \ref col_blue
+		.0, // Index \ref col_green
+		.0, // Index \ref col_red
+		.0, // Index \ref col_yellow
+		.0, // Index \ref col_orange
+		.0, // Index \ref col_brown
+		.0, // Index \ref col_purple
+		.0 // Index \ref col_pink
 };
 

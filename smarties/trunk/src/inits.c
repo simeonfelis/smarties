@@ -22,6 +22,7 @@ void init_adc()
 
 void init_all() {
 	uint8_t x;
+	
 	init_io();
 	lcd_init(LCD_DISP_ON);
 	init_menu();
@@ -156,7 +157,7 @@ void init_motors() {
 	if (!IS_LB_CATCHER)
 		catcher_rotate_relative(1);
 
-	ss.mot_catcher.current_pos = col_yellow; /* col_yellow is in the smart_color enum 0 */
+	ss.mot_catcher.current_pos = 0;
 	
 	
 	/*************** R E V O L V E R *********************/

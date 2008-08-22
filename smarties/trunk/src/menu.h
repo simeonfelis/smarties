@@ -147,7 +147,7 @@
 #define MEN_TIT_SUB_ROT_CATCH	"        CATCHER         "
 
 #define MEN_TIT_MAIN_COLOR		"         COLOR          "
-#define MEN_TIT_SUB_TCS			"   TCS colors:          "
+#define MEN_TIT_SUB_TCS			"TCS col:                "
 #define MEN_TIT_SUB_ADJD		"      ADJD colors       "
 #define MEN_SUBTIT_COLOR		"Push:new measur Rot:next"  
 

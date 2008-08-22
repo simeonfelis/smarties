@@ -154,11 +154,11 @@
 #define REV_RAMP_DURATION	1			//!< Duration of the ramp up or ramp down in steps
 #define REV_MAX_SIZE		12			//!< The amount of smarties (holes) which fit into the revolver
 #define REV_STEPS_ESTIMATED	6			//!< Amount of steps for each positions 'hole abouve hole'
-#define REV_PAUSE_DURATION	500
+#define REV_PAUSE_DURATION	100
 
-#define REV_POS_SENS1			1
+#define REV_POS_SENS1			11
 #define REV_POS_SENS2			1
-#define REV_POS_SMARTIE_OUT		11
+#define REV_POS_SMARTIE_OUT		10
 #define REV_POS_SMARTIE_IN		0
 
 // Stepper motor for catcher
@@ -396,6 +396,8 @@ typedef struct color_sensor_tcs_t {
 	int16_t filter_freq_red;	//!< The clock frequency in kHz measured with red filter on
 	int16_t filter_freq_none;	//TODO docs
 	int16_t slopes;				//!< The amount of slopes recognised during \ref COL_SENS_TCS_SAMPLE_TIME
+	int16_t distance;
+	int16_t dist_next;
 } color_sensor_tcs;
 
 /**
@@ -456,6 +458,8 @@ void	sys_catcher_disable ();
 void 	sys_catcher_move_step ();
 void 	sys_catcher_rotate ();
 int8_t 	sys_catcher_is_lb_blocked ();
+
+uint8_t sys_get_out_pos();
 
 void 	sys_revolver_enable ();
 void 	sys_revolver_disable ();

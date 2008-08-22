@@ -267,10 +267,13 @@ int main(void) {
     		if (ss.prog == prog_color_tcs) {
     			if (ss.sens_tcs.status_last == stat_finished) {
     				ss.sens_tcs.status_last = stat_idle;
-    				lcd_gotoxy(16,0); smartie_lcd_write_color(ss.sens_tcs.color);
+    				lcd_gotoxy(8,0); smartie_lcd_write_color(ss.sens_tcs.color);
+    				lcd_gotoxy(15,0); lcd_puts("dis:  ");
+    				lcd_gotoxy(19,0); lcd_puts(itoa(ss.sens_tcs.distance,s,10));
+    				lcd_gotoxy(21,0); lcd_puts("n  ");
+    				lcd_gotoxy(22,0); lcd_puts(itoa(ss.sens_tcs.dist_next,s,10));
     				lcd_gotoxy(0,1); lcd_puts(MEN_TIT_EMPTY);
-    				lcd_gotoxy(0,1);
-    				lcd_puts("Blu:");
+    				lcd_gotoxy(0,1); lcd_puts("Blu:");
     				if (ss.sens_tcs.filter_freq_blue<10) lcd_puts(" ");
     				lcd_puts(itoa(ss.sens_tcs.filter_freq_blue, s, 10));
     				lcd_puts("Gre:");
@@ -306,13 +309,6 @@ int main(void) {
     				lcd_puts(itoa(ss.mot_catcher.current_pos, s, 10));
     			}
     		}
-#if 0
-			if (ss.mot_catcher.status != stat_idle) {
-    			lcd_gotoxy(6,1);
-    			if (ss.lb_catcher.passes < 9) lcd_puts(" ");
-    			lcd_puts(itoa(ss.lb_catcher.passes,s, 10));
-    		}
-#endif
     		break; /* SYS_MODE_PAUSE */
 
 /******************************* SYS_MODE_RUNNING *******************************************/
@@ -324,7 +320,6 @@ int main(void) {
 #if !DEBUG
 				lcd_gotoxy(0,0); lcd_puts(menu_current->text[0]);
 				lcd_gotoxy(0,1); lcd_puts(menu_current->text[1]);
-//				lcd_gotoxy(5,1); lcd_puts("RUN/  ");
 #endif
 #if DEBUG
 				lcd_gotoxy(0,0); lcd_puts(MEN_TIT_EMPTY);
@@ -336,23 +331,18 @@ int main(void) {
 			}
 
 			if (ss.state.step.I == stat_start_working) { /* Initiate all work to be done: TCS */
-#if DEBUG
-				lcd_gotoxy(0,0); lcd_puts("I  sta");
-#endif
-				ss.state.step.I = stat_working;
-				
+				ss.state.step.I = stat_working;				
 				sensor_tcs_get_color();
 			}
 			if (ss.state.step.I == stat_working) { /* Wait until is finished: TCS */
-#if DEBUG
-				lcd_gotoxy(0,0); lcd_puts("I  wor");
-#endif
 				if ( (ss.sens_tcs.status == stat_idle) && (ss.sens_tcs.status_last != stat_idle)) {
 					ss.sens_tcs.status_last = stat_idle;
 					ss.rev.smart[ss.mot_revolver.current_pos].color = ss.sens_tcs.color;
 #if DEBUG
-					lcd_gotoxy(6,1); lcd_puts("tcfin");
-					lcd_gotoxy(7,0); lcd_puts("Col:"); smartie_lcd_write_color(ss.sens_tcs.color);
+					lcd_gotoxy(0,0); lcd_puts("I:"); smartie_lcd_write_color(ss.sens_tcs.color);
+					lcd_gotoxy(9,0); lcd_puts("O:");
+					temp = sys_get_out_pos();
+					smartie_lcd_write_color( ss.rev.smart[temp].color );
 #else
 					lcd_gotoxy(8,1); smartie_lcd_write_color(ss.sens_tcs.color);
 #endif 
@@ -360,9 +350,11 @@ int main(void) {
 				
 				if ( (ss.sens_tcs.status_last == stat_idle) && (ss.sens_tcs.status == stat_idle) ) {
 #if DEBUG
-					lcd_gotoxy(18,0); lcd_puts("c"); lcd_puts(itoa(ss.mot_catcher.current_pos,s,10));
-					lcd_gotoxy(0,0); lcd_puts("I  sto");
-					lcd_gotoxy(0,7); lcd_puts("caidl tcidl ");
+					lcd_gotoxy(0,1); 
+					lcd_puts("C:"); lcd_puts(itoa(ss.mot_catcher.current_pos,s,10));
+					lcd_puts("="); smartie_lcd_write_color(ss.mot_catcher.current_pos);
+					lcd_puts("R:"); lcd_puts(itoa(ss.mot_revolver.current_pos,s,10));
+					if (ss.mot_revolver.current_pos < 9) lcd_puts(" ");
 #endif
 					ss.state.step.I = stat_stop_working;
 				}
@@ -373,16 +365,20 @@ int main(void) {
 			}
 			if (ss.state.step.II == stat_start_working) { /* Initiate all work to be done: Catcher */
 #if DEBUG
-				lcd_gotoxy(0,0); lcd_puts("II sta");
+				lcd_gotoxy(0,1); 
+				lcd_puts("C:"); lcd_puts(itoa(ss.mot_catcher.current_pos,s,10));
+				lcd_puts("="); smartie_lcd_write_color(ss.mot_catcher.current_pos);
+				lcd_puts("R:"); lcd_puts(itoa(ss.mot_revolver.current_pos,s,10));
+				if (ss.mot_revolver.current_pos < 9) lcd_puts(" ");
 #endif
 				ss.state.step.II = stat_working;
 				/* Move the catcher to the right position. Therefore, */
 				/* we need the color from the smartie which will be above the hole */
 				/* Therefore, we need the correct index (use your brain!): */
-				if ( ss.mot_revolver.current_pos <= REV_POS_SMARTIE_OUT )
-					index_temp = REV_POS_SMARTIE_OUT - ss.mot_revolver.current_pos; 
-				else
-					index_temp =  11;
+//				if ( ss.mot_revolver.current_pos <= REV_POS_SMARTIE_OUT )
+					index_temp = sys_get_out_pos(); 
+//				else
+//					index_temp =  11;
 				col_temp = ss.rev.smart[index_temp].color;
 				catcher_rotate_absolute(col_temp);
 
@@ -390,26 +386,32 @@ int main(void) {
 				lcd_gotoxy(18,1); smartie_lcd_write_color(ss.rev.smart[index_temp].color);
 #endif
 #if DEBUG
-				lcd_gotoxy(18,0); lcd_puts("c"); lcd_puts(itoa(ss.mot_catcher.current_pos,s,10));
+				lcd_gotoxy(0,1); 
+				lcd_puts("C:"); lcd_puts(itoa(ss.mot_catcher.current_pos,s,10));
+				lcd_puts("="); smartie_lcd_write_color(ss.mot_catcher.current_pos);
+				lcd_puts("R:"); lcd_puts(itoa(ss.mot_revolver.current_pos,s,10));
+				if (ss.mot_revolver.current_pos < 9) lcd_puts(" ");
 #endif
 			}
 			if (ss.state.step.II == stat_working) { /* Wait until is finished: Catcher */
-#if DEBUG
-				lcd_gotoxy(0,0); lcd_puts("II wor");
-#endif
 				if ( (ss.mot_catcher.status == stat_idle) && (ss.mot_catcher.status_last != stat_idle)) {
 					ss.mot_catcher.status_last = stat_idle;
 #if DEBUG
-					lcd_gotoxy(18,0); lcd_puts("c"); lcd_puts(itoa(ss.mot_catcher.current_pos,s,10));
-					lcd_gotoxy(0,1); lcd_puts("cafin");
+					lcd_gotoxy(0,1); 
+					lcd_puts("C:"); lcd_puts(itoa(ss.mot_catcher.current_pos,s,10));
+					lcd_puts("="); smartie_lcd_write_color(ss.mot_catcher.current_pos);
+					lcd_puts("R:"); lcd_puts(itoa(ss.mot_revolver.current_pos,s,10));
+					if (ss.mot_revolver.current_pos < 9) lcd_puts(" ");
 #endif
 				}
 
 				if (ss.mot_catcher.status_last == stat_idle) {
 #if DEBUG
-					lcd_gotoxy(18,0); lcd_puts("c"); lcd_puts(itoa(ss.mot_catcher.current_pos,s,10));
-					lcd_gotoxy(0,0); lcd_puts("I  sto");
-					lcd_gotoxy(0,7); lcd_puts("caidl tcidl ");
+					lcd_gotoxy(0,1); 
+					lcd_puts("C:"); lcd_puts(itoa(ss.mot_catcher.current_pos,s,10));
+					lcd_puts("="); smartie_lcd_write_color(ss.mot_catcher.current_pos);
+					lcd_puts("R:"); lcd_puts(itoa(ss.mot_revolver.current_pos,s,10));
+					if (ss.mot_revolver.current_pos < 9) lcd_puts(" ");
 #endif
 					ss.state.step.II = stat_stop_working;
 				}
@@ -418,7 +420,11 @@ int main(void) {
 				ss.state.step.II = stat_idle;
 				ss.state.step.III = stat_start_working;
 #if DEBUG
-				lcd_gotoxy(0,0); lcd_puts("II idl");
+				lcd_gotoxy(0,1); 
+				lcd_puts("C:"); lcd_puts(itoa(ss.mot_catcher.current_pos,s,10));
+				lcd_puts("="); smartie_lcd_write_color(ss.mot_catcher.current_pos);
+				lcd_puts("R:"); lcd_puts(itoa(ss.mot_revolver.current_pos,s,10));
+				if (ss.mot_revolver.current_pos < 9) lcd_puts(" ");
 #endif
 			}
 
@@ -427,36 +433,35 @@ int main(void) {
 				vibrator_start();
 				revolver_rotate_relative(1);
 #if DEBUG
-				lcd_gotoxy(21,0); lcd_puts("r");
-				if (ss.mot_revolver.current_pos<10) lcd_puts(" ");
-				lcd_puts(itoa(ss.mot_revolver.current_pos,s,10));
+				lcd_gotoxy(0,1); 
+				lcd_puts("C:"); lcd_puts(itoa(ss.mot_catcher.current_pos,s,10));
+				lcd_puts("="); smartie_lcd_write_color(ss.mot_catcher.current_pos);
+				lcd_puts("R:"); lcd_puts(itoa(ss.mot_revolver.current_pos,s,10));
+				if (ss.mot_revolver.current_pos < 9) lcd_puts(" ");
 #endif
 			}
 			if (ss.state.step.III == stat_working) { /* Wait until is finished: Revolver & vibrator */
 				if ( (ss.mot_revolver.status == stat_idle) && (ss.mot_revolver.status_last != stat_idle) ) { 
 					ss.mot_revolver.status_last = stat_idle;
 #if DEBUG
-					lcd_gotoxy(12,1); lcd_puts("refin ");
-					lcd_gotoxy(21,0); lcd_puts("r");
-					if (ss.mot_revolver.current_pos<10) lcd_puts(" ");
-					lcd_puts(itoa(ss.mot_revolver.current_pos,s,10));
+					lcd_gotoxy(0,1); 
+					lcd_puts("C:"); lcd_puts(itoa(ss.mot_catcher.current_pos,s,10));
+					lcd_puts("="); smartie_lcd_write_color(ss.mot_catcher.current_pos);
+					lcd_puts("R:"); lcd_puts(itoa(ss.mot_revolver.current_pos,s,10));
+					if (ss.mot_revolver.current_pos < 9) lcd_puts(" ");
 #endif
 				}
 				if ( (ss.vibr.status == stat_idle) && (ss.vibr.status_last != stat_idle) ) {
 					ss.vibr.status_last = stat_idle;
-#if DEBUG
-					lcd_gotoxy(18,1); lcd_puts("vifin ");
-#endif
 				}
 				if ( (ss.vibr.status_last == stat_idle) && (ss.mot_revolver.status_last == stat_idle) ) {
 					ss.state.step.III = stat_stop_working;
 #if DEBUG
-					lcd_gotoxy(0,0); lcd_puts("II sto");
-					lcd_gotoxy(12,1); lcd_puts("reidl ");
-					lcd_gotoxy(18,1); lcd_puts("viidl ");
-					lcd_gotoxy(21,0); lcd_puts("r");
-					if (ss.mot_revolver.current_pos<10) lcd_puts(" ");
-					lcd_puts(itoa(ss.mot_revolver.current_pos,s,10));
+					lcd_gotoxy(0,1); 
+					lcd_puts("C:"); lcd_puts(itoa(ss.mot_catcher.current_pos,s,10));
+					lcd_puts("="); smartie_lcd_write_color(ss.mot_catcher.current_pos);
+					lcd_puts("R:"); lcd_puts(itoa(ss.mot_revolver.current_pos,s,10));
+					if (ss.mot_revolver.current_pos < 9) lcd_puts(" ");
 #endif
 				}
 			} /* if (ss.state.step.III == stat_working */

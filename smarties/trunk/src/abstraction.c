@@ -6,21 +6,42 @@
  * 
  */
 
+//#define TESTING_RAMPS 	1 /* temporarly only */
+#define DISTANCE_DETECTION			1 /* way of color detection */
+#define DISTANCE_NORM_DETECTION		0
+#define TABLE_REFERENCE_DETECTION 	0
+
 #include "abstraction.h"
 #include "smarties2.h"
 
-//#define TESTING_RAMPS 	1 /* temporarly only */
-#define PATH_DETECTION		0 /* way of color detection */
-#define TABLE_REFERENCE_DETECTION 1
+#if DISTANCE_DETECTION
+#include <math.h>
+#endif
+
+#if DISTANCE_NORM_DETECTION
+#include <math.h>
+#endif
+
 
 extern smartie_sorter ss;
 extern uint8_t col_tab_blu[col_unknown][2];
 extern uint8_t col_tab_gre[col_unknown][2];
 extern uint8_t col_tab_red[col_unknown][2];
 
-extern uint8_t col_path_blu[col_unknown];
-extern uint8_t col_path_gre[col_unknown];
-extern uint8_t col_path_red[col_unknown];
+#if DISTANCE_DETECTION
+extern float col_ava_blu [col_unknown];
+extern float col_ava_gre [col_unknown];
+extern float col_ava_red [col_unknown];
+extern float col_ava_bri [col_unknown];
+#endif
+
+#if DISTANCE_NORM_DETECTION
+extern float col_ava_blu [col_unknown];
+extern float col_ava_gre [col_unknown];
+extern float col_ava_red [col_unknown];
+extern float col_ava_bri [col_unknown];
+#endif
+
 
 void motor_universal_stuff (stepper_motor *this);
 
@@ -283,8 +304,21 @@ void sensor_tcs_stuff() {
 	uint8_t y;
 	static uint16_t f_blu, f_gre, f_red;
 	
-#if PATH_DETECTION
-	int16_t col_path_dist[4] = { 1000, 1000, 1000, 1000 };
+#if DISTANCE_DETECTION
+	double col_dis_blu [col_unknown] = { 1000., 1000., 1000., 1000., 1000., 1000., 1000., 1000. };
+	double col_dis_gre [col_unknown] = { 1000., 1000., 1000., 1000., 1000., 1000., 1000., 1000. };
+	double col_dis_red [col_unknown] = { 1000., 1000., 1000., 1000., 1000., 1000., 1000., 1000. };
+	double 	col_dis_all [col_unknown] = { 1000., 1000., 1000., 1000., 1000., 1000., 1000., 1000. };
+	double 	minimum = 1000.;
+	smartie_color probably = col_unknown;
+#endif
+#if DISTANCE_NORM_DETECTION
+	double col_dis_blu [col_unknown] = { 1000., 1000., 1000., 1000., 1000., 1000., 1000., 1000. };
+	double col_dis_gre [col_unknown] = { 1000., 1000., 1000., 1000., 1000., 1000., 1000., 1000. };
+	double col_dis_red [col_unknown] = { 1000., 1000., 1000., 1000., 1000., 1000., 1000., 1000. };
+	double col_dis_all [col_unknown] = { 1000., 1000., 1000., 1000., 1000., 1000., 1000., 1000. };
+	double minimum = 1000.;
+	smartie_color probably = col_unknown;
 #endif
 	
 	if (ss.sens_tcs.status == stat_start_working) {
@@ -346,11 +380,44 @@ void sensor_tcs_stuff() {
 			f_red = ss.sens_tcs.filter_freq_red;
 		}
 		/* Now detect colors */
-#if PATH_DETECTION
+#if DISTANCE_NORM_DETECTION
 		for (y=0; y<=col_unknown; y++) {
-			if ( abs(f_blu - col_path_dist[col_blue]) < col_path_blu[col_blue] )
-				col_path_dist[col_blue] = f_blu;
+			col_dis_blu[y] = (col_ava_blu[y] / f_blu );
+			col_dis_gre[y] = (col_ava_gre[y] / f_gre);
+			col_dis_red[y] = (col_ava_red[y] / f_red);
+			col_dis_all[y] = sqrt ( (col_dis_blu[y])*(col_dis_blu[y]) + (col_dis_gre[y])*(col_dis_gre[y]) + (col_dis_red[y])*(col_dis_red[y]));
+			if (minimum >= col_dis_all[y]) {
+				minimum = col_dis_all[y];
+				probably = y;
+				ss.sens_tcs.distance = (int16_t)minimum;
+			}
 		}
+
+		if (minimum < 6.)
+			ss.sens_tcs.color = probably;
+		else
+			ss.sens_tcs.color = col_unknown;
+
+#endif
+		
+#if DISTANCE_DETECTION
+		for (y=0; y<=col_unknown; y++) {
+			col_dis_blu[y] = fabs (col_ava_blu[y] - f_blu);
+			col_dis_gre[y] = fabs (col_ava_gre[y] - f_gre);
+			col_dis_red[y] = fabs (col_ava_red[y] - f_red);
+			col_dis_all[y] = sqrt ( (col_dis_blu[y])*(col_dis_blu[y]) + (col_dis_gre[y])*(col_dis_gre[y]) + (col_dis_red[y])*(col_dis_red[y]));
+			if (minimum >= col_dis_all[y]) {
+				minimum = col_dis_all[y];
+				probably = y;
+				ss.sens_tcs.distance = (int16_t)minimum;
+			}
+		}
+
+		if (minimum <= 6)
+			ss.sens_tcs.color = probably;
+		else
+			ss.sens_tcs.color = col_unknown;
+
 #endif
 #if TABLE_REFERENCE_DETECTION
 		for (y=0; y<=col_unknown; y++) {
@@ -361,7 +428,6 @@ void sensor_tcs_stuff() {
 			}
 		}
 		ss.sens_tcs.color = y;
-
 #endif
 		ss.sens_tcs.status = stat_finished;
 	}
