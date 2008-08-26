@@ -19,10 +19,18 @@
 #ifndef SYSTEM_H_
 #define SYSTEM_H_
 
-#include "menu.h"
+#include <avr/io.h>
+
+/* way of color detection */
+#define DISTANCE_DETECTION			1 
+#define DISTANCE_NORM_DETECTION		0
+#define TABLE_REFERENCE_DETECTION 	0
+
 
 // CPU Frequency
+#ifndef F_CPU
 #define F_CPU 16000000
+#endif
 
 // COLOR SENSOR ADJD-S371 is a digital color sensor with own light source
 #define COL_SENS_ADJD_LED_PORT	PORTA	//!< The ADJD color sensor Port for the LED 
@@ -154,11 +162,11 @@
 #define REV_RAMP_DURATION	1			//!< Duration of the ramp up or ramp down in steps
 #define REV_MAX_SIZE		12			//!< The amount of smarties (holes) which fit into the revolver
 #define REV_STEPS_ESTIMATED	6			//!< Amount of steps for each positions 'hole abouve hole'
-#define REV_PAUSE_DURATION	100
+#define REV_PAUSE_DURATION	1000
 
-#define REV_POS_SENS1			11
-#define REV_POS_SENS2			1
-#define REV_POS_SMARTIE_OUT		10
+//#define REV_POS_SENS1			11
+//#define REV_POS_SENS2			1
+#define REV_POS_SMARTIE_OUT		3
 #define REV_POS_SMARTIE_IN		0
 
 // Stepper motor for catcher
@@ -183,7 +191,7 @@
 #define CATCH_RAMP_DURATION	 	2			//!< Duration of the ramp up or ramp down in steps
 #define CATCH_MAX_SIZE			8			//!< The amount of catcher tubes for sorting the smarties
 #define CATCH_STEPS_ESTIMATED	14			//!< Amount of steps for each positions 'hole abouve hole'
-#define CATCH_PAUSE_DURATION	500
+#define CATCH_PAUSE_DURATION	100
 
 // Miscaleous input output
 // Shaker 
@@ -269,7 +277,9 @@ typedef struct system_state_t {
 	system_step step;				//!< Stores the current step of the mode
 } system_state;
 
-//TODO docs
+/**
+ * \brief Programs which are executed during \ref SYS_MODE_PAUSE. 
+ */
 typedef enum program_t {
 	prog_none = 0,
 	prog_rotate_catcher,
@@ -347,7 +357,7 @@ typedef struct lightbarrier_t {
 	lightbarrier_status status;			//!< The actual status of the lightbarrier
 	lightbarrier_status status_last;	//!< For recognising a pass
 	uint8_t passes;						//!< The amount of recognized passes through the lightbarrier
-	int8_t (*is_blocked)();				//TODO
+	int8_t (*is_blocked)();				//!< Returns TRUE if the lightbarrier is blocked
 } lightbarrier;
 
 /**
@@ -358,20 +368,20 @@ typedef struct stepper_motor_t {
 	common_stat status_last; 	//!< The last status
 	int8_t current_pos;			//!< Current position (\ref smartie_color_t can also be used)
 	int8_t target_pos;			//!< Target position (\ref smartie_color_t can also be used)
-	uint16_t cycle_counter;		//!< One cycle takes 1 millisecond. The duration of \ref REV_STEP_DURATION or \ref CATCH_STEP_DURATION cycles lasts one step
+	uint16_t cycle_counter;		//!< One cycle takes 1 millisecond
 	uint8_t steps;				//!< Count every step to estimate when to ramp down
 	uint8_t ramp_steps;			//!< One step takes \ref CATCH_STEP_DURATION or \ref REV_STEP_DURATION steps
-	uint8_t ramp_duration;
-	uint8_t steps_estimated;
-	uint8_t steps_estim_def;
-	int8_t max_size;
-	int8_t step_duration;
+	uint8_t ramp_duration;		//!< Ramp duration lasts \ref CATCH_RAMP_DURATION or \ref REV_RAMP_DURATION
+	uint8_t steps_estimated;	//!< Steps counted from as soon as the lightbarriere is blocked. 
+	uint8_t steps_estim_def;	//!< Start (default) value for \ref CATCH_STEPS_ESTIMATED or \ref REV_STEPS_ESTIMATED
+	int8_t max_size;			//!< Max. positions. \ref CATCH_MAX_POS or \ref REV_MAX_POS
+	int8_t step_duration;		//!< The duration of \ref REV_STEP_DURATION or \ref CATCH_STEP_DURATION cycles lasts one step
 	int16_t pause;				//!< The motor pauses as long as this is not zero
-	int16_t pause_duration;
-	lightbarrier *lb;			//TODO: docs
-	void (*enable)();			//TODO: docs
-	void (*disable) ();
-	void (*move_step) ();		//TODO: docs
+	int16_t pause_duration;		//!< Default value (\ref CATCH_PAUSE_DURATION or \ref REV_PAUSE_DURATION)
+	lightbarrier *lb;			//!< The lightbarrier that corresponds to that motor.
+	void (*enable)();			//!< Will enable the motor (power on)
+	void (*disable) ();			//!< Will diable the motor (power off)
+	void (*move_step) ();		//!< Will move the motor for one step
 } stepper_motor;
 
 /**
@@ -394,10 +404,9 @@ typedef struct color_sensor_tcs_t {
 	int16_t filter_freq_blue;	//!< The clock frequency in kHz measured with blue filter on
 	int16_t filter_freq_green;	//!< The clock frequency in kHz measured with green filter on
 	int16_t filter_freq_red;	//!< The clock frequency in kHz measured with red filter on
-	int16_t filter_freq_none;	//TODO docs
+	int16_t filter_freq_none;	//!< The clock frequency in kHz measured with no filter on. Could be interpreted as general brightness
 	int16_t slopes;				//!< The amount of slopes recognised during \ref COL_SENS_TCS_SAMPLE_TIME
-	int16_t distance;
-	int16_t dist_next;
+	int16_t distance;			//!< Needed for the distance to an reference value
 } color_sensor_tcs;
 
 /**
@@ -409,20 +418,11 @@ typedef struct vibrator_t {
 	uint16_t duration;					//!< How long to vibrate the shaker in ms ( \ref SHAKER_DURATION )
 } vibrator;
 
-#if 0
-/**
- * \brief Describes the catcher modul (the disc with tubes)
- */
-typedef struct catcher_t {
-	smartie_color position;		//!< How far the catcher is rotated. Maximum is \ref CATCH_MAX_SIZE.
-} catcher;
-#endif
 
 /**
  * \brief Describes the revolver module (the disc)
  */
 typedef struct revolver_t {
-	int8_t position;				//!< How far the revolver is rotated. Maximum is \ref REV_MAX_SIZE.
 	smartie smart[REV_MAX_SIZE];	//!< A list of all smarties the revolver contains.
 } revolver;
 
@@ -432,7 +432,7 @@ typedef struct revolver_t {
  */
 typedef struct smartie_sorter_t {
 	system_state state;					//!< Stores the current state
-	program prog;						//TODO docs
+	program prog;						//!< The programm which is running during \ref SYS_MODE_PAUSE
 	color_sensor_adjd sens_adjd;		//!< Digital color sensor
 	color_sensor_tcs sens_tcs;			//!< Analog color sensor
 	stepper_motor mot_catcher;			//!< Stepper motor for the catcher area
@@ -441,7 +441,6 @@ typedef struct smartie_sorter_t {
 	lightbarrier lb_revolver;			//!< Lightbarrier for the revolver
 	vibrator vibr;						//!< Shaker (or vibrator)
 	rotary_encoder rotenc;				//!< The rotary encoder (user input)
-//	catcher catch;						//!< The catcher disc with tubes
 	revolver rev;						//!< The revolver disc with smarties
 } smartie_sorter;
 

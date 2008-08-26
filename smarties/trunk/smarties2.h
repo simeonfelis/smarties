@@ -15,21 +15,10 @@
 #define SMARTIES2_H_
 
 
-#include <avr/io.h>
-#include "lcd_display.h"	// display driver
-#include "system.h"
-#include "abstraction.h"
-#include "menu.h"
-
-
-
 // Configuration File for Smarties2
 
 #define FALSE	0			//!< Useful boolean values FALSE
 #define TRUE	1			//!< Useful boolean values TRUE
 
-
-// Small helper functions 
-void smartie_lcd_write_color (smartie_color color);
 
 #endif /*SMARTIES2_H_*/

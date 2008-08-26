@@ -6,27 +6,22 @@
  * 
  */
 
-//#define TESTING_RAMPS 	1 /* temporarly only */
-#define DISTANCE_DETECTION			1 /* way of color detection */
-#define DISTANCE_NORM_DETECTION		0
-#define TABLE_REFERENCE_DETECTION 	0
 
 #include "abstraction.h"
-#include "smarties2.h"
-
-#if DISTANCE_DETECTION
-#include <math.h>
-#endif
-
-#if DISTANCE_NORM_DETECTION
-#include <math.h>
-#endif
+#include "system.h"
 
 
 extern smartie_sorter ss;
+
+#if DISTANCE_DETECTION || DISTANCE_NORM_DETECTION
+#include <math.h>
+#endif
+
+#if TABLE_REFERENCE_DETECTION
 extern uint8_t col_tab_blu[col_unknown][2];
 extern uint8_t col_tab_gre[col_unknown][2];
 extern uint8_t col_tab_red[col_unknown][2];
+#endif
 
 #if DISTANCE_DETECTION
 extern float col_ava_blu [col_unknown];
@@ -42,8 +37,8 @@ extern float col_ava_red [col_unknown];
 extern float col_ava_bri [col_unknown];
 #endif
 
-
 void motor_universal_stuff (stepper_motor *this);
+
 
 /**
  * \brief Takes controll over the catcher and revolver stepper engines

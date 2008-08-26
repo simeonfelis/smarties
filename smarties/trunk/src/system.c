@@ -4,31 +4,60 @@
  * \brief Short routines for controlling the whole system and modules
  */
 
-#include "smarties2.h"
+
+//#include "smarties2.h"
 #include "system.h"
+#include "menu.h"
 
 extern smartie_sorter ss;
 extern menu_entry *menu_current;
 
-//TODO: docs
 
+/**
+ * \brief Will set the current menu to the upper menu layer
+ * 
+ * This function is prepared especially for functions started from the 
+ * menu. This function works only if the menu is correct initialized.
+ */
 void sys_enter_topmenu () {
 	menu_current = menu_current->topmenu;
 	ss.prog = prog_none; /* exit any program if we were executing one */
 }
 
+/**
+ * \brief Will set the current menu to to lower menu layer
+ * 
+ * This function is prepared especially for functions started from the 
+ * menu. This function works only if the menu is correct initialized.
+ */
 void sys_enter_submenu () {
 	menu_current = menu_current->submenu;
 	ss.prog = prog_none; /* exit any program if we were executing one */
 }
 
+/**
+ * \brief Diables (power off) the catcher stepper motor
+ * 
+ * This function is prepared especially for functions started from the 
+ * menu. This function works only if the menu is correct initialized.
+ */
 void sys_catcher_disable () {
 	CATCH_DISABLE;
 }
+
+/**
+ * \brief Enables (power on) the catcher stepper motor
+ * 
+ * This function is prepared especially for functions started from the 
+ * menu. This function works only if the menu is correct initialized.
+ */
 void sys_catcher_enable () {
 	CATCH_ENABLE;
 }
 
+/**
+ * \brief Moves the catcher stepper motor for on step
+ */
 void sys_catcher_move_step () {
 	CATCH_MOVE_STEP;
 }
@@ -48,14 +77,28 @@ void sys_catcher_rotate() {
 	catcher_rotate_relative(1);
 }
 
-//TODO
+/**
+ * \brief Gets the correct out index of the next to drop smartie
+ * 
+ * \return The index of smartie in the revolver which will be dropped next
+ */
 uint8_t sys_get_out_pos () {
-	return REV_POS_SMARTIE_OUT - ss.mot_revolver.current_pos;
+	uint8_t ret = ss.mot_revolver.current_pos + REV_POS_SMARTIE_OUT;
+	if (ret >= 12)
+		ret -= REV_MAX_SIZE;
+	return ret;	
 }
 
+/**
+ * \brief Returns status for the catcher lightbarrier
+ *   
+ * This function is prepared especially for functions started from the 
+ * menu. This function works only if the menu is correct initialized.
+ */
 int8_t sys_catcher_is_lb_blocked () {
 	return IS_LB_CATCHER;
 }
+
 
 void sys_revolver_disable () {
 	REV_DISABLE;
@@ -78,10 +121,20 @@ void sys_revolver_rotate() {
 	ss.prog = prog_rotate_revolver;
 	revolver_rotate_relative(1);
 }
+
+/**
+ * \brief Moves the revolver for one step
+ */
 void sys_revolver_move_step () {
 	REV_MOVE_STEP;
 }
 
+/**
+ * \brief Returns the status for the revolver lightbarrier
+ * 
+ * This function is prepared especially for functions started from the 
+ * menu. This function works only if the menu is correct initialized.
+ */ 
 int8_t sys_revolver_is_lb_blocked () {
 	return IS_LB_REVOLVER;
 }
@@ -130,6 +183,8 @@ void sys_measure_tcs () {
 void sys_measure_adjd () {
 }
 
+#if 0
+
 //TODO: deprecated
 /**
  * \brief Waits a time in microseconds
@@ -154,8 +209,12 @@ void sys_wait(uint16_t time) {
 		}while (u_cycles--);
 	} while (time--);
 }
+#endif
 
-//TODO: docs
+
+/**
+ * \brief Initiates the vibrator to start
+ */
 void vibrator_start() {
 }
 
@@ -192,6 +251,7 @@ void catcher_rotate_absolute(smartie_color move_to) {
 		ss.mot_catcher.status_last = stat_finished;
 		return;
 	}
+	
 	if (move_to > ss.mot_catcher.current_pos)
 		move_rel = move_to - ss.mot_catcher.current_pos;
 	if (move_to < ss.mot_catcher.current_pos)
@@ -262,10 +322,14 @@ void revolver_rotate_relative(int8_t rel_pos) {
 	ss.mot_revolver.status = stat_start_working;
 }
 
+#if 0 /* deprecated ? */
 //TODO: docs
 smartie_color make_color_merge(smartie_color color1, smartie_color color2) {
 	return 0; 
 }
+#endif
+
+#if TABLE_REFERENCE_DETECTION
 
 /**
  * \brief Color table reference blue for TCS measures.
@@ -351,7 +415,9 @@ uint8_t col_tab_non [col_unknown][2] = {
 		{46,51}, // Index \ref col_purple
 		{73,81} // Index \ref col_pink		
 };
+#endif 
 
+#if DISTANCE_DETECTION | DISTANCE_NORM_DETECTION
 float col_ava_blu [col_unknown] = {
 		30.00, // Index \ref col_blue
 		 9.00, // Index \ref col_green
@@ -385,7 +451,7 @@ float col_ava_red [col_unknown] = {
 		43.75 // Index \ref col_pink
 };
 
-double col_ava_bri [col_unknown] = {
+float col_ava_bri [col_unknown] = {
 		.0, // Index \ref col_blue
 		.0, // Index \ref col_green
 		.0, // Index \ref col_red
@@ -395,4 +461,4 @@ double col_ava_bri [col_unknown] = {
 		.0, // Index \ref col_purple
 		.0 // Index \ref col_pink
 };
-
+#endif

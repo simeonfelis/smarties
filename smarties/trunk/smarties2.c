@@ -76,7 +76,33 @@
  * 
  * The Menu structure is described in \ref menu.h
  * 
- * For color measurement have a look at \ref col_tab_blu in \ref system.c
+ * The smartie color detection is done by calculating the smallest distance to a next smartie. 
+ * 
+ * For reference measures some values for each channel are recorded to gain a avarage value. They can 
+ * be represented in an 3 Dimensional graph. For color detection the avarage value for each channel 
+ * is used.
+ * 
+ * \image html plots_html.png "Smartie color RGB valus" width=15cm
+ * \image latex plots.png "Smartie color RGB valus" width=\textwidth
+ * 
+ * If a smartie color's red, green and blue cannel are measured the distance to each reference 
+ * smartie is worked out by following formula:
+ * 
+ * \f[
+ * Distance = \sqrt{ ( {blue_{new} - blue_{ava} } )^2 + { (green_{new} - green_{ava} })^2 + { red_{new} - red_{ava} })^2 }
+ * \f]
+ * 
+ * The color tables with avarage values can be found in \ref system.c (\ref col_ava_blu).
+ * 
+ * Only the blue, green and red channel is respected. A survey brought up that the brightness of the 
+ * surrounding has no influence to the color measurent. The most important factor is temperature, 
+ * as the smarties fat comes when they are getting to warm (above 24 Deg C). Then, the smartie's colors 
+ * become brighter.
+ * 
+ * More methods for calculating the correct smartie color are prepared in the code. They can be enabled
+ * by compiler switches. Enabling all methods could possible fill all data memory, as a lot of reference
+ * data is necessary. 
+ * 
  * 
  * The system related IO actions are all defined in \ref system.h There are controlled
  * - moving the revolver
@@ -86,11 +112,14 @@
  * Minor configurations are made in \ref smarties2.h
  */
 
+#include <avr/interrupt.h>
+//#include <avr/io.h>
+#include <stdlib.h>		// math stuff, itoa etc.
 #include "smarties2.h"
 #include "system.h"
 #include "inits.h"
-#include <avr/interrupt.h>
-#include <stdlib.h>
+#include "menu.h"
+#include "lcd_display.h" 	//display lib
 
 #define DEBUG	1
 
@@ -100,10 +129,14 @@ menu_entry *menu_current;
 menu_entry men_initializing;
 menu_entry men_running;
 menu_entry men_lay_greeting[2];
-//menu_entry men_lay_main[3];
+//menu_entry men_lay_main[3]; /* deprecated */
 menu_entry men_lay_main[4];
-//menu_entry men_lay_sub_rotate[3];
-//menu_entry men_lay_sub_color[3];
+//menu_entry men_lay_sub_rotate[3]; /* deprecated */
+//menu_entry men_lay_sub_color[3]; /* deprecated */
+
+
+// Small helper functions 
+void smartie_lcd_write_color (smartie_color color);
 
 
 /**
@@ -125,8 +158,6 @@ int main(void) {
 	int8_t index_temp;
 	smartie_color col_temp;
 
-	//smartie smart[REVOLVER_SIZE];
-	
 	char s[7];
 
 	ss.state.mode = SYS_MODE_INIT;
@@ -240,11 +271,7 @@ int main(void) {
 	ss.state.mode_last = ss.state.mode;
 	ss.state.mode = SYS_MODE_PAUSE;
 
-//	/* update menu, give notice to user */
-//	menu_current = &men_lay_greeting[1];
 	lcd_clrscr();
-//	lcd_gotoxy(0,0); lcd_puts(menu_current->text[0]);
-//	lcd_gotoxy(0,1); lcd_puts(menu_current->text[1]);
 		
 	while (1) /* Main loop */
 	{
@@ -270,8 +297,6 @@ int main(void) {
     				lcd_gotoxy(8,0); smartie_lcd_write_color(ss.sens_tcs.color);
     				lcd_gotoxy(15,0); lcd_puts("dis:  ");
     				lcd_gotoxy(19,0); lcd_puts(itoa(ss.sens_tcs.distance,s,10));
-    				lcd_gotoxy(21,0); lcd_puts("n  ");
-    				lcd_gotoxy(22,0); lcd_puts(itoa(ss.sens_tcs.dist_next,s,10));
     				lcd_gotoxy(0,1); lcd_puts(MEN_TIT_EMPTY);
     				lcd_gotoxy(0,1); lcd_puts("Blu:");
     				if (ss.sens_tcs.filter_freq_blue<10) lcd_puts(" ");
@@ -295,18 +320,19 @@ int main(void) {
 				lcd_puts(itoa(ss.mot_revolver.current_pos, s, 10));    			
     			if ( (ss.mot_revolver.status == stat_idle) && (ss.mot_revolver.status_last != stat_idle ) ) {
     				ss.mot_revolver.status_last = stat_idle;
-//    				lcd_gotoxy(9,1); lcd_puts("Pos:");
-//    				if (ss.mot_revolver.current_pos<10) lcd_puts(" ");
-//    				lcd_puts(itoa(ss.mot_revolver.current_pos, s, 10));
     			}
     		}
     		
     		/* rotate program catcher */
     		if (ss.prog == prog_rotate_catcher) {
+				lcd_gotoxy(0,1); lcd_puts("Now:");
+				smartie_lcd_write_color(ss.mot_catcher.current_pos); 
+				lcd_puts(itoa(ss.mot_catcher.current_pos, s, 10)); lcd_puts(";");
+				lcd_puts("Next:"); 
+				smartie_lcd_write_color(ss.mot_catcher.target_pos);
+				lcd_puts(itoa(ss.mot_catcher.target_pos,s,10)); 
     			if ( (ss.mot_catcher.status == stat_idle) && (ss.mot_catcher.status_last != stat_idle) ) {
     				ss.mot_catcher.status_last = stat_idle;
-    				lcd_gotoxy(9,1); lcd_puts("Pos:");
-    				lcd_puts(itoa(ss.mot_catcher.current_pos, s, 10));
     			}
     		}
     		break; /* SYS_MODE_PAUSE */
@@ -343,7 +369,8 @@ int main(void) {
 					lcd_gotoxy(9,0); lcd_puts("O:");
 					temp = sys_get_out_pos();
 					smartie_lcd_write_color( ss.rev.smart[temp].color );
-#else
+#endif
+#if !DEBUG
 					lcd_gotoxy(8,1); smartie_lcd_write_color(ss.sens_tcs.color);
 #endif 
 				}
@@ -372,13 +399,7 @@ int main(void) {
 				if (ss.mot_revolver.current_pos < 9) lcd_puts(" ");
 #endif
 				ss.state.step.II = stat_working;
-				/* Move the catcher to the right position. Therefore, */
-				/* we need the color from the smartie which will be above the hole */
-				/* Therefore, we need the correct index (use your brain!): */
-//				if ( ss.mot_revolver.current_pos <= REV_POS_SMARTIE_OUT )
-					index_temp = sys_get_out_pos(); 
-//				else
-//					index_temp =  11;
+				index_temp = sys_get_out_pos(); 
 				col_temp = ss.rev.smart[index_temp].color;
 				catcher_rotate_absolute(col_temp);
 
@@ -475,11 +496,13 @@ int main(void) {
 		default:
 			break;
     	} /* switch (ss.mode.state) */
-    		
+
+    	/* Poll for user inputs */
 		if (ss.rotenc.push) {
 			ss.rotenc.push = 0;
-			menu_action = (*menu_current).function;
-    		menu_action();
+//			menu_action = (*menu_current).function;
+//    		menu_action();
+			(*menu_current).function();
 			lcd_gotoxy(0,0); lcd_puts(menu_current->text[0]);
 			lcd_gotoxy(0,1); lcd_puts(menu_current->text[1]);    			
 		}
@@ -499,6 +522,9 @@ int main(void) {
 	return 0;
 }
 
+/**
+ * \brief Writes the color to the current postion of the display. 
+ */
 void smartie_lcd_write_color (smartie_color color) {
 	switch (color) {
 	case col_yellow:

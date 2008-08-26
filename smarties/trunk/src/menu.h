@@ -46,51 +46,23 @@
  * \endcode
  * 
  * MAIN menu:
- * \code
- *   right     +--------------+    right     +--------------+   right     +--------------+   right
- * <---------> |    ROTATE    | <----------> |    COLORS    | <---------> |    Go Back   | <------->
- *   left      |<p          n>|    left      |<p          n>|   left      |<p          n>|   left
- *             +--------------+              +--------------+             +--------------+
- *               |                             |                            |
- *               |enter_submenu()              |enter_submenu()             |enter_topmenu()
- * \endcode
+\code
+  r   +--------------+   r   +--------------+   r   +--------------+   r   +--------------+   r
+<---> | ROTATE REV   | <---> | ROTATE CATCH | <---> | TCS colors   | <---> |   Go Back    | <--->
+  l   |<p          n>|   l   |<p          n>|   l   |<p          n>|   l   |<p          n>|
+      +--------------+       +--------------+       +--------------+       +--------------+
+      |                       |                       |                      |
+      |sys_rotate_revolver()  |sys_rotate_catcher()   |sys_tcs_colors()      |enter_topmenu()
+\endcode
  * 
- * ROTATE Submenu
- * \code
- *   right     +--------------+   right      +--------------+   right     +--------------+   right
- * <---------> |   REVOLVER   | <----------> |    CATCHER   | <---------> |    Go Back   | <--------->
- *   left      |<p          n>|   left       |<p          n>|   left      |<p          n>|   left
- *             +--------------+              +--------------+             +--------------+
- *               |                             |                            |
- *               |rotate_revoler()             |rotate_catcher()            |enter_topmenu()
- * \endcode
- * 
- * COLOR submenu
- * \code
- *   right     +--------------+   right      +--------------+   right     +--------------+   right
- * <---------> |  TCS colors  | <----------> | ADJD colors  | <---------> |    Go Back   | <--------->
- *   left      |<p          n>|   left       |<p          n>|   left      |<p          n>|   left
- *             +--------------+              +--------------+             +--------------+
- *               |                             |                            |
- *               |????????????????             |????????????????            |enter_topmenu()
- * \endcode
- * 
- * Each menu layer has its own array:
+ * Each menu layer has its own array. Example:
  * 
  * MAIN menu
  * \code
- * +--------------+  +--------------+ 
- * |      [0]     |  |      [1]     | 
- * |              |  |              | 
- * +--------------+  +--------------+
- * \endcode
- * 
- * ROTATE menu
- * \code
- * +--------------+  +--------------+  +--------------+
- * |      [0]     |  |      [1]     |  |      [2]     |
- * |              |  |              |  |              |
- * +--------------+  +--------------+  +--------------+
++--------------+  +--------------+  +--------------+ +--------------+
+|      [0]     |  |      [1]     |  |      [2]     | |      [3]     |
+|              |  |              |  |              | |              |
++--------------+  +--------------+  +--------------+ +--------------+
  * \endcode
  * 
  * And so on.
@@ -174,7 +146,8 @@
  * Each menu entry stores a menu entry which is next (right) or previous (left) from itself. It 
  * also stores menu entries below (submenu) or menu entries above (topmenu) itself. Furthermore, 
  * each menu entry has a specific task wich is stored behind the function pointer. The 'task' 
- * is, for example, changing into the topmenu (go Back), or rotate the catcher. 
+ * is, for example, changing into the topmenu (go Back), or rotate the catcher. The menu must 
+ * be initialized, the memory must be reserved before the whole stucture can be used. 
  */
 typedef struct menu_entry_t {
 	void (*function)(void);		//!< If push button pressed, this function will be executed (if available)
@@ -184,13 +157,6 @@ typedef struct menu_entry_t {
 	void * prev;			//!< Previous Menu item
 	void * next;			//!< Next menu item
 } menu_entry;
-
-/**
- * \brief Needed to assign the menu_entry's function pointer to a normally 
- * declerated function. This is necessary to execute this function. Functions
- * are set in \ref init_menu()
- */
-void (*menu_action)(void);
 
 /**
  * \brief Will set the current menu to the uppleraying menu (stored in topmenu)
@@ -203,7 +169,5 @@ void menu_enter_topmenu();
  */
 void menu_enter_submenu();
 
-void menu_enter_nextmenu ();
-void menu_enter_prevmenu ();
 
 #endif /*MENU_H_*/

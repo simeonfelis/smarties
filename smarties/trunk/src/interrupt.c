@@ -1,12 +1,13 @@
-#include "smarties2.h"
-#include "avr/interrupt.h"
-
 /**
  * @file interrupt.c 
  * 
  * Alle necessary interrupt routines. Please check the source code of
  * this file for more documentation.
  */
+
+#include <avr/interrupt.h>
+#include "abstraction.h"
+#include "system.h"
 
 extern smartie_sorter ss;
 
