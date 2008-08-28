@@ -5,7 +5,7 @@
  */
 
 
-//#include "smarties2.h"
+#include <avr/eeprom.h>
 #include "system.h"
 #include "menu.h"
 
@@ -154,6 +154,33 @@ void sys_pause()
 	ss.state.mode = SYS_MODE_PAUSE;
 }
 
+//TODO: docs
+void sys_reference_measure_blue () {
+	ss.prog = prog_set_colors_blue;
+}
+
+void sys_reference_measure_green() {
+	
+}
+void sys_reference_measure_red() {
+	
+}
+void sys_reference_measure_yellow() {
+	
+}
+void sys_reference_measure_orange() {
+	
+}
+void sys_reference_measure_brown() {
+	
+}
+void sys_reference_measure_pink() {
+	
+}
+void sys_reference_measure_purple() {
+	
+}
+
 /**
  * \brief Leave the pause mode
  * 
@@ -167,6 +194,28 @@ void sys_resume()
 		return;
 	ss.state.mode_last = ss.state.mode;
 	ss.state.mode = SYS_MODE_RUNNING;
+}
+
+//TODO docs
+
+void sys_set_speed () {
+	ss.mot_catcher.pause_duration = ss.speed;
+	ss.mot_revolver.pause_duration = ss.speed;
+	ss.vibr.duration = ss.speed + (ss.speed >> 1); /* Set to 1.5 of ss.speed (binary division by two) */
+}
+
+void sys_speed_up () {
+	ss.prog = prog_set_speed;
+	if (ss.speed < 5000)
+		ss.speed += 100;
+	sys_set_speed ();
+}
+
+void sys_speed_down () {
+	ss.prog = prog_set_speed;
+	if (ss.speed > 100)
+		ss.speed -= 100;
+	sys_set_speed();
 }
 
 /**
@@ -216,6 +265,7 @@ void sys_wait(uint16_t time) {
  * \brief Initiates the vibrator to start
  */
 void vibrator_start() {
+	ss.vibr.status = stat_start_working;
 }
 
 /**
@@ -246,15 +296,17 @@ void catcher_rotate_absolute(smartie_color move_to) {
 		ss.mot_catcher.status_last = stat_finished;
 		return;
 	}
+#if 0	/* now catcher which can handle unrecognized colors */
 	if (move_to == col_unknown) { /* Treat as empty */
 		/* Pretend we have done something */
 		ss.mot_catcher.status_last = stat_finished;
 		return;
 	}
+#endif
 	
 	if (move_to > ss.mot_catcher.current_pos)
 		move_rel = move_to - ss.mot_catcher.current_pos;
-	if (move_to < ss.mot_catcher.current_pos)
+	if (move_to <= ss.mot_catcher.current_pos)
 		move_rel = CATCH_MAX_SIZE - ss.mot_catcher.current_pos + move_to;
 	
 	catcher_rotate_relative(move_rel);
@@ -316,8 +368,6 @@ void revolver_rotate_relative(int8_t rel_pos) {
 		ss.mot_revolver.target_pos = ss.mot_revolver.current_pos - REV_MAX_SIZE + rel_pos;
 	else 
 		ss.mot_revolver.target_pos = ss.mot_revolver.current_pos + rel_pos;
-	
-//	ss.mot_revolver.lb->passes = 0;
 	
 	ss.mot_revolver.status = stat_start_working;
 }
@@ -418,47 +468,9 @@ uint8_t col_tab_non [col_unknown][2] = {
 #endif 
 
 #if DISTANCE_DETECTION | DISTANCE_NORM_DETECTION
-float col_ava_blu [col_unknown] = {
-		30.00, // Index \ref col_blue
-		 9.00, // Index \ref col_green
-		 6.17, // Index \ref col_red
-		 9.83, // Index \ref col_yellow
-		 6.50, // Index \ref col_orange
-		 6.33, // Index \ref col_brown
-		11.50, // Index \ref col_purple
-		14.25 // Index \ref col_pink
-};
 
-float col_ava_gre [col_unknown] = {
-		25.67, // Index \ref col_blue
-		19.83, // Index \ref col_green
-		 9.83, // Index \ref col_red
-		32.83, // Index \ref col_yellow
-		14.67, // Index \ref col_orange
-		 8.33, // Index \ref col_brown
-		10.63, // Index \ref col_purple
-		14.25 // Index \ref col_pink
-};
+color_avarage col_ava_blu;
+color_avarage col_ava_gre;
+color_avarage col_ava_red;
 
-float col_ava_red [col_unknown] = {
-		31.00, // Index \ref col_blue
-		19.17, // Index \ref col_green
-		39.67, // Index \ref col_red
-		44.33, // Index \ref col_yellow
-		44.17, // Index \ref col_orange
-		18.67, // Index \ref col_brown
-		23.25, // Index \ref col_purple
-		43.75 // Index \ref col_pink
-};
-
-float col_ava_bri [col_unknown] = {
-		.0, // Index \ref col_blue
-		.0, // Index \ref col_green
-		.0, // Index \ref col_red
-		.0, // Index \ref col_yellow
-		.0, // Index \ref col_orange
-		.0, // Index \ref col_brown
-		.0, // Index \ref col_purple
-		.0 // Index \ref col_pink
-};
 #endif

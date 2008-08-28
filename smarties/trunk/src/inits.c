@@ -12,16 +12,24 @@
 #include "inits.h"
 #include "system.h"
 #include "menu.h"
+#include "ee.h"
+
+#if DISTANCE_DETECTION | DISTANCE_NORM_DETECTION
+
+extern float col_ava_blu [col_unknown];
+extern float col_ava_gre [col_unknown];
+extern float col_ava_red [col_unknown];
+
+#endif
 
 extern smartie_sorter ss;
 extern menu_entry *menu_current;
 
-void init_adc()
-{	
-}
+
 
 void init_all() {
-	uint8_t x;
+	
+	init_memory ();
 	
 	init_io();
 	lcd_init(LCD_DISP_ON);
@@ -29,15 +37,11 @@ void init_all() {
 		lcd_clrscr();
 		lcd_puts(menu_current->text[0]);
 	init_timer();
-	init_interrupts();
+//	init_interrupts();
 	//i2c_init();
 	//	ss.col_sens_ADJD.ret = i2c_start(COL_SENS_ADJD_DEVICE_ADDRESS + I2C_WRITE);
 	init_sensor_tcs();
-	init_motors();
-	
-	/* init memory */
-	for (x=0; x<REV_MAX_SIZE; x++)
-		ss.rev.smart[x].color = col_unknown;
+	init_motors();	
 }
 
 void init_io()
@@ -70,7 +74,7 @@ void init_io()
 
 	COL_SENS_TCS_IN_DDR &= ~(1<<COL_SENS_TCS_IN_ICP);
 	
-	/* interrupt on falling edge */
+	/* interrupt on falling edge for TCS frequency measurement */
 	MCUCR &= ~((1<<ISC00) | (1<<ISC01));
 	MCUCR |= (1<<ISC01);
 	
@@ -89,6 +93,9 @@ void init_io()
 	
 	/* lightbarrier */
 	LB_DDR &= ~((1<<LB_BIT_CATCH) | (1<<LB_BIT_REV));
+	
+	/* Vibrator */
+	VIBR_DDR |= (1<<VIBR_BIT);
 }
 
 void init_interrupts() {
@@ -108,8 +115,7 @@ void init_sensor_tcs() {
  * T_{Compare Match} = (F_{CPU})^{-1} \cdot Prescaler \cdot (Register_{OutputCompare}) 
  * \f]
  */
-void init_timer()
-{
+void init_timer() {
 	/* Output compare register */
 	OCR0 = 250;
 	
@@ -123,6 +129,24 @@ void init_timer()
 
 	/* enable compare match interrupt */
 	TIMSK |= (1<<OCIE0);
+	
+}
+
+void init_memory () {
+	uint8_t x;
+	
+	/* init revolver */
+	for (x=0; x<REV_MAX_SIZE; x++)
+		ss.rev.smart[x].color = col_unknown;
+	
+	ss.speed = 750; /* default speed */
+
+#if DISTANCE_DETECTION | DISTANCE_NORM_DETECTION
+	eeprom_read_block (col_ava_blu, ee_mem.usr_blu, sizeof(color_avarage));
+	eeprom_read_block (col_ava_gre, ee_mem.usr_gre, sizeof(color_avarage));
+	eeprom_read_block (col_ava_red, ee_mem.usr_red, sizeof(color_avarage));
+#endif
+	
 	
 }
 
@@ -147,7 +171,8 @@ void init_motors() {
 	ss.mot_catcher.steps_estimated = CATCH_STEPS_ESTIMATED;
 	ss.mot_catcher.steps_estim_def = CATCH_STEPS_ESTIMATED;
 	ss.mot_catcher.ramp_duration = CATCH_RAMP_DURATION;
-	ss.mot_catcher.pause_duration = CATCH_PAUSE_DURATION;
+//	ss.mot_catcher.pause_duration = CATCH_PAUSE_DURATION;
+	ss.mot_catcher.pause_duration = ss.speed;
 
 	
 	CATCH_SET_CW;
@@ -176,7 +201,8 @@ void init_motors() {
 	ss.mot_revolver.steps_estimated = REV_STEPS_ESTIMATED;
 	ss.mot_revolver.steps_estim_def = REV_STEPS_ESTIMATED;
 	ss.mot_revolver.ramp_duration = REV_RAMP_DURATION;
-	ss.mot_revolver.pause_duration = REV_PAUSE_DURATION;
+//	ss.mot_revolver.pause_duration = REV_PAUSE_DURATION;
+	ss.mot_revolver.pause_duration = ss.speed;
 		
 	REV_SET_CCW;
 	REV_ENABLE;
@@ -194,16 +220,14 @@ void init_motors() {
  * The menu structure and functionality is explained in \ref menu.h in 
  * detailed.
  */
-void init_menu()
-{
+void init_menu() {
 	extern menu_entry *menu_current;
 	extern menu_entry men_initializing;
 	extern menu_entry men_running;
 	extern menu_entry men_lay_greeting[2];
-//	extern menu_entry men_lay_main[3];
-	extern menu_entry men_lay_main[4];
-//	extern menu_entry men_lay_sub_rotate[3];
-//	extern menu_entry men_lay_sub_color[3];
+	extern menu_entry men_lay_main[MEN_LAY_MAIN_SIZE];
+	extern menu_entry men_lay_speed;
+	extern menu_entry men_lay_reference [col_unknown + 1];
 	
 	men_initializing.text[0] = MEN_TIT_INITIALIZING;
 	
@@ -226,77 +250,108 @@ void init_menu()
 	men_lay_greeting[1].prev = &men_lay_greeting[0];
 	men_lay_greeting[1].function = sys_resume;
 	
-//	men_lay_main[0].text[0] = MEN_TIT_MAIN_ROTATE;
 	men_lay_main[0].text[0] = MEN_TIT_ROT_REV;
 	men_lay_main[0].text[1] = MEN_SUBTIT_PAUSE;
 	men_lay_main[0].next = &men_lay_main[1];
-	men_lay_main[0].prev = &men_lay_main[2];
-//	men_lay_main[0].submenu = &men_lay_sub_rotate[0];
-//	men_lay_main[0].function = sys_enter_submenu;
+	men_lay_main[0].prev = &men_lay_main[3];
 	men_lay_main[0].function = sys_revolver_rotate;
 	
-//	men_lay_main[1].text[0] = MEN_TIT_MAIN_COLOR;
 	men_lay_main[1].text[0] = MEN_TIT_ROT_CATCH;
 	men_lay_main[1].text[1] = MEN_SUBTIT_PAUSE;
 	men_lay_main[1].next = &men_lay_main[2];
 	men_lay_main[1].prev = &men_lay_main[0];
-//	men_lay_main[1].submenu = &men_lay_sub_color[0];
 	men_lay_main[1].function = sys_catcher_rotate;
 	
-//	men_lay_main[2].text[0] = MEN_TIT_BACK;
 	men_lay_main[2].text[0] = MEN_TIT_SUB_TCS;
 	men_lay_main[2].text[1] = MEN_SUBTIT_PAUSE;
-//	men_lay_main[2].next = &men_lay_main[0];
-	men_lay_main[2].next = &men_lay_main[2];
+	men_lay_main[2].next = &men_lay_main[3];
 	men_lay_main[2].prev = &men_lay_main[1];
-//	men_lay_main[2].topmenu = &men_lay_greeting[0];
-//	men_lay_main[2].function = sys_enter_topmenu;
 	men_lay_main[2].function = sys_measure_tcs;
 	
-	men_lay_main[3].text[0] = MEN_TIT_BACK;
+	men_lay_main[3].text[0] = MEN_TIT_SPEED;
 	men_lay_main[3].text[1] = MEN_SUBTIT_PAUSE;
-	men_lay_main[3].next = &men_lay_main[0];
+	men_lay_main[3].next = &men_lay_main[4];
 	men_lay_main[3].prev = &men_lay_main[2];
-	men_lay_main[3].topmenu = &men_lay_greeting[0];
-	men_lay_main[3].function = sys_enter_topmenu;
+	men_lay_main[3].submenu = &men_lay_speed;
+	men_lay_main[3].function = sys_enter_submenu;
 	
-//	men_lay_sub_rotate[0].text[0] = MEN_TIT_SUB_ROT_REV;
-//	men_lay_sub_rotate[0].text[1] = MEN_SUBTIT_PAUSE;
-//	men_lay_sub_rotate[0].next = &men_lay_sub_rotate[1];
-//	men_lay_sub_rotate[0].prev = &men_lay_sub_rotate[2];
-//	men_lay_sub_rotate[0].function = sys_revolver_rotate;
+	men_lay_main[4].text[0] = MEN_TIT_REFERENCE;
+	men_lay_main[4].text[1] = MEN_SUBTIT_PAUSE;
+	men_lay_main[4].next = &men_lay_main[5];
+	men_lay_main[4].prev = &men_lay_main[3];
+	men_lay_main[4].submenu = &men_lay_reference[0];
+	men_lay_main[4].function = sys_enter_submenu;
 	
-//	men_lay_sub_rotate[1].text[0] = MEN_TIT_SUB_ROT_CATCH;
-//	men_lay_sub_rotate[1].text[1] = MEN_SUBTIT_PAUSE;
-//	men_lay_sub_rotate[1].next = &men_lay_sub_rotate[2];
-//	men_lay_sub_rotate[1].prev = &men_lay_sub_rotate[0];
-//	men_lay_sub_rotate[1].function = sys_catcher_rotate;
+	men_lay_main[5].text[0] = MEN_TIT_BACK;
+	men_lay_main[5].text[1] = MEN_SUBTIT_PAUSE;
+	men_lay_main[5].next = &men_lay_main[0];
+	men_lay_main[5].prev = &men_lay_main[4];
+	men_lay_main[5].topmenu = &men_lay_greeting[0];
+	men_lay_main[5].function = sys_enter_topmenu;
 	
-//	men_lay_sub_rotate[2].text[0] = MEN_TIT_BACK;
-//	men_lay_sub_rotate[2].text[1] = MEN_SUBTIT_PAUSE;
-//	men_lay_sub_rotate[2].next = &men_lay_sub_rotate[0];
-//	men_lay_sub_rotate[2].prev = &men_lay_sub_rotate[1];
-//	men_lay_sub_rotate[2].topmenu = &men_lay_main[0];
-//	men_lay_sub_rotate[2].function = sys_enter_topmenu;
+	men_lay_speed.text[0] = MEN_TIT_SPEED;
+	men_lay_speed.text[1] = MEN_TIT_EMPTY;
+	men_lay_speed.r_action = sys_speed_up;
+	men_lay_speed.l_action = sys_speed_down;
+	men_lay_speed.topmenu = &men_lay_main[3];
+	men_lay_speed.function = sys_enter_topmenu;
 	
-//	men_lay_sub_color[0].text[0] = MEN_TIT_SUB_TCS;
-//	men_lay_sub_color[0].text[1] = MEN_SUBTIT_COLOR;
-//	men_lay_sub_color[0].next = &men_lay_sub_color[1];
-//	men_lay_sub_color[0].prev = &men_lay_sub_color[2];
-//	men_lay_sub_color[0].function = sys_measure_tcs;
+	men_lay_reference[0].text[0] = MEN_TIT_SUB_R_BLUE;
+	men_lay_reference[0].text[1] = MEN_SUBTIT_REFERENCE;
+	men_lay_reference[0].next = &men_lay_reference[1];
+	men_lay_reference[0].prev = &men_lay_reference[col_unknown];
+	men_lay_reference[0].function = sys_reference_measure_blue;
 	
-//	men_lay_sub_color[1].text[0] = MEN_TIT_SUB_ADJD;
-//	men_lay_sub_color[1].text[1] = MEN_SUBTIT_COLOR;
-//	men_lay_sub_color[1].next = &men_lay_sub_color[2];
-//	men_lay_sub_color[1].prev = &men_lay_sub_color[0];
-//	men_lay_sub_color[1].function = sys_measure_adjd;
+	men_lay_reference[1].text[0] = MEN_TIT_SUB_R_GREEN;
+	men_lay_reference[1].text[1] = MEN_SUBTIT_REFERENCE;
+	men_lay_reference[1].next = &men_lay_reference[2];
+	men_lay_reference[1].prev = &men_lay_reference[0];
+	men_lay_reference[1].function = sys_reference_measure_green;
+
+	men_lay_reference[2].text[0] = MEN_TIT_SUB_R_RED;
+	men_lay_reference[2].text[1] = MEN_SUBTIT_REFERENCE;
+	men_lay_reference[2].next = &men_lay_reference[3];
+	men_lay_reference[2].prev = &men_lay_reference[1];
+	men_lay_reference[2].function = sys_reference_measure_red;
+
+	men_lay_reference[3].text[0] = MEN_TIT_SUB_R_YELLOW;
+	men_lay_reference[3].text[1] = MEN_SUBTIT_REFERENCE;
+	men_lay_reference[3].next = &men_lay_reference[4];
+	men_lay_reference[3].prev = &men_lay_reference[2];
+	men_lay_reference[3].function = sys_reference_measure_yellow;
+
+	men_lay_reference[4].text[0] = MEN_TIT_SUB_R_ORANGE;
+	men_lay_reference[4].text[1] = MEN_SUBTIT_REFERENCE;
+	men_lay_reference[4].next = &men_lay_reference[5];
+	men_lay_reference[4].prev = &men_lay_reference[3];
+	men_lay_reference[4].function = sys_reference_measure_orange;
+
+	men_lay_reference[5].text[0] = MEN_TIT_SUB_R_BROWN;
+	men_lay_reference[5].text[1] = MEN_SUBTIT_REFERENCE;
+	men_lay_reference[5].next = &men_lay_reference[6];
+	men_lay_reference[5].prev = &men_lay_reference[4];
+	men_lay_reference[5].function = sys_reference_measure_brown;
+
+	men_lay_reference[6].text[0] = MEN_TIT_SUB_R_PURPLE;
+	men_lay_reference[6].text[1] = MEN_SUBTIT_REFERENCE;
+	men_lay_reference[6].next = &men_lay_reference[7];
+	men_lay_reference[6].prev = &men_lay_reference[5];
+	men_lay_reference[6].function = sys_reference_measure_purple;
 	
-//	men_lay_sub_color[2].text[0] = MEN_TIT_BACK;
-//	men_lay_sub_color[2].text[1] = MEN_SUBTIT_PAUSE;
-//	men_lay_sub_color[2].next = &men_lay_sub_color[0];
-//	men_lay_sub_color[2].prev = &men_lay_sub_color[1];
-//	men_lay_sub_color[2].topmenu = &men_lay_main[0];
-//	men_lay_sub_color[2].function = sys_enter_topmenu;
+	men_lay_reference[7].text[0] = MEN_TIT_SUB_R_PINK;
+	men_lay_reference[7].text[1] = MEN_SUBTIT_REFERENCE;
+	men_lay_reference[7].next = &men_lay_reference[8];
+	men_lay_reference[7].prev = &men_lay_reference[6];
+	men_lay_reference[7].function = sys_reference_measure_pink;
+	
+	men_lay_reference[8].text[0] = MEN_TIT_BACK;
+	men_lay_reference[8].text[1] = MEN_SUBTIT_PAUSE;
+	men_lay_reference[8].next = &men_lay_reference[0];
+	men_lay_reference[8].prev = &men_lay_reference[7];
+	men_lay_reference[8].topmenu = &men_lay_main[0];
+	men_lay_reference[8].function = sys_enter_topmenu;
+
+
 
 	menu_current = &men_initializing;
 }

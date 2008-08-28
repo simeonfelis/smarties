@@ -113,7 +113,7 @@
  */
 
 #include <avr/interrupt.h>
-//#include <avr/io.h>
+#include <avr/eeprom.h>
 #include <stdlib.h>		// math stuff, itoa etc.
 #include "smarties2.h"
 #include "system.h"
@@ -129,11 +129,17 @@ menu_entry *menu_current;
 menu_entry men_initializing;
 menu_entry men_running;
 menu_entry men_lay_greeting[2];
-//menu_entry men_lay_main[3]; /* deprecated */
-menu_entry men_lay_main[4];
-//menu_entry men_lay_sub_rotate[3]; /* deprecated */
-//menu_entry men_lay_sub_color[3]; /* deprecated */
+menu_entry men_lay_main[MEN_LAY_MAIN_SIZE];
+menu_entry men_lay_speed;
+menu_entry men_lay_reference [col_unknown + 1];
 
+#if DISTANCE_DETECTION | DISTANCE_NORM_DETECTION
+
+extern color_avarage col_ava_blu;
+extern color_avarage col_ava_gre;
+extern color_avarage col_ava_red;
+
+#endif
 
 // Small helper functions 
 void smartie_lcd_write_color (smartie_color color);
@@ -153,13 +159,17 @@ void smartie_lcd_write_color (smartie_color color);
   * 
   */
 int main(void) {
-	uint8_t temp = 1;
+	uint8_t temp = 1; // during init loop and other small loops
+	uint8_t sm_count; // for color reference measure 
+	float sm_ref_measure_blu; // for color reference measure
+	float sm_ref_measure_gre; // for color reference measure
+	float sm_ref_measure_red; // for color reference measure
 	
 	int8_t index_temp;
 	smartie_color col_temp;
 
 	char s[7];
-
+	
 	ss.state.mode = SYS_MODE_INIT;
 	ss.state.mode_last = SYS_MODE_INIT;
 
@@ -286,6 +296,8 @@ int main(void) {
         			menu_current = &men_lay_greeting[1];    				
     			lcd_gotoxy(0,0); lcd_puts(menu_current->text[0]);
     			lcd_gotoxy(0,1); lcd_puts(menu_current->text[1]);
+/* test lcd write */    			
+    			lcd_gotoxy(0,0); lcd_puts(itoa(sizeof(color_avarage),s,10));
     			ss.state.mode_last = SYS_MODE_PAUSE;
     			ss.sens_tcs.status_last = stat_idle;
     		}
@@ -335,6 +347,54 @@ int main(void) {
     				ss.mot_catcher.status_last = stat_idle;
     			}
     		}
+    		/* Speed setting program */
+    		if (ss.prog == prog_set_speed) {
+    			lcd_gotoxy(7,1); lcd_puts("Now:");
+    			lcd_puts(itoa(ss.speed,s,10));
+    			if (ss.speed < 10)
+    				lcd_puts("   ");
+    			else if (ss.speed < 100)
+    				lcd_puts("  ");
+    			else if (ss.speed < 1000)
+    				lcd_puts("   ");
+    		}
+    		
+    		/* Color setting program */
+    		if (ss.prog == prog_set_colors_blue) {
+    			sm_ref_measure_blu = 0; sm_ref_measure_gre = 0; sm_ref_measure_red = 0;
+    			lcd_gotoxy(0,1); lcd_puts(MEN_TIT_EMPTY);
+    			lcd_gotoxy(0,1); lcd_puts("   left");
+    			for (sm_count=0; sm_count<10; sm_count++) { /* capture 10 smarties values for each channel */
+//    				lcd_gotoxy(0,1); lcd_puts(itoa((10-sm_count),s,10)); lcd_puts(" "); 
+    				revolver_rotate_relative(1);
+    					temp = 1;
+    					while (temp) { /* wait for revolver */
+    						if ( (ss.mot_revolver.status == stat_idle) && (ss.mot_revolver.status_last != stat_idle) ) { 
+    							ss.mot_revolver.status_last = stat_idle;
+    							temp = 0;
+    						}
+    					}
+    				sensor_tcs_get_color();
+    					temp = 1;
+						while (temp) {	/* wait for color sensor */
+							if ( (ss.sens_tcs.status == stat_idle) && (ss.sens_tcs.status_last != stat_idle) ) { 
+								ss.sens_tcs.status_last = stat_idle;
+								temp = 0;
+							}
+						}
+					/* add all channel values up */
+    				sm_ref_measure_blu += ss.sens_tcs.filter_freq_blue;
+    				sm_ref_measure_gre += ss.sens_tcs.filter_freq_green;
+    				sm_ref_measure_red += ss.sens_tcs.filter_freq_red;
+    			}
+    			/* calculate the avarage value for each channel out of the 10 values */
+    			col_ava_blu[col_blue] = sm_ref_measure_blu / 10.0;
+    			col_ava_gre[col_blue] = sm_ref_measure_gre / 10.0;
+    			col_ava_red[col_blue] = sm_ref_measure_red / 10.0;
+    			/* all done */
+    			ss.prog = prog_none;
+    		}
+    		
     		break; /* SYS_MODE_PAUSE */
 
 /******************************* SYS_MODE_RUNNING *******************************************/
@@ -500,21 +560,26 @@ int main(void) {
     	/* Poll for user inputs */
 		if (ss.rotenc.push) {
 			ss.rotenc.push = 0;
-//			menu_action = (*menu_current).function;
-//    		menu_action();
 			(*menu_current).function();
 			lcd_gotoxy(0,0); lcd_puts(menu_current->text[0]);
 			lcd_gotoxy(0,1); lcd_puts(menu_current->text[1]);    			
 		}
 		if (ss.rotenc.left) {
 			ss.rotenc.left = 0;
-			menu_current = menu_current->prev;
+			if (menu_current->prev != NULL)
+				menu_current = menu_current->prev;
+			if (menu_current->l_action != NULL)
+				menu_current->l_action();
+			
 			lcd_gotoxy(0,0); lcd_puts(menu_current->text[0]);
 			lcd_gotoxy(0,1); lcd_puts(menu_current->text[1]);    			
 		}
 		if (ss.rotenc.right) {
 			ss.rotenc.right = 0;
-			menu_current = menu_current->next;
+			if (menu_current->next != NULL)
+				menu_current = menu_current->next;
+			if (menu_current->r_action != NULL)
+				menu_current->r_action();
 			lcd_gotoxy(0,0); lcd_puts(menu_current->text[0]);
 			lcd_gotoxy(0,1); lcd_puts(menu_current->text[1]);    			
 		}

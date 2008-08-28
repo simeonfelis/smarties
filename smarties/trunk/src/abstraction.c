@@ -443,8 +443,9 @@ void sensor_tcs_stuff() {
 void vibrator_stuff () {
 	if (ss.vibr.status == stat_start_working) {
 		if (ss.vibr.status_last != stat_start_working) {
-			ss.vibr.status_last = stat_working;
-			ss.vibr.duration = VIBR_DURATION; 		//500 ms
+			ss.vibr.status_last = stat_start_working; 
+			ss.vibr.status = stat_working;
+			ss.vibr.duration = VIBR_DURATION;
 			VIBR_ON;
 		}
 	}

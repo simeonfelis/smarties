@@ -117,11 +117,23 @@
 #define MEN_TIT_ROT_CATCH		"    Rotate Catcher      "
 #define MEN_TIT_SUB_ROT_REV 	"        REVOLVER        "
 #define MEN_TIT_SUB_ROT_CATCH	"        CATCHER         "
-
+  
+#define MEN_TIT_SPEED			"         SPEED          "
 #define MEN_TIT_MAIN_COLOR		"         COLOR          "
 #define MEN_TIT_SUB_TCS			"TCS col:                "
 #define MEN_TIT_SUB_ADJD		"      ADJD colors       "
-#define MEN_SUBTIT_COLOR		"Push:new measur Rot:next"  
+#define MEN_SUBTIT_COLOR		"Push:new measur Rot:next"
+
+#define MEN_TIT_REFERENCE		"  REFERENCE MEASUREMENT "
+#define MEN_TIT_SUB_R_BLUE		"<Measure Blue  Smarties>"
+#define MEN_TIT_SUB_R_GREEN		"<Measure Green Smarties>"
+#define MEN_TIT_SUB_R_RED		"<Measure Red   Smarties>"
+#define MEN_TIT_SUB_R_YELLOW	"<Measure Yello Smarties>"
+#define MEN_TIT_SUB_R_ORANGE	"<Measure Orang Smarties>"
+#define MEN_TIT_SUB_R_BROWN		"<Measure Brown Smarties>"
+#define MEN_TIT_SUB_R_PINK		"<Measure Pink  Smarties>"
+#define MEN_TIT_SUB_R_PURPLE	"<Measure Purpl Smarties>"
+#define MEN_SUBTIT_REFERENCE	"10 please,press to start"
 
 #define MEN_MODE_EMPTY			"       "
 #define MEN_MODE_RUNNING		"RUNNING"
@@ -139,6 +151,8 @@
 #define MEN_COL_PINK			"  PINK"
 #define MEN_COL_UNKNOWN			"UNKNOW"
 
+#define MEN_LAY_MAIN_SIZE		6
+
 
 /**
  * \brief The menu structure  
@@ -151,6 +165,8 @@
  */
 typedef struct menu_entry_t {
 	void (*function)(void);		//!< If push button pressed, this function will be executed (if available)
+	void (*l_action)(void);		//TODO
+	void (*r_action)(void);
 	char * text[2];			//!< Text on Display (Max 24 Characters, 2 lines)
 	void * topmenu;			//!< The menu item above of current menu item
 	void * submenu;			//!< The menu item below of current menu item

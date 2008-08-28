@@ -161,8 +161,8 @@
 #define REV_STEP_DURATION	20			//!< Duration of one step in milliseconds. This value controlles the rotating speed
 #define REV_RAMP_DURATION	1			//!< Duration of the ramp up or ramp down in steps
 #define REV_MAX_SIZE		12			//!< The amount of smarties (holes) which fit into the revolver
-#define REV_STEPS_ESTIMATED	6			//!< Amount of steps for each positions 'hole abouve hole'
-#define REV_PAUSE_DURATION	1000
+#define REV_STEPS_ESTIMATED	5			//!< Amount of steps for each positions 'hole abouve hole'
+#define REV_PAUSE_DURATION	500
 
 //#define REV_POS_SENS1			11
 //#define REV_POS_SENS2			1
@@ -189,7 +189,7 @@
 
 #define CATCH_STEP_DURATION 	10			//!< Duration of one step in one Millisecond. This value controlles the rotating speed
 #define CATCH_RAMP_DURATION	 	2			//!< Duration of the ramp up or ramp down in steps
-#define CATCH_MAX_SIZE			8			//!< The amount of catcher tubes for sorting the smarties
+#define CATCH_MAX_SIZE			9			//!< The amount of catcher tubes for sorting the smarties
 #define CATCH_STEPS_ESTIMATED	14			//!< Amount of steps for each positions 'hole abouve hole'
 #define CATCH_PAUSE_DURATION	100
 
@@ -203,7 +203,7 @@
 #define VIBR_OFF		(VIBR_PORT &=~(1<<VIBR_BIT))	//!< Switches the Bibrator off
 #define VIBR_TOGGLE		(VIBR_PORT ^= (1<<VIBR_BIT))
 
-#define VIBR_DURATION		500			//!< Default duration for shaker (vibrator)
+#define VIBR_DURATION		(700)			//!< Default duration for shaker (vibrator)
 
 // Input rotary encoder
 #define ROTENC_PORT		PORTB		//!< Rotary encoder port (output) for AB signals
@@ -281,11 +281,20 @@ typedef struct system_state_t {
  * \brief Programs which are executed during \ref SYS_MODE_PAUSE. 
  */
 typedef enum program_t {
-	prog_none = 0,
+	prog_none = 0,			//TODO docs
 	prog_rotate_catcher,
 	prog_rotate_revolver,
 	prog_color_tcs,
-	prog_color_adjd
+	prog_color_adjd,
+	prog_set_colors_blue,
+	prog_set_colors_green,
+	prog_set_colors_red,
+	prog_set_colors_yellow,
+	prog_set_colors_orange,
+	prog_set_colors_brown,
+	prog_set_colors_purple,
+	prog_set_colors_pink,
+	prog_set_speed
 } program;
 
 /**
@@ -442,8 +451,10 @@ typedef struct smartie_sorter_t {
 	vibrator vibr;						//!< Shaker (or vibrator)
 	rotary_encoder rotenc;				//!< The rotary encoder (user input)
 	revolver rev;						//!< The revolver disc with smarties
+	uint16_t speed;						//TODO docs
 } smartie_sorter;
 
+typedef float color_avarage[col_unknown];
 
 //////////////////////////////////////////////////////////////////////////////////
 //////////////////////////// P R O T O T Y P E S /////////////////////////////////
@@ -468,6 +479,19 @@ int8_t 	sys_revolver_is_lb_blocked ();
 
 void 	sys_pause();
 void 	sys_resume();
+
+void 	sys_reference_measure_blue();
+void 	sys_reference_measure_green();
+void 	sys_reference_measure_red();
+void 	sys_reference_measure_yellow();
+void 	sys_reference_measure_orange();
+void 	sys_reference_measure_brown();
+void 	sys_reference_measure_pink();
+void 	sys_reference_measure_purple();
+
+void 	sys_set_speed();
+void	sys_speed_up();
+void 	sys_speed_down ();	
 //void 	sys_rotate_revolver();
 //void 	sys_rotate_catcher();
 void 	sys_measure_tcs();

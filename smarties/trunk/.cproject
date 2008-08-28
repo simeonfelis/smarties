@@ -19,11 +19,11 @@
 <folderInfo id="de.innot.avreclipse.configuration.app.debug.826098729." name="/" resourcePath="">
 <toolChain id="de.innot.avreclipse.toolchain.winavr.app.debug.694521621" name="AVR-GCC Toolchain" nonInternalBuilderId="de.innot.avreclipse.target.builder.winavr.app.debug" superClass="de.innot.avreclipse.toolchain.winavr.app.debug">
 <option id="de.innot.avreclipse.toolchain.options.toolchain.objcopy.flash.app.debug.1051250984" name="Generate HEX file for Flash memory" superClass="de.innot.avreclipse.toolchain.options.toolchain.objcopy.flash.app.debug" value="true" valueType="boolean"/>
-<option id="de.innot.avreclipse.toolchain.options.toolchain.objcopy.eeprom.app.debug.888326732" name="Generate HEX file for EEPROM" superClass="de.innot.avreclipse.toolchain.options.toolchain.objcopy.eeprom.app.debug"/>
+<option id="de.innot.avreclipse.toolchain.options.toolchain.objcopy.eeprom.app.debug.888326732" name="Generate HEX file for EEPROM" superClass="de.innot.avreclipse.toolchain.options.toolchain.objcopy.eeprom.app.debug" value="true" valueType="boolean"/>
 <option id="de.innot.avreclipse.toolchain.options.toolchain.objdump.app.debug.1158650329" name="Generate Extended Listing (Source + generated Assembler)" superClass="de.innot.avreclipse.toolchain.options.toolchain.objdump.app.debug"/>
 <option id="de.innot.avreclipse.toolchain.options.toolchain.size.app.debug.1272710853" name="Print Size" superClass="de.innot.avreclipse.toolchain.options.toolchain.size.app.debug"/>
 <targetPlatform id="de.innot.avreclipse.targetplatform.winavr.app.debug.1666995964" name="AVR Cross-Target" superClass="de.innot.avreclipse.targetplatform.winavr.app.debug"/>
-<builder buildPath="${workspace_loc:/smarties2/Debug}" id="de.innot.avreclipse.target.builder.winavr.app.debug.828458769" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="AVR GNU Make Builder" superClass="de.innot.avreclipse.target.builder.winavr.app.debug"/>
+<builder autoBuildTarget="all" buildPath="${workspace_loc:/smarties2/Debug}" cleanBuildTarget="clean" enableAutoBuild="false" enableCleanBuild="true" enabledIncrementalBuild="true" id="de.innot.avreclipse.target.builder.winavr.app.debug.828458769" incrementalBuildTarget="all" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="AVR GNU Make Builder" superClass="de.innot.avreclipse.target.builder.winavr.app.debug"/>
 <tool id="de.innot.avreclipse.tool.assembler.winavr.app.debug.1451599621" name="AVR Assembler" superClass="de.innot.avreclipse.tool.assembler.winavr.app.debug">
 <option id="de.innot.avreclipse.assembler.option.debug.level.61417123" name="Generate Debugging Info" superClass="de.innot.avreclipse.assembler.option.debug.level" value="de.innot.avreclipse.assembler.option.debug.level.g2" valueType="enumerated"/>
 <option id="de.innot.avreclipse.asm.option.usecpp.778919593" name="Use preprocessor" superClass="de.innot.avreclipse.asm.option.usecpp"/>
@@ -106,6 +106,7 @@
 </storageModule>
 <storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
 <storageModule moduleId="org.eclipse.cdt.core.language.mapping"/>
+
 
 <storageModule moduleId="scannerConfiguration">
 <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile"/>
@@ -209,7 +210,7 @@
 <parser enabled="true"/>
 </scannerInfoProvider>
 </profile>
-<scannerConfigBuildInfo instanceId="de.innot.avreclipse.configuration.app.debug.826098729;de.innot.avreclipse.configuration.app.debug.826098729.;de.innot.avreclipse.tool.compiler.winavr.app.debug.1745800966;de.innot.avreclipse.compiler.winavr.input.229672322">
+<scannerConfigBuildInfo instanceId="de.innot.avreclipse.configuration.app.debug.826098729;de.innot.avreclipse.configuration.app.debug.826098729.">
 <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="de.innot.avreclipse.core.AVRGCCManagedMakePerProjectProfileC"/>
 <profile id="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile">
 <buildOutputProvider>
@@ -312,7 +313,7 @@
 </scannerInfoProvider>
 </profile>
 </scannerConfigBuildInfo>
-<scannerConfigBuildInfo instanceId="de.innot.avreclipse.configuration.app.debug.826098729;de.innot.avreclipse.configuration.app.debug.826098729.">
+<scannerConfigBuildInfo instanceId="de.innot.avreclipse.configuration.app.debug.826098729;de.innot.avreclipse.configuration.app.debug.826098729.;de.innot.avreclipse.tool.compiler.winavr.app.debug.1745800966;de.innot.avreclipse.compiler.winavr.input.229672322">
 <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="de.innot.avreclipse.core.AVRGCCManagedMakePerProjectProfileC"/>
 <profile id="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile">
 <buildOutputProvider>
@@ -465,6 +466,7 @@
 <storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
 <storageModule moduleId="org.eclipse.cdt.core.language.mapping"/>
 
+
 <storageModule moduleId="scannerConfiguration">
 <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile"/>
 <profile id="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile">
@@ -567,7 +569,7 @@
 <parser enabled="true"/>
 </scannerInfoProvider>
 </profile>
-<scannerConfigBuildInfo instanceId="de.innot.avreclipse.configuration.app.debug.826098729;de.innot.avreclipse.configuration.app.debug.826098729.;de.innot.avreclipse.tool.compiler.winavr.app.debug.1745800966;de.innot.avreclipse.compiler.winavr.input.229672322">
+<scannerConfigBuildInfo instanceId="de.innot.avreclipse.configuration.app.debug.826098729;de.innot.avreclipse.configuration.app.debug.826098729.">
 <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="de.innot.avreclipse.core.AVRGCCManagedMakePerProjectProfileC"/>
 <profile id="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile">
 <buildOutputProvider>
@@ -670,7 +672,7 @@
 </scannerInfoProvider>
 </profile>
 </scannerConfigBuildInfo>
-<scannerConfigBuildInfo instanceId="de.innot.avreclipse.configuration.app.debug.826098729;de.innot.avreclipse.configuration.app.debug.826098729.">
+<scannerConfigBuildInfo instanceId="de.innot.avreclipse.configuration.app.debug.826098729;de.innot.avreclipse.configuration.app.debug.826098729.;de.innot.avreclipse.tool.compiler.winavr.app.debug.1745800966;de.innot.avreclipse.compiler.winavr.input.229672322">
 <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="de.innot.avreclipse.core.AVRGCCManagedMakePerProjectProfileC"/>
 <profile id="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile">
 <buildOutputProvider>
