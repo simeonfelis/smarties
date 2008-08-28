@@ -294,6 +294,7 @@ typedef enum program_t {
 	prog_set_colors_brown,
 	prog_set_colors_purple,
 	prog_set_colors_pink,
+	prog_set_colors_restore,
 	prog_set_speed
 } program;
 
@@ -488,6 +489,7 @@ void 	sys_reference_measure_orange();
 void 	sys_reference_measure_brown();
 void 	sys_reference_measure_pink();
 void 	sys_reference_measure_purple();
+void 	sys_reference_measure_restore();
 
 void 	sys_set_speed();
 void	sys_speed_up();

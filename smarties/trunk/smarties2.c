@@ -119,6 +119,7 @@
 #include "system.h"
 #include "inits.h"
 #include "menu.h"
+#include "ee.h"
 #include "lcd_display.h" 	//display lib
 
 #define DEBUG	1
@@ -131,7 +132,7 @@ menu_entry men_running;
 menu_entry men_lay_greeting[2];
 menu_entry men_lay_main[MEN_LAY_MAIN_SIZE];
 menu_entry men_lay_speed;
-menu_entry men_lay_reference [col_unknown + 1];
+menu_entry men_lay_reference [col_unknown + 2];
 
 #if DISTANCE_DETECTION | DISTANCE_NORM_DETECTION
 
@@ -166,7 +167,7 @@ int main(void) {
 	float sm_ref_measure_red; // for color reference measure
 	
 	int8_t index_temp;
-	smartie_color col_temp;
+	smartie_color col_temp = 0;		// for some small loops 
 
 	char s[7];
 	
@@ -360,38 +361,106 @@ int main(void) {
     		}
     		
     		/* Color setting program */
-    		if (ss.prog == prog_set_colors_blue) {
+    		if ( (ss.prog >= prog_set_colors_blue) && (ss.prog<=prog_set_colors_pink) ){
     			sm_ref_measure_blu = 0; sm_ref_measure_gre = 0; sm_ref_measure_red = 0;
     			lcd_gotoxy(0,1); lcd_puts(MEN_TIT_EMPTY);
-    			lcd_gotoxy(0,1); lcd_puts("   left");
-    			for (sm_count=0; sm_count<10; sm_count++) { /* capture 10 smarties values for each channel */
-//    				lcd_gotoxy(0,1); lcd_puts(itoa((10-sm_count),s,10)); lcd_puts(" "); 
+    			lcd_gotoxy(0,1); lcd_puts("   left; press to cancel");
+    			for (sm_count=0; sm_count<5; sm_count++) { /* capture 10 smarties values for each channel */
+    				lcd_gotoxy(0,1); lcd_puts(itoa((10-sm_count),s,10)); lcd_puts(" "); 
+    				if (ss.rotenc.push > 0)
+    					break;
     				revolver_rotate_relative(1);
-    					temp = 1;
-    					while (temp) { /* wait for revolver */
-    						if ( (ss.mot_revolver.status == stat_idle) && (ss.mot_revolver.status_last != stat_idle) ) { 
-    							ss.mot_revolver.status_last = stat_idle;
-    							temp = 0;
-    						}
-    					}
-    				sensor_tcs_get_color();
-    					temp = 1;
-						while (temp) {	/* wait for color sensor */
-							if ( (ss.sens_tcs.status == stat_idle) && (ss.sens_tcs.status_last != stat_idle) ) { 
-								ss.sens_tcs.status_last = stat_idle;
-								temp = 0;
-							}
+					temp = 1;
+					while (temp) { /* wait for revolver */
+						if ( (ss.mot_revolver.status == stat_idle) && (ss.mot_revolver.status_last != stat_idle) ) { 
+							ss.mot_revolver.status_last = stat_idle;
+							temp = 0;
 						}
+	    				lcd_gotoxy(0,1); lcd_puts(itoa((10-sm_count),s,10)); lcd_puts(" ");
+					}
+    				lcd_gotoxy(0,1); lcd_puts(itoa((10-sm_count),s,10)); lcd_puts(" ");
+    				sensor_tcs_get_color();
+					temp = 1;
+					while (temp) {	/* wait for color sensor */
+						if ( (ss.sens_tcs.status == stat_idle) && (ss.sens_tcs.status_last != stat_idle) ) { 
+							ss.sens_tcs.status_last = stat_idle;
+							temp = 0;
+						}
+	    				lcd_gotoxy(0,1); lcd_puts(itoa((10-sm_count),s,10)); lcd_puts(" ");
+					}
+    				lcd_gotoxy(0,1); lcd_puts(itoa((10-sm_count),s,10)); lcd_puts(" ");
 					/* add all channel values up */
     				sm_ref_measure_blu += ss.sens_tcs.filter_freq_blue;
     				sm_ref_measure_gre += ss.sens_tcs.filter_freq_green;
     				sm_ref_measure_red += ss.sens_tcs.filter_freq_red;
     			}
-    			/* calculate the avarage value for each channel out of the 10 values */
-    			col_ava_blu[col_blue] = sm_ref_measure_blu / 10.0;
-    			col_ava_gre[col_blue] = sm_ref_measure_gre / 10.0;
-    			col_ava_red[col_blue] = sm_ref_measure_red / 10.0;
+//    			if (ss.rotenc.push == 0) { /* check if canceled */
+    				switch (ss.prog) {
+    				case prog_set_colors_blue:
+    					col_temp = col_blue;
+    					break;
+    				case prog_set_colors_green:
+    					col_temp = col_green;
+    					break;
+    				case prog_set_colors_red:
+    					col_temp = col_red;
+    					break;
+    				case prog_set_colors_yellow:
+    					col_temp = col_yellow;
+    					break;
+    				case prog_set_colors_orange:
+    					col_temp = col_orange;
+    					break;
+    				case prog_set_colors_brown:
+    					col_temp = col_brown;
+    					break;
+    				case prog_set_colors_purple:
+    					col_temp = col_purple;
+    					break;
+    				case prog_set_colors_pink:
+    					col_temp = col_pink;
+    					break;
+    				default:
+    					break;
+    				}
+					/* calculate the avarage value for each channel out of the 10 values */
+					col_ava_blu[col_temp] = sm_ref_measure_blu / 5.0;
+					col_ava_gre[col_temp] = sm_ref_measure_gre / 5.0;
+					col_ava_red[col_temp] = sm_ref_measure_red / 5.0;
+	    			eeprom_write_block (&ee_mem.usr_blu[col_temp], &col_ava_blu[col_temp], sizeof(float));
+	    			eeprom_write_block (&ee_mem.usr_gre[col_temp], &col_ava_gre[col_temp], sizeof(float));
+	    			eeprom_write_block (&ee_mem.usr_red[col_temp], &col_ava_red[col_temp], sizeof(float));
+	    			lcd_gotoxy(0,0); smartie_lcd_write_color(col_temp); lcd_puts(" callibrated.     ");
+
+//    			}
+//    			else {
+//	    			lcd_gotoxy(0,0); lcd_puts("Callibration canceled   ");
+//    			}
+    			ss.rotenc.push = 0;
+    			while (ss.rotenc.push == 0) {
+    				lcd_gotoxy(0,1); lcd_puts("Press to continue.      "); 
+    			}
+    			ss.rotenc.push = 0;
+    			ss.rotenc.left = 1;
     			/* all done */
+    			ss.prog = prog_none;
+    		} /* prog_set_colors_(*) */
+    		if (ss.prog == prog_set_colors_restore) {
+#if DISTANCE_DETECTION | DISTANCE_NORM_DETECTION
+				eeprom_read_block (col_ava_blu, ee_mem.def_blu, sizeof(color_avarage));
+				eeprom_read_block (col_ava_gre, ee_mem.def_gre, sizeof(color_avarage));
+				eeprom_read_block (col_ava_red, ee_mem.def_red, sizeof(color_avarage));
+				
+				eeprom_write_block (ee_mem.usr_blu, col_ava_blu, sizeof(color_avarage));
+				eeprom_write_block (ee_mem.usr_gre, col_ava_gre, sizeof(color_avarage));
+				eeprom_write_block (ee_mem.usr_red, col_ava_red, sizeof(color_avarage));
+#endif
+    			ss.rotenc.push = 0;
+    			while (ss.rotenc.push == 0) {
+    				lcd_gotoxy(0,1); lcd_puts("Press to continue.      "); 
+    			}
+    			ss.rotenc.push = 0;
+    			ss.rotenc.right = 1;
     			ss.prog = prog_none;
     		}
     		

@@ -133,7 +133,9 @@
 #define MEN_TIT_SUB_R_BROWN		"<Measure Brown Smarties>"
 #define MEN_TIT_SUB_R_PINK		"<Measure Pink  Smarties>"
 #define MEN_TIT_SUB_R_PURPLE	"<Measure Purpl Smarties>"
-#define MEN_SUBTIT_REFERENCE	"10 please,press to start"
+#define MEN_TIT_SUB_R_RESTORE	"<  Restore all Colors  >"
+#define MEN_SUBTIT_R_RESTORE	"   to system default    "
+#define MEN_SUBTIT_REFERENCE	" 5 please,press to start"
 
 #define MEN_MODE_EMPTY			"       "
 #define MEN_MODE_RUNNING		"RUNNING"

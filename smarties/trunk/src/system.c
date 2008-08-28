@@ -160,25 +160,29 @@ void sys_reference_measure_blue () {
 }
 
 void sys_reference_measure_green() {
-	
+	ss.prog = prog_set_colors_green;
 }
 void sys_reference_measure_red() {
-	
+	ss.prog = prog_set_colors_red;
 }
 void sys_reference_measure_yellow() {
-	
+	ss.prog = prog_set_colors_yellow;	
 }
 void sys_reference_measure_orange() {
-	
+	ss.prog = prog_set_colors_orange;
 }
 void sys_reference_measure_brown() {
-	
-}
-void sys_reference_measure_pink() {
-	
+	ss.prog = prog_set_colors_brown;
 }
 void sys_reference_measure_purple() {
-	
+	ss.prog = prog_set_colors_purple;
+}
+void sys_reference_measure_pink() {
+	ss.prog = prog_set_colors_pink;
+}
+
+void sys_reference_measure_restore() {
+	ss.prog = prog_set_colors_restore;
 }
 
 /**

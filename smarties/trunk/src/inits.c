@@ -140,6 +140,8 @@ void init_memory () {
 		ss.rev.smart[x].color = col_unknown;
 	
 	ss.speed = 750; /* default speed */
+	
+	eeprom_read_block (&ss.speed, &ee_mem.speed, sizeof(ss.speed));
 
 #if DISTANCE_DETECTION | DISTANCE_NORM_DETECTION
 	eeprom_read_block (col_ava_blu, ee_mem.usr_blu, sizeof(color_avarage));
@@ -227,7 +229,7 @@ void init_menu() {
 	extern menu_entry men_lay_greeting[2];
 	extern menu_entry men_lay_main[MEN_LAY_MAIN_SIZE];
 	extern menu_entry men_lay_speed;
-	extern menu_entry men_lay_reference [col_unknown + 1];
+	extern menu_entry men_lay_reference [col_unknown + 2];
 	
 	men_initializing.text[0] = MEN_TIT_INITIALIZING;
 	
@@ -253,7 +255,7 @@ void init_menu() {
 	men_lay_main[0].text[0] = MEN_TIT_ROT_REV;
 	men_lay_main[0].text[1] = MEN_SUBTIT_PAUSE;
 	men_lay_main[0].next = &men_lay_main[1];
-	men_lay_main[0].prev = &men_lay_main[3];
+	men_lay_main[0].prev = &men_lay_main[5];
 	men_lay_main[0].function = sys_revolver_rotate;
 	
 	men_lay_main[1].text[0] = MEN_TIT_ROT_CATCH;
@@ -299,7 +301,7 @@ void init_menu() {
 	men_lay_reference[0].text[0] = MEN_TIT_SUB_R_BLUE;
 	men_lay_reference[0].text[1] = MEN_SUBTIT_REFERENCE;
 	men_lay_reference[0].next = &men_lay_reference[1];
-	men_lay_reference[0].prev = &men_lay_reference[col_unknown];
+	men_lay_reference[0].prev = &men_lay_reference[9];
 	men_lay_reference[0].function = sys_reference_measure_blue;
 	
 	men_lay_reference[1].text[0] = MEN_TIT_SUB_R_GREEN;
@@ -344,12 +346,18 @@ void init_menu() {
 	men_lay_reference[7].prev = &men_lay_reference[6];
 	men_lay_reference[7].function = sys_reference_measure_pink;
 	
-	men_lay_reference[8].text[0] = MEN_TIT_BACK;
-	men_lay_reference[8].text[1] = MEN_SUBTIT_PAUSE;
-	men_lay_reference[8].next = &men_lay_reference[0];
+	men_lay_reference[8].text[0] = MEN_TIT_SUB_R_RESTORE;
+	men_lay_reference[8].text[1] = MEN_SUBTIT_R_RESTORE;
+	men_lay_reference[8].next = &men_lay_reference[9];
 	men_lay_reference[8].prev = &men_lay_reference[7];
-	men_lay_reference[8].topmenu = &men_lay_main[0];
-	men_lay_reference[8].function = sys_enter_topmenu;
+	men_lay_reference[8].function = sys_reference_measure_restore;
+
+	men_lay_reference[9].text[0] = MEN_TIT_BACK;
+	men_lay_reference[9].text[1] = MEN_SUBTIT_PAUSE;
+	men_lay_reference[9].next = &men_lay_reference[0];
+	men_lay_reference[9].prev = &men_lay_reference[8];
+	men_lay_reference[9].topmenu = &men_lay_main[0];
+	men_lay_reference[9].function = sys_enter_topmenu;
 
 
 
