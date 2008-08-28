@@ -26,7 +26,9 @@ extern smartie_sorter ss;
 extern menu_entry *menu_current;
 
 
-
+/**
+ * \brief Calls all necessary init functions.
+ */
 void init_all() {
 	
 	init_memory ();
@@ -37,15 +39,16 @@ void init_all() {
 		lcd_clrscr();
 		lcd_puts(menu_current->text[0]);
 	init_timer();
-//	init_interrupts();
-	//i2c_init();
+	//i2c_init(); /* for ADJD comunication. Not yet implemented */
 	//	ss.col_sens_ADJD.ret = i2c_start(COL_SENS_ADJD_DEVICE_ADDRESS + I2C_WRITE);
 	init_sensor_tcs();
 	init_motors();	
 }
 
-void init_io()
-{
+/**
+ * \brief Configures nearly all General IO pins, disables JTAG
+ */ 
+void init_io() {
 	
     /*
      *  sorry to say, the lcd is on the jtag pins
@@ -98,9 +101,9 @@ void init_io()
 	VIBR_DDR |= (1<<VIBR_BIT);
 }
 
-void init_interrupts() {
-}
-
+/**
+ * \brief Set up the TCS color sensor
+ */
 void init_sensor_tcs() {
 	COL_SENS_TCS_DISABLE;
 	COL_SENS_TCS_SET_FREQ_SCALE(100);
@@ -114,6 +117,8 @@ void init_sensor_tcs() {
  * \f[
  * T_{Compare Match} = (F_{CPU})^{-1} \cdot Prescaler \cdot (Register_{OutputCompare}) 
  * \f]
+ * 
+ * There is an error of about 0.8% from 1 Millisecond
  */
 void init_timer() {
 	/* Output compare register */
@@ -129,32 +134,31 @@ void init_timer() {
 
 	/* enable compare match interrupt */
 	TIMSK |= (1<<OCIE0);
-	
 }
 
+/**
+ * \brief Inits important system variables, also from EEprom
+ */
 void init_memory () {
 	uint8_t x;
 	
 	/* init revolver */
 	for (x=0; x<REV_MAX_SIZE; x++)
 		ss.rev.smart[x].color = col_unknown;
-	
-	ss.speed = 750; /* default speed */
-	
+
+	/* system speed */
 	eeprom_read_block (&ss.speed, &ee_mem.speed, sizeof(ss.speed));
 
 #if DISTANCE_DETECTION | DISTANCE_NORM_DETECTION
+	/* Refernce values for color detection */
 	eeprom_read_block (col_ava_blu, ee_mem.usr_blu, sizeof(color_avarage));
 	eeprom_read_block (col_ava_gre, ee_mem.usr_gre, sizeof(color_avarage));
 	eeprom_read_block (col_ava_red, ee_mem.usr_red, sizeof(color_avarage));
-#endif
-	
-	
+#endif	
 }
 
 /**
- * \brief Will throw out remaining smarties and put revolver and catcher to 
- * defined positions
+ * \brief Brings revolver and catcher to defined positions; Set up important motor values
  */
 void init_motors() {
 	/***************** C A T C H E R **********************/
@@ -173,7 +177,6 @@ void init_motors() {
 	ss.mot_catcher.steps_estimated = CATCH_STEPS_ESTIMATED;
 	ss.mot_catcher.steps_estim_def = CATCH_STEPS_ESTIMATED;
 	ss.mot_catcher.ramp_duration = CATCH_RAMP_DURATION;
-//	ss.mot_catcher.pause_duration = CATCH_PAUSE_DURATION;
 	ss.mot_catcher.pause_duration = ss.speed;
 
 	
@@ -203,13 +206,13 @@ void init_motors() {
 	ss.mot_revolver.steps_estimated = REV_STEPS_ESTIMATED;
 	ss.mot_revolver.steps_estim_def = REV_STEPS_ESTIMATED;
 	ss.mot_revolver.ramp_duration = REV_RAMP_DURATION;
-//	ss.mot_revolver.pause_duration = REV_PAUSE_DURATION;
 	ss.mot_revolver.pause_duration = ss.speed;
 		
 	REV_SET_CCW;
 	REV_ENABLE;
 	ss.mot_revolver.current_pos = 0;
 	ss.lb_revolver.passes = 0;
+
 	/* find the next defined position */
 	if (!IS_LB_REVOLVER)
 		revolver_rotate_relative(1); 
@@ -217,7 +220,7 @@ void init_motors() {
 }
 
 /**
- * \brief Creates the menu stucture and connections
+ * \brief Creates the menu stucture, connects menus, connects functions to menus
  * 
  * The menu structure and functionality is explained in \ref menu.h in 
  * detailed.
@@ -229,7 +232,7 @@ void init_menu() {
 	extern menu_entry men_lay_greeting[2];
 	extern menu_entry men_lay_main[MEN_LAY_MAIN_SIZE];
 	extern menu_entry men_lay_speed;
-	extern menu_entry men_lay_reference [col_unknown + 2];
+	extern menu_entry men_lay_reference [MEN_LAY_REFERENCE_SIZE];
 	
 	men_initializing.text[0] = MEN_TIT_INITIALIZING;
 	

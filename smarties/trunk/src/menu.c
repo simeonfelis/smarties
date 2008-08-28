@@ -29,14 +29,15 @@ void menu_enter_topmenu() {
 
 /**
  * Switches to the next menu entry on the right
- */
+ 
 void menu_enter_nextmenu() {
 	menu_current = menu_current->next;
 }
-
+*/
 /**
  * Switches to the next menu entry on the left
- */
+ 
 void menu_enter_prevmenu() {
 	menu_current = menu_current->prev;
 }
+*/

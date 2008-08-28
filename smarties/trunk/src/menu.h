@@ -1,6 +1,3 @@
-#ifndef MENU_H_
-#define MENU_H_
-
 /**
  * \file menu.h
  * 
@@ -13,6 +10,10 @@
  * GPL2 Licence
  * 
  * @section arch Architecture
+ * 
+ * This is not an up to date, complete reference for the whole menu structure. 
+ * However this is a rather completet explanation on how the menu works with
+ * examples.
  * 
  * The menu-control is locked to a 2-line alphanumeric display. It will be 
  * entered as soon as the smartie sorter is in \ref SYS_MODE_PAUSE. 
@@ -92,13 +93,17 @@
  *     - purple: PURPLE
  *     - unknown: UNKNOWN
  * 
+ * Note: the column numbers may be out of date.
+ * 
  * For some setting possibilties have a look at \ref lcd_display.h
  * 
  * For lcd control functions have a look at \ref lcd_display.c
  * 
- * The init of the menu is done in \ref inits.c
- * 
+ * The init of the menu is done at \ref init_menu() in \ref inits.c
  */
+
+#ifndef MENU_H_
+#define MENU_H_
 
 // menu length (24)				"                        "
 #define MEN_TIT_EMPTY			"                        "
@@ -153,7 +158,8 @@
 #define MEN_COL_PINK			"  PINK"
 #define MEN_COL_UNKNOWN			"UNKNOW"
 
-#define MEN_LAY_MAIN_SIZE		6
+#define MEN_LAY_MAIN_SIZE		6					// array size for main menu
+#define MEN_LAY_REFERENCE_SIZE	(col_unknown + 2)	// array size for reference callibrating menu
 
 
 /**
@@ -162,8 +168,13 @@
  * Each menu entry stores a menu entry which is next (right) or previous (left) from itself. It 
  * also stores menu entries below (submenu) or menu entries above (topmenu) itself. Furthermore, 
  * each menu entry has a specific task wich is stored behind the function pointer. The 'task' 
- * is, for example, changing into the topmenu (go Back), or rotate the catcher. The menu must 
- * be initialized, the memory must be reserved before the whole stucture can be used. 
+ * is, for example, changing into the topmenu (go Back), or rotate the catcher.
+ * 
+ * There can also be functions be related to the left and right action. Before executing any 
+ * function from the menu, the function pointer must be checked it is NULL or not!
+ * 
+ * The menu must be initialized, the memory must be reserved before the whole stucture 
+ * can be used. This is done \ref init_menu(). 
  */
 typedef struct menu_entry_t {
 	void (*function)(void);		//!< If push button pressed, this function will be executed (if available)
@@ -176,6 +187,7 @@ typedef struct menu_entry_t {
 	void * next;			//!< Next menu item
 } menu_entry;
 
+#if 0 /* deprecated (28.8.2008) ? */
 /**
  * \brief Will set the current menu to the uppleraying menu (stored in topmenu)
  */
@@ -187,5 +199,6 @@ void menu_enter_topmenu();
  */
 void menu_enter_submenu();
 
+#endif
 
 #endif /*MENU_H_*/

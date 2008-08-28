@@ -59,22 +59,41 @@
  * sourcecode.
  * 
  * The modes, steps and all input/output related parts of the Smartie sorter are administrated
- * within struct. The structs are organized like in the following picture.
+ * within structs. The structs are organized like in the following picture.
  * 
- * \image html objects-overview.png "Brief overview of several objects (elements) of the smartie sorter"
- * \image latex objects-overview.png "Brief overview of several objects (elements) of the smartie sorter" width=15cm
+ * \image html structsmartie__sorter__t__coll__graph.png "Brief overview of several objects (elements) of the smartie sorter"
+ * \image latex structsmartie__sorter__t__coll__graph.png "Brief overview of several objects (elements) of the smartie sorter" width=15cm
  * 
- * Note that this picture doesn't show all objects and all elements. It's just a draft overview.
- * For the detailed overview please refere to the code and documentation of \ref smartie_sorter_t. 
+ * For the detailed overview  and description please refere to the code and 
+ * documentation of \ref smartie_sorter_t. 
+ *  
+ * The system related IO actions are all defined in \ref system.h There are controlled
+ * - moving the revolver
+ * - moving the catcher
+ * - user input controlls
  * 
- * The application entry point is located is the \ref smarties2.c file.
- * - The main function first performs the initialization of inputs and outputs
+ * Minor configurations are made in \ref smarties2.h
+ * 
+ * 
+ * \section prog_flow Progam flow
+ * 
+ * The application entry point is located at \ref main() in \ref smarties2.c file.
+ * - The main function first performs the initialization 
  * - It handles the modes of the smartie sorter
  * - It handles the state machine
+ * - It handles the programs executed by the menu during \red SYS_MODE_PAUSE
  * 
  * The LCD controlling is done with the \ref lcd_display.h
  * 
  * The Menu structure is described in \ref menu.h
+ * 
+ * \section col_detect Color detection
+ * 
+ * The color sensor TCS230 delivers 4 output values:
+ * - Blue (with blue filter)
+ * - Green (with green filter)
+ * - Red (with red filter)
+ * - Brigthness (with no filter)
  * 
  * The smartie color detection is done by calculating the smallest distance to a next smartie. 
  * 
@@ -89,27 +108,39 @@
  * smartie is worked out by following formula:
  * 
  * \f[
- * Distance = \sqrt{ ( {blue_{new} - blue_{ava} } )^2 + { (green_{new} - green_{ava} })^2 + { red_{new} - red_{ava} })^2 }
+ * Distance = \sqrt{ ( {blue_{new} - blue_{ava} } )^2 + { (green_{new} - green_{ava} })^2 + { ( red_{new} - red_{ava} })^2 }
  * \f]
  * 
- * The color tables with avarage values can be found in \ref system.c (\ref col_ava_blu).
+ * The smartie sorter uses reference values which are gained during this software development.
+ * However the user can callibrate the reference values new without destroying the system default
+ * values.
+ * 
+ * The color tables with avarage values are stored in the EEprom memory. In the EEProm memory there 
+ * are stored system default values as well as newly callibrated values. When the system default
+ * values are restored, all callibrated colors are overwritten.
  * 
  * Only the blue, green and red channel is respected. A survey brought up that the brightness of the 
  * surrounding has no influence to the color measurent. The most important factor is temperature, 
- * as the smarties fat comes when they are getting to warm (above 24 Deg C). Then, the smartie's colors 
+ * as the smarties fat drifts out when they are getting to warm (above 24 Deg C). Then, the smartie's colors 
  * become brighter.
  * 
  * More methods for calculating the correct smartie color are prepared in the code. They can be enabled
  * by compiler switches. Enabling all methods could possible fill all data memory, as a lot of reference
- * data is necessary. 
+ * data is necessary, which are preferable stored as floats.
  * 
+ * \section Programs
  * 
- * The system related IO actions are all defined in \ref system.h There are controlled
- * - moving the revolver
- * - moving the catcher
- * - user input controlls
+ * During \ref SYS_MODE_PAUSE various programs can be started from the menu. For controlling 
+ * the state machines programs, the enum \ref system_programms_t is used.
  * 
- * Minor configurations are made in \ref smarties2.h
+ * Usually programs are executed completely in the background and only their progress or
+ * results are displayed during the state machine proceeds. 
+ *
+ * However, Programs can also take control over the user inputs and display. Some programs need
+ * to be completely finished before the state machine may proceed (e. g. \ref prog_set_color_blue)
+ *
+ * The state of programs are controlled in \ref main.h
+ * 
  */
 
 #include <avr/interrupt.h>
@@ -119,20 +150,20 @@
 #include "system.h"
 #include "inits.h"
 #include "menu.h"
-#include "ee.h"
+#include "ee.h"				// EEprom memory administration
 #include "lcd_display.h" 	//display lib
 
-#define DEBUG	1
+#define DEBUG	1			// verbose output mode
 
 smartie_sorter ss;
 
-menu_entry *menu_current;
-menu_entry men_initializing;
-menu_entry men_running;
-menu_entry men_lay_greeting[2];
-menu_entry men_lay_main[MEN_LAY_MAIN_SIZE];
-menu_entry men_lay_speed;
-menu_entry men_lay_reference [col_unknown + 2];
+menu_entry *menu_current;						// currently displayed menu
+menu_entry men_initializing;					// shown during SYS_MODE_INIT
+menu_entry men_running;							// shown during SYS_MODE_RUNNING
+menu_entry men_lay_greeting[2];					// entry menu
+menu_entry men_lay_main[MEN_LAY_MAIN_SIZE];		// general menu for different tasks 
+menu_entry men_lay_speed;						// setting up the system speed
+menu_entry men_lay_reference [MEN_LAY_REFERENCE_SIZE]; // for calibrating the reference values
 
 #if DISTANCE_DETECTION | DISTANCE_NORM_DETECTION
 
@@ -142,7 +173,7 @@ extern color_avarage col_ava_red;
 
 #endif
 
-// Small helper functions 
+// Function documentation always at the place of definition, not decleration 
 void smartie_lcd_write_color (smartie_color color);
 
 
@@ -166,10 +197,10 @@ int main(void) {
 	float sm_ref_measure_gre; // for color reference measure
 	float sm_ref_measure_red; // for color reference measure
 	
-	int8_t index_temp;
+	int8_t index_temp;				// for geting the correct color the catcher has to move to
 	smartie_color col_temp = 0;		// for some small loops 
 
-	char s[7];
+	char s[7];						// a dummy, needed for itoa()
 	
 	ss.state.mode = SYS_MODE_INIT;
 	ss.state.mode_last = SYS_MODE_INIT;
@@ -179,7 +210,7 @@ int main(void) {
 
 	/* Wait for some init functions to be finished */
 	while (temp) {
-#if 1 /* catcher motor status output */
+		/* catcher motor status output */
 		lcd_gotoxy(12,1); lcd_puts("c");
 		switch (ss.mot_catcher.status) {
 		case stat_idle:
@@ -219,8 +250,7 @@ int main(void) {
 		default:
 			break;
 		}
-#endif
-#if 1 /* revolver motor status output */
+		/* revolver motor status output */
 		lcd_gotoxy(0,1); lcd_puts("r");
 		switch (ss.mot_revolver.status) {
 		case stat_idle:
@@ -260,7 +290,7 @@ int main(void) {
 		default:
 			break;
 		}
-#endif
+		
 		if ( (ss.mot_revolver.status == stat_idle)
 				&& (ss.mot_revolver.status_last != stat_idle) ) /* Wait until position is found */
 			ss.mot_revolver.status_last = stat_idle;
@@ -298,7 +328,7 @@ int main(void) {
     			lcd_gotoxy(0,0); lcd_puts(menu_current->text[0]);
     			lcd_gotoxy(0,1); lcd_puts(menu_current->text[1]);
 /* test lcd write */    			
-    			lcd_gotoxy(0,0); lcd_puts(itoa(sizeof(color_avarage),s,10));
+//    			lcd_gotoxy(0,0); lcd_puts(itoa(sizeof(color_avarage),s,10));
     			ss.state.mode_last = SYS_MODE_PAUSE;
     			ss.sens_tcs.status_last = stat_idle;
     		}
@@ -360,13 +390,13 @@ int main(void) {
     				lcd_puts("   ");
     		}
     		
-    		/* Color setting program */
+    		/* Color setting program (holds state machine)*/
     		if ( (ss.prog >= prog_set_colors_blue) && (ss.prog<=prog_set_colors_pink) ){
     			sm_ref_measure_blu = 0; sm_ref_measure_gre = 0; sm_ref_measure_red = 0;
     			lcd_gotoxy(0,1); lcd_puts(MEN_TIT_EMPTY);
-    			lcd_gotoxy(0,1); lcd_puts("   left; press to cancel");
-    			for (sm_count=0; sm_count<5; sm_count++) { /* capture 10 smarties values for each channel */
-    				lcd_gotoxy(0,1); lcd_puts(itoa((10-sm_count),s,10)); lcd_puts(" "); 
+    			lcd_gotoxy(0,1); lcd_puts("   left;                ");
+    			for (sm_count=0; sm_count<REFERENCE_MEASURES; sm_count++) { /* capture a few smarties values for each channel */
+    				lcd_gotoxy(0,1); lcd_puts(itoa((REFERENCE_MEASURES-sm_count),s,10)); lcd_puts(" "); /* progress to user, also neede for timing! */ 
     				if (ss.rotenc.push > 0)
     					break;
     				revolver_rotate_relative(1);
@@ -376,9 +406,9 @@ int main(void) {
 							ss.mot_revolver.status_last = stat_idle;
 							temp = 0;
 						}
-	    				lcd_gotoxy(0,1); lcd_puts(itoa((10-sm_count),s,10)); lcd_puts(" ");
+	    				lcd_gotoxy(0,1); lcd_puts(itoa((10-sm_count),s,10)); lcd_puts(" "); /* progress to user, also neede for timing! */
 					}
-    				lcd_gotoxy(0,1); lcd_puts(itoa((10-sm_count),s,10)); lcd_puts(" ");
+    				lcd_gotoxy(0,1); lcd_puts(itoa((10-sm_count),s,10)); lcd_puts(" "); /* progress to user, also neede for timing! */
     				sensor_tcs_get_color();
 					temp = 1;
 					while (temp) {	/* wait for color sensor */
@@ -386,16 +416,16 @@ int main(void) {
 							ss.sens_tcs.status_last = stat_idle;
 							temp = 0;
 						}
-	    				lcd_gotoxy(0,1); lcd_puts(itoa((10-sm_count),s,10)); lcd_puts(" ");
+	    				lcd_gotoxy(0,1); lcd_puts(itoa((10-sm_count),s,10)); lcd_puts(" "); /* progress to user, also neede for timing! */
 					}
-    				lcd_gotoxy(0,1); lcd_puts(itoa((10-sm_count),s,10)); lcd_puts(" ");
+    				lcd_gotoxy(0,1); lcd_puts(itoa((10-sm_count),s,10)); lcd_puts(" "); /* progress to user, also neede for timing! */
 					/* add all channel values up */
     				sm_ref_measure_blu += ss.sens_tcs.filter_freq_blue;
     				sm_ref_measure_gre += ss.sens_tcs.filter_freq_green;
     				sm_ref_measure_red += ss.sens_tcs.filter_freq_red;
     			}
 //    			if (ss.rotenc.push == 0) { /* check if canceled */
-    				switch (ss.prog) {
+    				switch (ss.prog) { /* depending on which color to callibrate, get to correctin index for storing */
     				case prog_set_colors_blue:
     					col_temp = col_blue;
     					break;
@@ -423,10 +453,11 @@ int main(void) {
     				default:
     					break;
     				}
-					/* calculate the avarage value for each channel out of the 10 values */
-					col_ava_blu[col_temp] = sm_ref_measure_blu / 5.0;
-					col_ava_gre[col_temp] = sm_ref_measure_gre / 5.0;
-					col_ava_red[col_temp] = sm_ref_measure_red / 5.0;
+					/* calculate the avarage value for each channel out of the few values */
+					col_ava_blu[col_temp] = sm_ref_measure_blu / REFERENCE_MEASURES;
+					col_ava_gre[col_temp] = sm_ref_measure_gre / REFERENCE_MEASURES;
+					col_ava_red[col_temp] = sm_ref_measure_red / REFERENCE_MEASURES;
+					/* write it back to eeprom as user defined reference value */
 	    			eeprom_write_block (&ee_mem.usr_blu[col_temp], &col_ava_blu[col_temp], sizeof(float));
 	    			eeprom_write_block (&ee_mem.usr_gre[col_temp], &col_ava_gre[col_temp], sizeof(float));
 	    			eeprom_write_block (&ee_mem.usr_red[col_temp], &col_ava_red[col_temp], sizeof(float));
@@ -436,6 +467,7 @@ int main(void) {
 //    			else {
 //	    			lcd_gotoxy(0,0); lcd_puts("Callibration canceled   ");
 //    			}
+	    		/* inform user about what happend. This is done by changing the normal menu behaviour */
     			ss.rotenc.push = 0;
     			while (ss.rotenc.push == 0) {
     				lcd_gotoxy(0,1); lcd_puts("Press to continue.      "); 
@@ -445,19 +477,24 @@ int main(void) {
     			/* all done */
     			ss.prog = prog_none;
     		} /* prog_set_colors_(*) */
+    		
+    		/* Program for restoring the system default values */
     		if (ss.prog == prog_set_colors_restore) {
 #if DISTANCE_DETECTION | DISTANCE_NORM_DETECTION
+    			/* Get the system default values */
 				eeprom_read_block (col_ava_blu, ee_mem.def_blu, sizeof(color_avarage));
 				eeprom_read_block (col_ava_gre, ee_mem.def_gre, sizeof(color_avarage));
 				eeprom_read_block (col_ava_red, ee_mem.def_red, sizeof(color_avarage));
 				
+				/* Use the in future */
 				eeprom_write_block (ee_mem.usr_blu, col_ava_blu, sizeof(color_avarage));
 				eeprom_write_block (ee_mem.usr_gre, col_ava_gre, sizeof(color_avarage));
 				eeprom_write_block (ee_mem.usr_red, col_ava_red, sizeof(color_avarage));
 #endif
+				/* inform user about what happend. This is done by changing the normal menu behaviour */
     			ss.rotenc.push = 0;
     			while (ss.rotenc.push == 0) {
-    				lcd_gotoxy(0,1); lcd_puts("Press to continue.      "); 
+    				lcd_gotoxy(0,1); lcd_puts("Done. Press to continue."); 
     			}
     			ss.rotenc.push = 0;
     			ss.rotenc.right = 1;

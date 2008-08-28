@@ -9,11 +9,9 @@
  * 
  * GPL2 Licence
  * 
- * @section install Description
  * 
  * Here are many IO related functions declarated
  * 
- * @section arch Architecture
  * 
  */
 #ifndef SYSTEM_H_
@@ -452,9 +450,12 @@ typedef struct smartie_sorter_t {
 	vibrator vibr;						//!< Shaker (or vibrator)
 	rotary_encoder rotenc;				//!< The rotary encoder (user input)
 	revolver rev;						//!< The revolver disc with smarties
-	uint16_t speed;						//TODO docs
+	uint16_t speed;						//!< The operating speed (pause durations) the higher, the slower. See also \ref sys_set_speed()
 } smartie_sorter;
 
+/**
+ * \brief Stores the color reference values of one channel for all smarties
+ */
 typedef float color_avarage[col_unknown];
 
 //////////////////////////////////////////////////////////////////////////////////

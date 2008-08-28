@@ -154,33 +154,71 @@ void sys_pause()
 	ss.state.mode = SYS_MODE_PAUSE;
 }
 
-//TODO: docs
+/**
+ * \brief Initiates color callibration for corresponding smartie color 
+ * 
+ * This function is prepared especially for functions started from the 
+ * menu. This function works only if the menu is correct initialized.
+ */ 
 void sys_reference_measure_blue () {
 	ss.prog = prog_set_colors_blue;
 }
 
+/**
+ * \brief See \ref sys_reference_measure_blue ()
+ */
 void sys_reference_measure_green() {
 	ss.prog = prog_set_colors_green;
 }
+
+/**
+ * \brief See \ref sys_reference_measure_blue ()
+ */
 void sys_reference_measure_red() {
 	ss.prog = prog_set_colors_red;
 }
+
+/**
+ * \brief See \ref sys_reference_measure_blue ()
+ */
 void sys_reference_measure_yellow() {
 	ss.prog = prog_set_colors_yellow;	
 }
+
+/**
+ * \brief See \ref sys_reference_measure_blue ()
+ */
 void sys_reference_measure_orange() {
 	ss.prog = prog_set_colors_orange;
 }
+
+/**
+ * \brief See \ref sys_reference_measure_blue ()
+ */
 void sys_reference_measure_brown() {
 	ss.prog = prog_set_colors_brown;
 }
+
+/**
+ * \brief See \ref sys_reference_measure_blue ()
+ */
 void sys_reference_measure_purple() {
 	ss.prog = prog_set_colors_purple;
 }
+
+/**
+ * \brief See \ref sys_reference_measure_blue ()
+ */
 void sys_reference_measure_pink() {
 	ss.prog = prog_set_colors_pink;
 }
 
+/**
+ * \brief Initiates to restore the color reference values
+ * 
+ * This function is prepared especially for functions started from the 
+ * menu. This function works only if the menu is correct initialized.
+ */ 
 void sys_reference_measure_restore() {
 	ss.prog = prog_set_colors_restore;
 }
@@ -200,14 +238,21 @@ void sys_resume()
 	ss.state.mode = SYS_MODE_RUNNING;
 }
 
-//TODO docs
-
+/**
+ * \brief Set the operating speed of the sorter to the current demand value 
+ */ 
 void sys_set_speed () {
 	ss.mot_catcher.pause_duration = ss.speed;
 	ss.mot_revolver.pause_duration = ss.speed;
 	ss.vibr.duration = ss.speed + (ss.speed >> 1); /* Set to 1.5 of ss.speed (binary division by two) */
 }
 
+/**
+ * \brief Set the operating speed of the sorter up by decreasing pause times 
+ * 
+ * This function is prepared especially for functions started from the 
+ * menu. This function works only if the menu is correct initialized.
+ */ 
 void sys_speed_up () {
 	ss.prog = prog_set_speed;
 	if (ss.speed < 5000)
@@ -215,6 +260,12 @@ void sys_speed_up () {
 	sys_set_speed ();
 }
 
+/**
+ * \brief Set the operating speed of the sorter down by increasing pause times 
+ * 
+ * This function is prepared especially for functions started from the 
+ * menu. This function works only if the menu is correct initialized.
+ */ 
 void sys_speed_down () {
 	ss.prog = prog_set_speed;
 	if (ss.speed > 100)

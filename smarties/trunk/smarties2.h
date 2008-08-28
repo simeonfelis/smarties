@@ -20,5 +20,7 @@
 #define FALSE	0			//!< Useful boolean values FALSE
 #define TRUE	1			//!< Useful boolean values TRUE
 
+#define REFERENCE_MEASURES	5	//!< How many measures for a callibrating the reference value are required
+
 
 #endif /*SMARTIES2_H_*/
