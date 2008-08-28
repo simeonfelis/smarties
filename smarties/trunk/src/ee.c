@@ -9,7 +9,6 @@
  * this this values on reset.
  */
 
-#include <avr/eeprom.h>
 #include "system.h"
 #include "ee.h"
 

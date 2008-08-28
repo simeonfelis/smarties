@@ -178,27 +178,13 @@
  */
 typedef struct menu_entry_t {
 	void (*function)(void);		//!< If push button pressed, this function will be executed (if available)
-	void (*l_action)(void);		//TODO
-	void (*r_action)(void);
+	void (*l_action)(void);		//!< If \ref rotary_encoder_t is rotated to left, this functino will be executed (if available)
+	void (*r_action)(void);		//!< If \ref rotary_encoder_t is rotated to right, this functino will be executed (if available)
 	char * text[2];			//!< Text on Display (Max 24 Characters, 2 lines)
 	void * topmenu;			//!< The menu item above of current menu item
 	void * submenu;			//!< The menu item below of current menu item
 	void * prev;			//!< Previous Menu item
 	void * next;			//!< Next menu item
 } menu_entry;
-
-#if 0 /* deprecated (28.8.2008) ? */
-/**
- * \brief Will set the current menu to the uppleraying menu (stored in topmenu)
- */
-void menu_enter_topmenu();
-
-
-/**
- * \brief Will set the current menu to the underlaying menu (stored in submenu)
- */
-void menu_enter_submenu();
-
-#endif
 
 #endif /*MENU_H_*/

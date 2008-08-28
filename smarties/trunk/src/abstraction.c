@@ -268,22 +268,8 @@ void lightbarrier_stuff ()
 	}
 }
 
-//TODO: Doku
+//not implemented
 void sensor_adjd_stuff() {
-	if (ss.sens_adjd.status == stat_start_working) {
-		/* if we just started to detect the color switch on the light first */
-		if (ss.sens_adjd.status_last == stat_idle) {
-			ss.sens_adjd.status = stat_working;
-			ss.sens_adjd.status_last = stat_start_working;
-			COL_SENS_ADJD_LED_ON;
-		}
-	}
-	
-	if (ss.sens_adjd.status == stat_working) {
-		if (ss.sens_adjd.status_last == stat_start_working) {
-			/* if the light is on ask for the current color */
-		}
-	}
 }
 
 /**
@@ -292,8 +278,7 @@ void sensor_adjd_stuff() {
  * This function is expected to be called exectly every millisecond to
  * work properly. This function will read the current color of the smartie.
  * 
- * More documentation about color values have a look at \ref col_tab_blu 
- * in \ref system.c
+ * About the way of color detection please refere to the Main page
  */
 void sensor_tcs_stuff() {
 	uint8_t y;

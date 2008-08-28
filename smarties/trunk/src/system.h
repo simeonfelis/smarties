@@ -279,20 +279,20 @@ typedef struct system_state_t {
  * \brief Programs which are executed during \ref SYS_MODE_PAUSE. 
  */
 typedef enum program_t {
-	prog_none = 0,			//TODO docs
-	prog_rotate_catcher,
-	prog_rotate_revolver,
-	prog_color_tcs,
-	prog_color_adjd,
-	prog_set_colors_blue,
-	prog_set_colors_green,
-	prog_set_colors_red,
-	prog_set_colors_yellow,
-	prog_set_colors_orange,
-	prog_set_colors_brown,
-	prog_set_colors_purple,
-	prog_set_colors_pink,
-	prog_set_colors_restore,
+	prog_none = 0,				//!< No program executed
+	prog_rotate_catcher,		//!< Indicates that the catcher rotate program is running
+	prog_rotate_revolver,		//!< Indicates that the revolver rotate program is running
+	prog_color_tcs,				//!< Indicates that the color measure program is runnging
+	prog_color_adjd,			// not implemented
+	prog_set_colors_blue,		//!< Calibrates the color refence values. Halts the state machine
+	prog_set_colors_green,		//!< Calibrates the color refence values. Halts the state machine
+	prog_set_colors_red,		//!< Calibrates the color refence values. Halts the state machine
+	prog_set_colors_yellow,		//!< Calibrates the color refence values. Halts the state machine
+	prog_set_colors_orange,		//!< Calibrates the color refence values. Halts the state machine
+	prog_set_colors_brown,		//!< Calibrates the color refence values. Halts the state machine
+	prog_set_colors_purple,		//!< Calibrates the color refence values. Halts the state machine
+	prog_set_colors_pink,		//!< Calibrates the color refence values. Halts the state machine
+	prog_set_colors_restore,	//!< Resores the color refernce values to system defaults. Halts the state machine
 	prog_set_speed
 } program;
 
@@ -321,12 +321,10 @@ typedef struct rotary_encoder_t {
 /**
  *  \brief All supported colors.
  * 
- * This enum is used for indexing the color tables (\ref col_tab_blu etc.), the
+ * This enum is used for indexing the reference color tables, the
  * positioning of the catcher and may be more. \ref col_unknown is often used as 
  * end conditions for loops. In the color tables, this enums elements represent
- * the index for color rows.
- * 
- * If a smartie is detected to have \ref col_unknown, it will be handled as not present. 
+ * the index for color rows. 
  */
 typedef enum smartie_color_t {
 	col_blue = 0,		//!< Blue
@@ -495,8 +493,6 @@ void 	sys_reference_measure_restore();
 void 	sys_set_speed();
 void	sys_speed_up();
 void 	sys_speed_down ();	
-//void 	sys_rotate_revolver();
-//void 	sys_rotate_catcher();
 void 	sys_measure_tcs();
 void 	sys_measure_adjd();
 void 	sys_wait(uint16_t time);

@@ -81,7 +81,7 @@
  * - The main function first performs the initialization 
  * - It handles the modes of the smartie sorter
  * - It handles the state machine
- * - It handles the programs executed by the menu during \red SYS_MODE_PAUSE
+ * - It handles the programs executed by the menu during \ref SYS_MODE_PAUSE
  * 
  * The LCD controlling is done with the \ref lcd_display.h
  * 
@@ -124,27 +124,48 @@
  * as the smarties fat drifts out when they are getting to warm (above 24 Deg C). Then, the smartie's colors 
  * become brighter.
  * 
+ * \section adv_col_det Advanced color detecection
+ * 
+ * The first try with color detectin was made with reference tables. For each smartie was a minimum and 
+ * maximum value for each channel stored. However, this method was too unrelyable.
+ * 
  * More methods for calculating the correct smartie color are prepared in the code. They can be enabled
  * by compiler switches. Enabling all methods could possible fill all data memory, as a lot of reference
  * data is necessary, which are preferable stored as floats.
  * 
+ * Another try was to calculate the normalized distance from the new, unknown smartie to
+ * the reference values. However this method didn't show good results, probably because the Orange,
+ * Red, Pink and Brown smarties are nearly all on a vector in one direction (see figure above or the 
+ * 3D gnuplot).
+ * 
+ * Another idea (not implemented) for color detecting was respecting the color drift of smarties with 
+ * the temperature. To respect this, smarties must be mesured in a temperature range from 15 Deg C 
+ * to 25 Deg C and measure the unfilterd color channel (Brightness). Then, estimate the polynomial
+ * function of the three channels blue, green, red with the brightness as coefficient. The result is
+ * a curve in a 3 Dimensional space for each smartie color, and the axes are the three color channels.
+ * The next step is to calculate the orthogonal distance from a new, unknown smartie to all the 
+ * curves. The curve which has the smallest orthogonal distance should belong to the corresponding 
+ * smartie. 
+ * 
+ * With this method it could also be possible to estimate the temperature of the surrounding, not 
+ * with +-1 Deg C, but you could say that the surrounding is cold, warm or too warm. Maybe too 
+ * warm for smarties, which should be kept below 25 Deg C.  
+ * 
  * \section Programs
  * 
  * During \ref SYS_MODE_PAUSE various programs can be started from the menu. For controlling 
- * the state machines programs, the enum \ref system_programms_t is used.
+ * the state machines programs, the enum \ref program_t is used.
  * 
  * Usually programs are executed completely in the background and only their progress or
  * results are displayed during the state machine proceeds. 
  *
  * However, Programs can also take control over the user inputs and display. Some programs need
- * to be completely finished before the state machine may proceed (e. g. \ref prog_set_color_blue)
+ * to be completely finished before the state machine may proceed (e. g. \ref prog_set_colors_blue)
  *
- * The state of programs are controlled in \ref main.h
- * 
+ * The state of programs are controlled in \ref main() 
  */
 
 #include <avr/interrupt.h>
-#include <avr/eeprom.h>
 #include <stdlib.h>		// math stuff, itoa etc.
 #include "smarties2.h"
 #include "system.h"
