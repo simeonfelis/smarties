@@ -101,8 +101,15 @@
  * be represented in an 3 Dimensional graph. For color detection the avarage value for each channel 
  * is used.
  * 
- * \image html plots_html.png "Smartie color RGB valus" width=15cm
- * \image latex plots.png "Smartie color RGB valus" width=\textwidth
+ * \image html plot_tilted_2.png "Smartie color RGB valus" width=15cm
+ * \image html plot_top.png "Smartie color RGB valus from top" width=15cm
+ * \image html plot_front.png "Smartie color RGB valus from front" width=15cm
+ * \image html plot_side.png "Smartie color RGB valus from side" width=15cm
+ * 
+ * \image latex plot_tilted.png "Smartie color RGB valus" width=\textwidth
+ * \image latex plot_top.png "Smartie color RGB valus from top" width=\textwidth
+ * \image latex plot_front.png "Smartie color RGB valus from front" width=\textwidth
+ * \image latex plot_side.png "Smartie color RGB valus from side" width=\textwidth
  * 
  * If a smartie color's red, green and blue cannel are measured the distance to each reference 
  * smartie is worked out by following formula:
