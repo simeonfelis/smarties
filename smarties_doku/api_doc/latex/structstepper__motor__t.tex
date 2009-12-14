@@ -1,0 +1,119 @@
+\hypertarget{structstepper__motor__t}{
+\section{stepper\_\-motor\_\-t Struct Reference}
+\label{structstepper__motor__t}\index{stepper\_\-motor\_\-t@{stepper\_\-motor\_\-t}}
+}
+The stepper motor.  
+
+
+{\tt \#include $<$system.h$>$}
+
+Collaboration diagram for stepper\_\-motor\_\-t:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=65pt]{structstepper__motor__t__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Data Fields}
+\begin{CompactItemize}
+\item 
+\hypertarget{structstepper__motor__t_71c0bbc3adc7f7f200e6853fd361c12d}{
+common\_\-stat \hyperlink{structstepper__motor__t_71c0bbc3adc7f7f200e6853fd361c12d}{status}}
+\label{structstepper__motor__t_71c0bbc3adc7f7f200e6853fd361c12d}
+
+\begin{CompactList}\small\item\em Status. \item\end{CompactList}\item 
+\hypertarget{structstepper__motor__t_4bbf149941b37969ce2a486bc7bea81e}{
+common\_\-stat \hyperlink{structstepper__motor__t_4bbf149941b37969ce2a486bc7bea81e}{status\_\-last}}
+\label{structstepper__motor__t_4bbf149941b37969ce2a486bc7bea81e}
+
+\begin{CompactList}\small\item\em The last status. \item\end{CompactList}\item 
+\hypertarget{structstepper__motor__t_00163b2a2a26dd96e68beb08f4eb3c6e}{
+int8\_\-t \hyperlink{structstepper__motor__t_00163b2a2a26dd96e68beb08f4eb3c6e}{current\_\-pos}}
+\label{structstepper__motor__t_00163b2a2a26dd96e68beb08f4eb3c6e}
+
+\begin{CompactList}\small\item\em Current position (\hyperlink{system_8h_7b19b2744b17f8f369226dd73101a4b2}{smartie\_\-color\_\-t} can also be used). \item\end{CompactList}\item 
+\hypertarget{structstepper__motor__t_a21f2e88216c74bd38d655b596b927c2}{
+int8\_\-t \hyperlink{structstepper__motor__t_a21f2e88216c74bd38d655b596b927c2}{target\_\-pos}}
+\label{structstepper__motor__t_a21f2e88216c74bd38d655b596b927c2}
+
+\begin{CompactList}\small\item\em Target position (\hyperlink{system_8h_7b19b2744b17f8f369226dd73101a4b2}{smartie\_\-color\_\-t} can also be used). \item\end{CompactList}\item 
+\hypertarget{structstepper__motor__t_af03118d7157229734ebbf8e5cc43c2d}{
+uint16\_\-t \hyperlink{structstepper__motor__t_af03118d7157229734ebbf8e5cc43c2d}{cycle\_\-counter}}
+\label{structstepper__motor__t_af03118d7157229734ebbf8e5cc43c2d}
+
+\begin{CompactList}\small\item\em One cycle takes 1 millisecond. \item\end{CompactList}\item 
+\hypertarget{structstepper__motor__t_c9eccf8cef29d07f43317c0814d821f2}{
+uint8\_\-t \hyperlink{structstepper__motor__t_c9eccf8cef29d07f43317c0814d821f2}{steps}}
+\label{structstepper__motor__t_c9eccf8cef29d07f43317c0814d821f2}
+
+\begin{CompactList}\small\item\em Count every step to estimate when to ramp down. \item\end{CompactList}\item 
+\hypertarget{structstepper__motor__t_271f73d7af7fc3c94994448d9e3ab811}{
+uint8\_\-t \hyperlink{structstepper__motor__t_271f73d7af7fc3c94994448d9e3ab811}{ramp\_\-steps}}
+\label{structstepper__motor__t_271f73d7af7fc3c94994448d9e3ab811}
+
+\begin{CompactList}\small\item\em One step takes \hyperlink{system_8h_09bccded49054a78a07e0d63439e9963}{CATCH\_\-STEP\_\-DURATION} or \hyperlink{system_8h_a2e7a288930ea3e5c40dd46d9710c3c4}{REV\_\-STEP\_\-DURATION} steps. \item\end{CompactList}\item 
+\hypertarget{structstepper__motor__t_54b0e9b52201abc53290a49adf99412a}{
+uint8\_\-t \hyperlink{structstepper__motor__t_54b0e9b52201abc53290a49adf99412a}{ramp\_\-duration}}
+\label{structstepper__motor__t_54b0e9b52201abc53290a49adf99412a}
+
+\begin{CompactList}\small\item\em Ramp duration lasts \hyperlink{system_8h_6ef7e4171ad6c94755cb69dfb84ee6e6}{CATCH\_\-RAMP\_\-DURATION} or \hyperlink{system_8h_16f46929c8f14df1763fdaab4f10a51d}{REV\_\-RAMP\_\-DURATION}. \item\end{CompactList}\item 
+\hypertarget{structstepper__motor__t_0ed248c8aa0519d4f46c1138c6d56cc1}{
+uint8\_\-t \hyperlink{structstepper__motor__t_0ed248c8aa0519d4f46c1138c6d56cc1}{steps\_\-estimated}}
+\label{structstepper__motor__t_0ed248c8aa0519d4f46c1138c6d56cc1}
+
+\begin{CompactList}\small\item\em Steps counted from as soon as the lightbarriere is blocked. \item\end{CompactList}\item 
+\hypertarget{structstepper__motor__t_3351f7a8001ddf9e7107778f92118717}{
+uint8\_\-t \hyperlink{structstepper__motor__t_3351f7a8001ddf9e7107778f92118717}{steps\_\-estim\_\-def}}
+\label{structstepper__motor__t_3351f7a8001ddf9e7107778f92118717}
+
+\begin{CompactList}\small\item\em Start (default) value for \hyperlink{system_8h_ba0891209663ce63a925b18b553212c0}{CATCH\_\-STEPS\_\-ESTIMATED} or \hyperlink{system_8h_f0bdf5d3d7484b99405ef9f1373d8786}{REV\_\-STEPS\_\-ESTIMATED}. \item\end{CompactList}\item 
+\hypertarget{structstepper__motor__t_9321372de70c6e871bcb0a9e14b28c87}{
+int8\_\-t \hyperlink{structstepper__motor__t_9321372de70c6e871bcb0a9e14b28c87}{max\_\-size}}
+\label{structstepper__motor__t_9321372de70c6e871bcb0a9e14b28c87}
+
+\begin{CompactList}\small\item\em Max. positions. CATCH\_\-MAX\_\-POS or REV\_\-MAX\_\-POS. \item\end{CompactList}\item 
+\hypertarget{structstepper__motor__t_c167ddba27c9544bb898f03c9b129ab9}{
+int8\_\-t \hyperlink{structstepper__motor__t_c167ddba27c9544bb898f03c9b129ab9}{step\_\-duration}}
+\label{structstepper__motor__t_c167ddba27c9544bb898f03c9b129ab9}
+
+\begin{CompactList}\small\item\em The duration of \hyperlink{system_8h_a2e7a288930ea3e5c40dd46d9710c3c4}{REV\_\-STEP\_\-DURATION} or \hyperlink{system_8h_09bccded49054a78a07e0d63439e9963}{CATCH\_\-STEP\_\-DURATION} cycles lasts one step. \item\end{CompactList}\item 
+\hypertarget{structstepper__motor__t_4335e6bd85d6eabe62ba1beeebc0cd5e}{
+int16\_\-t \hyperlink{structstepper__motor__t_4335e6bd85d6eabe62ba1beeebc0cd5e}{pause}}
+\label{structstepper__motor__t_4335e6bd85d6eabe62ba1beeebc0cd5e}
+
+\begin{CompactList}\small\item\em The motor pauses as long as this is not zero. \item\end{CompactList}\item 
+\hypertarget{structstepper__motor__t_8d1622d7b7bfa1be48ceeaa0c1691e26}{
+int16\_\-t \hyperlink{structstepper__motor__t_8d1622d7b7bfa1be48ceeaa0c1691e26}{pause\_\-duration}}
+\label{structstepper__motor__t_8d1622d7b7bfa1be48ceeaa0c1691e26}
+
+\begin{CompactList}\small\item\em Default value (CATCH\_\-PAUSE\_\-DURATION or REV\_\-PAUSE\_\-DURATION). \item\end{CompactList}\item 
+\hypertarget{structstepper__motor__t_f134d2e58473638fa2a0f399caf641f7}{
+\hyperlink{structlightbarrier__t}{lightbarrier} $\ast$ \hyperlink{structstepper__motor__t_f134d2e58473638fa2a0f399caf641f7}{lb}}
+\label{structstepper__motor__t_f134d2e58473638fa2a0f399caf641f7}
+
+\begin{CompactList}\small\item\em The lightbarrier that corresponds to that motor. \item\end{CompactList}\item 
+\hypertarget{structstepper__motor__t_5917b6c46ec2e10be4a7c91e5ecbfde5}{
+void($\ast$ \hyperlink{structstepper__motor__t_5917b6c46ec2e10be4a7c91e5ecbfde5}{enable} )()}
+\label{structstepper__motor__t_5917b6c46ec2e10be4a7c91e5ecbfde5}
+
+\begin{CompactList}\small\item\em Will enable the motor (power on). \item\end{CompactList}\item 
+\hypertarget{structstepper__motor__t_3de57827f6cd4c85b9a632d5073e5dac}{
+void($\ast$ \hyperlink{structstepper__motor__t_3de57827f6cd4c85b9a632d5073e5dac}{disable} )()}
+\label{structstepper__motor__t_3de57827f6cd4c85b9a632d5073e5dac}
+
+\begin{CompactList}\small\item\em Will diable the motor (power off). \item\end{CompactList}\item 
+\hypertarget{structstepper__motor__t_70f57cb4e3039c8c3cf145cecec3aba7}{
+void($\ast$ \hyperlink{structstepper__motor__t_70f57cb4e3039c8c3cf145cecec3aba7}{move\_\-step} )()}
+\label{structstepper__motor__t_70f57cb4e3039c8c3cf145cecec3aba7}
+
+\begin{CompactList}\small\item\em Will move the motor for one step. \item\end{CompactList}\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+The stepper motor. 
+
+Definition at line 372 of file system.h.
+
+The documentation for this struct was generated from the following file:\begin{CompactItemize}
+\item 
+\hyperlink{system_8h}{system.h}\end{CompactItemize}

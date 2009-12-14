@@ -1,0 +1,44 @@
+\hypertarget{ee_8c}{
+\section{ee.c File Reference}
+\label{ee_8c}\index{ee.c@{ee.c}}
+}
+Values for system defaults, stored in EEProm. 
+
+{\tt \#include \char`\"{}system.h\char`\"{}}\par
+{\tt \#include \char`\"{}ee.h\char`\"{}}\par
+
+
+Include dependency graph for ee.c:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=91pt]{ee_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Variables}
+\begin{CompactItemize}
+\item 
+const \hyperlink{structee__memory__t}{ee\_\-memory} ee\_\-mem \hyperlink{ee_8c_73189182d5e08c7c2c558f75a74ab565}{EEMEM}
+\begin{CompactList}\small\item\em Values for structure in EEProm. \item\end{CompactList}\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+Values for system defaults, stored in EEProm. 
+
+When compiling this file, a smarties2.eep file int intel hex format will be created, which can be uploaded to the EEprom of the ATMega32. The ATMega32 will not override the EEProm with this this values on reset. 
+
+Definition in file \hyperlink{ee_8c-source}{ee.c}.
+
+\subsection{Variable Documentation}
+\hypertarget{ee_8c_73189182d5e08c7c2c558f75a74ab565}{
+\index{ee.c@{ee.c}!EEMEM@{EEMEM}}
+\index{EEMEM@{EEMEM}!ee.c@{ee.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}const {\bf ee\_\-memory} ee\_\-mem {\bf EEMEM}}}
+\label{ee_8c_73189182d5e08c7c2c558f75a74ab565}
+
+
+Values for structure in EEProm. 
+
+Important! For keeping backward compatibility add new variables only at the end! 
+
+Definition at line 26 of file ee.c.

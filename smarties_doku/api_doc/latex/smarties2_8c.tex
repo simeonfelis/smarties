@@ -1,0 +1,65 @@
+\hypertarget{smarties2_8c}{
+\section{smarties2.c File Reference}
+\label{smarties2_8c}\index{smarties2.c@{smarties2.c}}
+}
+Entry file for Smarties project. 
+
+{\tt \#include $<$avr/interrupt.h$>$}\par
+{\tt \#include $<$stdlib.h$>$}\par
+{\tt \#include \char`\"{}smarties2.h\char`\"{}}\par
+{\tt \#include \char`\"{}system.h\char`\"{}}\par
+{\tt \#include \char`\"{}inits.h\char`\"{}}\par
+{\tt \#include \char`\"{}menu.h\char`\"{}}\par
+{\tt \#include \char`\"{}ee.h\char`\"{}}\par
+{\tt \#include \char`\"{}lcd\_\-display.h\char`\"{}}\par
+
+
+Include dependency graph for smarties2.c:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=355pt]{smarties2_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{CompactItemize}
+\item 
+\hypertarget{smarties2_8c_a7a521eea3183f542ce7cb5cf3988e98}{
+void \hyperlink{smarties2_8c_a7a521eea3183f542ce7cb5cf3988e98}{smartie\_\-lcd\_\-write\_\-color} (smartie\_\-color color)}
+\label{smarties2_8c_a7a521eea3183f542ce7cb5cf3988e98}
+
+\begin{CompactList}\small\item\em Writes the color to the current postion of the display. \item\end{CompactList}\item 
+int \hyperlink{smarties2_8c_840291bc02cba5474a4cb46a9b9566fe}{main} (void)
+\begin{CompactList}\small\item\em Entry functin for smarties2. \item\end{CompactList}\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+Entry file for Smarties project. 
+
+Copyright (c) 2008 Simeon Felis
+
+\begin{Desc}
+\item[Version:]0.1 \end{Desc}
+
+
+Definition in file \hyperlink{smarties2_8c-source}{smarties2.c}.
+
+\subsection{Function Documentation}
+\hypertarget{smarties2_8c_840291bc02cba5474a4cb46a9b9566fe}{
+\index{smarties2.c@{smarties2.c}!main@{main}}
+\index{main@{main}!smarties2.c@{smarties2.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}int main (void)}}
+\label{smarties2_8c_840291bc02cba5474a4cb46a9b9566fe}
+
+
+Entry functin for smarties2. 
+
+This function controls the whole smarties machine by checking the current mode and performing the single steps required for the mode.
+
+This function also handles the user inputs.
+
+The subfunctions for driving the periphals are collected in \hyperlink{system_8h}{system.h}. The LCD menu is controlled by functions collected in \hyperlink{lcd__display_8h}{lcd\_\-display.h}. 
+
+Definition at line 221 of file smarties2.c.
+
+References catcher\_\-rotate\_\-absolute(), col\_\-blue, col\_\-brown, col\_\-green, col\_\-orange, col\_\-pink, col\_\-purple, col\_\-red, col\_\-yellow, smartie\_\-t::color, color\_\-sensor\_\-tcs\_\-t::color, stepper\_\-motor\_\-t::current\_\-pos, ee\_\-memory\_\-t::def\_\-blu, ee\_\-memory\_\-t::def\_\-gre, ee\_\-memory\_\-t::def\_\-red, color\_\-sensor\_\-tcs\_\-t::distance, color\_\-sensor\_\-tcs\_\-t::filter\_\-freq\_\-blue, color\_\-sensor\_\-tcs\_\-t::filter\_\-freq\_\-green, color\_\-sensor\_\-tcs\_\-t::filter\_\-freq\_\-none, color\_\-sensor\_\-tcs\_\-t::filter\_\-freq\_\-red, system\_\-step\_\-t::I, system\_\-step\_\-t::II, system\_\-step\_\-t::III, init\_\-all(), menu\_\-entry\_\-t::l\_\-action, smartie\_\-sorter\_\-t::lb\_\-revolver, lcd\_\-clrscr(), lcd\_\-gotoxy(), lcd\_\-puts(), rotary\_\-encoder\_\-t::left, system\_\-state\_\-t::mode, system\_\-state\_\-t::mode\_\-last, smartie\_\-sorter\_\-t::mot\_\-catcher, smartie\_\-sorter\_\-t::mot\_\-revolver, menu\_\-entry\_\-t::next, lightbarrier\_\-t::passes, menu\_\-entry\_\-t::prev, smartie\_\-sorter\_\-t::prog, prog\_\-color\_\-tcs, prog\_\-none, prog\_\-rotate\_\-catcher, prog\_\-rotate\_\-revolver, prog\_\-set\_\-colors\_\-blue, prog\_\-set\_\-colors\_\-brown, prog\_\-set\_\-colors\_\-green, prog\_\-set\_\-colors\_\-orange, prog\_\-set\_\-colors\_\-pink, prog\_\-set\_\-colors\_\-purple, prog\_\-set\_\-colors\_\-red, prog\_\-set\_\-colors\_\-restore, prog\_\-set\_\-colors\_\-yellow, rotary\_\-encoder\_\-t::push, menu\_\-entry\_\-t::r\_\-action, REFERENCE\_\-MEASURES, smartie\_\-sorter\_\-t::rev, revolver\_\-rotate\_\-relative(), rotary\_\-encoder\_\-t::right, smartie\_\-sorter\_\-t::rotenc, smartie\_\-sorter\_\-t::sens\_\-tcs, sensor\_\-tcs\_\-get\_\-color(), revolver\_\-t::smart, smartie\_\-lcd\_\-write\_\-color(), smartie\_\-sorter\_\-t::speed, stat\_\-finished, stat\_\-idle, stat\_\-start\_\-working, stat\_\-stop\_\-working, stat\_\-working, smartie\_\-sorter\_\-t::state, vibrator\_\-t::status, color\_\-sensor\_\-tcs\_\-t::status, stepper\_\-motor\_\-t::status, vibrator\_\-t::status\_\-last, color\_\-sensor\_\-tcs\_\-t::status\_\-last, stepper\_\-motor\_\-t::status\_\-last, system\_\-state\_\-t::step, sys\_\-get\_\-out\_\-pos(), SYS\_\-MODE\_\-INIT, SYS\_\-MODE\_\-PAUSE, SYS\_\-MODE\_\-RUNNING, stepper\_\-motor\_\-t::target\_\-pos, menu\_\-entry\_\-t::text, ee\_\-memory\_\-t::usr\_\-blu, ee\_\-memory\_\-t::usr\_\-gre, ee\_\-memory\_\-t::usr\_\-red, smartie\_\-sorter\_\-t::vibr, and vibrator\_\-start().

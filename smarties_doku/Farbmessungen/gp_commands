@@ -1,0 +1,25 @@
+reset
+set xrange [0:50]
+set yrange [0:50]
+set zrange [0:50]
+set title "Smarties Channel Ranges"
+set xlabel "Blue"
+set ylabel "Green"
+set zlabel "Red"
+set terminal wxt # in linux plots necessary
+#set terminal win # in windows plots necessary
+splot \
+'smarties_all_channels' using 1:2:3 title "Yellow" lt rgb "black", \
+'smarties_all_channels' using 4:5:6 title "Red" lt rgb "red", \
+'smarties_all_channels' using 7:8:9 title "Blue" lt rgb "blue", \
+'smarties_all_channels' using 10:11:12 title "Orange" lt rgb "orange", \
+'smarties_all_channels' using 13:14:15 title "Brown" lt rgb "brown", \
+'smarties_all_channels' using 16:17:18 title "Green" lt rgb "green", \
+'smarties_all_channels' using 19:20:21 title "Purple" lt rgb "purple", \
+'smarties_all_channels' using 22:23:24 title "Pink" lt rgb "pink"
+set output "plot.ps"
+set terminal postscript
+replot
+#set terminal win
+set terminal wxt # in linux plots necessary
+replot

@@ -1,0 +1,255 @@
+\hypertarget{lcd__display_8c}{
+\section{lcd\_\-display.c File Reference}
+\label{lcd__display_8c}\index{lcd\_\-display.c@{lcd\_\-display.c}}
+}
+{\tt \#include $<$inttypes.h$>$}\par
+{\tt \#include $<$avr/io.h$>$}\par
+{\tt \#include $<$util/delay.h$>$}\par
+{\tt \#include $<$avr/pgmspace.h$>$}\par
+{\tt \#include \char`\"{}lcd\_\-display.h\char`\"{}}\par
+
+
+Include dependency graph for lcd\_\-display.c:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=155pt]{lcd__display_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{CompactItemize}
+\item 
+void \hyperlink{lcd__display_8c_ea9d14f02df06f948cb5a56776980826}{lcd\_\-command} (uint8\_\-t cmd)
+\begin{CompactList}\small\item\em Send LCD controller instruction command. \item\end{CompactList}\item 
+void \hyperlink{lcd__display_8c_d0729d2cba627825a089ca1fff12ba29}{lcd\_\-data} (uint8\_\-t data)
+\begin{CompactList}\small\item\em Send data byte to LCD controller. \item\end{CompactList}\item 
+void \hyperlink{lcd__display_8c_dbf47a5efdf02367ded1ebf8f9edb5fe}{lcd\_\-gotoxy} (uint8\_\-t x, uint8\_\-t y)
+\begin{CompactList}\small\item\em Set cursor to specified position. \item\end{CompactList}\item 
+void \hyperlink{lcd__display_8c_f8da853dba4b9d5f2aea4e294444e14d}{lcd\_\-clrscr} (void)
+\begin{CompactList}\small\item\em Clear display and set cursor to home position. \item\end{CompactList}\item 
+void \hyperlink{lcd__display_8c_3aabf730aa4e0393bb5c959583c00a8e}{lcd\_\-home} (void)
+\begin{CompactList}\small\item\em Set cursor to home position. \item\end{CompactList}\item 
+void \hyperlink{lcd__display_8c_fa7e36b95c43d603f510273ad077cbbe}{lcd\_\-putc} (char c)
+\begin{CompactList}\small\item\em Display character at current cursor position. \item\end{CompactList}\item 
+void \hyperlink{lcd__display_8c_8ffdfcac7638368ff04364c14984266e}{lcd\_\-puts} (const char $\ast$s)
+\begin{CompactList}\small\item\em Display string without auto linefeed. \item\end{CompactList}\item 
+void \hyperlink{lcd__display_8c_9022a24a56a9b15681f62eb6ba77e5de}{lcd\_\-puts\_\-p} (const char $\ast$progmem\_\-s)
+\begin{CompactList}\small\item\em Display string from program memory without auto linefeed. \item\end{CompactList}\item 
+void \hyperlink{lcd__display_8c_9af28b2779326b63ff4356e2b1828984}{lcd\_\-init} (uint8\_\-t dispAttr)
+\begin{CompactList}\small\item\em Initialize display and select type of cursor. \item\end{CompactList}\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+Title : HD44780U LCD library Author: Peter Fleury $<$\href{mailto:pfleury@gmx.ch}{\tt pfleury@gmx.ch}$>$ \href{http://jump.to/fleury}{\tt http://jump.to/fleury} File: \begin{Desc}
+\item[Id]lcd.c,v 1.14.2.1 2006/01/29 12:16:41 peter Exp \end{Desc}
+Software: AVR-GCC 3.3 Target: any AVR device, memory mapped mode only for AT90S4414/8515/Mega
+
+DESCRIPTION Basic routines for interfacing a HD44780U-based text lcd display
+
+Originally based on Volker Oth's lcd library, changed \hyperlink{lcd__display_8c_9af28b2779326b63ff4356e2b1828984}{lcd\_\-init()}, added additional constants for \hyperlink{lcd__display_8c_ea9d14f02df06f948cb5a56776980826}{lcd\_\-command()}, added 4-bit I/O mode, improved and optimized code.
+
+Library can be operated in memory mapped mode (LCD\_\-IO\_\-MODE=0) or in 4-bit IO port mode (LCD\_\-IO\_\-MODE=1). 8-bit IO port mode not supported.
+
+Memory mapped mode compatible with Kanda STK200, but supports also generation of R/W signal through A8 address line.
+
+USAGE See the C include lcd.h file for a description of each function 
+
+Definition in file \hyperlink{lcd__display_8c-source}{lcd\_\-display.c}.
+
+\subsection{Function Documentation}
+\hypertarget{lcd__display_8c_f8da853dba4b9d5f2aea4e294444e14d}{
+\index{lcd\_\-display.c@{lcd\_\-display.c}!lcd\_\-clrscr@{lcd\_\-clrscr}}
+\index{lcd\_\-clrscr@{lcd\_\-clrscr}!lcd_display.c@{lcd\_\-display.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void lcd\_\-clrscr (void)}}
+\label{lcd__display_8c_f8da853dba4b9d5f2aea4e294444e14d}
+
+
+Clear display and set cursor to home position. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em void}]\end{description}
+\end{Desc}
+\begin{Desc}
+\item[Returns:]none \end{Desc}
+
+
+Definition at line 434 of file lcd\_\-display.c.
+
+References lcd\_\-command().
+
+Referenced by init\_\-all(), lcd\_\-init(), and main().\hypertarget{lcd__display_8c_ea9d14f02df06f948cb5a56776980826}{
+\index{lcd\_\-display.c@{lcd\_\-display.c}!lcd\_\-command@{lcd\_\-command}}
+\index{lcd\_\-command@{lcd\_\-command}!lcd_display.c@{lcd\_\-display.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void lcd\_\-command (uint8\_\-t {\em cmd})}}
+\label{lcd__display_8c_ea9d14f02df06f948cb5a56776980826}
+
+
+Send LCD controller instruction command. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em cmd}]instruction to send to LCD controller, see HD44780 data sheet \end{description}
+\end{Desc}
+\begin{Desc}
+\item[Returns:]none \end{Desc}
+
+
+Definition at line 372 of file lcd\_\-display.c.
+
+Referenced by lcd\_\-clrscr(), lcd\_\-gotoxy(), lcd\_\-home(), and lcd\_\-init().\hypertarget{lcd__display_8c_d0729d2cba627825a089ca1fff12ba29}{
+\index{lcd\_\-display.c@{lcd\_\-display.c}!lcd\_\-data@{lcd\_\-data}}
+\index{lcd\_\-data@{lcd\_\-data}!lcd_display.c@{lcd\_\-display.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void lcd\_\-data (uint8\_\-t {\em data})}}
+\label{lcd__display_8c_d0729d2cba627825a089ca1fff12ba29}
+
+
+Send data byte to LCD controller. 
+
+Similar to \hyperlink{lcd__display_8c_fa7e36b95c43d603f510273ad077cbbe}{lcd\_\-putc()}, but without interpreting LF \begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em data}]byte to send to LCD controller, see HD44780 data sheet \end{description}
+\end{Desc}
+\begin{Desc}
+\item[Returns:]none \end{Desc}
+
+
+Definition at line 384 of file lcd\_\-display.c.\hypertarget{lcd__display_8c_dbf47a5efdf02367ded1ebf8f9edb5fe}{
+\index{lcd\_\-display.c@{lcd\_\-display.c}!lcd\_\-gotoxy@{lcd\_\-gotoxy}}
+\index{lcd\_\-gotoxy@{lcd\_\-gotoxy}!lcd_display.c@{lcd\_\-display.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void lcd\_\-gotoxy (uint8\_\-t {\em x}, \/  uint8\_\-t {\em y})}}
+\label{lcd__display_8c_dbf47a5efdf02367ded1ebf8f9edb5fe}
+
+
+Set cursor to specified position. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em x}]horizontal position\par
+ (0: left most position) \item[{\em y}]vertical position\par
+ (0: first line) \end{description}
+\end{Desc}
+\begin{Desc}
+\item[Returns:]none \end{Desc}
+
+
+Definition at line 398 of file lcd\_\-display.c.
+
+References lcd\_\-command(), LCD\_\-START\_\-LINE1, LCD\_\-START\_\-LINE2, LCD\_\-START\_\-LINE3, and LCD\_\-START\_\-LINE4.
+
+Referenced by main().\hypertarget{lcd__display_8c_3aabf730aa4e0393bb5c959583c00a8e}{
+\index{lcd\_\-display.c@{lcd\_\-display.c}!lcd\_\-home@{lcd\_\-home}}
+\index{lcd\_\-home@{lcd\_\-home}!lcd_display.c@{lcd\_\-display.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void lcd\_\-home (void)}}
+\label{lcd__display_8c_3aabf730aa4e0393bb5c959583c00a8e}
+
+
+Set cursor to home position. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em void}]\end{description}
+\end{Desc}
+\begin{Desc}
+\item[Returns:]none \end{Desc}
+
+
+Definition at line 443 of file lcd\_\-display.c.
+
+References lcd\_\-command().\hypertarget{lcd__display_8c_9af28b2779326b63ff4356e2b1828984}{
+\index{lcd\_\-display.c@{lcd\_\-display.c}!lcd\_\-init@{lcd\_\-init}}
+\index{lcd\_\-init@{lcd\_\-init}!lcd_display.c@{lcd\_\-display.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void lcd\_\-init (uint8\_\-t {\em dispAttr})}}
+\label{lcd__display_8c_9af28b2779326b63ff4356e2b1828984}
+
+
+Initialize display and select type of cursor. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em dispAttr}]{\bf LCD\_\-DISP\_\-OFF} display off\par
+ {\bf LCD\_\-DISP\_\-ON} display on, cursor off\par
+ {\bf LCD\_\-DISP\_\-ON\_\-CURSOR} display on, cursor on\par
+ {\bf LCD\_\-DISP\_\-ON\_\-CURSOR\_\-BLINK} display on, cursor on flashing \end{description}
+\end{Desc}
+\begin{Desc}
+\item[Returns:]none \end{Desc}
+
+
+Definition at line 538 of file lcd\_\-display.c.
+
+References lcd\_\-clrscr(), lcd\_\-command(), LCD\_\-DATA0\_\-PIN, LCD\_\-DATA0\_\-PORT, LCD\_\-DATA1\_\-PIN, LCD\_\-DATA1\_\-PORT, LCD\_\-DATA2\_\-PIN, LCD\_\-DATA2\_\-PORT, LCD\_\-DATA3\_\-PIN, LCD\_\-DATA3\_\-PORT, LCD\_\-E\_\-PIN, LCD\_\-E\_\-PORT, LCD\_\-RS\_\-PIN, LCD\_\-RS\_\-PORT, LCD\_\-RW\_\-PIN, and LCD\_\-RW\_\-PORT.
+
+Referenced by init\_\-all().\hypertarget{lcd__display_8c_fa7e36b95c43d603f510273ad077cbbe}{
+\index{lcd\_\-display.c@{lcd\_\-display.c}!lcd\_\-putc@{lcd\_\-putc}}
+\index{lcd\_\-putc@{lcd\_\-putc}!lcd_display.c@{lcd\_\-display.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void lcd\_\-putc (char {\em c})}}
+\label{lcd__display_8c_fa7e36b95c43d603f510273ad077cbbe}
+
+
+Display character at current cursor position. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em c}]character to be displayed \end{description}
+\end{Desc}
+\begin{Desc}
+\item[Returns:]none \end{Desc}
+
+
+Definition at line 454 of file lcd\_\-display.c.
+
+References LCD\_\-DISP\_\-LENGTH, LCD\_\-START\_\-LINE1, LCD\_\-START\_\-LINE2, LCD\_\-START\_\-LINE3, and LCD\_\-START\_\-LINE4.
+
+Referenced by lcd\_\-puts(), and lcd\_\-puts\_\-p().\hypertarget{lcd__display_8c_8ffdfcac7638368ff04364c14984266e}{
+\index{lcd\_\-display.c@{lcd\_\-display.c}!lcd\_\-puts@{lcd\_\-puts}}
+\index{lcd\_\-puts@{lcd\_\-puts}!lcd_display.c@{lcd\_\-display.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void lcd\_\-puts (const char $\ast$ {\em s})}}
+\label{lcd__display_8c_8ffdfcac7638368ff04364c14984266e}
+
+
+Display string without auto linefeed. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em s}]string to be displayed \end{description}
+\end{Desc}
+\begin{Desc}
+\item[Returns:]none \end{Desc}
+
+
+Definition at line 501 of file lcd\_\-display.c.
+
+References lcd\_\-putc().
+
+Referenced by init\_\-all(), main(), and smartie\_\-lcd\_\-write\_\-color().\hypertarget{lcd__display_8c_9022a24a56a9b15681f62eb6ba77e5de}{
+\index{lcd\_\-display.c@{lcd\_\-display.c}!lcd\_\-puts\_\-p@{lcd\_\-puts\_\-p}}
+\index{lcd\_\-puts\_\-p@{lcd\_\-puts\_\-p}!lcd_display.c@{lcd\_\-display.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void lcd\_\-puts\_\-p (const char $\ast$ {\em progmem\_\-s})}}
+\label{lcd__display_8c_9022a24a56a9b15681f62eb6ba77e5de}
+
+
+Display string from program memory without auto linefeed. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em s}]string from program memory be be displayed \end{description}
+\end{Desc}
+\begin{Desc}
+\item[Returns:]none \end{Desc}
+\begin{Desc}
+\item[See also:]\hyperlink{lcd__display_8h_4f1928f1515e21422d5a33af2949f2f7}{lcd\_\-puts\_\-P} \end{Desc}
+
+
+Definition at line 518 of file lcd\_\-display.c.
+
+References lcd\_\-putc().

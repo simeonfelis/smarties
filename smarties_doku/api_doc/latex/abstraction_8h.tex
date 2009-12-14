@@ -1,0 +1,87 @@
+\hypertarget{abstraction_8h}{
+\section{C:/Dokumente und Einstellungen/bisp/workspace/smarties2/src/abstraction.h File Reference}
+\label{abstraction_8h}\index{C:/Dokumente und Einstellungen/bisp/workspace/smarties2/src/abstraction.h@{C:/Dokumente und Einstellungen/bisp/workspace/smarties2/src/abstraction.h}}
+}
+
+
+This graph shows which files directly or indirectly include this file:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=420pt]{abstraction_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{CompactItemize}
+\item 
+void \hyperlink{abstraction_8h_b45f6a6990e7755a39cc6279e3c09abf}{motor\_\-stuff} ()
+\begin{CompactList}\small\item\em Takes controll over the catcher and revolver stepper engines. \item\end{CompactList}\item 
+void \hyperlink{abstraction_8h_6a89fa3c3d8ffcbc9f381e23b1d1cb1d}{rotary\_\-encoder\_\-stuff} ()
+\begin{CompactList}\small\item\em Takes controll over the rotary encoder (user input) device. \item\end{CompactList}\item 
+void \hyperlink{abstraction_8h_acf290466c264ff9b7443af87b69f495}{lightbarrier\_\-stuff} ()
+\begin{CompactList}\small\item\em Take control over the lightbarriers. \item\end{CompactList}\item 
+void \hyperlink{abstraction_8h_fe41c2e2584c3cf15d977f51cb34a16b}{shaker\_\-stuff} ()
+\begin{CompactList}\small\item\em Takes control over the shaker (vibrator) device. \item\end{CompactList}\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+All these functions are expected to be called every millisecond by the function ISR (TIMER0\_\-OVF\_\-vect) in the file my\_\-interrupt.c 
+
+\subsection{Function Documentation}
+\hypertarget{abstraction_8h_acf290466c264ff9b7443af87b69f495}{
+\index{abstraction.h@{abstraction.h}!lightbarrier\_\-stuff@{lightbarrier\_\-stuff}}
+\index{lightbarrier\_\-stuff@{lightbarrier\_\-stuff}!abstraction.h@{abstraction.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void lightbarrier\_\-stuff ()}}
+\label{abstraction_8h_acf290466c264ff9b7443af87b69f495}
+
+
+Take control over the lightbarriers. 
+
+This function is expected to be called regulary. It polls the input pins of the lightbarrier and sets the corresponding flags of lightbarrier struct. This function assumes that lightbarriers are always enabled. \hypertarget{abstraction_8h_b45f6a6990e7755a39cc6279e3c09abf}{
+\index{abstraction.h@{abstraction.h}!motor\_\-stuff@{motor\_\-stuff}}
+\index{motor\_\-stuff@{motor\_\-stuff}!abstraction.h@{abstraction.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void motor\_\-stuff ()}}
+\label{abstraction_8h_b45f6a6990e7755a39cc6279e3c09abf}
+
+
+Takes controll over the catcher and revolver stepper engines. 
+
+The ramp up is made by linear shrinking the time period t for each step: 
+
+\begin{Code}\begin{verbatim}  Steps
+  ^
+  |         4t                 3t       2t   t  t  t  t
+  *                       *           *     *  *  *  *  *
+  |  
+  +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+-> Time
+  0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18
+ 
+ Symbolic diagram, no real values
+\end{verbatim}
+\end{Code}
+
+
+
+This function is expected to be called every millisecond to work properly.
+
+Important setting values are:\begin{itemize}
+\item CATCH\_\-STEP\_\-DURATION\item CATCH\_\-RAMP\_\-DURATION\item REV\_\-STEP\_\-DURATION\item REV\_\-RAMP\_\-DURATION \end{itemize}
+\hypertarget{abstraction_8h_6a89fa3c3d8ffcbc9f381e23b1d1cb1d}{
+\index{abstraction.h@{abstraction.h}!rotary\_\-encoder\_\-stuff@{rotary\_\-encoder\_\-stuff}}
+\index{rotary\_\-encoder\_\-stuff@{rotary\_\-encoder\_\-stuff}!abstraction.h@{abstraction.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void rotary\_\-encoder\_\-stuff ()}}
+\label{abstraction_8h_6a89fa3c3d8ffcbc9f381e23b1d1cb1d}
+
+
+Takes controll over the rotary encoder (user input) device. 
+
+This function is expected to be called regulary. It polls the input pins for the rotary encoder and sets the corresponding flags of the rotary\_\-encoder struct. \hypertarget{abstraction_8h_fe41c2e2584c3cf15d977f51cb34a16b}{
+\index{abstraction.h@{abstraction.h}!shaker\_\-stuff@{shaker\_\-stuff}}
+\index{shaker\_\-stuff@{shaker\_\-stuff}!abstraction.h@{abstraction.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void shaker\_\-stuff ()}}
+\label{abstraction_8h_fe41c2e2584c3cf15d977f51cb34a16b}
+
+
+Takes control over the shaker (vibrator) device. 
+
+This function is expected to be called regulary. It polls the input pins of the shaker and sets the corresponding flags of the shaker struct. This function assumes that lightbarriers are always enabled. 

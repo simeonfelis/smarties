@@ -1,0 +1,510 @@
+\begin{theindex}
+
+  \item {abstraction.c}, \hyperpage{31}
+    \subitem {lightbarrier\_\discretionary {-}{}{}stuff}, 
+		\hyperpage{32}
+    \subitem {motor\_\discretionary {-}{}{}stuff}, \hyperpage{32}
+    \subitem {rotary\_\discretionary {-}{}{}encoder\_\discretionary {-}{}{}stuff}, 
+		\hyperpage{32}
+    \subitem {sensor\_\discretionary {-}{}{}tcs\_\discretionary {-}{}{}stuff}, 
+		\hyperpage{33}
+    \subitem {vibrator\_\discretionary {-}{}{}stuff}, \hyperpage{33}
+
+  \indexspace
+
+  \item {catcher\_\discretionary {-}{}{}rotate\_\discretionary {-}{}{}absolute}
+    \subitem {system.c}, \hyperpage{61}
+    \subitem {system.h}, \hyperpage{77}
+  \item {catcher\_\discretionary {-}{}{}rotate\_\discretionary {-}{}{}relative}
+    \subitem {system.c}, \hyperpage{61}
+    \subitem {system.h}, \hyperpage{77}
+  \item {col\_\-blue}
+    \subitem {system.h}, \hyperpage{76}
+  \item {col\_\-brown}
+    \subitem {system.h}, \hyperpage{77}
+  \item {col\_\-green}
+    \subitem {system.h}, \hyperpage{76}
+  \item {col\_\-orange}
+    \subitem {system.h}, \hyperpage{77}
+  \item {col\_\-pink}
+    \subitem {system.h}, \hyperpage{77}
+  \item {col\_\-purple}
+    \subitem {system.h}, \hyperpage{77}
+  \item {col\_\-red}
+    \subitem {system.h}, \hyperpage{77}
+  \item {col\_\-unknown}
+    \subitem {system.h}, \hyperpage{77}
+  \item {col\_\-yellow}
+    \subitem {system.h}, \hyperpage{77}
+  \item {COL\_\discretionary {-}{}{}SENS\_\discretionary {-}{}{}TCS\_\discretionary {-}{}{}SET\_\discretionary {-}{}{}FILTER}
+    \subitem {system.h}, \hyperpage{74}
+  \item {COL\_\discretionary {-}{}{}SENS\_\discretionary {-}{}{}TCS\_\discretionary {-}{}{}SET\_\discretionary {-}{}{}FREQ\_\discretionary {-}{}{}SCALE}
+    \subitem {system.h}, \hyperpage{74}
+  \item {color\_\discretionary {-}{}{}sensor\_\discretionary {-}{}{}adjd\_\discretionary {-}{}{}t}, 
+		\hyperpage{15}
+  \item {color\_\discretionary {-}{}{}sensor\_\discretionary {-}{}{}tcs\_\discretionary {-}{}{}t}, 
+		\hyperpage{16}
+  \item {common\_\discretionary {-}{}{}stat\_\discretionary {-}{}{}t}
+    \subitem {system.h}, \hyperpage{75}
+
+  \indexspace
+
+  \item {ee.c}, \hyperpage{34}
+    \subitem {EEMEM}, \hyperpage{34}
+  \item {ee.h}, \hyperpage{35}
+  \item {ee\_\discretionary {-}{}{}memory\_\discretionary {-}{}{}t}, 
+		\hyperpage{17}
+  \item {EEMEM}
+    \subitem {ee.c}, \hyperpage{34}
+
+  \indexspace
+
+  \item {init\_\discretionary {-}{}{}menu}
+    \subitem {inits.c}, \hyperpage{37}
+  \item {init\_\discretionary {-}{}{}timer}
+    \subitem {inits.c}, \hyperpage{37}
+  \item {inits.c}, \hyperpage{36}
+    \subitem {init\_\discretionary {-}{}{}menu}, \hyperpage{37}
+    \subitem {init\_\discretionary {-}{}{}timer}, \hyperpage{37}
+  \item {interrupt.c}, \hyperpage{38}
+
+  \indexspace
+
+  \item {lb\_\-blocked}
+    \subitem {system.h}, \hyperpage{75}
+  \item {lb\_\-free}
+    \subitem {system.h}, \hyperpage{75}
+  \item {lcd\_\discretionary {-}{}{}clrscr}
+    \subitem {lcd\_\discretionary {-}{}{}display.c}, \hyperpage{40}
+    \subitem {lcd\_\discretionary {-}{}{}display.h}, \hyperpage{50}
+  \item {lcd\_\discretionary {-}{}{}command}
+    \subitem {lcd\_\discretionary {-}{}{}display.c}, \hyperpage{40}
+    \subitem {lcd\_\discretionary {-}{}{}display.h}, \hyperpage{51}
+  \item {LCD\_\discretionary {-}{}{}CONTROLLER\_\discretionary {-}{}{}KS0073}
+    \subitem {lcd\_\discretionary {-}{}{}display.h}, \hyperpage{47}
+  \item {lcd\_\discretionary {-}{}{}data}
+    \subitem {lcd\_\discretionary {-}{}{}display.c}, \hyperpage{40}
+    \subitem {lcd\_\discretionary {-}{}{}display.h}, \hyperpage{51}
+  \item {LCD\_\discretionary {-}{}{}DATA0\_\discretionary {-}{}{}PIN}
+    \subitem {lcd\_\discretionary {-}{}{}display.h}, \hyperpage{47}
+  \item {LCD\_\discretionary {-}{}{}DATA0\_\discretionary {-}{}{}PORT}
+    \subitem {lcd\_\discretionary {-}{}{}display.h}, \hyperpage{47}
+  \item {LCD\_\discretionary {-}{}{}DATA1\_\discretionary {-}{}{}PIN}
+    \subitem {lcd\_\discretionary {-}{}{}display.h}, \hyperpage{47}
+  \item {LCD\_\discretionary {-}{}{}DATA1\_\discretionary {-}{}{}PORT}
+    \subitem {lcd\_\discretionary {-}{}{}display.h}, \hyperpage{47}
+  \item {LCD\_\discretionary {-}{}{}DATA2\_\discretionary {-}{}{}PIN}
+    \subitem {lcd\_\discretionary {-}{}{}display.h}, \hyperpage{47}
+  \item {LCD\_\discretionary {-}{}{}DATA2\_\discretionary {-}{}{}PORT}
+    \subitem {lcd\_\discretionary {-}{}{}display.h}, \hyperpage{48}
+  \item {LCD\_\discretionary {-}{}{}DATA3\_\discretionary {-}{}{}PIN}
+    \subitem {lcd\_\discretionary {-}{}{}display.h}, \hyperpage{48}
+  \item {LCD\_\discretionary {-}{}{}DATA3\_\discretionary {-}{}{}PORT}
+    \subitem {lcd\_\discretionary {-}{}{}display.h}, \hyperpage{48}
+  \item {LCD\_\discretionary {-}{}{}DISP\_\discretionary {-}{}{}LENGTH}
+    \subitem {lcd\_\discretionary {-}{}{}display.h}, \hyperpage{48}
+  \item {lcd\_\discretionary {-}{}{}display.c}, \hyperpage{39}
+    \subitem {lcd\_\discretionary {-}{}{}clrscr}, \hyperpage{40}
+    \subitem {lcd\_\discretionary {-}{}{}command}, \hyperpage{40}
+    \subitem {lcd\_\discretionary {-}{}{}data}, \hyperpage{40}
+    \subitem {lcd\_\discretionary {-}{}{}gotoxy}, \hyperpage{41}
+    \subitem {lcd\_\discretionary {-}{}{}home}, \hyperpage{41}
+    \subitem {lcd\_\discretionary {-}{}{}init}, \hyperpage{41}
+    \subitem {lcd\_\discretionary {-}{}{}putc}, \hyperpage{42}
+    \subitem {lcd\_\discretionary {-}{}{}puts}, \hyperpage{42}
+    \subitem {lcd\_\discretionary {-}{}{}puts\_\discretionary {-}{}{}p}, 
+		\hyperpage{42}
+  \item {lcd\_\discretionary {-}{}{}display.h}, \hyperpage{44}
+    \subitem {lcd\_\discretionary {-}{}{}clrscr}, \hyperpage{50}
+    \subitem {lcd\_\discretionary {-}{}{}command}, \hyperpage{51}
+    \subitem {LCD\_\discretionary {-}{}{}CONTROLLER\_\discretionary {-}{}{}KS0073}, 
+		\hyperpage{47}
+    \subitem {lcd\_\discretionary {-}{}{}data}, \hyperpage{51}
+    \subitem {LCD\_\discretionary {-}{}{}DATA0\_\discretionary {-}{}{}PIN}, 
+		\hyperpage{47}
+    \subitem {LCD\_\discretionary {-}{}{}DATA0\_\discretionary {-}{}{}PORT}, 
+		\hyperpage{47}
+    \subitem {LCD\_\discretionary {-}{}{}DATA1\_\discretionary {-}{}{}PIN}, 
+		\hyperpage{47}
+    \subitem {LCD\_\discretionary {-}{}{}DATA1\_\discretionary {-}{}{}PORT}, 
+		\hyperpage{47}
+    \subitem {LCD\_\discretionary {-}{}{}DATA2\_\discretionary {-}{}{}PIN}, 
+		\hyperpage{47}
+    \subitem {LCD\_\discretionary {-}{}{}DATA2\_\discretionary {-}{}{}PORT}, 
+		\hyperpage{48}
+    \subitem {LCD\_\discretionary {-}{}{}DATA3\_\discretionary {-}{}{}PIN}, 
+		\hyperpage{48}
+    \subitem {LCD\_\discretionary {-}{}{}DATA3\_\discretionary {-}{}{}PORT}, 
+		\hyperpage{48}
+    \subitem {LCD\_\discretionary {-}{}{}DISP\_\discretionary {-}{}{}LENGTH}, 
+		\hyperpage{48}
+    \subitem {LCD\_\discretionary {-}{}{}E\_\discretionary {-}{}{}PIN}, 
+		\hyperpage{48}
+    \subitem {LCD\_\discretionary {-}{}{}E\_\discretionary {-}{}{}PORT}, 
+		\hyperpage{48}
+    \subitem {lcd\_\discretionary {-}{}{}gotoxy}, \hyperpage{51}
+    \subitem {lcd\_\discretionary {-}{}{}home}, \hyperpage{52}
+    \subitem {lcd\_\discretionary {-}{}{}init}, \hyperpage{52}
+    \subitem {LCD\_\discretionary {-}{}{}IO\_\discretionary {-}{}{}MODE}, 
+		\hyperpage{48}
+    \subitem {LCD\_\discretionary {-}{}{}LINE\_\discretionary {-}{}{}LENGTH}, 
+		\hyperpage{49}
+    \subitem {LCD\_\discretionary {-}{}{}LINES}, \hyperpage{49}
+    \subitem {LCD\_\discretionary {-}{}{}PORT}, \hyperpage{49}
+    \subitem {lcd\_\discretionary {-}{}{}putc}, \hyperpage{52}
+    \subitem {lcd\_\discretionary {-}{}{}puts}, \hyperpage{53}
+    \subitem {lcd\_\discretionary {-}{}{}puts\_\discretionary {-}{}{}p}, 
+		\hyperpage{53}
+    \subitem {LCD\_\discretionary {-}{}{}RS\_\discretionary {-}{}{}PIN}, 
+		\hyperpage{49}
+    \subitem {LCD\_\discretionary {-}{}{}RS\_\discretionary {-}{}{}PORT}, 
+		\hyperpage{49}
+    \subitem {LCD\_\discretionary {-}{}{}RW\_\discretionary {-}{}{}PIN}, 
+		\hyperpage{49}
+    \subitem {LCD\_\discretionary {-}{}{}RW\_\discretionary {-}{}{}PORT}, 
+		\hyperpage{49}
+    \subitem {LCD\_\discretionary {-}{}{}START\_\discretionary {-}{}{}LINE1}, 
+		\hyperpage{49}
+    \subitem {LCD\_\discretionary {-}{}{}START\_\discretionary {-}{}{}LINE2}, 
+		\hyperpage{50}
+    \subitem {LCD\_\discretionary {-}{}{}START\_\discretionary {-}{}{}LINE3}, 
+		\hyperpage{50}
+    \subitem {LCD\_\discretionary {-}{}{}START\_\discretionary {-}{}{}LINE4}, 
+		\hyperpage{50}
+    \subitem {LCD\_\discretionary {-}{}{}WRAP\_\discretionary {-}{}{}LINES}, 
+		\hyperpage{50}
+    \subitem {XTAL}, \hyperpage{50}
+  \item {LCD\_\discretionary {-}{}{}E\_\discretionary {-}{}{}PIN}
+    \subitem {lcd\_\discretionary {-}{}{}display.h}, \hyperpage{48}
+  \item {LCD\_\discretionary {-}{}{}E\_\discretionary {-}{}{}PORT}
+    \subitem {lcd\_\discretionary {-}{}{}display.h}, \hyperpage{48}
+  \item {lcd\_\discretionary {-}{}{}gotoxy}
+    \subitem {lcd\_\discretionary {-}{}{}display.c}, \hyperpage{41}
+    \subitem {lcd\_\discretionary {-}{}{}display.h}, \hyperpage{51}
+  \item {lcd\_\discretionary {-}{}{}home}
+    \subitem {lcd\_\discretionary {-}{}{}display.c}, \hyperpage{41}
+    \subitem {lcd\_\discretionary {-}{}{}display.h}, \hyperpage{52}
+  \item {lcd\_\discretionary {-}{}{}init}
+    \subitem {lcd\_\discretionary {-}{}{}display.c}, \hyperpage{41}
+    \subitem {lcd\_\discretionary {-}{}{}display.h}, \hyperpage{52}
+  \item {LCD\_\discretionary {-}{}{}IO\_\discretionary {-}{}{}MODE}
+    \subitem {lcd\_\discretionary {-}{}{}display.h}, \hyperpage{48}
+  \item {LCD\_\discretionary {-}{}{}LINE\_\discretionary {-}{}{}LENGTH}
+    \subitem {lcd\_\discretionary {-}{}{}display.h}, \hyperpage{49}
+  \item {LCD\_\discretionary {-}{}{}LINES}
+    \subitem {lcd\_\discretionary {-}{}{}display.h}, \hyperpage{49}
+  \item {LCD\_\discretionary {-}{}{}PORT}
+    \subitem {lcd\_\discretionary {-}{}{}display.h}, \hyperpage{49}
+  \item {lcd\_\discretionary {-}{}{}putc}
+    \subitem {lcd\_\discretionary {-}{}{}display.c}, \hyperpage{42}
+    \subitem {lcd\_\discretionary {-}{}{}display.h}, \hyperpage{52}
+  \item {lcd\_\discretionary {-}{}{}puts}
+    \subitem {lcd\_\discretionary {-}{}{}display.c}, \hyperpage{42}
+    \subitem {lcd\_\discretionary {-}{}{}display.h}, \hyperpage{53}
+  \item {lcd\_\discretionary {-}{}{}puts\_\discretionary {-}{}{}p}
+    \subitem {lcd\_\discretionary {-}{}{}display.c}, \hyperpage{42}
+    \subitem {lcd\_\discretionary {-}{}{}display.h}, \hyperpage{53}
+  \item {LCD\_\discretionary {-}{}{}RS\_\discretionary {-}{}{}PIN}
+    \subitem {lcd\_\discretionary {-}{}{}display.h}, \hyperpage{49}
+  \item {LCD\_\discretionary {-}{}{}RS\_\discretionary {-}{}{}PORT}
+    \subitem {lcd\_\discretionary {-}{}{}display.h}, \hyperpage{49}
+  \item {LCD\_\discretionary {-}{}{}RW\_\discretionary {-}{}{}PIN}
+    \subitem {lcd\_\discretionary {-}{}{}display.h}, \hyperpage{49}
+  \item {LCD\_\discretionary {-}{}{}RW\_\discretionary {-}{}{}PORT}
+    \subitem {lcd\_\discretionary {-}{}{}display.h}, \hyperpage{49}
+  \item {LCD\_\discretionary {-}{}{}START\_\discretionary {-}{}{}LINE1}
+    \subitem {lcd\_\discretionary {-}{}{}display.h}, \hyperpage{49}
+  \item {LCD\_\discretionary {-}{}{}START\_\discretionary {-}{}{}LINE2}
+    \subitem {lcd\_\discretionary {-}{}{}display.h}, \hyperpage{50}
+  \item {LCD\_\discretionary {-}{}{}START\_\discretionary {-}{}{}LINE3}
+    \subitem {lcd\_\discretionary {-}{}{}display.h}, \hyperpage{50}
+  \item {LCD\_\discretionary {-}{}{}START\_\discretionary {-}{}{}LINE4}
+    \subitem {lcd\_\discretionary {-}{}{}display.h}, \hyperpage{50}
+  \item {LCD\_\discretionary {-}{}{}WRAP\_\discretionary {-}{}{}LINES}
+    \subitem {lcd\_\discretionary {-}{}{}display.h}, \hyperpage{50}
+  \item {lightbarrier\_\discretionary {-}{}{}status\_\discretionary {-}{}{}t}
+    \subitem {system.h}, \hyperpage{75}
+  \item {lightbarrier\_\discretionary {-}{}{}stuff}
+    \subitem {abstraction.c}, \hyperpage{32}
+  \item {lightbarrier\_\discretionary {-}{}{}t}, \hyperpage{18}
+
+  \indexspace
+
+  \item {main}
+    \subitem {smarties2.c}, \hyperpage{56}
+  \item {menu.h}, \hyperpage{54}
+  \item {menu\_\discretionary {-}{}{}entry\_\discretionary {-}{}{}t}, 
+		\hyperpage{19}
+  \item {motor\_\discretionary {-}{}{}stuff}
+    \subitem {abstraction.c}, \hyperpage{32}
+
+  \indexspace
+
+  \item {prog\_\-color\_\-tcs}
+    \subitem {system.h}, \hyperpage{76}
+  \item {prog\_\-none}
+    \subitem {system.h}, \hyperpage{76}
+  \item {prog\_\-rotate\_\-catcher}
+    \subitem {system.h}, \hyperpage{76}
+  \item {prog\_\-rotate\_\-revolver}
+    \subitem {system.h}, \hyperpage{76}
+  \item {prog\_\-set\_\-colors\_\-blue}
+    \subitem {system.h}, \hyperpage{76}
+  \item {prog\_\-set\_\-colors\_\-brown}
+    \subitem {system.h}, \hyperpage{76}
+  \item {prog\_\-set\_\-colors\_\-green}
+    \subitem {system.h}, \hyperpage{76}
+  \item {prog\_\-set\_\-colors\_\-orange}
+    \subitem {system.h}, \hyperpage{76}
+  \item {prog\_\-set\_\-colors\_\-pink}
+    \subitem {system.h}, \hyperpage{76}
+  \item {prog\_\-set\_\-colors\_\-purple}
+    \subitem {system.h}, \hyperpage{76}
+  \item {prog\_\-set\_\-colors\_\-red}
+    \subitem {system.h}, \hyperpage{76}
+  \item {prog\_\-set\_\-colors\_\-restore}
+    \subitem {system.h}, \hyperpage{76}
+  \item {prog\_\-set\_\-colors\_\-yellow}
+    \subitem {system.h}, \hyperpage{76}
+  \item {program\_\discretionary {-}{}{}t}
+    \subitem {system.h}, \hyperpage{75}
+
+  \indexspace
+
+  \item {revolver\_\discretionary {-}{}{}rotate\_\discretionary {-}{}{}relative}
+    \subitem {system.c}, \hyperpage{62}
+    \subitem {system.h}, \hyperpage{78}
+  \item {revolver\_\discretionary {-}{}{}t}, \hyperpage{20}
+  \item {rotary\_\discretionary {-}{}{}encoder\_\discretionary {-}{}{}status\_\discretionary {-}{}{}t}
+    \subitem {system.h}, \hyperpage{76}
+  \item {rotary\_\discretionary {-}{}{}encoder\_\discretionary {-}{}{}stuff}
+    \subitem {abstraction.c}, \hyperpage{32}
+  \item {rotary\_\discretionary {-}{}{}encoder\_\discretionary {-}{}{}t}, 
+		\hyperpage{21}
+  \item {ROTENC\_\-A}
+    \subitem {system.h}, \hyperpage{76}
+  \item {ROTENC\_\-B}
+    \subitem {system.h}, \hyperpage{76}
+  \item {ROTENC\_\-BOTH}
+    \subitem {system.h}, \hyperpage{76}
+  \item {ROTENC\_\-NONE}
+    \subitem {system.h}, \hyperpage{76}
+  \item {ROTENC\_\-PUSH}
+    \subitem {system.h}, \hyperpage{76}
+
+  \indexspace
+
+  \item {sensor\_\discretionary {-}{}{}tcs\_\discretionary {-}{}{}stuff}
+    \subitem {abstraction.c}, \hyperpage{33}
+  \item {smartie\_\discretionary {-}{}{}color\_\discretionary {-}{}{}t}
+    \subitem {system.h}, \hyperpage{76}
+  \item {smartie\_\discretionary {-}{}{}sorter\_\discretionary {-}{}{}t}, 
+		\hyperpage{22}
+  \item {smartie\_\discretionary {-}{}{}t}, \hyperpage{24}
+  \item {smarties2.c}, \hyperpage{56}
+    \subitem {main}, \hyperpage{56}
+  \item {smarties2.h}, \hyperpage{58}
+  \item {stat\_\-finished}
+    \subitem {system.h}, \hyperpage{75}
+  \item {stat\_\-idle}
+    \subitem {system.h}, \hyperpage{75}
+  \item {stat\_\-start\_\-working}
+    \subitem {system.h}, \hyperpage{75}
+  \item {stat\_\-stop\_\-working}
+    \subitem {system.h}, \hyperpage{75}
+  \item {stat\_\-working}
+    \subitem {system.h}, \hyperpage{75}
+  \item {stepper\_\discretionary {-}{}{}motor\_\discretionary {-}{}{}t}, 
+		\hyperpage{25}
+  \item {SYS\_\-MODE\_\-INIT}
+    \subitem {system.h}, \hyperpage{77}
+  \item {SYS\_\-MODE\_\-PAUSE}
+    \subitem {system.h}, \hyperpage{77}
+  \item {SYS\_\-MODE\_\-RUNNING}
+    \subitem {system.h}, \hyperpage{77}
+  \item {sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}disable}
+    \subitem {system.c}, \hyperpage{62}
+    \subitem {system.h}, \hyperpage{78}
+  \item {sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}enable}
+    \subitem {system.c}, \hyperpage{62}
+    \subitem {system.h}, \hyperpage{78}
+  \item {sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}is\_\discretionary {-}{}{}lb\_\discretionary {-}{}{}blocked}
+    \subitem {system.c}, \hyperpage{62}
+    \subitem {system.h}, \hyperpage{78}
+  \item {sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}rotate}
+    \subitem {system.c}, \hyperpage{63}
+    \subitem {system.h}, \hyperpage{79}
+  \item {sys\_\discretionary {-}{}{}enter\_\discretionary {-}{}{}submenu}
+    \subitem {system.c}, \hyperpage{63}
+    \subitem {system.h}, \hyperpage{79}
+  \item {sys\_\discretionary {-}{}{}enter\_\discretionary {-}{}{}topmenu}
+    \subitem {system.c}, \hyperpage{63}
+    \subitem {system.h}, \hyperpage{79}
+  \item {sys\_\discretionary {-}{}{}get\_\discretionary {-}{}{}out\_\discretionary {-}{}{}pos}
+    \subitem {system.c}, \hyperpage{63}
+    \subitem {system.h}, \hyperpage{79}
+  \item {sys\_\discretionary {-}{}{}pause}
+    \subitem {system.c}, \hyperpage{64}
+    \subitem {system.h}, \hyperpage{80}
+  \item {sys\_\discretionary {-}{}{}reference\_\discretionary {-}{}{}measure\_\discretionary {-}{}{}blue}
+    \subitem {system.c}, \hyperpage{64}
+    \subitem {system.h}, \hyperpage{80}
+  \item {sys\_\discretionary {-}{}{}reference\_\discretionary {-}{}{}measure\_\discretionary {-}{}{}restore}
+    \subitem {system.c}, \hyperpage{64}
+    \subitem {system.h}, \hyperpage{80}
+  \item {sys\_\discretionary {-}{}{}resume}
+    \subitem {system.c}, \hyperpage{64}
+    \subitem {system.h}, \hyperpage{80}
+  \item {sys\_\discretionary {-}{}{}revolver\_\discretionary {-}{}{}is\_\discretionary {-}{}{}lb\_\discretionary {-}{}{}blocked}
+    \subitem {system.c}, \hyperpage{64}
+    \subitem {system.h}, \hyperpage{80}
+  \item {sys\_\discretionary {-}{}{}revolver\_\discretionary {-}{}{}rotate}
+    \subitem {system.c}, \hyperpage{65}
+    \subitem {system.h}, \hyperpage{81}
+  \item {sys\_\discretionary {-}{}{}speed\_\discretionary {-}{}{}down}
+    \subitem {system.c}, \hyperpage{65}
+    \subitem {system.h}, \hyperpage{81}
+  \item {sys\_\discretionary {-}{}{}speed\_\discretionary {-}{}{}up}
+    \subitem {system.c}, \hyperpage{65}
+    \subitem {system.h}, \hyperpage{81}
+  \item {system.c}, \hyperpage{59}
+    \subitem {catcher\_\discretionary {-}{}{}rotate\_\discretionary {-}{}{}absolute}, 
+		\hyperpage{61}
+    \subitem {catcher\_\discretionary {-}{}{}rotate\_\discretionary {-}{}{}relative}, 
+		\hyperpage{61}
+    \subitem {revolver\_\discretionary {-}{}{}rotate\_\discretionary {-}{}{}relative}, 
+		\hyperpage{62}
+    \subitem {sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}disable}, 
+		\hyperpage{62}
+    \subitem {sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}enable}, 
+		\hyperpage{62}
+    \subitem {sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}is\_\discretionary {-}{}{}lb\_\discretionary {-}{}{}blocked}, 
+		\hyperpage{62}
+    \subitem {sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}rotate}, 
+		\hyperpage{63}
+    \subitem {sys\_\discretionary {-}{}{}enter\_\discretionary {-}{}{}submenu}, 
+		\hyperpage{63}
+    \subitem {sys\_\discretionary {-}{}{}enter\_\discretionary {-}{}{}topmenu}, 
+		\hyperpage{63}
+    \subitem {sys\_\discretionary {-}{}{}get\_\discretionary {-}{}{}out\_\discretionary {-}{}{}pos}, 
+		\hyperpage{63}
+    \subitem {sys\_\discretionary {-}{}{}pause}, \hyperpage{64}
+    \subitem {sys\_\discretionary {-}{}{}reference\_\discretionary {-}{}{}measure\_\discretionary {-}{}{}blue}, 
+		\hyperpage{64}
+    \subitem {sys\_\discretionary {-}{}{}reference\_\discretionary {-}{}{}measure\_\discretionary {-}{}{}restore}, 
+		\hyperpage{64}
+    \subitem {sys\_\discretionary {-}{}{}resume}, \hyperpage{64}
+    \subitem {sys\_\discretionary {-}{}{}revolver\_\discretionary {-}{}{}is\_\discretionary {-}{}{}lb\_\discretionary {-}{}{}blocked}, 
+		\hyperpage{64}
+    \subitem {sys\_\discretionary {-}{}{}revolver\_\discretionary {-}{}{}rotate}, 
+		\hyperpage{65}
+    \subitem {sys\_\discretionary {-}{}{}speed\_\discretionary {-}{}{}down}, 
+		\hyperpage{65}
+    \subitem {sys\_\discretionary {-}{}{}speed\_\discretionary {-}{}{}up}, 
+		\hyperpage{65}
+  \item {system.h}, \hyperpage{66}
+    \subitem {catcher\_\discretionary {-}{}{}rotate\_\discretionary {-}{}{}absolute}, 
+		\hyperpage{77}
+    \subitem {catcher\_\discretionary {-}{}{}rotate\_\discretionary {-}{}{}relative}, 
+		\hyperpage{77}
+    \subitem {col\_\-blue}, \hyperpage{76}
+    \subitem {col\_\-brown}, \hyperpage{77}
+    \subitem {col\_\-green}, \hyperpage{76}
+    \subitem {col\_\-orange}, \hyperpage{77}
+    \subitem {col\_\-pink}, \hyperpage{77}
+    \subitem {col\_\-purple}, \hyperpage{77}
+    \subitem {col\_\-red}, \hyperpage{77}
+    \subitem {col\_\-unknown}, \hyperpage{77}
+    \subitem {col\_\-yellow}, \hyperpage{77}
+    \subitem {COL\_\discretionary {-}{}{}SENS\_\discretionary {-}{}{}TCS\_\discretionary {-}{}{}SET\_\discretionary {-}{}{}FILTER}, 
+		\hyperpage{74}
+    \subitem {COL\_\discretionary {-}{}{}SENS\_\discretionary {-}{}{}TCS\_\discretionary {-}{}{}SET\_\discretionary {-}{}{}FREQ\_\discretionary {-}{}{}SCALE}, 
+		\hyperpage{74}
+    \subitem {common\_\discretionary {-}{}{}stat\_\discretionary {-}{}{}t}, 
+		\hyperpage{75}
+    \subitem {lb\_\-blocked}, \hyperpage{75}
+    \subitem {lb\_\-free}, \hyperpage{75}
+    \subitem {lightbarrier\_\discretionary {-}{}{}status\_\discretionary {-}{}{}t}, 
+		\hyperpage{75}
+    \subitem {prog\_\-color\_\-tcs}, \hyperpage{76}
+    \subitem {prog\_\-none}, \hyperpage{76}
+    \subitem {prog\_\-rotate\_\-catcher}, \hyperpage{76}
+    \subitem {prog\_\-rotate\_\-revolver}, \hyperpage{76}
+    \subitem {prog\_\-set\_\-colors\_\-blue}, \hyperpage{76}
+    \subitem {prog\_\-set\_\-colors\_\-brown}, \hyperpage{76}
+    \subitem {prog\_\-set\_\-colors\_\-green}, \hyperpage{76}
+    \subitem {prog\_\-set\_\-colors\_\-orange}, \hyperpage{76}
+    \subitem {prog\_\-set\_\-colors\_\-pink}, \hyperpage{76}
+    \subitem {prog\_\-set\_\-colors\_\-purple}, \hyperpage{76}
+    \subitem {prog\_\-set\_\-colors\_\-red}, \hyperpage{76}
+    \subitem {prog\_\-set\_\-colors\_\-restore}, \hyperpage{76}
+    \subitem {prog\_\-set\_\-colors\_\-yellow}, \hyperpage{76}
+    \subitem {program\_\discretionary {-}{}{}t}, \hyperpage{75}
+    \subitem {revolver\_\discretionary {-}{}{}rotate\_\discretionary {-}{}{}relative}, 
+		\hyperpage{78}
+    \subitem {rotary\_\discretionary {-}{}{}encoder\_\discretionary {-}{}{}status\_\discretionary {-}{}{}t}, 
+		\hyperpage{76}
+    \subitem {ROTENC\_\-A}, \hyperpage{76}
+    \subitem {ROTENC\_\-B}, \hyperpage{76}
+    \subitem {ROTENC\_\-BOTH}, \hyperpage{76}
+    \subitem {ROTENC\_\-NONE}, \hyperpage{76}
+    \subitem {ROTENC\_\-PUSH}, \hyperpage{76}
+    \subitem {smartie\_\discretionary {-}{}{}color\_\discretionary {-}{}{}t}, 
+		\hyperpage{76}
+    \subitem {stat\_\-finished}, \hyperpage{75}
+    \subitem {stat\_\-idle}, \hyperpage{75}
+    \subitem {stat\_\-start\_\-working}, \hyperpage{75}
+    \subitem {stat\_\-stop\_\-working}, \hyperpage{75}
+    \subitem {stat\_\-working}, \hyperpage{75}
+    \subitem {SYS\_\-MODE\_\-INIT}, \hyperpage{77}
+    \subitem {SYS\_\-MODE\_\-PAUSE}, \hyperpage{77}
+    \subitem {SYS\_\-MODE\_\-RUNNING}, \hyperpage{77}
+    \subitem {sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}disable}, 
+		\hyperpage{78}
+    \subitem {sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}enable}, 
+		\hyperpage{78}
+    \subitem {sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}is\_\discretionary {-}{}{}lb\_\discretionary {-}{}{}blocked}, 
+		\hyperpage{78}
+    \subitem {sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}rotate}, 
+		\hyperpage{79}
+    \subitem {sys\_\discretionary {-}{}{}enter\_\discretionary {-}{}{}submenu}, 
+		\hyperpage{79}
+    \subitem {sys\_\discretionary {-}{}{}enter\_\discretionary {-}{}{}topmenu}, 
+		\hyperpage{79}
+    \subitem {sys\_\discretionary {-}{}{}get\_\discretionary {-}{}{}out\_\discretionary {-}{}{}pos}, 
+		\hyperpage{79}
+    \subitem {sys\_\discretionary {-}{}{}pause}, \hyperpage{80}
+    \subitem {sys\_\discretionary {-}{}{}reference\_\discretionary {-}{}{}measure\_\discretionary {-}{}{}blue}, 
+		\hyperpage{80}
+    \subitem {sys\_\discretionary {-}{}{}reference\_\discretionary {-}{}{}measure\_\discretionary {-}{}{}restore}, 
+		\hyperpage{80}
+    \subitem {sys\_\discretionary {-}{}{}resume}, \hyperpage{80}
+    \subitem {sys\_\discretionary {-}{}{}revolver\_\discretionary {-}{}{}is\_\discretionary {-}{}{}lb\_\discretionary {-}{}{}blocked}, 
+		\hyperpage{80}
+    \subitem {sys\_\discretionary {-}{}{}revolver\_\discretionary {-}{}{}rotate}, 
+		\hyperpage{81}
+    \subitem {sys\_\discretionary {-}{}{}speed\_\discretionary {-}{}{}down}, 
+		\hyperpage{81}
+    \subitem {sys\_\discretionary {-}{}{}speed\_\discretionary {-}{}{}up}, 
+		\hyperpage{81}
+    \subitem {system\_\discretionary {-}{}{}mode\_\discretionary {-}{}{}t}, 
+		\hyperpage{77}
+  \item {system\_\discretionary {-}{}{}mode\_\discretionary {-}{}{}t}
+    \subitem {system.h}, \hyperpage{77}
+  \item {system\_\discretionary {-}{}{}state\_\discretionary {-}{}{}t}, 
+		\hyperpage{27}
+  \item {system\_\discretionary {-}{}{}step\_\discretionary {-}{}{}t}, 
+		\hyperpage{28}
+
+  \indexspace
+
+  \item {vibrator\_\discretionary {-}{}{}stuff}
+    \subitem {abstraction.c}, \hyperpage{33}
+  \item {vibrator\_\discretionary {-}{}{}t}, \hyperpage{29}
+
+  \indexspace
+
+  \item {XTAL}
+    \subitem {lcd\_\discretionary {-}{}{}display.h}, \hyperpage{50}
+
+\end{theindex}

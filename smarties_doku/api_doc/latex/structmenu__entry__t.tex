@@ -1,0 +1,68 @@
+\hypertarget{structmenu__entry__t}{
+\section{menu\_\-entry\_\-t Struct Reference}
+\label{structmenu__entry__t}\index{menu\_\-entry\_\-t@{menu\_\-entry\_\-t}}
+}
+The menu structure.  
+
+
+{\tt \#include $<$menu.h$>$}
+
+\subsection*{Data Fields}
+\begin{CompactItemize}
+\item 
+\hypertarget{structmenu__entry__t_8e8d27e17ac8715ae3243b8a28b2e953}{
+void($\ast$ \hyperlink{structmenu__entry__t_8e8d27e17ac8715ae3243b8a28b2e953}{function} )(void)}
+\label{structmenu__entry__t_8e8d27e17ac8715ae3243b8a28b2e953}
+
+\begin{CompactList}\small\item\em If push button pressed, this function will be executed (if available). \item\end{CompactList}\item 
+\hypertarget{structmenu__entry__t_86a86c4311b6cf6a653cf4d6a814369b}{
+void($\ast$ \hyperlink{structmenu__entry__t_86a86c4311b6cf6a653cf4d6a814369b}{l\_\-action} )(void)}
+\label{structmenu__entry__t_86a86c4311b6cf6a653cf4d6a814369b}
+
+\begin{CompactList}\small\item\em If \hyperlink{structrotary__encoder__t}{rotary\_\-encoder\_\-t} is rotated to left, this functino will be executed (if available). \item\end{CompactList}\item 
+\hypertarget{structmenu__entry__t_46655e92352000076fa2ad174d5c051e}{
+void($\ast$ \hyperlink{structmenu__entry__t_46655e92352000076fa2ad174d5c051e}{r\_\-action} )(void)}
+\label{structmenu__entry__t_46655e92352000076fa2ad174d5c051e}
+
+\begin{CompactList}\small\item\em If \hyperlink{structrotary__encoder__t}{rotary\_\-encoder\_\-t} is rotated to right, this functino will be executed (if available). \item\end{CompactList}\item 
+\hypertarget{structmenu__entry__t_775b6ff7a7787b730066cba76532a32d}{
+char $\ast$ \hyperlink{structmenu__entry__t_775b6ff7a7787b730066cba76532a32d}{text} \mbox{[}2\mbox{]}}
+\label{structmenu__entry__t_775b6ff7a7787b730066cba76532a32d}
+
+\begin{CompactList}\small\item\em Text on Display (Max 24 Characters, 2 lines). \item\end{CompactList}\item 
+\hypertarget{structmenu__entry__t_c0b6b7d88e004c1c64f99cae93d0f57e}{
+void $\ast$ \hyperlink{structmenu__entry__t_c0b6b7d88e004c1c64f99cae93d0f57e}{topmenu}}
+\label{structmenu__entry__t_c0b6b7d88e004c1c64f99cae93d0f57e}
+
+\begin{CompactList}\small\item\em The menu item above of current menu item. \item\end{CompactList}\item 
+\hypertarget{structmenu__entry__t_d325ca30c2993cd5496fcebac7a14085}{
+void $\ast$ \hyperlink{structmenu__entry__t_d325ca30c2993cd5496fcebac7a14085}{submenu}}
+\label{structmenu__entry__t_d325ca30c2993cd5496fcebac7a14085}
+
+\begin{CompactList}\small\item\em The menu item below of current menu item. \item\end{CompactList}\item 
+\hypertarget{structmenu__entry__t_a33ea894bce900b283a55202906d8d30}{
+void $\ast$ \hyperlink{structmenu__entry__t_a33ea894bce900b283a55202906d8d30}{prev}}
+\label{structmenu__entry__t_a33ea894bce900b283a55202906d8d30}
+
+\begin{CompactList}\small\item\em Previous Menu item. \item\end{CompactList}\item 
+\hypertarget{structmenu__entry__t_e058b44f1f4805e1e9cf58ac9c8c684d}{
+void $\ast$ \hyperlink{structmenu__entry__t_e058b44f1f4805e1e9cf58ac9c8c684d}{next}}
+\label{structmenu__entry__t_e058b44f1f4805e1e9cf58ac9c8c684d}
+
+\begin{CompactList}\small\item\em Next menu item. \item\end{CompactList}\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+The menu structure. 
+
+Each menu entry stores a menu entry which is next (right) or previous (left) from itself. It also stores menu entries below (submenu) or menu entries above (topmenu) itself. Furthermore, each menu entry has a specific task wich is stored behind the function pointer. The 'task' is, for example, changing into the topmenu (go Back), or rotate the catcher.
+
+There can also be functions be related to the left and right action. Before executing any function from the menu, the function pointer must be checked it is NULL or not!
+
+The menu must be initialized, the memory must be reserved before the whole stucture can be used. This is done \hyperlink{inits_8c_5cf20cf8f8b8d7c2aeaaea014d157583}{init\_\-menu()}. 
+
+Definition at line 179 of file menu.h.
+
+The documentation for this struct was generated from the following file:\begin{CompactItemize}
+\item 
+\hyperlink{menu_8h}{menu.h}\end{CompactItemize}

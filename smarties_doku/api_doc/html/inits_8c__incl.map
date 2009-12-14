@@ -1,0 +1,6 @@
+<area shape="rect" href="$smarties2_8h.html" title="Include file for smarties2 project." alt="" coords="5,80,93,107">
+<area shape="rect" href="$lcd__display_8h.html" title="Basic routines for interfacing a HD44780U&#45;based text LCD display." alt="" coords="117,80,213,107">
+<area shape="rect" href="$inits_8h-source.html" title="inits.h" alt="" coords="237,80,293,107">
+<area shape="rect" href="$system_8h.html" title="Smarites machine API header file." alt="" coords="317,80,392,107">
+<area shape="rect" href="$menu_8h.html" title="The menu structure and handling." alt="" coords="416,80,480,107">
+<area shape="rect" href="$ee_8h.html" title="Some EEProm memory administration." alt="" coords="504,80,549,107">

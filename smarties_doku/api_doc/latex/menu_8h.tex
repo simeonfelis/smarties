@@ -1,0 +1,125 @@
+\hypertarget{menu_8h}{
+\section{menu.h File Reference}
+\label{menu_8h}\index{menu.h@{menu.h}}
+}
+The menu structure and handling. 
+
+
+
+This graph shows which files directly or indirectly include this file:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=155pt]{menu_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Data Structures}
+\begin{CompactItemize}
+\item 
+struct \hyperlink{structmenu__entry__t}{menu\_\-entry\_\-t}
+\begin{CompactList}\small\item\em The menu structure. \item\end{CompactList}\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+The menu structure and handling. 
+
+Copyright (c) 2008 Simeon Felis\hypertarget{index_intro}{}\subsection{License}\label{index_intro}
+GPL2 Licence\hypertarget{index_arch}{}\subsection{Architecture}\label{index_arch}
+This is not an up to date, complete reference for the whole menu structure. However this is a rather completet explanation on how the menu works with examples.
+
+The menu-control is locked to a 2-line alphanumeric display. It will be entered as soon as the smartie sorter is in \hyperlink{system_8h_6e4cea4b6246f491c526211f5405627df1c8a041b6d3d46002d02ed0645a8ba2}{SYS\_\-MODE\_\-PAUSE}. Otherwise the lcd displays some status information:
+
+During \hyperlink{system_8h_6e4cea4b6246f491c526211f5405627d6f86e68a36933ceea048d78b95769945}{SYS\_\-MODE\_\-INIT} : 
+
+\begin{Code}\begin{verbatim}  +--------------+
+  | INITIALIZING |
+  |              |
+  +--------------+
+\end{verbatim}
+\end{Code}
+
+
+
+During \hyperlink{system_8h_6e4cea4b6246f491c526211f5405627d564529220e61e848983d8eb9d7f87736}{SYS\_\-MODE\_\-RUNNING} : 
+
+\begin{Code}\begin{verbatim}  +--------------+
+  | ENTER PAUSE  |
+  |RUN        COL|
+  +--------------+
+\end{verbatim}
+\end{Code}
+
+
+
+During \hyperlink{system_8h_6e4cea4b6246f491c526211f5405627df1c8a041b6d3d46002d02ed0645a8ba2}{SYS\_\-MODE\_\-PAUSE} : Greeting menu: 
+
+\begin{Code}\begin{verbatim}   right     +--------------+    right     +--------------+   right
+ <---------> |  ENTER MENU  | <----------> |    RESUME    | <--------->
+   left      |<prev   next >|    left      |<p          n>|   left
+             +--------------+              +--------------+
+               |                             |
+               |enter_submenu()              |sys_resume()
+\end{verbatim}
+\end{Code}
+
+
+
+MAIN menu: 
+
+\begin{Code}\begin{verbatim}  r   +--------------+   r   +--------------+   r   +--------------+   r   +--------------+   r
+<---> | ROTATE REV   | <---> | ROTATE CATCH | <---> | TCS colors   | <---> |   Go Back    | <--->
+  l   |<p          n>|   l   |<p          n>|   l   |<p          n>|   l   |<p          n>|
+      +--------------+       +--------------+       +--------------+       +--------------+
+      |                       |                       |                      |
+      |sys_rotate_revolver()  |sys_rotate_catcher()   |sys_tcs_colors()      |enter_topmenu()
+\end{verbatim}
+\end{Code}
+
+
+
+Each menu layer has its own array. Example:
+
+MAIN menu 
+
+\begin{Code}\begin{verbatim}+--------------+  +--------------+  +--------------+ +--------------+
+|      [0]     |  |      [1]     |  |      [2]     | |      [3]     |
+|              |  |              |  |              | |              |
++--------------+  +--------------+  +--------------+ +--------------+
+\end{verbatim}
+\end{Code}
+
+
+
+And so on.
+
+The Display has two lines with 24 characters. Here the exact layout during SYS\_\-MODE\_\-RUNNING: 
+
+\begin{Code}\begin{verbatim}      1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
+    + -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  - +
+  1 |                            T  I  T  L  E                               |
+  2 | S  T  A  T  : [   M  O  D  E      ]       C  O  L  :[ C  O  L  O  R   ]|
+    + -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  - +
+\end{verbatim}
+\end{Code}
+
+
+
+\begin{itemize}
+\item Line 1: Column 1 to 24 is reserved for the title. If the push button is pressed, the action described by the title will be executed.\item Line 2:\begin{itemize}
+\item Column 6 to 12 is reserved for the current mode. Following modes can be displayed:\begin{itemize}
+\item PAUSE\item RUNNING\end{itemize}
+\item Column 19 to 24 is reserved for the folling colors:\begin{itemize}
+\item yellow: YELLOW\item red: RED\item blue: BLUE\item brown: BROWN\item green: GREEN\item purple: PURPLE\item unknown: UNKNOWN\end{itemize}
+\end{itemize}
+\end{itemize}
+
+
+Note: the column numbers may be out of date.
+
+For some setting possibilties have a look at \hyperlink{lcd__display_8h}{lcd\_\-display.h}
+
+For lcd control functions have a look at \hyperlink{lcd__display_8c}{lcd\_\-display.c}
+
+The init of the menu is done at \hyperlink{inits_8c_5cf20cf8f8b8d7c2aeaaea014d157583}{init\_\-menu()} in \hyperlink{inits_8c}{inits.c} 
+
+Definition in file \hyperlink{menu_8h-source}{menu.h}.

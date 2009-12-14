@@ -1,0 +1,1193 @@
+\hypertarget{system_8h}{
+\section{system.h File Reference}
+\label{system_8h}\index{system.h@{system.h}}
+}
+Smarites machine API header file. 
+
+{\tt \#include $<$avr/io.h$>$}\par
+
+
+Include dependency graph for system.h:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=50pt]{system_8h__incl}
+\end{center}
+\end{figure}
+
+
+This graph shows which files directly or indirectly include this file:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=232pt]{system_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Data Structures}
+\begin{CompactItemize}
+\item 
+struct \hyperlink{structsystem__step__t}{system\_\-step\_\-t}
+\begin{CompactList}\small\item\em The single steps during running mode \hyperlink{system_8h_6e4cea4b6246f491c526211f5405627d564529220e61e848983d8eb9d7f87736}{SYS\_\-MODE\_\-RUNNING}. \item\end{CompactList}\item 
+struct \hyperlink{structsystem__state__t}{system\_\-state\_\-t}
+\begin{CompactList}\small\item\em Grouping of mode and steps. \item\end{CompactList}\item 
+struct \hyperlink{structrotary__encoder__t}{rotary\_\-encoder\_\-t}
+\begin{CompactList}\small\item\em The rotary encoder (user input device) structure. \item\end{CompactList}\item 
+struct \hyperlink{structsmartie__t}{smartie\_\-t}
+\begin{CompactList}\small\item\em Describes the properties a smartie, which is transported by the \hyperlink{structrevolver__t}{revolver\_\-t}, can have. \item\end{CompactList}\item 
+struct \hyperlink{structlightbarrier__t}{lightbarrier\_\-t}
+\begin{CompactList}\small\item\em Describes the module lightbarrier. \item\end{CompactList}\item 
+struct \hyperlink{structstepper__motor__t}{stepper\_\-motor\_\-t}
+\begin{CompactList}\small\item\em The stepper motor. \item\end{CompactList}\item 
+struct \hyperlink{structcolor__sensor__adjd__t}{color\_\-sensor\_\-adjd\_\-t}
+\begin{CompactList}\small\item\em Describes the ADJD-S371 color sensor. \item\end{CompactList}\item 
+struct \hyperlink{structcolor__sensor__tcs__t}{color\_\-sensor\_\-tcs\_\-t}
+\begin{CompactList}\small\item\em Describes the TCS230 color sensor. \item\end{CompactList}\item 
+struct \hyperlink{structvibrator__t}{vibrator\_\-t}
+\begin{CompactList}\small\item\em Describes the virbrator (shaker) module. \item\end{CompactList}\item 
+struct \hyperlink{structrevolver__t}{revolver\_\-t}
+\begin{CompactList}\small\item\em Describes the revolver module (the disc). \item\end{CompactList}\item 
+struct \hyperlink{structsmartie__sorter__t}{smartie\_\-sorter\_\-t}
+\begin{CompactList}\small\item\em All devices from the smartie sorter collected to one bundle. \item\end{CompactList}\end{CompactItemize}
+\subsection*{Defines}
+\begin{CompactItemize}
+\item 
+\hypertarget{system_8h_fe700fed52d70c6169dab636495b30cb}{
+\#define \hyperlink{system_8h_fe700fed52d70c6169dab636495b30cb}{COL\_\-SENS\_\-ADJD\_\-LED\_\-PORT}~PORTA}
+\label{system_8h_fe700fed52d70c6169dab636495b30cb}
+
+\begin{CompactList}\small\item\em The ADJD color sensor Port for the LED. \item\end{CompactList}\item 
+\hypertarget{system_8h_25d54d0c7a0e83e94da7d445f46570a5}{
+\#define \hyperlink{system_8h_25d54d0c7a0e83e94da7d445f46570a5}{COL\_\-SENS\_\-ADJD\_\-LED\_\-BIT}~PA0}
+\label{system_8h_25d54d0c7a0e83e94da7d445f46570a5}
+
+\begin{CompactList}\small\item\em The ADJD color sensor Portbit for the LED. \item\end{CompactList}\item 
+\hypertarget{system_8h_3699b3cd0f505e9b137063a54335bfa1}{
+\#define \hyperlink{system_8h_3699b3cd0f505e9b137063a54335bfa1}{COL\_\-SENS\_\-ADJD\_\-LED\_\-ON}~(COL\_\-SENS\_\-ADJD\_\-LED\_\-PORT $|$= (1$<$$<$COL\_\-SENS\_\-ADJD\_\-LED\_\-BIT))}
+\label{system_8h_3699b3cd0f505e9b137063a54335bfa1}
+
+\begin{CompactList}\small\item\em Switches the LED of the ADJD color sensor on. \item\end{CompactList}\item 
+\hypertarget{system_8h_c3ebb4b4b2116ee40a62eb554aa21a65}{
+\#define \hyperlink{system_8h_c3ebb4b4b2116ee40a62eb554aa21a65}{COL\_\-SENS\_\-ADJD\_\-LED\_\-OFF}~(COL\_\-SENS\_\-ADJD\_\-LED\_\-PORT \&= $\sim$(1$<$$<$COL\_\-SENS\_\-ADJD\_\-LED\_\-BIT))}
+\label{system_8h_c3ebb4b4b2116ee40a62eb554aa21a65}
+
+\begin{CompactList}\small\item\em Switches the LED of the ADJD color sensor off. \item\end{CompactList}\item 
+\hypertarget{system_8h_72bd6b1b90c0b2cace1b59d1d37eba9b}{
+\#define \hyperlink{system_8h_72bd6b1b90c0b2cace1b59d1d37eba9b}{COL\_\-SENS\_\-TCS\_\-IN\_\-PORT}~PORTD}
+\label{system_8h_72bd6b1b90c0b2cace1b59d1d37eba9b}
+
+\begin{CompactList}\small\item\em Input port for TCS color sensor. \item\end{CompactList}\item 
+\hypertarget{system_8h_e24fa8c813ba3c4f6c02d5fd5a200463}{
+\#define \hyperlink{system_8h_e24fa8c813ba3c4f6c02d5fd5a200463}{COL\_\-SENS\_\-TCS\_\-IN\_\-ICP}~PD2}
+\label{system_8h_e24fa8c813ba3c4f6c02d5fd5a200463}
+
+\begin{CompactList}\small\item\em ICP pin for TCS color sensor (clock signal). \item\end{CompactList}\item 
+\hypertarget{system_8h_a8ffd0a647c334c819bcd91a2499f60e}{
+\#define \hyperlink{system_8h_a8ffd0a647c334c819bcd91a2499f60e}{COL\_\-SENS\_\-TCS\_\-OUT\_\-PORT}~PORTA}
+\label{system_8h_a8ffd0a647c334c819bcd91a2499f60e}
+
+\begin{CompactList}\small\item\em Output port for TCS color sensor. \item\end{CompactList}\item 
+\hypertarget{system_8h_1ed96e7f4e313c742f8a6604d6e9c331}{
+\#define \hyperlink{system_8h_1ed96e7f4e313c742f8a6604d6e9c331}{COL\_\-SENS\_\-TCS\_\-S2\_\-BIT}~PA7}
+\label{system_8h_1ed96e7f4e313c742f8a6604d6e9c331}
+
+\begin{CompactList}\small\item\em S2 settings pin for TCS color sensor. \item\end{CompactList}\item 
+\hypertarget{system_8h_ad84f5270142dbe12dce5626101351b4}{
+\#define \hyperlink{system_8h_ad84f5270142dbe12dce5626101351b4}{COL\_\-SENS\_\-TCS\_\-S0\_\-BIT}~PA6}
+\label{system_8h_ad84f5270142dbe12dce5626101351b4}
+
+\begin{CompactList}\small\item\em S0 settings pin for TCS color sensor. \item\end{CompactList}\item 
+\hypertarget{system_8h_145e39d28a89b141fe6d749a50e56997}{
+\#define \hyperlink{system_8h_145e39d28a89b141fe6d749a50e56997}{COL\_\-SENS\_\-TCS\_\-S3\_\-BIT}~PA5}
+\label{system_8h_145e39d28a89b141fe6d749a50e56997}
+
+\begin{CompactList}\small\item\em S3 settings pin for TCS color sensor. \item\end{CompactList}\item 
+\hypertarget{system_8h_ee5c1a578211a66abdaba33b404bb7ca}{
+\#define \hyperlink{system_8h_ee5c1a578211a66abdaba33b404bb7ca}{COL\_\-SENS\_\-TCS\_\-S1\_\-BIT}~PA4}
+\label{system_8h_ee5c1a578211a66abdaba33b404bb7ca}
+
+\begin{CompactList}\small\item\em S1 settings pin for TCS color sensor. \item\end{CompactList}\item 
+\hypertarget{system_8h_9d219bdbdc5ab752f2b4ee94dd595d01}{
+\#define \hyperlink{system_8h_9d219bdbdc5ab752f2b4ee94dd595d01}{COL\_\-SENS\_\-TCS\_\-OE\_\-BIT}~PA3}
+\label{system_8h_9d219bdbdc5ab752f2b4ee94dd595d01}
+
+\begin{CompactList}\small\item\em Output Portbit enable for TCS color sensor. \item\end{CompactList}\item 
+\hypertarget{system_8h_293abcb660a47e6482b3ae3438f3e0d6}{
+\#define \hyperlink{system_8h_293abcb660a47e6482b3ae3438f3e0d6}{COL\_\-SENS\_\-TCS\_\-SAMPLE\_\-TIME}~30}
+\label{system_8h_293abcb660a47e6482b3ae3438f3e0d6}
+
+\begin{CompactList}\small\item\em Time to measure TCS OUT frequency in milliseconds. \item\end{CompactList}\item 
+\hypertarget{system_8h_884961369c1f5d90cf5a4efcf1d09c60}{
+\#define \hyperlink{system_8h_884961369c1f5d90cf5a4efcf1d09c60}{COL\_\-SENS\_\-TCS\_\-ENABLE}~(COL\_\-SENS\_\-TCS\_\-OUT\_\-PORT \&= $\sim$(1$<$$<$COL\_\-SENS\_\-TCS\_\-OE\_\-BIT))}
+\label{system_8h_884961369c1f5d90cf5a4efcf1d09c60}
+
+\begin{CompactList}\small\item\em Enables the TCS color sensor output clk. \item\end{CompactList}\item 
+\hypertarget{system_8h_0572adf4723a8192e65be4da7c4ef038}{
+\#define \hyperlink{system_8h_0572adf4723a8192e65be4da7c4ef038}{COL\_\-SENS\_\-TCS\_\-DISABLE}~(COL\_\-SENS\_\-TCS\_\-OUT\_\-PORT $|$= (1$<$$<$COL\_\-SENS\_\-TCS\_\-OE\_\-BIT))}
+\label{system_8h_0572adf4723a8192e65be4da7c4ef038}
+
+\begin{CompactList}\small\item\em Disables the TCS color sensor output clk. \item\end{CompactList}\item 
+\hypertarget{system_8h_e28f6f5c6ab141b35f5c261c4e1a6a64}{
+\#define \hyperlink{system_8h_e28f6f5c6ab141b35f5c261c4e1a6a64}{COL\_\-SENS\_\-TCS\_\-FREQ\_\-MESURE\_\-EN}~(GICR $|$= (1$<$$<$INT0))}
+\label{system_8h_e28f6f5c6ab141b35f5c261c4e1a6a64}
+
+\begin{CompactList}\small\item\em Enables interrupt for counting slopes (falling) from the TCS OUT pin. \item\end{CompactList}\item 
+\hypertarget{system_8h_d29eb3cdd6f0045dff5ab342c2f0e5b7}{
+\#define \hyperlink{system_8h_d29eb3cdd6f0045dff5ab342c2f0e5b7}{COL\_\-SENS\_\-TCS\_\-FREQ\_\-MESURE\_\-DI}~(GICR \&= $\sim$(1$<$$<$INT0))}
+\label{system_8h_d29eb3cdd6f0045dff5ab342c2f0e5b7}
+
+\begin{CompactList}\small\item\em Enables interrupt for counting slopes (falling) from the TCS OUT pin. \item\end{CompactList}\item 
+\#define \hyperlink{system_8h_292208f07db7275c1421a4b013088be8}{COL\_\-SENS\_\-TCS\_\-SET\_\-FREQ\_\-SCALE}(percentage)
+\begin{CompactList}\small\item\em Sets the frequency scaler for the TCS color sensor. \item\end{CompactList}\item 
+\#define \hyperlink{system_8h_efde5a442c1bd97a8ec8ac0bb819d58e}{COL\_\-SENS\_\-TCS\_\-SET\_\-FILTER}(color)
+\begin{CompactList}\small\item\em Sets the color filter for the TCS color sensor. \item\end{CompactList}\item 
+\hypertarget{system_8h_1c32ae2c93f13130dab34427bfed4bf1}{
+\#define \hyperlink{system_8h_1c32ae2c93f13130dab34427bfed4bf1}{STEPPER\_\-PORT}~PORTD}
+\label{system_8h_1c32ae2c93f13130dab34427bfed4bf1}
+
+\begin{CompactList}\small\item\em Output port for stepper motors. \item\end{CompactList}\item 
+\hypertarget{system_8h_5f928be89b18a571ee40aa3d48d03116}{
+\#define \hyperlink{system_8h_5f928be89b18a571ee40aa3d48d03116}{REV\_\-BIT\_\-EN}~PD7}
+\label{system_8h_5f928be89b18a571ee40aa3d48d03116}
+
+\begin{CompactList}\small\item\em Portbit for Enable driver for revolver stepper motor. \item\end{CompactList}\item 
+\hypertarget{system_8h_55076b0e8da94b0116fac34c00beb3ec}{
+\#define \hyperlink{system_8h_55076b0e8da94b0116fac34c00beb3ec}{REV\_\-BIT\_\-CW}~PD6}
+\label{system_8h_55076b0e8da94b0116fac34c00beb3ec}
+
+\begin{CompactList}\small\item\em Portbit for Rotate direction for revolver stepper motor (CW/CCW). \item\end{CompactList}\item 
+\hypertarget{system_8h_b126037141bc11723ac7892f0f8323f1}{
+\#define \hyperlink{system_8h_b126037141bc11723ac7892f0f8323f1}{REV\_\-BIT\_\-CLK}~PD5}
+\label{system_8h_b126037141bc11723ac7892f0f8323f1}
+
+\begin{CompactList}\small\item\em Portbit for Clock signal for driver for revolver stepper motor. \item\end{CompactList}\item 
+\hypertarget{system_8h_38e0155b1d66a9e8135bbfddf56ffef4}{
+\#define \hyperlink{system_8h_38e0155b1d66a9e8135bbfddf56ffef4}{REV\_\-MOVE\_\-STEP}}
+\label{system_8h_38e0155b1d66a9e8135bbfddf56ffef4}
+
+\begin{CompactList}\small\item\em Move the revolver stepper motor for one single step. \item\end{CompactList}\item 
+\hypertarget{system_8h_94ba27b8711c066bedb56c5a2290f372}{
+\#define \hyperlink{system_8h_94ba27b8711c066bedb56c5a2290f372}{REV\_\-ENABLE}~(STEPPER\_\-PORT $|$= (1$<$$<$REV\_\-BIT\_\-EN))}
+\label{system_8h_94ba27b8711c066bedb56c5a2290f372}
+
+\begin{CompactList}\small\item\em Enables the driver for the stepper motor. \item\end{CompactList}\item 
+\hypertarget{system_8h_67839faa4915b278dcac966586cdc3bf}{
+\#define \hyperlink{system_8h_67839faa4915b278dcac966586cdc3bf}{REV\_\-DISABLE}~(STEPPER\_\-PORT \&= $\sim$(1$<$$<$REV\_\-BIT\_\-EN))}
+\label{system_8h_67839faa4915b278dcac966586cdc3bf}
+
+\begin{CompactList}\small\item\em Disables the driver for the stepper motor. \item\end{CompactList}\item 
+\hypertarget{system_8h_425bb595f11b1bc63de43add0e4da559}{
+\#define \hyperlink{system_8h_425bb595f11b1bc63de43add0e4da559}{REV\_\-SET\_\-CW}~(STEPPER\_\-PORT \&= $\sim$(1$<$$<$REV\_\-BIT\_\-CW))}
+\label{system_8h_425bb595f11b1bc63de43add0e4da559}
+
+\begin{CompactList}\small\item\em Rotating direction clockwise. \item\end{CompactList}\item 
+\hypertarget{system_8h_f73e2419556ce34395c0d241e34ee57c}{
+\#define \hyperlink{system_8h_f73e2419556ce34395c0d241e34ee57c}{REV\_\-SET\_\-CCW}~(STEPPER\_\-PORT $|$= (1$<$$<$REV\_\-BIT\_\-CW))}
+\label{system_8h_f73e2419556ce34395c0d241e34ee57c}
+
+\begin{CompactList}\small\item\em Rotating directino conter clock wise. \item\end{CompactList}\item 
+\hypertarget{system_8h_a2e7a288930ea3e5c40dd46d9710c3c4}{
+\#define \hyperlink{system_8h_a2e7a288930ea3e5c40dd46d9710c3c4}{REV\_\-STEP\_\-DURATION}~20}
+\label{system_8h_a2e7a288930ea3e5c40dd46d9710c3c4}
+
+\begin{CompactList}\small\item\em Duration of one step in milliseconds. This value controlles the rotating speed. \item\end{CompactList}\item 
+\hypertarget{system_8h_16f46929c8f14df1763fdaab4f10a51d}{
+\#define \hyperlink{system_8h_16f46929c8f14df1763fdaab4f10a51d}{REV\_\-RAMP\_\-DURATION}~1}
+\label{system_8h_16f46929c8f14df1763fdaab4f10a51d}
+
+\begin{CompactList}\small\item\em Duration of the ramp up or ramp down in steps. \item\end{CompactList}\item 
+\hypertarget{system_8h_388331d885423f07d4a701af481c62a7}{
+\#define \hyperlink{system_8h_388331d885423f07d4a701af481c62a7}{REV\_\-MAX\_\-SIZE}~12}
+\label{system_8h_388331d885423f07d4a701af481c62a7}
+
+\begin{CompactList}\small\item\em The amount of smarties (holes) which fit into the revolver. \item\end{CompactList}\item 
+\hypertarget{system_8h_f0bdf5d3d7484b99405ef9f1373d8786}{
+\#define \hyperlink{system_8h_f0bdf5d3d7484b99405ef9f1373d8786}{REV\_\-STEPS\_\-ESTIMATED}~5}
+\label{system_8h_f0bdf5d3d7484b99405ef9f1373d8786}
+
+\begin{CompactList}\small\item\em Amount of steps for each positions 'hole abouve hole'. \item\end{CompactList}\item 
+\hypertarget{system_8h_feccc73a66450b37b491e3c99faf0c7d}{
+\#define \hyperlink{system_8h_feccc73a66450b37b491e3c99faf0c7d}{CATCH\_\-BIT\_\-EN}~PD4}
+\label{system_8h_feccc73a66450b37b491e3c99faf0c7d}
+
+\begin{CompactList}\small\item\em Portbit for Enable driver for catcher stepper motor. \item\end{CompactList}\item 
+\hypertarget{system_8h_00efedd21f0d97282f01ae9ae195f079}{
+\#define \hyperlink{system_8h_00efedd21f0d97282f01ae9ae195f079}{CATCH\_\-BIT\_\-CW}~PD1}
+\label{system_8h_00efedd21f0d97282f01ae9ae195f079}
+
+\begin{CompactList}\small\item\em Portbit for Rotate direction for catcher stepper motor (CW/CC. \item\end{CompactList}\item 
+\hypertarget{system_8h_9a1577ffdcbfbdcc8d5522664d4f1f4e}{
+\#define \hyperlink{system_8h_9a1577ffdcbfbdcc8d5522664d4f1f4e}{CATCH\_\-BIT\_\-CLK}~PD0}
+\label{system_8h_9a1577ffdcbfbdcc8d5522664d4f1f4e}
+
+\begin{CompactList}\small\item\em Portbit for Clock signal for driver for catcher stepper motorW). \item\end{CompactList}\item 
+\hypertarget{system_8h_797c4788553e1516bc35e28ea1cc2faa}{
+\#define \hyperlink{system_8h_797c4788553e1516bc35e28ea1cc2faa}{CATCH\_\-MOVE\_\-STEP}}
+\label{system_8h_797c4788553e1516bc35e28ea1cc2faa}
+
+\begin{CompactList}\small\item\em Move the catcher stepper motor for one single step. \item\end{CompactList}\item 
+\hypertarget{system_8h_cbb9435cdc9b7d2ea5c42461635ca74b}{
+\#define \hyperlink{system_8h_cbb9435cdc9b7d2ea5c42461635ca74b}{CATCH\_\-ENABLE}~(STEPPER\_\-PORT $|$= (1$<$$<$CATCH\_\-BIT\_\-EN))}
+\label{system_8h_cbb9435cdc9b7d2ea5c42461635ca74b}
+
+\begin{CompactList}\small\item\em Enables the driver for the steper motor. \item\end{CompactList}\item 
+\hypertarget{system_8h_dbaa422e514d133a6254ba84cbd1c656}{
+\#define \hyperlink{system_8h_dbaa422e514d133a6254ba84cbd1c656}{CATCH\_\-DISABLE}~(STEPPER\_\-PORT \&= $\sim$(1$<$$<$CATCH\_\-BIT\_\-EN))}
+\label{system_8h_dbaa422e514d133a6254ba84cbd1c656}
+
+\begin{CompactList}\small\item\em Disables the driver for the steper motor. \item\end{CompactList}\item 
+\hypertarget{system_8h_311c8a4afc44185e65430c85b69fedf1}{
+\#define \hyperlink{system_8h_311c8a4afc44185e65430c85b69fedf1}{CATCH\_\-SET\_\-CW}~(STEPPER\_\-PORT \&= $\sim$(1$<$$<$CATCH\_\-BIT\_\-CW))}
+\label{system_8h_311c8a4afc44185e65430c85b69fedf1}
+
+\begin{CompactList}\small\item\em Rotating direction clockwise. \item\end{CompactList}\item 
+\hypertarget{system_8h_21ad09fcf32817d8bb26815508095084}{
+\#define \hyperlink{system_8h_21ad09fcf32817d8bb26815508095084}{CATCH\_\-SET\_\-CCW}~(STEPPER\_\-PORT $|$= (1$<$$<$CATCH\_\-BIT\_\-CW))}
+\label{system_8h_21ad09fcf32817d8bb26815508095084}
+
+\begin{CompactList}\small\item\em Rotating directino conter clock wise. \item\end{CompactList}\item 
+\hypertarget{system_8h_09bccded49054a78a07e0d63439e9963}{
+\#define \hyperlink{system_8h_09bccded49054a78a07e0d63439e9963}{CATCH\_\-STEP\_\-DURATION}~10}
+\label{system_8h_09bccded49054a78a07e0d63439e9963}
+
+\begin{CompactList}\small\item\em Duration of one step in one Millisecond. This value controlles the rotating speed. \item\end{CompactList}\item 
+\hypertarget{system_8h_6ef7e4171ad6c94755cb69dfb84ee6e6}{
+\#define \hyperlink{system_8h_6ef7e4171ad6c94755cb69dfb84ee6e6}{CATCH\_\-RAMP\_\-DURATION}~2}
+\label{system_8h_6ef7e4171ad6c94755cb69dfb84ee6e6}
+
+\begin{CompactList}\small\item\em Duration of the ramp up or ramp down in steps. \item\end{CompactList}\item 
+\hypertarget{system_8h_ebeee5d587e924ad6d94000c311f24af}{
+\#define \hyperlink{system_8h_ebeee5d587e924ad6d94000c311f24af}{CATCH\_\-MAX\_\-SIZE}~9}
+\label{system_8h_ebeee5d587e924ad6d94000c311f24af}
+
+\begin{CompactList}\small\item\em The amount of catcher tubes for sorting the smarties. \item\end{CompactList}\item 
+\hypertarget{system_8h_ba0891209663ce63a925b18b553212c0}{
+\#define \hyperlink{system_8h_ba0891209663ce63a925b18b553212c0}{CATCH\_\-STEPS\_\-ESTIMATED}~14}
+\label{system_8h_ba0891209663ce63a925b18b553212c0}
+
+\begin{CompactList}\small\item\em Amount of steps for each positions 'hole abouve hole'. \item\end{CompactList}\item 
+\hypertarget{system_8h_22e6f4c150fbf6b05706b5a2bb5fba21}{
+\#define \hyperlink{system_8h_22e6f4c150fbf6b05706b5a2bb5fba21}{VIBR\_\-PORT}~PORTB}
+\label{system_8h_22e6f4c150fbf6b05706b5a2bb5fba21}
+
+\begin{CompactList}\small\item\em The Vibrator Port. \item\end{CompactList}\item 
+\hypertarget{system_8h_f78ac5be23ac4f5c7e15c11066d1d6e4}{
+\#define \hyperlink{system_8h_f78ac5be23ac4f5c7e15c11066d1d6e4}{VIBR\_\-BIT}~PB3}
+\label{system_8h_f78ac5be23ac4f5c7e15c11066d1d6e4}
+
+\begin{CompactList}\small\item\em The Vibrator Portbit. \item\end{CompactList}\item 
+\hypertarget{system_8h_4984fda3c65e0b6537b6ba0403e79df8}{
+\#define \hyperlink{system_8h_4984fda3c65e0b6537b6ba0403e79df8}{VIBR\_\-ON}~(VIBR\_\-PORT $|$= (1$<$$<$VIBR\_\-BIT))}
+\label{system_8h_4984fda3c65e0b6537b6ba0403e79df8}
+
+\begin{CompactList}\small\item\em Switches the Vibrator on. \item\end{CompactList}\item 
+\hypertarget{system_8h_c70f7b118a83ce5abe0b6bd864f4368b}{
+\#define \hyperlink{system_8h_c70f7b118a83ce5abe0b6bd864f4368b}{VIBR\_\-OFF}~(VIBR\_\-PORT \&=$\sim$(1$<$$<$VIBR\_\-BIT))}
+\label{system_8h_c70f7b118a83ce5abe0b6bd864f4368b}
+
+\begin{CompactList}\small\item\em Switches the Bibrator off. \item\end{CompactList}\item 
+\hypertarget{system_8h_c271169e08f6bf5342ec2950afb2ddcc}{
+\#define \hyperlink{system_8h_c271169e08f6bf5342ec2950afb2ddcc}{VIBR\_\-DURATION}~(700)}
+\label{system_8h_c271169e08f6bf5342ec2950afb2ddcc}
+
+\begin{CompactList}\small\item\em Default duration for shaker (vibrator). \item\end{CompactList}\item 
+\hypertarget{system_8h_36e974a46736c03aed4e7b16766dcf56}{
+\#define \hyperlink{system_8h_36e974a46736c03aed4e7b16766dcf56}{ROTENC\_\-PORT}~PORTB}
+\label{system_8h_36e974a46736c03aed4e7b16766dcf56}
+
+\begin{CompactList}\small\item\em Rotary encoder port (output) for AB signals. \item\end{CompactList}\item 
+\hypertarget{system_8h_8b30e63c6e09023b190d955a7a47f626}{
+\#define \hyperlink{system_8h_8b30e63c6e09023b190d955a7a47f626}{ROTENC\_\-A\_\-BIT}~PB0}
+\label{system_8h_8b30e63c6e09023b190d955a7a47f626}
+
+\begin{CompactList}\small\item\em Rotary encoder signal A (Pin 5 of connector). \item\end{CompactList}\item 
+\hypertarget{system_8h_031b236fa86c6640016bcd026de2faf9}{
+\#define \hyperlink{system_8h_031b236fa86c6640016bcd026de2faf9}{ROTENC\_\-B\_\-BIT}~PB1}
+\label{system_8h_031b236fa86c6640016bcd026de2faf9}
+
+\begin{CompactList}\small\item\em Rotary encoder signal B (Pin 4 of connector). \item\end{CompactList}\item 
+\hypertarget{system_8h_84eff8f5e4cdcc045d697ed03f48f15d}{
+\#define \hyperlink{system_8h_84eff8f5e4cdcc045d697ed03f48f15d}{ROTENC\_\-PUSH\_\-BIT}~PB2}
+\label{system_8h_84eff8f5e4cdcc045d697ed03f48f15d}
+
+\begin{CompactList}\small\item\em Rotary encoder pushbutton signal (Pin 2 of connector). \item\end{CompactList}\item 
+\hypertarget{system_8h_c240f5ce32b6b780dc2becb7eede1621}{
+\#define \hyperlink{system_8h_c240f5ce32b6b780dc2becb7eede1621}{ROTENC\_\-INIT}()~(ROTENC\_\-DDR   \&= $\sim$((1$<$$<$ROTENC\_\-A\_\-BIT) $|$ (1$<$$<$ROTENC\_\-B\_\-BIT) $|$ (1$<$$<$ROTENC\_\-PUSH\_\-BIT)))}
+\label{system_8h_c240f5ce32b6b780dc2becb7eede1621}
+
+\begin{CompactList}\small\item\em Initializes input periphals for Rotary encoder. \item\end{CompactList}\item 
+\hypertarget{system_8h_8ed1e2d2e71236f6fefb7158c8186157}{
+\#define \hyperlink{system_8h_8ed1e2d2e71236f6fefb7158c8186157}{IS\_\-ROTENC\_\-A}~((ROTENC\_\-PIN \& (1$<$$<$ROTENC\_\-A\_\-BIT)))}
+\label{system_8h_8ed1e2d2e71236f6fefb7158c8186157}
+
+\begin{CompactList}\small\item\em Output status of rotary encoder. \item\end{CompactList}\item 
+\hypertarget{system_8h_1fc441243a6e06c3a48d825ec274af11}{
+\#define \hyperlink{system_8h_1fc441243a6e06c3a48d825ec274af11}{IS\_\-ROTENC\_\-B}~((ROTENC\_\-PIN \& (1$<$$<$ROTENC\_\-B\_\-BIT)))}
+\label{system_8h_1fc441243a6e06c3a48d825ec274af11}
+
+\begin{CompactList}\small\item\em Output status of rotary encoder. \item\end{CompactList}\item 
+\hypertarget{system_8h_e24f6a75a8a7011b1e66247f8676e384}{
+\#define \hyperlink{system_8h_e24f6a75a8a7011b1e66247f8676e384}{IS\_\-ROTENC\_\-AB}~(IS\_\-ROTENC\_\-A \&\& IS\_\-ROTENC\_\-B)}
+\label{system_8h_e24f6a75a8a7011b1e66247f8676e384}
+
+\begin{CompactList}\small\item\em Output status of rotary encoder. \item\end{CompactList}\item 
+\hypertarget{system_8h_99ce8ed66940e159cc268db2843f834d}{
+\#define \hyperlink{system_8h_99ce8ed66940e159cc268db2843f834d}{IS\_\-ROTENC\_\-NONE}~(!IS\_\-ROTENC\_\-A \&\& !IS\_\-ROTENC\_\-B)}
+\label{system_8h_99ce8ed66940e159cc268db2843f834d}
+
+\begin{CompactList}\small\item\em Output status of rotary encoder. \item\end{CompactList}\item 
+\hypertarget{system_8h_af2c8bf6c81663c42ab7e5387bfdb9b3}{
+\#define \hyperlink{system_8h_af2c8bf6c81663c42ab7e5387bfdb9b3}{IS\_\-ROTENC\_\-PUSH}~(ROTENC\_\-PIN \& (1$<$$<$ROTENC\_\-PUSH\_\-BIT))}
+\label{system_8h_af2c8bf6c81663c42ab7e5387bfdb9b3}
+
+\begin{CompactList}\small\item\em Output status of rotary encoder. \item\end{CompactList}\item 
+\hypertarget{system_8h_272a203de60f35633ad1efe0b987a3f8}{
+\#define \hyperlink{system_8h_272a203de60f35633ad1efe0b987a3f8}{LB\_\-PORT}~PORTA}
+\label{system_8h_272a203de60f35633ad1efe0b987a3f8}
+
+\begin{CompactList}\small\item\em Lightbarriere Port. \item\end{CompactList}\item 
+\hypertarget{system_8h_b476c77b5e9569181b54f1a1bf2635a2}{
+\#define \hyperlink{system_8h_b476c77b5e9569181b54f1a1bf2635a2}{LB\_\-BIT\_\-CATCH}~PA2}
+\label{system_8h_b476c77b5e9569181b54f1a1bf2635a2}
+
+\begin{CompactList}\small\item\em Lightbarriere Catcher Positinoer Portbit. \item\end{CompactList}\item 
+\hypertarget{system_8h_ea1a853873533a51b5e880e30783cc42}{
+\#define \hyperlink{system_8h_ea1a853873533a51b5e880e30783cc42}{LB\_\-BIT\_\-REV}~PA1}
+\label{system_8h_ea1a853873533a51b5e880e30783cc42}
+
+\begin{CompactList}\small\item\em Lightbarriere Revolver Positioner Portbit. \item\end{CompactList}\item 
+\hypertarget{system_8h_6e17585fda3598109ead863d76cd4dad}{
+\#define \hyperlink{system_8h_6e17585fda3598109ead863d76cd4dad}{IS\_\-LB\_\-CATCHER}~(!(LB\_\-PIN \& (1$<$$<$LB\_\-BIT\_\-CATCH)))}
+\label{system_8h_6e17585fda3598109ead863d76cd4dad}
+
+\begin{CompactList}\small\item\em Returns \hyperlink{smarties2_8h_a8cecfc5c5c054d2875c03e77b7be15d}{TRUE} if lightbarrier is blocked. \item\end{CompactList}\item 
+\hypertarget{system_8h_f97aa7272a24b34aaf24697d1d0d52ac}{
+\#define \hyperlink{system_8h_f97aa7272a24b34aaf24697d1d0d52ac}{IS\_\-LB\_\-REVOLVER}~(!(LB\_\-PIN \& (1$<$$<$LB\_\-BIT\_\-REV)))}
+\label{system_8h_f97aa7272a24b34aaf24697d1d0d52ac}
+
+\begin{CompactList}\small\item\em Returns \hyperlink{smarties2_8h_a8cecfc5c5c054d2875c03e77b7be15d}{TRUE} if lightbarrier is blocked. \item\end{CompactList}\end{CompactItemize}
+\subsection*{Typedefs}
+\begin{CompactItemize}
+\item 
+\hypertarget{system_8h_b51ee7141ec54f3e8185d9487af887d5}{
+typedef float \hyperlink{system_8h_b51ee7141ec54f3e8185d9487af887d5}{color\_\-avarage} \mbox{[}col\_\-unknown\mbox{]}}
+\label{system_8h_b51ee7141ec54f3e8185d9487af887d5}
+
+\begin{CompactList}\small\item\em Stores the color reference values of one channel for all smarties. \item\end{CompactList}\end{CompactItemize}
+\subsection*{Enumerations}
+\begin{CompactItemize}
+\item 
+enum \hyperlink{system_8h_6e4cea4b6246f491c526211f5405627d}{system\_\-mode\_\-t} \{ \hyperlink{system_8h_6e4cea4b6246f491c526211f5405627d6f86e68a36933ceea048d78b95769945}{SYS\_\-MODE\_\-INIT} =  0, 
+\hyperlink{system_8h_6e4cea4b6246f491c526211f5405627df1c8a041b6d3d46002d02ed0645a8ba2}{SYS\_\-MODE\_\-PAUSE}, 
+\hyperlink{system_8h_6e4cea4b6246f491c526211f5405627d564529220e61e848983d8eb9d7f87736}{SYS\_\-MODE\_\-RUNNING}
+ \}
+\begin{CompactList}\small\item\em The mode of the machine. \item\end{CompactList}\item 
+enum \hyperlink{system_8h_6bfb87db0720ecda67ba06ab52162b03}{common\_\-stat\_\-t} \{ \par
+\hyperlink{system_8h_6bfb87db0720ecda67ba06ab52162b035ad840e3bfeb7a8c1633431f009ec7fc}{stat\_\-idle} =  0, 
+\hyperlink{system_8h_6bfb87db0720ecda67ba06ab52162b0338a176a30f108279905bb42b5f80ad22}{stat\_\-start\_\-working}, 
+\hyperlink{system_8h_6bfb87db0720ecda67ba06ab52162b03b1cdb8bf66313ecce10a4b1c240ea569}{stat\_\-working}, 
+\hyperlink{system_8h_6bfb87db0720ecda67ba06ab52162b038200fdccabe0d9e135d68523c729b1c5}{stat\_\-stop\_\-working}, 
+\par
+\hyperlink{system_8h_6bfb87db0720ecda67ba06ab52162b036c9c8c7b8f55418d3c0981b2412f9324}{stat\_\-finished}
+ \}
+\begin{CompactList}\small\item\em The status a device can have. \item\end{CompactList}\item 
+enum \hyperlink{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc55}{program\_\-t} \{ \par
+\hyperlink{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc556ab1bff0b64b5014a737f2598e75a2ef}{prog\_\-none} =  0, 
+\hyperlink{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc55331eb332ffb09740f70737359d79fff7}{prog\_\-rotate\_\-catcher}, 
+\hyperlink{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc55cf735b3ab9ceededb902db503e7271b9}{prog\_\-rotate\_\-revolver}, 
+\hyperlink{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc5527897518563ff6607106d839ed48fd8e}{prog\_\-color\_\-tcs}
+, \par
+\hyperlink{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc55e7156e0e78e0f3ce9f2ce0d7bbe8bac5}{prog\_\-set\_\-colors\_\-blue}, 
+\hyperlink{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc55d6ae9a7c1b1f295ef5d5b24ce2b82ee9}{prog\_\-set\_\-colors\_\-green}, 
+\hyperlink{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc5520d6445008330db524343a7f811b3e5b}{prog\_\-set\_\-colors\_\-red}, 
+\hyperlink{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc55cacbcee890d85b9ebe3b797cc57516f3}{prog\_\-set\_\-colors\_\-yellow}, 
+\par
+\hyperlink{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc553e3770483237eb4ea1076e81dc517d30}{prog\_\-set\_\-colors\_\-orange}, 
+\hyperlink{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc559e40df4de71d78cd961b87202f71645c}{prog\_\-set\_\-colors\_\-brown}, 
+\hyperlink{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc553a7a5a24627fdea73087ba56c941b3ab}{prog\_\-set\_\-colors\_\-purple}, 
+\hyperlink{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc5501a7745145aaf9b3fe840b3cb1a6b84f}{prog\_\-set\_\-colors\_\-pink}, 
+\par
+\hyperlink{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc5532962d0000a87aa56300fc78330ac987}{prog\_\-set\_\-colors\_\-restore}
+ \}
+\begin{CompactList}\small\item\em Programs which are executed during \hyperlink{system_8h_6e4cea4b6246f491c526211f5405627df1c8a041b6d3d46002d02ed0645a8ba2}{SYS\_\-MODE\_\-PAUSE}. \item\end{CompactList}\item 
+enum \hyperlink{system_8h_923f420a1efca515e1bfe2c011251656}{rotary\_\-encoder\_\-status\_\-t} \{ \par
+\hyperlink{system_8h_923f420a1efca515e1bfe2c0112516564bd228ea80648a3b16df58abfdd6ea9d}{ROTENC\_\-NONE} =  0, 
+\hyperlink{system_8h_923f420a1efca515e1bfe2c011251656c0eb319f9fad09fcfeb02bb451f4439f}{ROTENC\_\-PUSH}, 
+\hyperlink{system_8h_923f420a1efca515e1bfe2c01125165664f2849084488303c9ad5ca647ee092f}{ROTENC\_\-A}, 
+\hyperlink{system_8h_923f420a1efca515e1bfe2c011251656df4ec4b04f8ce6651b513e7c3f138604}{ROTENC\_\-B}, 
+\par
+\hyperlink{system_8h_923f420a1efca515e1bfe2c011251656f76a18508dafe7406c2e4ed288ce4fd3}{ROTENC\_\-BOTH}
+ \}
+\begin{CompactList}\small\item\em The rotary encoder's elements can have following status. \item\end{CompactList}\item 
+enum \hyperlink{system_8h_7b19b2744b17f8f369226dd73101a4b2}{smartie\_\-color\_\-t} \{ \par
+\hyperlink{system_8h_7b19b2744b17f8f369226dd73101a4b2b5a96dd4664a6aeab46c81b3f7e357be}{col\_\-blue} =  0, 
+\hyperlink{system_8h_7b19b2744b17f8f369226dd73101a4b26a0e2721ce49eab7403f47519fc0ef64}{col\_\-green}, 
+\hyperlink{system_8h_7b19b2744b17f8f369226dd73101a4b2f3023a6d67057a1b646478eb80619db2}{col\_\-red}, 
+\hyperlink{system_8h_7b19b2744b17f8f369226dd73101a4b2b41b78747aaed535dfae65498e06ad26}{col\_\-yellow}, 
+\par
+\hyperlink{system_8h_7b19b2744b17f8f369226dd73101a4b25cdf68f9bbce4f120d93db95e584146c}{col\_\-orange}, 
+\hyperlink{system_8h_7b19b2744b17f8f369226dd73101a4b256708c6b715321f832ce4ca7426a3b31}{col\_\-brown}, 
+\hyperlink{system_8h_7b19b2744b17f8f369226dd73101a4b229840715f465dff615d65002c94f5cfc}{col\_\-purple}, 
+\hyperlink{system_8h_7b19b2744b17f8f369226dd73101a4b278bb2430f9b464e19f321964a6e75aa2}{col\_\-pink}, 
+\par
+\hyperlink{system_8h_7b19b2744b17f8f369226dd73101a4b2eded117679751933625c43b5c80d7a44}{col\_\-unknown}
+ \}
+\begin{CompactList}\small\item\em All supported colors. \item\end{CompactList}\item 
+enum \hyperlink{system_8h_a7daceea8fb8d9b7b97d6052911e946c}{lightbarrier\_\-status\_\-t} \{ \hyperlink{system_8h_a7daceea8fb8d9b7b97d6052911e946cea3827a9d47251fb40b1ec898e1caa60}{lb\_\-free} =  0, 
+\hyperlink{system_8h_a7daceea8fb8d9b7b97d6052911e946ccb114de7ce8e7d32a39be8feeccf9f49}{lb\_\-blocked}
+ \}
+\begin{CompactList}\small\item\em The status a lightbarrier can have. \item\end{CompactList}\end{CompactItemize}
+\subsection*{Functions}
+\begin{CompactItemize}
+\item 
+void \hyperlink{system_8h_fcc5a33541d29a2d114643e67b7a5e68}{sys\_\-enter\_\-topmenu} ()
+\begin{CompactList}\small\item\em Will set the current menu to the upper menu layer. \item\end{CompactList}\item 
+void \hyperlink{system_8h_5e456b56f0c2ce2d53923272af0ad333}{sys\_\-enter\_\-submenu} ()
+\begin{CompactList}\small\item\em Will set the current menu to to lower menu layer. \item\end{CompactList}\item 
+void \hyperlink{system_8h_a740aed754b50165fb058dad9713f2f8}{sys\_\-catcher\_\-enable} ()
+\begin{CompactList}\small\item\em Enables (power on) the catcher stepper motor. \item\end{CompactList}\item 
+void \hyperlink{system_8h_e2936ed52c758b103718c0101d5133df}{sys\_\-catcher\_\-disable} ()
+\begin{CompactList}\small\item\em Diables (power off) the catcher stepper motor. \item\end{CompactList}\item 
+\hypertarget{system_8h_c8a68f0c5c371bc0f41e3ff4655eb9fa}{
+void \hyperlink{system_8h_c8a68f0c5c371bc0f41e3ff4655eb9fa}{sys\_\-catcher\_\-move\_\-step} ()}
+\label{system_8h_c8a68f0c5c371bc0f41e3ff4655eb9fa}
+
+\begin{CompactList}\small\item\em Moves the catcher stepper motor for on step. \item\end{CompactList}\item 
+void \hyperlink{system_8h_75278bd6ede508871b8d7880f24503d8}{sys\_\-catcher\_\-rotate} ()
+\begin{CompactList}\small\item\em Rotates the catcher for one position. \item\end{CompactList}\item 
+int8\_\-t \hyperlink{system_8h_60124c61aa7941fb311fdb4d85e6ba66}{sys\_\-catcher\_\-is\_\-lb\_\-blocked} ()
+\begin{CompactList}\small\item\em Returns status for the catcher lightbarrier. \item\end{CompactList}\item 
+uint8\_\-t \hyperlink{system_8h_03ea663e9ae339039bc5cbcddee52d94}{sys\_\-get\_\-out\_\-pos} ()
+\begin{CompactList}\small\item\em Gets the correct out index of the next to drop smartie. \item\end{CompactList}\item 
+\hypertarget{system_8h_f98b8357b55993121effd5f8a144db21}{
+void \hyperlink{system_8h_f98b8357b55993121effd5f8a144db21}{sys\_\-revolver\_\-move\_\-step} ()}
+\label{system_8h_f98b8357b55993121effd5f8a144db21}
+
+\begin{CompactList}\small\item\em Moves the revolver for one step. \item\end{CompactList}\item 
+void \hyperlink{system_8h_9fcb8a68acbcbb5ab57ca0ea752b5ad6}{sys\_\-revolver\_\-rotate} ()
+\begin{CompactList}\small\item\em Rotates the revolver for one position. \item\end{CompactList}\item 
+int8\_\-t \hyperlink{system_8h_768659fc9adb5f8edca3aed8711ef448}{sys\_\-revolver\_\-is\_\-lb\_\-blocked} ()
+\begin{CompactList}\small\item\em Returns the status for the revolver lightbarrier. \item\end{CompactList}\item 
+void \hyperlink{system_8h_851876925adec6a4c6d7cb6aec4bbbfd}{sys\_\-pause} ()
+\begin{CompactList}\small\item\em Will Enter the pause mode. \item\end{CompactList}\item 
+void \hyperlink{system_8h_73eeab714172d1723e3d412f36002a9b}{sys\_\-resume} ()
+\begin{CompactList}\small\item\em Leave the pause mode. \item\end{CompactList}\item 
+void \hyperlink{system_8h_6d65cab872ca8f9d37af4287ee012740}{sys\_\-reference\_\-measure\_\-blue} ()
+\begin{CompactList}\small\item\em Initiates color callibration for corresponding smartie color. \item\end{CompactList}\item 
+\hypertarget{system_8h_4ff06646314a1ccaf1947c9986c2486d}{
+void \hyperlink{system_8h_4ff06646314a1ccaf1947c9986c2486d}{sys\_\-reference\_\-measure\_\-green} ()}
+\label{system_8h_4ff06646314a1ccaf1947c9986c2486d}
+
+\begin{CompactList}\small\item\em See \hyperlink{system_8h_6d65cab872ca8f9d37af4287ee012740}{sys\_\-reference\_\-measure\_\-blue} (). \item\end{CompactList}\item 
+\hypertarget{system_8h_1ca664e0f0800b98f4e3cbb6295429ee}{
+void \hyperlink{system_8h_1ca664e0f0800b98f4e3cbb6295429ee}{sys\_\-reference\_\-measure\_\-red} ()}
+\label{system_8h_1ca664e0f0800b98f4e3cbb6295429ee}
+
+\begin{CompactList}\small\item\em See \hyperlink{system_8h_6d65cab872ca8f9d37af4287ee012740}{sys\_\-reference\_\-measure\_\-blue} (). \item\end{CompactList}\item 
+\hypertarget{system_8h_4dfe8d9daa9b136d3c7b5eb0c7d54489}{
+void \hyperlink{system_8h_4dfe8d9daa9b136d3c7b5eb0c7d54489}{sys\_\-reference\_\-measure\_\-yellow} ()}
+\label{system_8h_4dfe8d9daa9b136d3c7b5eb0c7d54489}
+
+\begin{CompactList}\small\item\em See \hyperlink{system_8h_6d65cab872ca8f9d37af4287ee012740}{sys\_\-reference\_\-measure\_\-blue} (). \item\end{CompactList}\item 
+\hypertarget{system_8h_430fcc5c084c5d195784456a4b0241fe}{
+void \hyperlink{system_8h_430fcc5c084c5d195784456a4b0241fe}{sys\_\-reference\_\-measure\_\-orange} ()}
+\label{system_8h_430fcc5c084c5d195784456a4b0241fe}
+
+\begin{CompactList}\small\item\em See \hyperlink{system_8h_6d65cab872ca8f9d37af4287ee012740}{sys\_\-reference\_\-measure\_\-blue} (). \item\end{CompactList}\item 
+\hypertarget{system_8h_5ede569de5e4adae83654eadf689319d}{
+void \hyperlink{system_8h_5ede569de5e4adae83654eadf689319d}{sys\_\-reference\_\-measure\_\-brown} ()}
+\label{system_8h_5ede569de5e4adae83654eadf689319d}
+
+\begin{CompactList}\small\item\em See \hyperlink{system_8h_6d65cab872ca8f9d37af4287ee012740}{sys\_\-reference\_\-measure\_\-blue} (). \item\end{CompactList}\item 
+\hypertarget{system_8h_30d1084c81b5ad36c00bb9ee8fe9ac13}{
+void \hyperlink{system_8h_30d1084c81b5ad36c00bb9ee8fe9ac13}{sys\_\-reference\_\-measure\_\-pink} ()}
+\label{system_8h_30d1084c81b5ad36c00bb9ee8fe9ac13}
+
+\begin{CompactList}\small\item\em See \hyperlink{system_8h_6d65cab872ca8f9d37af4287ee012740}{sys\_\-reference\_\-measure\_\-blue} (). \item\end{CompactList}\item 
+\hypertarget{system_8h_ae77d91f8801da390b9dec1e4a740d85}{
+void \hyperlink{system_8h_ae77d91f8801da390b9dec1e4a740d85}{sys\_\-reference\_\-measure\_\-purple} ()}
+\label{system_8h_ae77d91f8801da390b9dec1e4a740d85}
+
+\begin{CompactList}\small\item\em See \hyperlink{system_8h_6d65cab872ca8f9d37af4287ee012740}{sys\_\-reference\_\-measure\_\-blue} (). \item\end{CompactList}\item 
+void \hyperlink{system_8h_10b0d9845d6c021370b0d06a5a876205}{sys\_\-reference\_\-measure\_\-restore} ()
+\begin{CompactList}\small\item\em Initiates to restore the color reference values. \item\end{CompactList}\item 
+\hypertarget{system_8h_5ac3b5cf6f06e3ff4d3c745f9d5c693a}{
+void \hyperlink{system_8h_5ac3b5cf6f06e3ff4d3c745f9d5c693a}{sys\_\-set\_\-speed} ()}
+\label{system_8h_5ac3b5cf6f06e3ff4d3c745f9d5c693a}
+
+\begin{CompactList}\small\item\em Set the operating speed of the sorter to the current demand value. \item\end{CompactList}\item 
+void \hyperlink{system_8h_1826940cb85dc745f43b80c8554b3047}{sys\_\-speed\_\-up} ()
+\begin{CompactList}\small\item\em Set the operating speed of the sorter up by decreasing pause times. \item\end{CompactList}\item 
+void \hyperlink{system_8h_86167f37ad40f4c37766d17c9d07845d}{sys\_\-speed\_\-down} ()
+\begin{CompactList}\small\item\em Set the operating speed of the sorter down by increasing pause times. \item\end{CompactList}\item 
+\hypertarget{system_8h_4fdb3cc2b07ea1f4534bc1c3ac60a865}{
+void \hyperlink{system_8h_4fdb3cc2b07ea1f4534bc1c3ac60a865}{sys\_\-measure\_\-tcs} ()}
+\label{system_8h_4fdb3cc2b07ea1f4534bc1c3ac60a865}
+
+\begin{CompactList}\small\item\em Initiate a color measurement with the tcs color sensor. \item\end{CompactList}\item 
+\hypertarget{system_8h_0f47aa3043bc1362fbe37d003acfaf4e}{
+void \hyperlink{system_8h_0f47aa3043bc1362fbe37d003acfaf4e}{sys\_\-measure\_\-adjd} ()}
+\label{system_8h_0f47aa3043bc1362fbe37d003acfaf4e}
+
+\begin{CompactList}\small\item\em Initiate a color measurement with the adjd color sensor. \item\end{CompactList}\item 
+\hypertarget{system_8h_b2694695c165d073dd47850b83904682}{
+void \hyperlink{system_8h_b2694695c165d073dd47850b83904682}{sensor\_\-adjd\_\-get\_\-color} ()}
+\label{system_8h_b2694695c165d073dd47850b83904682}
+
+\begin{CompactList}\small\item\em Initiates the color detection by the ADJD color sensor. \item\end{CompactList}\item 
+\hypertarget{system_8h_895d4e598ce146273eb5dc50e5a140ea}{
+void \hyperlink{system_8h_895d4e598ce146273eb5dc50e5a140ea}{sensor\_\-tcs\_\-get\_\-color} ()}
+\label{system_8h_895d4e598ce146273eb5dc50e5a140ea}
+
+\begin{CompactList}\small\item\em Initiates the color detection by the TCS color sensor. \item\end{CompactList}\item 
+void \hyperlink{system_8h_97b11d5bfac2abcab58401879440e202}{catcher\_\-rotate\_\-absolute} (smartie\_\-color move\_\-to)
+\begin{CompactList}\small\item\em Rotates the catcher to a certain position. \item\end{CompactList}\item 
+void \hyperlink{system_8h_d039241a59aee99e3d08cdd722aa4a21}{catcher\_\-rotate\_\-relative} (int8\_\-t)
+\begin{CompactList}\small\item\em Rotates the catcher from the current position to a relative next position regarding 'hole above hole'. \item\end{CompactList}\item 
+void \hyperlink{system_8h_4312b8582a99de2443c53adce9359dc5}{revolver\_\-rotate\_\-relative} (int8\_\-t rel\_\-pos)
+\begin{CompactList}\small\item\em Rotates the revolver from the current position to a relative next position regarding 'hole above hole'. \item\end{CompactList}\item 
+\hypertarget{system_8h_ef389e924ee5fb5cb82da6c6a11209b5}{
+void \hyperlink{system_8h_ef389e924ee5fb5cb82da6c6a11209b5}{vibrator\_\-start} ()}
+\label{system_8h_ef389e924ee5fb5cb82da6c6a11209b5}
+
+\begin{CompactList}\small\item\em Initiates the vibrator to start. \item\end{CompactList}\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+Smarites machine API header file. 
+
+Copyright (c) 2008 Simeon Felis\hypertarget{index_intro}{}\subsection{License}\label{index_intro}
+GPL2 Licence
+
+Here are many IO related functions declarated 
+
+Definition in file \hyperlink{system_8h-source}{system.h}.
+
+\subsection{Define Documentation}
+\hypertarget{system_8h_efde5a442c1bd97a8ec8ac0bb819d58e}{
+\index{system.h@{system.h}!COL\_\-SENS\_\-TCS\_\-SET\_\-FILTER@{COL\_\-SENS\_\-TCS\_\-SET\_\-FILTER}}
+\index{COL\_\-SENS\_\-TCS\_\-SET\_\-FILTER@{COL\_\-SENS\_\-TCS\_\-SET\_\-FILTER}!system.h@{system.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define COL\_\-SENS\_\-TCS\_\-SET\_\-FILTER(color)}}
+\label{system_8h_efde5a442c1bd97a8ec8ac0bb819d58e}
+
+
+\textbf{Value:}
+
+\begin{Code}\begin{verbatim}do {                                                        \
+        if (color == col_red) {                                 \
+            COL_SENS_TCS_OUT_PORT &= ~(1<<COL_SENS_TCS_S2_BIT); \
+            COL_SENS_TCS_OUT_PORT &= ~(1<<COL_SENS_TCS_S3_BIT); \
+        }                                                       \
+        else if (color == col_blue) {                           \
+            COL_SENS_TCS_OUT_PORT &= ~(1<<COL_SENS_TCS_S2_BIT); \
+            COL_SENS_TCS_OUT_PORT |= (1<<COL_SENS_TCS_S3_BIT);  \
+        }                                                       \
+        else if (color == col_green) {                          \
+            COL_SENS_TCS_OUT_PORT |= (1<<COL_SENS_TCS_S2_BIT);  \
+            COL_SENS_TCS_OUT_PORT |= (1<<COL_SENS_TCS_S3_BIT);  \
+        }                                                       \
+        else if (color == col_unknown) {                        \
+            COL_SENS_TCS_OUT_PORT |= (1<<COL_SENS_TCS_S2_BIT);  \
+            COL_SENS_TCS_OUT_PORT &= ~(1<<COL_SENS_TCS_S3_BIT); \
+        }                                                       \
+    } while (0)
+\end{verbatim}
+\end{Code}
+Sets the color filter for the TCS color sensor. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em color}]{\bf col\_\-red} Red filter \par
+ {\bf col\_\-blue} Blue filter \par
+ {\bf col\_\-green} Green filter on \par
+ {\bf col\_\-unknown} No filter \end{description}
+\end{Desc}
+
+
+Definition at line 116 of file system.h.
+
+Referenced by sensor\_\-tcs\_\-stuff().\hypertarget{system_8h_292208f07db7275c1421a4b013088be8}{
+\index{system.h@{system.h}!COL\_\-SENS\_\-TCS\_\-SET\_\-FREQ\_\-SCALE@{COL\_\-SENS\_\-TCS\_\-SET\_\-FREQ\_\-SCALE}}
+\index{COL\_\-SENS\_\-TCS\_\-SET\_\-FREQ\_\-SCALE@{COL\_\-SENS\_\-TCS\_\-SET\_\-FREQ\_\-SCALE}!system.h@{system.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define COL\_\-SENS\_\-TCS\_\-SET\_\-FREQ\_\-SCALE(percentage)}}
+\label{system_8h_292208f07db7275c1421a4b013088be8}
+
+
+\textbf{Value:}
+
+\begin{Code}\begin{verbatim}do {                                                        \
+        COL_SENS_TCS_OUT_PORT &= ~(1<<COL_SENS_TCS_S1_BIT);     \
+        COL_SENS_TCS_OUT_PORT &= ~(1<<COL_SENS_TCS_S0_BIT);     \
+        if (percentage == 2) {                                  \
+            COL_SENS_TCS_OUT_PORT |= (1<<COL_SENS_TCS_S1_BIT);  \
+        }                                                       \
+        else if (percentage == 20) {                            \
+            COL_SENS_TCS_OUT_PORT |= (1<<COL_SENS_TCS_S0_BIT);  \
+        }                                                       \
+        else if (percentage == 100) {                           \
+            COL_SENS_TCS_OUT_PORT |= (1<<COL_SENS_TCS_S0_BIT);  \
+            COL_SENS_TCS_OUT_PORT |= (1<<COL_SENS_TCS_S1_BIT);  \
+        }                                                       \
+    } while (0)
+\end{verbatim}
+\end{Code}
+Sets the frequency scaler for the TCS color sensor. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em percentage}]{\bf 2} 2\% \par
+ {\bf 20} 20\% \par
+ {\bf 100} 100\% \end{description}
+\end{Desc}
+
+
+Definition at line 92 of file system.h.
+
+Referenced by init\_\-sensor\_\-tcs().
+
+\subsection{Enumeration Type Documentation}
+\hypertarget{system_8h_6bfb87db0720ecda67ba06ab52162b03}{
+\index{system.h@{system.h}!common\_\-stat\_\-t@{common\_\-stat\_\-t}}
+\index{common\_\-stat\_\-t@{common\_\-stat\_\-t}!system.h@{system.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}enum {\bf common\_\-stat\_\-t}}}
+\label{system_8h_6bfb87db0720ecda67ba06ab52162b03}
+
+
+The status a device can have. 
+
+The different modules of the smartie sorter can have different operating status. You can recognize if a module has just finished by checking the last status. \begin{Desc}
+\item[Enumerator: ]\par
+\begin{description}
+\index{stat\_\-idle@{stat\_\-idle}!system.h@{system.h}}\index{system.h@{system.h}!stat\_\-idle@{stat\_\-idle}}\item[{\em 
+\hypertarget{system_8h_6bfb87db0720ecda67ba06ab52162b035ad840e3bfeb7a8c1633431f009ec7fc}{
+stat\_\-idle}
+\label{system_8h_6bfb87db0720ecda67ba06ab52162b035ad840e3bfeb7a8c1633431f009ec7fc}
+}]The module/device is doing nothing and is ready for a new job. \index{stat\_\-start\_\-working@{stat\_\-start\_\-working}!system.h@{system.h}}\index{system.h@{system.h}!stat\_\-start\_\-working@{stat\_\-start\_\-working}}\item[{\em 
+\hypertarget{system_8h_6bfb87db0720ecda67ba06ab52162b0338a176a30f108279905bb42b5f80ad22}{
+stat\_\-start\_\-working}
+\label{system_8h_6bfb87db0720ecda67ba06ab52162b0338a176a30f108279905bb42b5f80ad22}
+}]Setting a module's state to this will start the device to work. \index{stat\_\-working@{stat\_\-working}!system.h@{system.h}}\index{system.h@{system.h}!stat\_\-working@{stat\_\-working}}\item[{\em 
+\hypertarget{system_8h_6bfb87db0720ecda67ba06ab52162b03b1cdb8bf66313ecce10a4b1c240ea569}{
+stat\_\-working}
+\label{system_8h_6bfb87db0720ecda67ba06ab52162b03b1cdb8bf66313ecce10a4b1c240ea569}
+}]Indicates the device is busy. The device will automatically change to this state. \index{stat\_\-stop\_\-working@{stat\_\-stop\_\-working}!system.h@{system.h}}\index{system.h@{system.h}!stat\_\-stop\_\-working@{stat\_\-stop\_\-working}}\item[{\em 
+\hypertarget{system_8h_6bfb87db0720ecda67ba06ab52162b038200fdccabe0d9e135d68523c729b1c5}{
+stat\_\-stop\_\-working}
+\label{system_8h_6bfb87db0720ecda67ba06ab52162b038200fdccabe0d9e135d68523c729b1c5}
+}]Setting a device to this state will stop the device. \index{stat\_\-finished@{stat\_\-finished}!system.h@{system.h}}\index{system.h@{system.h}!stat\_\-finished@{stat\_\-finished}}\item[{\em 
+\hypertarget{system_8h_6bfb87db0720ecda67ba06ab52162b036c9c8c7b8f55418d3c0981b2412f9324}{
+stat\_\-finished}
+\label{system_8h_6bfb87db0720ecda67ba06ab52162b036c9c8c7b8f55418d3c0981b2412f9324}
+}]Indicates the device is finished. The device will automatically change to this state. \end{description}
+\end{Desc}
+
+
+
+Definition at line 252 of file system.h.\hypertarget{system_8h_a7daceea8fb8d9b7b97d6052911e946c}{
+\index{system.h@{system.h}!lightbarrier\_\-status\_\-t@{lightbarrier\_\-status\_\-t}}
+\index{lightbarrier\_\-status\_\-t@{lightbarrier\_\-status\_\-t}!system.h@{system.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}enum {\bf lightbarrier\_\-status\_\-t}}}
+\label{system_8h_a7daceea8fb8d9b7b97d6052911e946c}
+
+
+The status a lightbarrier can have. 
+
+\begin{Desc}
+\item[Enumerator: ]\par
+\begin{description}
+\index{lb\_\-free@{lb\_\-free}!system.h@{system.h}}\index{system.h@{system.h}!lb\_\-free@{lb\_\-free}}\item[{\em 
+\hypertarget{system_8h_a7daceea8fb8d9b7b97d6052911e946cea3827a9d47251fb40b1ec898e1caa60}{
+lb\_\-free}
+\label{system_8h_a7daceea8fb8d9b7b97d6052911e946cea3827a9d47251fb40b1ec898e1caa60}
+}]Nothing inbetween the lightbarrier. \index{lb\_\-blocked@{lb\_\-blocked}!system.h@{system.h}}\index{system.h@{system.h}!lb\_\-blocked@{lb\_\-blocked}}\item[{\em 
+\hypertarget{system_8h_a7daceea8fb8d9b7b97d6052911e946ccb114de7ce8e7d32a39be8feeccf9f49}{
+lb\_\-blocked}
+\label{system_8h_a7daceea8fb8d9b7b97d6052911e946ccb114de7ce8e7d32a39be8feeccf9f49}
+}]The lightbarrier is blocked. \end{description}
+\end{Desc}
+
+
+
+Definition at line 354 of file system.h.\hypertarget{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc55}{
+\index{system.h@{system.h}!program\_\-t@{program\_\-t}}
+\index{program\_\-t@{program\_\-t}!system.h@{system.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}enum {\bf program\_\-t}}}
+\label{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc55}
+
+
+Programs which are executed during \hyperlink{system_8h_6e4cea4b6246f491c526211f5405627df1c8a041b6d3d46002d02ed0645a8ba2}{SYS\_\-MODE\_\-PAUSE}. 
+
+\begin{Desc}
+\item[Enumerator: ]\par
+\begin{description}
+\index{prog\_\-none@{prog\_\-none}!system.h@{system.h}}\index{system.h@{system.h}!prog\_\-none@{prog\_\-none}}\item[{\em 
+\hypertarget{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc556ab1bff0b64b5014a737f2598e75a2ef}{
+prog\_\-none}
+\label{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc556ab1bff0b64b5014a737f2598e75a2ef}
+}]No program executed. \index{prog\_\-rotate\_\-catcher@{prog\_\-rotate\_\-catcher}!system.h@{system.h}}\index{system.h@{system.h}!prog\_\-rotate\_\-catcher@{prog\_\-rotate\_\-catcher}}\item[{\em 
+\hypertarget{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc55331eb332ffb09740f70737359d79fff7}{
+prog\_\-rotate\_\-catcher}
+\label{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc55331eb332ffb09740f70737359d79fff7}
+}]Indicates that the catcher rotate program is running. \index{prog\_\-rotate\_\-revolver@{prog\_\-rotate\_\-revolver}!system.h@{system.h}}\index{system.h@{system.h}!prog\_\-rotate\_\-revolver@{prog\_\-rotate\_\-revolver}}\item[{\em 
+\hypertarget{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc55cf735b3ab9ceededb902db503e7271b9}{
+prog\_\-rotate\_\-revolver}
+\label{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc55cf735b3ab9ceededb902db503e7271b9}
+}]Indicates that the revolver rotate program is running. \index{prog\_\-color\_\-tcs@{prog\_\-color\_\-tcs}!system.h@{system.h}}\index{system.h@{system.h}!prog\_\-color\_\-tcs@{prog\_\-color\_\-tcs}}\item[{\em 
+\hypertarget{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc5527897518563ff6607106d839ed48fd8e}{
+prog\_\-color\_\-tcs}
+\label{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc5527897518563ff6607106d839ed48fd8e}
+}]Indicates that the color measure program is runnging. \index{prog\_\-set\_\-colors\_\-blue@{prog\_\-set\_\-colors\_\-blue}!system.h@{system.h}}\index{system.h@{system.h}!prog\_\-set\_\-colors\_\-blue@{prog\_\-set\_\-colors\_\-blue}}\item[{\em 
+\hypertarget{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc55e7156e0e78e0f3ce9f2ce0d7bbe8bac5}{
+prog\_\-set\_\-colors\_\-blue}
+\label{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc55e7156e0e78e0f3ce9f2ce0d7bbe8bac5}
+}]Calibrates the color refence values. Halts the state machine. \index{prog\_\-set\_\-colors\_\-green@{prog\_\-set\_\-colors\_\-green}!system.h@{system.h}}\index{system.h@{system.h}!prog\_\-set\_\-colors\_\-green@{prog\_\-set\_\-colors\_\-green}}\item[{\em 
+\hypertarget{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc55d6ae9a7c1b1f295ef5d5b24ce2b82ee9}{
+prog\_\-set\_\-colors\_\-green}
+\label{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc55d6ae9a7c1b1f295ef5d5b24ce2b82ee9}
+}]Calibrates the color refence values. Halts the state machine. \index{prog\_\-set\_\-colors\_\-red@{prog\_\-set\_\-colors\_\-red}!system.h@{system.h}}\index{system.h@{system.h}!prog\_\-set\_\-colors\_\-red@{prog\_\-set\_\-colors\_\-red}}\item[{\em 
+\hypertarget{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc5520d6445008330db524343a7f811b3e5b}{
+prog\_\-set\_\-colors\_\-red}
+\label{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc5520d6445008330db524343a7f811b3e5b}
+}]Calibrates the color refence values. Halts the state machine. \index{prog\_\-set\_\-colors\_\-yellow@{prog\_\-set\_\-colors\_\-yellow}!system.h@{system.h}}\index{system.h@{system.h}!prog\_\-set\_\-colors\_\-yellow@{prog\_\-set\_\-colors\_\-yellow}}\item[{\em 
+\hypertarget{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc55cacbcee890d85b9ebe3b797cc57516f3}{
+prog\_\-set\_\-colors\_\-yellow}
+\label{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc55cacbcee890d85b9ebe3b797cc57516f3}
+}]Calibrates the color refence values. Halts the state machine. \index{prog\_\-set\_\-colors\_\-orange@{prog\_\-set\_\-colors\_\-orange}!system.h@{system.h}}\index{system.h@{system.h}!prog\_\-set\_\-colors\_\-orange@{prog\_\-set\_\-colors\_\-orange}}\item[{\em 
+\hypertarget{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc553e3770483237eb4ea1076e81dc517d30}{
+prog\_\-set\_\-colors\_\-orange}
+\label{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc553e3770483237eb4ea1076e81dc517d30}
+}]Calibrates the color refence values. Halts the state machine. \index{prog\_\-set\_\-colors\_\-brown@{prog\_\-set\_\-colors\_\-brown}!system.h@{system.h}}\index{system.h@{system.h}!prog\_\-set\_\-colors\_\-brown@{prog\_\-set\_\-colors\_\-brown}}\item[{\em 
+\hypertarget{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc559e40df4de71d78cd961b87202f71645c}{
+prog\_\-set\_\-colors\_\-brown}
+\label{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc559e40df4de71d78cd961b87202f71645c}
+}]Calibrates the color refence values. Halts the state machine. \index{prog\_\-set\_\-colors\_\-purple@{prog\_\-set\_\-colors\_\-purple}!system.h@{system.h}}\index{system.h@{system.h}!prog\_\-set\_\-colors\_\-purple@{prog\_\-set\_\-colors\_\-purple}}\item[{\em 
+\hypertarget{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc553a7a5a24627fdea73087ba56c941b3ab}{
+prog\_\-set\_\-colors\_\-purple}
+\label{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc553a7a5a24627fdea73087ba56c941b3ab}
+}]Calibrates the color refence values. Halts the state machine. \index{prog\_\-set\_\-colors\_\-pink@{prog\_\-set\_\-colors\_\-pink}!system.h@{system.h}}\index{system.h@{system.h}!prog\_\-set\_\-colors\_\-pink@{prog\_\-set\_\-colors\_\-pink}}\item[{\em 
+\hypertarget{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc5501a7745145aaf9b3fe840b3cb1a6b84f}{
+prog\_\-set\_\-colors\_\-pink}
+\label{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc5501a7745145aaf9b3fe840b3cb1a6b84f}
+}]Calibrates the color refence values. Halts the state machine. \index{prog\_\-set\_\-colors\_\-restore@{prog\_\-set\_\-colors\_\-restore}!system.h@{system.h}}\index{system.h@{system.h}!prog\_\-set\_\-colors\_\-restore@{prog\_\-set\_\-colors\_\-restore}}\item[{\em 
+\hypertarget{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc5532962d0000a87aa56300fc78330ac987}{
+prog\_\-set\_\-colors\_\-restore}
+\label{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc5532962d0000a87aa56300fc78330ac987}
+}]Resores the color refernce values to system defaults. Halts the state machine. \end{description}
+\end{Desc}
+
+
+
+Definition at line 281 of file system.h.\hypertarget{system_8h_923f420a1efca515e1bfe2c011251656}{
+\index{system.h@{system.h}!rotary\_\-encoder\_\-status\_\-t@{rotary\_\-encoder\_\-status\_\-t}}
+\index{rotary\_\-encoder\_\-status\_\-t@{rotary\_\-encoder\_\-status\_\-t}!system.h@{system.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}enum {\bf rotary\_\-encoder\_\-status\_\-t}}}
+\label{system_8h_923f420a1efca515e1bfe2c011251656}
+
+
+The rotary encoder's elements can have following status. 
+
+\begin{Desc}
+\item[Enumerator: ]\par
+\begin{description}
+\index{ROTENC\_\-NONE@{ROTENC\_\-NONE}!system.h@{system.h}}\index{system.h@{system.h}!ROTENC\_\-NONE@{ROTENC\_\-NONE}}\item[{\em 
+\hypertarget{system_8h_923f420a1efca515e1bfe2c0112516564bd228ea80648a3b16df58abfdd6ea9d}{
+ROTENC\_\-NONE}
+\label{system_8h_923f420a1efca515e1bfe2c0112516564bd228ea80648a3b16df58abfdd6ea9d}
+}]Applicable for Push button, A-Pin and B-Pin. \index{ROTENC\_\-PUSH@{ROTENC\_\-PUSH}!system.h@{system.h}}\index{system.h@{system.h}!ROTENC\_\-PUSH@{ROTENC\_\-PUSH}}\item[{\em 
+\hypertarget{system_8h_923f420a1efca515e1bfe2c011251656c0eb319f9fad09fcfeb02bb451f4439f}{
+ROTENC\_\-PUSH}
+\label{system_8h_923f420a1efca515e1bfe2c011251656c0eb319f9fad09fcfeb02bb451f4439f}
+}]The Button is pushed. \index{ROTENC\_\-A@{ROTENC\_\-A}!system.h@{system.h}}\index{system.h@{system.h}!ROTENC\_\-A@{ROTENC\_\-A}}\item[{\em 
+\hypertarget{system_8h_923f420a1efca515e1bfe2c01125165664f2849084488303c9ad5ca647ee092f}{
+ROTENC\_\-A}
+\label{system_8h_923f420a1efca515e1bfe2c01125165664f2849084488303c9ad5ca647ee092f}
+}]Currently only the A-Pin of the rotary encoder is set. \index{ROTENC\_\-B@{ROTENC\_\-B}!system.h@{system.h}}\index{system.h@{system.h}!ROTENC\_\-B@{ROTENC\_\-B}}\item[{\em 
+\hypertarget{system_8h_923f420a1efca515e1bfe2c011251656df4ec4b04f8ce6651b513e7c3f138604}{
+ROTENC\_\-B}
+\label{system_8h_923f420a1efca515e1bfe2c011251656df4ec4b04f8ce6651b513e7c3f138604}
+}]Currently only the B-Pin of the rotary encoder is set. \index{ROTENC\_\-BOTH@{ROTENC\_\-BOTH}!system.h@{system.h}}\index{system.h@{system.h}!ROTENC\_\-BOTH@{ROTENC\_\-BOTH}}\item[{\em 
+\hypertarget{system_8h_923f420a1efca515e1bfe2c011251656f76a18508dafe7406c2e4ed288ce4fd3}{
+ROTENC\_\-BOTH}
+\label{system_8h_923f420a1efca515e1bfe2c011251656f76a18508dafe7406c2e4ed288ce4fd3}
+}]Currently both, the A-Pin and B-Pin of the rotary encoder are set. \end{description}
+\end{Desc}
+
+
+
+Definition at line 302 of file system.h.\hypertarget{system_8h_7b19b2744b17f8f369226dd73101a4b2}{
+\index{system.h@{system.h}!smartie\_\-color\_\-t@{smartie\_\-color\_\-t}}
+\index{smartie\_\-color\_\-t@{smartie\_\-color\_\-t}!system.h@{system.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}enum {\bf smartie\_\-color\_\-t}}}
+\label{system_8h_7b19b2744b17f8f369226dd73101a4b2}
+
+
+All supported colors. 
+
+This enum is used for indexing the reference color tables, the positioning of the catcher and may be more. \hyperlink{system_8h_7b19b2744b17f8f369226dd73101a4b2eded117679751933625c43b5c80d7a44}{col\_\-unknown} is often used as end conditions for loops. In the color tables, this enums elements represent the index for color rows. \begin{Desc}
+\item[Enumerator: ]\par
+\begin{description}
+\index{col\_\-blue@{col\_\-blue}!system.h@{system.h}}\index{system.h@{system.h}!col\_\-blue@{col\_\-blue}}\item[{\em 
+\hypertarget{system_8h_7b19b2744b17f8f369226dd73101a4b2b5a96dd4664a6aeab46c81b3f7e357be}{
+col\_\-blue}
+\label{system_8h_7b19b2744b17f8f369226dd73101a4b2b5a96dd4664a6aeab46c81b3f7e357be}
+}]Blue. \index{col\_\-green@{col\_\-green}!system.h@{system.h}}\index{system.h@{system.h}!col\_\-green@{col\_\-green}}\item[{\em 
+\hypertarget{system_8h_7b19b2744b17f8f369226dd73101a4b26a0e2721ce49eab7403f47519fc0ef64}{
+col\_\-green}
+\label{system_8h_7b19b2744b17f8f369226dd73101a4b26a0e2721ce49eab7403f47519fc0ef64}
+}]Green. \index{col\_\-red@{col\_\-red}!system.h@{system.h}}\index{system.h@{system.h}!col\_\-red@{col\_\-red}}\item[{\em 
+\hypertarget{system_8h_7b19b2744b17f8f369226dd73101a4b2f3023a6d67057a1b646478eb80619db2}{
+col\_\-red}
+\label{system_8h_7b19b2744b17f8f369226dd73101a4b2f3023a6d67057a1b646478eb80619db2}
+}]Red. \index{col\_\-yellow@{col\_\-yellow}!system.h@{system.h}}\index{system.h@{system.h}!col\_\-yellow@{col\_\-yellow}}\item[{\em 
+\hypertarget{system_8h_7b19b2744b17f8f369226dd73101a4b2b41b78747aaed535dfae65498e06ad26}{
+col\_\-yellow}
+\label{system_8h_7b19b2744b17f8f369226dd73101a4b2b41b78747aaed535dfae65498e06ad26}
+}]Yellow. \index{col\_\-orange@{col\_\-orange}!system.h@{system.h}}\index{system.h@{system.h}!col\_\-orange@{col\_\-orange}}\item[{\em 
+\hypertarget{system_8h_7b19b2744b17f8f369226dd73101a4b25cdf68f9bbce4f120d93db95e584146c}{
+col\_\-orange}
+\label{system_8h_7b19b2744b17f8f369226dd73101a4b25cdf68f9bbce4f120d93db95e584146c}
+}]Orange. \index{col\_\-brown@{col\_\-brown}!system.h@{system.h}}\index{system.h@{system.h}!col\_\-brown@{col\_\-brown}}\item[{\em 
+\hypertarget{system_8h_7b19b2744b17f8f369226dd73101a4b256708c6b715321f832ce4ca7426a3b31}{
+col\_\-brown}
+\label{system_8h_7b19b2744b17f8f369226dd73101a4b256708c6b715321f832ce4ca7426a3b31}
+}]Brown. \index{col\_\-purple@{col\_\-purple}!system.h@{system.h}}\index{system.h@{system.h}!col\_\-purple@{col\_\-purple}}\item[{\em 
+\hypertarget{system_8h_7b19b2744b17f8f369226dd73101a4b229840715f465dff615d65002c94f5cfc}{
+col\_\-purple}
+\label{system_8h_7b19b2744b17f8f369226dd73101a4b229840715f465dff615d65002c94f5cfc}
+}]Purple. \index{col\_\-pink@{col\_\-pink}!system.h@{system.h}}\index{system.h@{system.h}!col\_\-pink@{col\_\-pink}}\item[{\em 
+\hypertarget{system_8h_7b19b2744b17f8f369226dd73101a4b278bb2430f9b464e19f321964a6e75aa2}{
+col\_\-pink}
+\label{system_8h_7b19b2744b17f8f369226dd73101a4b278bb2430f9b464e19f321964a6e75aa2}
+}]Pink. \index{col\_\-unknown@{col\_\-unknown}!system.h@{system.h}}\index{system.h@{system.h}!col\_\-unknown@{col\_\-unknown}}\item[{\em 
+\hypertarget{system_8h_7b19b2744b17f8f369226dd73101a4b2eded117679751933625c43b5c80d7a44}{
+col\_\-unknown}
+\label{system_8h_7b19b2744b17f8f369226dd73101a4b2eded117679751933625c43b5c80d7a44}
+}]Indexed as last color (highest counter). Insert colors above this one! \end{description}
+\end{Desc}
+
+
+
+Definition at line 329 of file system.h.\hypertarget{system_8h_6e4cea4b6246f491c526211f5405627d}{
+\index{system.h@{system.h}!system\_\-mode\_\-t@{system\_\-mode\_\-t}}
+\index{system\_\-mode\_\-t@{system\_\-mode\_\-t}!system.h@{system.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}enum {\bf system\_\-mode\_\-t}}}
+\label{system_8h_6e4cea4b6246f491c526211f5405627d}
+
+
+The mode of the machine. 
+
+\begin{Desc}
+\item[Enumerator: ]\par
+\begin{description}
+\index{SYS\_\-MODE\_\-INIT@{SYS\_\-MODE\_\-INIT}!system.h@{system.h}}\index{system.h@{system.h}!SYS\_\-MODE\_\-INIT@{SYS\_\-MODE\_\-INIT}}\item[{\em 
+\hypertarget{system_8h_6e4cea4b6246f491c526211f5405627d6f86e68a36933ceea048d78b95769945}{
+SYS\_\-MODE\_\-INIT}
+\label{system_8h_6e4cea4b6246f491c526211f5405627d6f86e68a36933ceea048d78b95769945}
+}]After reset or power on. \index{SYS\_\-MODE\_\-PAUSE@{SYS\_\-MODE\_\-PAUSE}!system.h@{system.h}}\index{system.h@{system.h}!SYS\_\-MODE\_\-PAUSE@{SYS\_\-MODE\_\-PAUSE}}\item[{\em 
+\hypertarget{system_8h_6e4cea4b6246f491c526211f5405627df1c8a041b6d3d46002d02ed0645a8ba2}{
+SYS\_\-MODE\_\-PAUSE}
+\label{system_8h_6e4cea4b6246f491c526211f5405627df1c8a041b6d3d46002d02ed0645a8ba2}
+}]Pausing the smartie sorter and operated manually. \index{SYS\_\-MODE\_\-RUNNING@{SYS\_\-MODE\_\-RUNNING}!system.h@{system.h}}\index{system.h@{system.h}!SYS\_\-MODE\_\-RUNNING@{SYS\_\-MODE\_\-RUNNING}}\item[{\em 
+\hypertarget{system_8h_6e4cea4b6246f491c526211f5405627d564529220e61e848983d8eb9d7f87736}{
+SYS\_\-MODE\_\-RUNNING}
+\label{system_8h_6e4cea4b6246f491c526211f5405627d564529220e61e848983d8eb9d7f87736}
+}]Smartie sorter is running automatically. \end{description}
+\end{Desc}
+
+
+
+Definition at line 239 of file system.h.
+
+\subsection{Function Documentation}
+\hypertarget{system_8h_97b11d5bfac2abcab58401879440e202}{
+\index{system.h@{system.h}!catcher\_\-rotate\_\-absolute@{catcher\_\-rotate\_\-absolute}}
+\index{catcher\_\-rotate\_\-absolute@{catcher\_\-rotate\_\-absolute}!system.h@{system.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void catcher\_\-rotate\_\-absolute (smartie\_\-color {\em move\_\-to})}}
+\label{system_8h_97b11d5bfac2abcab58401879440e202}
+
+
+Rotates the catcher to a certain position. 
+
+This function will rotate the catcher to position specified by the a color \hyperlink{system_8h_7b19b2744b17f8f369226dd73101a4b2}{smartie\_\-color\_\-t}. 
+
+Definition at line 346 of file system.c.
+
+References CATCH\_\-MAX\_\-SIZE, catcher\_\-rotate\_\-relative(), col\_\-unknown, stepper\_\-motor\_\-t::current\_\-pos, smartie\_\-sorter\_\-t::mot\_\-catcher, stat\_\-finished, and stepper\_\-motor\_\-t::status\_\-last.
+
+Referenced by main().\hypertarget{system_8h_d039241a59aee99e3d08cdd722aa4a21}{
+\index{system.h@{system.h}!catcher\_\-rotate\_\-relative@{catcher\_\-rotate\_\-relative}}
+\index{catcher\_\-rotate\_\-relative@{catcher\_\-rotate\_\-relative}!system.h@{system.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void catcher\_\-rotate\_\-relative (int8\_\-t {\em rel\_\-pos})}}
+\label{system_8h_d039241a59aee99e3d08cdd722aa4a21}
+
+
+Rotates the catcher from the current position to a relative next position regarding 'hole above hole'. 
+
+Most of the work is being done in \hyperlink{abstraction_8c_b45f6a6990e7755a39cc6279e3c09abf}{motor\_\-stuff}.
+
+Warning: This function does not check if the catcher is already working. Before calling this function, check if the motor's status and last status equals \hyperlink{system_8h_6bfb87db0720ecda67ba06ab52162b035ad840e3bfeb7a8c1633431f009ec7fc}{stat\_\-idle}. It also doesn't check the parameter, if the value is reasonable.
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em rel\_\-pos}]The position where to move to. The value of rel\_\-pos will be not checked, so the value must be lower than \hyperlink{system_8h_388331d885423f07d4a701af481c62a7}{REV\_\-MAX\_\-SIZE} or \hyperlink{system_8h_ebeee5d587e924ad6d94000c311f24af}{CATCH\_\-MAX\_\-SIZE}. \end{description}
+\end{Desc}
+
+
+Definition at line 384 of file system.c.
+
+References CATCH\_\-MAX\_\-SIZE, stepper\_\-motor\_\-t::current\_\-pos, smartie\_\-sorter\_\-t::mot\_\-catcher, stat\_\-finished, stat\_\-start\_\-working, stepper\_\-motor\_\-t::status, stepper\_\-motor\_\-t::status\_\-last, and stepper\_\-motor\_\-t::target\_\-pos.
+
+Referenced by catcher\_\-rotate\_\-absolute(), init\_\-motors(), and sys\_\-catcher\_\-rotate().\hypertarget{system_8h_4312b8582a99de2443c53adce9359dc5}{
+\index{system.h@{system.h}!revolver\_\-rotate\_\-relative@{revolver\_\-rotate\_\-relative}}
+\index{revolver\_\-rotate\_\-relative@{revolver\_\-rotate\_\-relative}!system.h@{system.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void revolver\_\-rotate\_\-relative (int8\_\-t {\em rel\_\-pos})}}
+\label{system_8h_4312b8582a99de2443c53adce9359dc5}
+
+
+Rotates the revolver from the current position to a relative next position regarding 'hole above hole'. 
+
+Most of the work is being done in \hyperlink{abstraction_8c_b45f6a6990e7755a39cc6279e3c09abf}{motor\_\-stuff}.
+
+Warning: This function does not check if the revolver is already working. Before calling this function, check if the motor's status and last status equals \hyperlink{system_8h_6bfb87db0720ecda67ba06ab52162b035ad840e3bfeb7a8c1633431f009ec7fc}{stat\_\-idle}. It also doesn't check the parameter, if the value is reasonable.
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em rel\_\-pos}]The position where to move to. The value of rel\_\-pos will be not checked, so the value must be lower than \hyperlink{system_8h_388331d885423f07d4a701af481c62a7}{REV\_\-MAX\_\-SIZE} or \hyperlink{system_8h_ebeee5d587e924ad6d94000c311f24af}{CATCH\_\-MAX\_\-SIZE}. \end{description}
+\end{Desc}
+
+
+Definition at line 415 of file system.c.
+
+References stepper\_\-motor\_\-t::current\_\-pos, smartie\_\-sorter\_\-t::mot\_\-revolver, REV\_\-MAX\_\-SIZE, stat\_\-finished, stat\_\-start\_\-working, stepper\_\-motor\_\-t::status, stepper\_\-motor\_\-t::status\_\-last, and stepper\_\-motor\_\-t::target\_\-pos.
+
+Referenced by init\_\-motors(), main(), and sys\_\-revolver\_\-rotate().\hypertarget{system_8h_e2936ed52c758b103718c0101d5133df}{
+\index{system.h@{system.h}!sys\_\-catcher\_\-disable@{sys\_\-catcher\_\-disable}}
+\index{sys\_\-catcher\_\-disable@{sys\_\-catcher\_\-disable}!system.h@{system.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void sys\_\-catcher\_\-disable ()}}
+\label{system_8h_e2936ed52c758b103718c0101d5133df}
+
+
+Diables (power off) the catcher stepper motor. 
+
+This function is prepared especially for functions started from the menu. This function works only if the menu is correct initialized. 
+
+Definition at line 44 of file system.c.
+
+References CATCH\_\-DISABLE.
+
+Referenced by init\_\-motors().\hypertarget{system_8h_a740aed754b50165fb058dad9713f2f8}{
+\index{system.h@{system.h}!sys\_\-catcher\_\-enable@{sys\_\-catcher\_\-enable}}
+\index{sys\_\-catcher\_\-enable@{sys\_\-catcher\_\-enable}!system.h@{system.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void sys\_\-catcher\_\-enable ()}}
+\label{system_8h_a740aed754b50165fb058dad9713f2f8}
+
+
+Enables (power on) the catcher stepper motor. 
+
+This function is prepared especially for functions started from the menu. This function works only if the menu is correct initialized. 
+
+Definition at line 54 of file system.c.
+
+References CATCH\_\-ENABLE.
+
+Referenced by init\_\-motors().\hypertarget{system_8h_60124c61aa7941fb311fdb4d85e6ba66}{
+\index{system.h@{system.h}!sys\_\-catcher\_\-is\_\-lb\_\-blocked@{sys\_\-catcher\_\-is\_\-lb\_\-blocked}}
+\index{sys\_\-catcher\_\-is\_\-lb\_\-blocked@{sys\_\-catcher\_\-is\_\-lb\_\-blocked}!system.h@{system.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}int8\_\-t sys\_\-catcher\_\-is\_\-lb\_\-blocked ()}}
+\label{system_8h_60124c61aa7941fb311fdb4d85e6ba66}
+
+
+Returns status for the catcher lightbarrier. 
+
+This function is prepared especially for functions started from the menu. This function works only if the menu is correct initialized. 
+
+Definition at line 98 of file system.c.
+
+References IS\_\-LB\_\-CATCHER.
+
+Referenced by init\_\-motors().\hypertarget{system_8h_75278bd6ede508871b8d7880f24503d8}{
+\index{system.h@{system.h}!sys\_\-catcher\_\-rotate@{sys\_\-catcher\_\-rotate}}
+\index{sys\_\-catcher\_\-rotate@{sys\_\-catcher\_\-rotate}!system.h@{system.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void sys\_\-catcher\_\-rotate ()}}
+\label{system_8h_75278bd6ede508871b8d7880f24503d8}
+
+
+Rotates the catcher for one position. 
+
+This function is intened for manual usage and should not be used during normal running mode \hyperlink{system_8h_6e4cea4b6246f491c526211f5405627d564529220e61e848983d8eb9d7f87736}{SYS\_\-MODE\_\-RUNNING}, only during \hyperlink{system_8h_6e4cea4b6246f491c526211f5405627df1c8a041b6d3d46002d02ed0645a8ba2}{SYS\_\-MODE\_\-PAUSE}. 
+
+Definition at line 72 of file system.c.
+
+References catcher\_\-rotate\_\-relative(), smartie\_\-sorter\_\-t::mot\_\-catcher, smartie\_\-sorter\_\-t::prog, prog\_\-rotate\_\-catcher, stat\_\-idle, stepper\_\-motor\_\-t::status, and stepper\_\-motor\_\-t::status\_\-last.
+
+Referenced by init\_\-menu().\hypertarget{system_8h_5e456b56f0c2ce2d53923272af0ad333}{
+\index{system.h@{system.h}!sys\_\-enter\_\-submenu@{sys\_\-enter\_\-submenu}}
+\index{sys\_\-enter\_\-submenu@{sys\_\-enter\_\-submenu}!system.h@{system.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void sys\_\-enter\_\-submenu ()}}
+\label{system_8h_5e456b56f0c2ce2d53923272af0ad333}
+
+
+Will set the current menu to to lower menu layer. 
+
+This function is prepared especially for functions started from the menu. This function works only if the menu is correct initialized. 
+
+Definition at line 33 of file system.c.
+
+References smartie\_\-sorter\_\-t::prog, prog\_\-none, and menu\_\-entry\_\-t::submenu.
+
+Referenced by init\_\-menu().\hypertarget{system_8h_fcc5a33541d29a2d114643e67b7a5e68}{
+\index{system.h@{system.h}!sys\_\-enter\_\-topmenu@{sys\_\-enter\_\-topmenu}}
+\index{sys\_\-enter\_\-topmenu@{sys\_\-enter\_\-topmenu}!system.h@{system.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void sys\_\-enter\_\-topmenu ()}}
+\label{system_8h_fcc5a33541d29a2d114643e67b7a5e68}
+
+
+Will set the current menu to the upper menu layer. 
+
+This function is prepared especially for functions started from the menu. This function works only if the menu is correct initialized. 
+
+Definition at line 22 of file system.c.
+
+References smartie\_\-sorter\_\-t::prog, prog\_\-none, and menu\_\-entry\_\-t::topmenu.
+
+Referenced by init\_\-menu().\hypertarget{system_8h_03ea663e9ae339039bc5cbcddee52d94}{
+\index{system.h@{system.h}!sys\_\-get\_\-out\_\-pos@{sys\_\-get\_\-out\_\-pos}}
+\index{sys\_\-get\_\-out\_\-pos@{sys\_\-get\_\-out\_\-pos}!system.h@{system.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}uint8\_\-t sys\_\-get\_\-out\_\-pos ()}}
+\label{system_8h_03ea663e9ae339039bc5cbcddee52d94}
+
+
+Gets the correct out index of the next to drop smartie. 
+
+\begin{Desc}
+\item[Returns:]The index of smartie in the revolver which will be dropped next \end{Desc}
+
+
+Definition at line 85 of file system.c.
+
+References stepper\_\-motor\_\-t::current\_\-pos, smartie\_\-sorter\_\-t::mot\_\-revolver, and REV\_\-MAX\_\-SIZE.
+
+Referenced by main().\hypertarget{system_8h_851876925adec6a4c6d7cb6aec4bbbfd}{
+\index{system.h@{system.h}!sys\_\-pause@{sys\_\-pause}}
+\index{sys\_\-pause@{sys\_\-pause}!system.h@{system.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void sys\_\-pause ()}}
+\label{system_8h_851876925adec6a4c6d7cb6aec4bbbfd}
+
+
+Will Enter the pause mode. 
+
+This function will enter the pause mode after the current function is finished. This function is usually called from the lcd menu. This function is only available in the mode \hyperlink{system_8h_6e4cea4b6246f491c526211f5405627d564529220e61e848983d8eb9d7f87736}{SYS\_\-MODE\_\-RUNNING} 
+
+Definition at line 149 of file system.c.
+
+References system\_\-state\_\-t::mode, system\_\-state\_\-t::mode\_\-last, smartie\_\-sorter\_\-t::state, and SYS\_\-MODE\_\-PAUSE.
+
+Referenced by init\_\-menu().\hypertarget{system_8h_6d65cab872ca8f9d37af4287ee012740}{
+\index{system.h@{system.h}!sys\_\-reference\_\-measure\_\-blue@{sys\_\-reference\_\-measure\_\-blue}}
+\index{sys\_\-reference\_\-measure\_\-blue@{sys\_\-reference\_\-measure\_\-blue}!system.h@{system.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void sys\_\-reference\_\-measure\_\-blue ()}}
+\label{system_8h_6d65cab872ca8f9d37af4287ee012740}
+
+
+Initiates color callibration for corresponding smartie color. 
+
+This function is prepared especially for functions started from the menu. This function works only if the menu is correct initialized. 
+
+Definition at line 163 of file system.c.
+
+References smartie\_\-sorter\_\-t::prog, and prog\_\-set\_\-colors\_\-blue.
+
+Referenced by init\_\-menu().\hypertarget{system_8h_10b0d9845d6c021370b0d06a5a876205}{
+\index{system.h@{system.h}!sys\_\-reference\_\-measure\_\-restore@{sys\_\-reference\_\-measure\_\-restore}}
+\index{sys\_\-reference\_\-measure\_\-restore@{sys\_\-reference\_\-measure\_\-restore}!system.h@{system.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void sys\_\-reference\_\-measure\_\-restore ()}}
+\label{system_8h_10b0d9845d6c021370b0d06a5a876205}
+
+
+Initiates to restore the color reference values. 
+
+This function is prepared especially for functions started from the menu. This function works only if the menu is correct initialized. 
+
+Definition at line 222 of file system.c.
+
+References smartie\_\-sorter\_\-t::prog, and prog\_\-set\_\-colors\_\-restore.
+
+Referenced by init\_\-menu().\hypertarget{system_8h_73eeab714172d1723e3d412f36002a9b}{
+\index{system.h@{system.h}!sys\_\-resume@{sys\_\-resume}}
+\index{sys\_\-resume@{sys\_\-resume}!system.h@{system.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void sys\_\-resume ()}}
+\label{system_8h_73eeab714172d1723e3d412f36002a9b}
+
+
+Leave the pause mode. 
+
+This function will leave the pause mode. This function is usually called from the lcd menu. This function is only available in the mode \hyperlink{system_8h_6e4cea4b6246f491c526211f5405627df1c8a041b6d3d46002d02ed0645a8ba2}{SYS\_\-MODE\_\-PAUSE} 
+
+Definition at line 233 of file system.c.
+
+References system\_\-state\_\-t::mode, system\_\-state\_\-t::mode\_\-last, smartie\_\-sorter\_\-t::state, and SYS\_\-MODE\_\-RUNNING.
+
+Referenced by init\_\-menu().\hypertarget{system_8h_768659fc9adb5f8edca3aed8711ef448}{
+\index{system.h@{system.h}!sys\_\-revolver\_\-is\_\-lb\_\-blocked@{sys\_\-revolver\_\-is\_\-lb\_\-blocked}}
+\index{sys\_\-revolver\_\-is\_\-lb\_\-blocked@{sys\_\-revolver\_\-is\_\-lb\_\-blocked}!system.h@{system.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}int8\_\-t sys\_\-revolver\_\-is\_\-lb\_\-blocked ()}}
+\label{system_8h_768659fc9adb5f8edca3aed8711ef448}
+
+
+Returns the status for the revolver lightbarrier. 
+
+This function is prepared especially for functions started from the menu. This function works only if the menu is correct initialized. 
+
+Definition at line 138 of file system.c.
+
+References IS\_\-LB\_\-REVOLVER.
+
+Referenced by init\_\-motors().\hypertarget{system_8h_9fcb8a68acbcbb5ab57ca0ea752b5ad6}{
+\index{system.h@{system.h}!sys\_\-revolver\_\-rotate@{sys\_\-revolver\_\-rotate}}
+\index{sys\_\-revolver\_\-rotate@{sys\_\-revolver\_\-rotate}!system.h@{system.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void sys\_\-revolver\_\-rotate ()}}
+\label{system_8h_9fcb8a68acbcbb5ab57ca0ea752b5ad6}
+
+
+Rotates the revolver for one position. 
+
+This function is intened for manual usage and should not be used during normal running mode \hyperlink{system_8h_6e4cea4b6246f491c526211f5405627d564529220e61e848983d8eb9d7f87736}{SYS\_\-MODE\_\-RUNNING}, only during \hyperlink{system_8h_6e4cea4b6246f491c526211f5405627df1c8a041b6d3d46002d02ed0645a8ba2}{SYS\_\-MODE\_\-PAUSE}. 
+
+Definition at line 118 of file system.c.
+
+References smartie\_\-sorter\_\-t::mot\_\-revolver, smartie\_\-sorter\_\-t::prog, prog\_\-rotate\_\-revolver, revolver\_\-rotate\_\-relative(), stat\_\-idle, stepper\_\-motor\_\-t::status, and stepper\_\-motor\_\-t::status\_\-last.
+
+Referenced by init\_\-menu().\hypertarget{system_8h_86167f37ad40f4c37766d17c9d07845d}{
+\index{system.h@{system.h}!sys\_\-speed\_\-down@{sys\_\-speed\_\-down}}
+\index{sys\_\-speed\_\-down@{sys\_\-speed\_\-down}!system.h@{system.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void sys\_\-speed\_\-down ()}}
+\label{system_8h_86167f37ad40f4c37766d17c9d07845d}
+
+
+Set the operating speed of the sorter down by increasing pause times. 
+
+This function is prepared especially for functions started from the menu. This function works only if the menu is correct initialized. 
+
+Definition at line 269 of file system.c.
+
+References smartie\_\-sorter\_\-t::prog, smartie\_\-sorter\_\-t::speed, and sys\_\-set\_\-speed().
+
+Referenced by init\_\-menu().\hypertarget{system_8h_1826940cb85dc745f43b80c8554b3047}{
+\index{system.h@{system.h}!sys\_\-speed\_\-up@{sys\_\-speed\_\-up}}
+\index{sys\_\-speed\_\-up@{sys\_\-speed\_\-up}!system.h@{system.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void sys\_\-speed\_\-up ()}}
+\label{system_8h_1826940cb85dc745f43b80c8554b3047}
+
+
+Set the operating speed of the sorter up by decreasing pause times. 
+
+This function is prepared especially for functions started from the menu. This function works only if the menu is correct initialized. 
+
+Definition at line 256 of file system.c.
+
+References smartie\_\-sorter\_\-t::prog, smartie\_\-sorter\_\-t::speed, and sys\_\-set\_\-speed().
+
+Referenced by init\_\-menu().

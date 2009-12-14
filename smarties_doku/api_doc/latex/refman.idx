@@ -1,0 +1,293 @@
+\indexentry{color\_\discretionary {-}{}{}sensor\_\discretionary {-}{}{}adjd\_\discretionary {-}{}{}t@{color\_\discretionary {-}{}{}sensor\_\discretionary {-}{}{}adjd\_\discretionary {-}{}{}t}|hyperpage}{15}
+\indexentry{color\_\discretionary {-}{}{}sensor\_\discretionary {-}{}{}tcs\_\discretionary {-}{}{}t@{color\_\discretionary {-}{}{}sensor\_\discretionary {-}{}{}tcs\_\discretionary {-}{}{}t}|hyperpage}{16}
+\indexentry{ee\_\discretionary {-}{}{}memory\_\discretionary {-}{}{}t@{ee\_\discretionary {-}{}{}memory\_\discretionary {-}{}{}t}|hyperpage}{17}
+\indexentry{lightbarrier\_\discretionary {-}{}{}t@{lightbarrier\_\discretionary {-}{}{}t}|hyperpage}{18}
+\indexentry{menu\_\discretionary {-}{}{}entry\_\discretionary {-}{}{}t@{menu\_\discretionary {-}{}{}entry\_\discretionary {-}{}{}t}|hyperpage}{19}
+\indexentry{revolver\_\discretionary {-}{}{}t@{revolver\_\discretionary {-}{}{}t}|hyperpage}{20}
+\indexentry{rotary\_\discretionary {-}{}{}encoder\_\discretionary {-}{}{}t@{rotary\_\discretionary {-}{}{}encoder\_\discretionary {-}{}{}t}|hyperpage}{21}
+\indexentry{smartie\_\discretionary {-}{}{}sorter\_\discretionary {-}{}{}t@{smartie\_\discretionary {-}{}{}sorter\_\discretionary {-}{}{}t}|hyperpage}{22}
+\indexentry{smartie\_\discretionary {-}{}{}t@{smartie\_\discretionary {-}{}{}t}|hyperpage}{24}
+\indexentry{stepper\_\discretionary {-}{}{}motor\_\discretionary {-}{}{}t@{stepper\_\discretionary {-}{}{}motor\_\discretionary {-}{}{}t}|hyperpage}{25}
+\indexentry{system\_\discretionary {-}{}{}state\_\discretionary {-}{}{}t@{system\_\discretionary {-}{}{}state\_\discretionary {-}{}{}t}|hyperpage}{27}
+\indexentry{system\_\discretionary {-}{}{}step\_\discretionary {-}{}{}t@{system\_\discretionary {-}{}{}step\_\discretionary {-}{}{}t}|hyperpage}{28}
+\indexentry{vibrator\_\discretionary {-}{}{}t@{vibrator\_\discretionary {-}{}{}t}|hyperpage}{29}
+\indexentry{abstraction.c@{abstraction.c}|hyperpage}{31}
+\indexentry{abstraction.c@{abstraction.c}!lightbarrier\_\discretionary {-}{}{}stuff@{lightbarrier\_\discretionary {-}{}{}stuff}|hyperpage}{32}
+\indexentry{lightbarrier\_\discretionary {-}{}{}stuff@{lightbarrier\_\discretionary {-}{}{}stuff}!abstraction.c@{abstraction.c}|hyperpage}{32}
+\indexentry{abstraction.c@{abstraction.c}!motor\_\discretionary {-}{}{}stuff@{motor\_\discretionary {-}{}{}stuff}|hyperpage}{32}
+\indexentry{motor\_\discretionary {-}{}{}stuff@{motor\_\discretionary {-}{}{}stuff}!abstraction.c@{abstraction.c}|hyperpage}{32}
+\indexentry{abstraction.c@{abstraction.c}!rotary\_\discretionary {-}{}{}encoder\_\discretionary {-}{}{}stuff@{rotary\_\discretionary {-}{}{}encoder\_\discretionary {-}{}{}stuff}|hyperpage}{32}
+\indexentry{rotary\_\discretionary {-}{}{}encoder\_\discretionary {-}{}{}stuff@{rotary\_\discretionary {-}{}{}encoder\_\discretionary {-}{}{}stuff}!abstraction.c@{abstraction.c}|hyperpage}{32}
+\indexentry{abstraction.c@{abstraction.c}!sensor\_\discretionary {-}{}{}tcs\_\discretionary {-}{}{}stuff@{sensor\_\discretionary {-}{}{}tcs\_\discretionary {-}{}{}stuff}|hyperpage}{33}
+\indexentry{sensor\_\discretionary {-}{}{}tcs\_\discretionary {-}{}{}stuff@{sensor\_\discretionary {-}{}{}tcs\_\discretionary {-}{}{}stuff}!abstraction.c@{abstraction.c}|hyperpage}{33}
+\indexentry{abstraction.c@{abstraction.c}!vibrator\_\discretionary {-}{}{}stuff@{vibrator\_\discretionary {-}{}{}stuff}|hyperpage}{33}
+\indexentry{vibrator\_\discretionary {-}{}{}stuff@{vibrator\_\discretionary {-}{}{}stuff}!abstraction.c@{abstraction.c}|hyperpage}{33}
+\indexentry{ee.c@{ee.c}|hyperpage}{34}
+\indexentry{ee.c@{ee.c}!EEMEM@{EEMEM}|hyperpage}{34}
+\indexentry{EEMEM@{EEMEM}!ee.c@{ee.c}|hyperpage}{34}
+\indexentry{ee.h@{ee.h}|hyperpage}{35}
+\indexentry{inits.c@{inits.c}|hyperpage}{36}
+\indexentry{inits.c@{inits.c}!init\_\discretionary {-}{}{}menu@{init\_\discretionary {-}{}{}menu}|hyperpage}{37}
+\indexentry{init\_\discretionary {-}{}{}menu@{init\_\discretionary {-}{}{}menu}!inits.c@{inits.c}|hyperpage}{37}
+\indexentry{inits.c@{inits.c}!init\_\discretionary {-}{}{}timer@{init\_\discretionary {-}{}{}timer}|hyperpage}{37}
+\indexentry{init\_\discretionary {-}{}{}timer@{init\_\discretionary {-}{}{}timer}!inits.c@{inits.c}|hyperpage}{37}
+\indexentry{interrupt.c@{interrupt.c}|hyperpage}{38}
+\indexentry{lcd\_\discretionary {-}{}{}display.c@{lcd\_\discretionary {-}{}{}display.c}|hyperpage}{39}
+\indexentry{lcd\_\discretionary {-}{}{}display.c@{lcd\_\discretionary {-}{}{}display.c}!lcd\_\discretionary {-}{}{}clrscr@{lcd\_\discretionary {-}{}{}clrscr}|hyperpage}{40}
+\indexentry{lcd\_\discretionary {-}{}{}clrscr@{lcd\_\discretionary {-}{}{}clrscr}!lcd_display.c@{lcd\_\discretionary {-}{}{}display.c}|hyperpage}{40}
+\indexentry{lcd\_\discretionary {-}{}{}display.c@{lcd\_\discretionary {-}{}{}display.c}!lcd\_\discretionary {-}{}{}command@{lcd\_\discretionary {-}{}{}command}|hyperpage}{40}
+\indexentry{lcd\_\discretionary {-}{}{}command@{lcd\_\discretionary {-}{}{}command}!lcd_display.c@{lcd\_\discretionary {-}{}{}display.c}|hyperpage}{40}
+\indexentry{lcd\_\discretionary {-}{}{}display.c@{lcd\_\discretionary {-}{}{}display.c}!lcd\_\discretionary {-}{}{}data@{lcd\_\discretionary {-}{}{}data}|hyperpage}{40}
+\indexentry{lcd\_\discretionary {-}{}{}data@{lcd\_\discretionary {-}{}{}data}!lcd_display.c@{lcd\_\discretionary {-}{}{}display.c}|hyperpage}{40}
+\indexentry{lcd\_\discretionary {-}{}{}display.c@{lcd\_\discretionary {-}{}{}display.c}!lcd\_\discretionary {-}{}{}gotoxy@{lcd\_\discretionary {-}{}{}gotoxy}|hyperpage}{41}
+\indexentry{lcd\_\discretionary {-}{}{}gotoxy@{lcd\_\discretionary {-}{}{}gotoxy}!lcd_display.c@{lcd\_\discretionary {-}{}{}display.c}|hyperpage}{41}
+\indexentry{lcd\_\discretionary {-}{}{}display.c@{lcd\_\discretionary {-}{}{}display.c}!lcd\_\discretionary {-}{}{}home@{lcd\_\discretionary {-}{}{}home}|hyperpage}{41}
+\indexentry{lcd\_\discretionary {-}{}{}home@{lcd\_\discretionary {-}{}{}home}!lcd_display.c@{lcd\_\discretionary {-}{}{}display.c}|hyperpage}{41}
+\indexentry{lcd\_\discretionary {-}{}{}display.c@{lcd\_\discretionary {-}{}{}display.c}!lcd\_\discretionary {-}{}{}init@{lcd\_\discretionary {-}{}{}init}|hyperpage}{41}
+\indexentry{lcd\_\discretionary {-}{}{}init@{lcd\_\discretionary {-}{}{}init}!lcd_display.c@{lcd\_\discretionary {-}{}{}display.c}|hyperpage}{41}
+\indexentry{lcd\_\discretionary {-}{}{}display.c@{lcd\_\discretionary {-}{}{}display.c}!lcd\_\discretionary {-}{}{}putc@{lcd\_\discretionary {-}{}{}putc}|hyperpage}{42}
+\indexentry{lcd\_\discretionary {-}{}{}putc@{lcd\_\discretionary {-}{}{}putc}!lcd_display.c@{lcd\_\discretionary {-}{}{}display.c}|hyperpage}{42}
+\indexentry{lcd\_\discretionary {-}{}{}display.c@{lcd\_\discretionary {-}{}{}display.c}!lcd\_\discretionary {-}{}{}puts@{lcd\_\discretionary {-}{}{}puts}|hyperpage}{42}
+\indexentry{lcd\_\discretionary {-}{}{}puts@{lcd\_\discretionary {-}{}{}puts}!lcd_display.c@{lcd\_\discretionary {-}{}{}display.c}|hyperpage}{42}
+\indexentry{lcd\_\discretionary {-}{}{}display.c@{lcd\_\discretionary {-}{}{}display.c}!lcd\_\discretionary {-}{}{}puts\_\discretionary {-}{}{}p@{lcd\_\discretionary {-}{}{}puts\_\discretionary {-}{}{}p}|hyperpage}{42}
+\indexentry{lcd\_\discretionary {-}{}{}puts\_\discretionary {-}{}{}p@{lcd\_\discretionary {-}{}{}puts\_\discretionary {-}{}{}p}!lcd_display.c@{lcd\_\discretionary {-}{}{}display.c}|hyperpage}{42}
+\indexentry{lcd\_\discretionary {-}{}{}display.h@{lcd\_\discretionary {-}{}{}display.h}|hyperpage}{44}
+\indexentry{lcd\_\discretionary {-}{}{}display.h@{lcd\_\discretionary {-}{}{}display.h}!LCD\_\discretionary {-}{}{}CONTROLLER\_\discretionary {-}{}{}KS0073@{LCD\_\discretionary {-}{}{}CONTROLLER\_\discretionary {-}{}{}KS0073}|hyperpage}{47}
+\indexentry{LCD\_\discretionary {-}{}{}CONTROLLER\_\discretionary {-}{}{}KS0073@{LCD\_\discretionary {-}{}{}CONTROLLER\_\discretionary {-}{}{}KS0073}!lcd_display.h@{lcd\_\discretionary {-}{}{}display.h}|hyperpage}{47}
+\indexentry{lcd\_\discretionary {-}{}{}display.h@{lcd\_\discretionary {-}{}{}display.h}!LCD\_\discretionary {-}{}{}DATA0\_\discretionary {-}{}{}PIN@{LCD\_\discretionary {-}{}{}DATA0\_\discretionary {-}{}{}PIN}|hyperpage}{47}
+\indexentry{LCD\_\discretionary {-}{}{}DATA0\_\discretionary {-}{}{}PIN@{LCD\_\discretionary {-}{}{}DATA0\_\discretionary {-}{}{}PIN}!lcd_display.h@{lcd\_\discretionary {-}{}{}display.h}|hyperpage}{47}
+\indexentry{lcd\_\discretionary {-}{}{}display.h@{lcd\_\discretionary {-}{}{}display.h}!LCD\_\discretionary {-}{}{}DATA0\_\discretionary {-}{}{}PORT@{LCD\_\discretionary {-}{}{}DATA0\_\discretionary {-}{}{}PORT}|hyperpage}{47}
+\indexentry{LCD\_\discretionary {-}{}{}DATA0\_\discretionary {-}{}{}PORT@{LCD\_\discretionary {-}{}{}DATA0\_\discretionary {-}{}{}PORT}!lcd_display.h@{lcd\_\discretionary {-}{}{}display.h}|hyperpage}{47}
+\indexentry{lcd\_\discretionary {-}{}{}display.h@{lcd\_\discretionary {-}{}{}display.h}!LCD\_\discretionary {-}{}{}DATA1\_\discretionary {-}{}{}PIN@{LCD\_\discretionary {-}{}{}DATA1\_\discretionary {-}{}{}PIN}|hyperpage}{47}
+\indexentry{LCD\_\discretionary {-}{}{}DATA1\_\discretionary {-}{}{}PIN@{LCD\_\discretionary {-}{}{}DATA1\_\discretionary {-}{}{}PIN}!lcd_display.h@{lcd\_\discretionary {-}{}{}display.h}|hyperpage}{47}
+\indexentry{lcd\_\discretionary {-}{}{}display.h@{lcd\_\discretionary {-}{}{}display.h}!LCD\_\discretionary {-}{}{}DATA1\_\discretionary {-}{}{}PORT@{LCD\_\discretionary {-}{}{}DATA1\_\discretionary {-}{}{}PORT}|hyperpage}{47}
+\indexentry{LCD\_\discretionary {-}{}{}DATA1\_\discretionary {-}{}{}PORT@{LCD\_\discretionary {-}{}{}DATA1\_\discretionary {-}{}{}PORT}!lcd_display.h@{lcd\_\discretionary {-}{}{}display.h}|hyperpage}{47}
+\indexentry{lcd\_\discretionary {-}{}{}display.h@{lcd\_\discretionary {-}{}{}display.h}!LCD\_\discretionary {-}{}{}DATA2\_\discretionary {-}{}{}PIN@{LCD\_\discretionary {-}{}{}DATA2\_\discretionary {-}{}{}PIN}|hyperpage}{47}
+\indexentry{LCD\_\discretionary {-}{}{}DATA2\_\discretionary {-}{}{}PIN@{LCD\_\discretionary {-}{}{}DATA2\_\discretionary {-}{}{}PIN}!lcd_display.h@{lcd\_\discretionary {-}{}{}display.h}|hyperpage}{47}
+\indexentry{lcd\_\discretionary {-}{}{}display.h@{lcd\_\discretionary {-}{}{}display.h}!LCD\_\discretionary {-}{}{}DATA2\_\discretionary {-}{}{}PORT@{LCD\_\discretionary {-}{}{}DATA2\_\discretionary {-}{}{}PORT}|hyperpage}{48}
+\indexentry{LCD\_\discretionary {-}{}{}DATA2\_\discretionary {-}{}{}PORT@{LCD\_\discretionary {-}{}{}DATA2\_\discretionary {-}{}{}PORT}!lcd_display.h@{lcd\_\discretionary {-}{}{}display.h}|hyperpage}{48}
+\indexentry{lcd\_\discretionary {-}{}{}display.h@{lcd\_\discretionary {-}{}{}display.h}!LCD\_\discretionary {-}{}{}DATA3\_\discretionary {-}{}{}PIN@{LCD\_\discretionary {-}{}{}DATA3\_\discretionary {-}{}{}PIN}|hyperpage}{48}
+\indexentry{LCD\_\discretionary {-}{}{}DATA3\_\discretionary {-}{}{}PIN@{LCD\_\discretionary {-}{}{}DATA3\_\discretionary {-}{}{}PIN}!lcd_display.h@{lcd\_\discretionary {-}{}{}display.h}|hyperpage}{48}
+\indexentry{lcd\_\discretionary {-}{}{}display.h@{lcd\_\discretionary {-}{}{}display.h}!LCD\_\discretionary {-}{}{}DATA3\_\discretionary {-}{}{}PORT@{LCD\_\discretionary {-}{}{}DATA3\_\discretionary {-}{}{}PORT}|hyperpage}{48}
+\indexentry{LCD\_\discretionary {-}{}{}DATA3\_\discretionary {-}{}{}PORT@{LCD\_\discretionary {-}{}{}DATA3\_\discretionary {-}{}{}PORT}!lcd_display.h@{lcd\_\discretionary {-}{}{}display.h}|hyperpage}{48}
+\indexentry{lcd\_\discretionary {-}{}{}display.h@{lcd\_\discretionary {-}{}{}display.h}!LCD\_\discretionary {-}{}{}DISP\_\discretionary {-}{}{}LENGTH@{LCD\_\discretionary {-}{}{}DISP\_\discretionary {-}{}{}LENGTH}|hyperpage}{48}
+\indexentry{LCD\_\discretionary {-}{}{}DISP\_\discretionary {-}{}{}LENGTH@{LCD\_\discretionary {-}{}{}DISP\_\discretionary {-}{}{}LENGTH}!lcd_display.h@{lcd\_\discretionary {-}{}{}display.h}|hyperpage}{48}
+\indexentry{lcd\_\discretionary {-}{}{}display.h@{lcd\_\discretionary {-}{}{}display.h}!LCD\_\discretionary {-}{}{}E\_\discretionary {-}{}{}PIN@{LCD\_\discretionary {-}{}{}E\_\discretionary {-}{}{}PIN}|hyperpage}{48}
+\indexentry{LCD\_\discretionary {-}{}{}E\_\discretionary {-}{}{}PIN@{LCD\_\discretionary {-}{}{}E\_\discretionary {-}{}{}PIN}!lcd_display.h@{lcd\_\discretionary {-}{}{}display.h}|hyperpage}{48}
+\indexentry{lcd\_\discretionary {-}{}{}display.h@{lcd\_\discretionary {-}{}{}display.h}!LCD\_\discretionary {-}{}{}E\_\discretionary {-}{}{}PORT@{LCD\_\discretionary {-}{}{}E\_\discretionary {-}{}{}PORT}|hyperpage}{48}
+\indexentry{LCD\_\discretionary {-}{}{}E\_\discretionary {-}{}{}PORT@{LCD\_\discretionary {-}{}{}E\_\discretionary {-}{}{}PORT}!lcd_display.h@{lcd\_\discretionary {-}{}{}display.h}|hyperpage}{48}
+\indexentry{lcd\_\discretionary {-}{}{}display.h@{lcd\_\discretionary {-}{}{}display.h}!LCD\_\discretionary {-}{}{}IO\_\discretionary {-}{}{}MODE@{LCD\_\discretionary {-}{}{}IO\_\discretionary {-}{}{}MODE}|hyperpage}{48}
+\indexentry{LCD\_\discretionary {-}{}{}IO\_\discretionary {-}{}{}MODE@{LCD\_\discretionary {-}{}{}IO\_\discretionary {-}{}{}MODE}!lcd_display.h@{lcd\_\discretionary {-}{}{}display.h}|hyperpage}{48}
+\indexentry{lcd\_\discretionary {-}{}{}display.h@{lcd\_\discretionary {-}{}{}display.h}!LCD\_\discretionary {-}{}{}LINE\_\discretionary {-}{}{}LENGTH@{LCD\_\discretionary {-}{}{}LINE\_\discretionary {-}{}{}LENGTH}|hyperpage}{49}
+\indexentry{LCD\_\discretionary {-}{}{}LINE\_\discretionary {-}{}{}LENGTH@{LCD\_\discretionary {-}{}{}LINE\_\discretionary {-}{}{}LENGTH}!lcd_display.h@{lcd\_\discretionary {-}{}{}display.h}|hyperpage}{49}
+\indexentry{lcd\_\discretionary {-}{}{}display.h@{lcd\_\discretionary {-}{}{}display.h}!LCD\_\discretionary {-}{}{}LINES@{LCD\_\discretionary {-}{}{}LINES}|hyperpage}{49}
+\indexentry{LCD\_\discretionary {-}{}{}LINES@{LCD\_\discretionary {-}{}{}LINES}!lcd_display.h@{lcd\_\discretionary {-}{}{}display.h}|hyperpage}{49}
+\indexentry{lcd\_\discretionary {-}{}{}display.h@{lcd\_\discretionary {-}{}{}display.h}!LCD\_\discretionary {-}{}{}PORT@{LCD\_\discretionary {-}{}{}PORT}|hyperpage}{49}
+\indexentry{LCD\_\discretionary {-}{}{}PORT@{LCD\_\discretionary {-}{}{}PORT}!lcd_display.h@{lcd\_\discretionary {-}{}{}display.h}|hyperpage}{49}
+\indexentry{lcd\_\discretionary {-}{}{}display.h@{lcd\_\discretionary {-}{}{}display.h}!LCD\_\discretionary {-}{}{}RS\_\discretionary {-}{}{}PIN@{LCD\_\discretionary {-}{}{}RS\_\discretionary {-}{}{}PIN}|hyperpage}{49}
+\indexentry{LCD\_\discretionary {-}{}{}RS\_\discretionary {-}{}{}PIN@{LCD\_\discretionary {-}{}{}RS\_\discretionary {-}{}{}PIN}!lcd_display.h@{lcd\_\discretionary {-}{}{}display.h}|hyperpage}{49}
+\indexentry{lcd\_\discretionary {-}{}{}display.h@{lcd\_\discretionary {-}{}{}display.h}!LCD\_\discretionary {-}{}{}RS\_\discretionary {-}{}{}PORT@{LCD\_\discretionary {-}{}{}RS\_\discretionary {-}{}{}PORT}|hyperpage}{49}
+\indexentry{LCD\_\discretionary {-}{}{}RS\_\discretionary {-}{}{}PORT@{LCD\_\discretionary {-}{}{}RS\_\discretionary {-}{}{}PORT}!lcd_display.h@{lcd\_\discretionary {-}{}{}display.h}|hyperpage}{49}
+\indexentry{lcd\_\discretionary {-}{}{}display.h@{lcd\_\discretionary {-}{}{}display.h}!LCD\_\discretionary {-}{}{}RW\_\discretionary {-}{}{}PIN@{LCD\_\discretionary {-}{}{}RW\_\discretionary {-}{}{}PIN}|hyperpage}{49}
+\indexentry{LCD\_\discretionary {-}{}{}RW\_\discretionary {-}{}{}PIN@{LCD\_\discretionary {-}{}{}RW\_\discretionary {-}{}{}PIN}!lcd_display.h@{lcd\_\discretionary {-}{}{}display.h}|hyperpage}{49}
+\indexentry{lcd\_\discretionary {-}{}{}display.h@{lcd\_\discretionary {-}{}{}display.h}!LCD\_\discretionary {-}{}{}RW\_\discretionary {-}{}{}PORT@{LCD\_\discretionary {-}{}{}RW\_\discretionary {-}{}{}PORT}|hyperpage}{49}
+\indexentry{LCD\_\discretionary {-}{}{}RW\_\discretionary {-}{}{}PORT@{LCD\_\discretionary {-}{}{}RW\_\discretionary {-}{}{}PORT}!lcd_display.h@{lcd\_\discretionary {-}{}{}display.h}|hyperpage}{49}
+\indexentry{lcd\_\discretionary {-}{}{}display.h@{lcd\_\discretionary {-}{}{}display.h}!LCD\_\discretionary {-}{}{}START\_\discretionary {-}{}{}LINE1@{LCD\_\discretionary {-}{}{}START\_\discretionary {-}{}{}LINE1}|hyperpage}{49}
+\indexentry{LCD\_\discretionary {-}{}{}START\_\discretionary {-}{}{}LINE1@{LCD\_\discretionary {-}{}{}START\_\discretionary {-}{}{}LINE1}!lcd_display.h@{lcd\_\discretionary {-}{}{}display.h}|hyperpage}{49}
+\indexentry{lcd\_\discretionary {-}{}{}display.h@{lcd\_\discretionary {-}{}{}display.h}!LCD\_\discretionary {-}{}{}START\_\discretionary {-}{}{}LINE2@{LCD\_\discretionary {-}{}{}START\_\discretionary {-}{}{}LINE2}|hyperpage}{50}
+\indexentry{LCD\_\discretionary {-}{}{}START\_\discretionary {-}{}{}LINE2@{LCD\_\discretionary {-}{}{}START\_\discretionary {-}{}{}LINE2}!lcd_display.h@{lcd\_\discretionary {-}{}{}display.h}|hyperpage}{50}
+\indexentry{lcd\_\discretionary {-}{}{}display.h@{lcd\_\discretionary {-}{}{}display.h}!LCD\_\discretionary {-}{}{}START\_\discretionary {-}{}{}LINE3@{LCD\_\discretionary {-}{}{}START\_\discretionary {-}{}{}LINE3}|hyperpage}{50}
+\indexentry{LCD\_\discretionary {-}{}{}START\_\discretionary {-}{}{}LINE3@{LCD\_\discretionary {-}{}{}START\_\discretionary {-}{}{}LINE3}!lcd_display.h@{lcd\_\discretionary {-}{}{}display.h}|hyperpage}{50}
+\indexentry{lcd\_\discretionary {-}{}{}display.h@{lcd\_\discretionary {-}{}{}display.h}!LCD\_\discretionary {-}{}{}START\_\discretionary {-}{}{}LINE4@{LCD\_\discretionary {-}{}{}START\_\discretionary {-}{}{}LINE4}|hyperpage}{50}
+\indexentry{LCD\_\discretionary {-}{}{}START\_\discretionary {-}{}{}LINE4@{LCD\_\discretionary {-}{}{}START\_\discretionary {-}{}{}LINE4}!lcd_display.h@{lcd\_\discretionary {-}{}{}display.h}|hyperpage}{50}
+\indexentry{lcd\_\discretionary {-}{}{}display.h@{lcd\_\discretionary {-}{}{}display.h}!LCD\_\discretionary {-}{}{}WRAP\_\discretionary {-}{}{}LINES@{LCD\_\discretionary {-}{}{}WRAP\_\discretionary {-}{}{}LINES}|hyperpage}{50}
+\indexentry{LCD\_\discretionary {-}{}{}WRAP\_\discretionary {-}{}{}LINES@{LCD\_\discretionary {-}{}{}WRAP\_\discretionary {-}{}{}LINES}!lcd_display.h@{lcd\_\discretionary {-}{}{}display.h}|hyperpage}{50}
+\indexentry{lcd\_\discretionary {-}{}{}display.h@{lcd\_\discretionary {-}{}{}display.h}!XTAL@{XTAL}|hyperpage}{50}
+\indexentry{XTAL@{XTAL}!lcd_display.h@{lcd\_\discretionary {-}{}{}display.h}|hyperpage}{50}
+\indexentry{lcd\_\discretionary {-}{}{}display.h@{lcd\_\discretionary {-}{}{}display.h}!lcd\_\discretionary {-}{}{}clrscr@{lcd\_\discretionary {-}{}{}clrscr}|hyperpage}{50}
+\indexentry{lcd\_\discretionary {-}{}{}clrscr@{lcd\_\discretionary {-}{}{}clrscr}!lcd_display.h@{lcd\_\discretionary {-}{}{}display.h}|hyperpage}{50}
+\indexentry{lcd\_\discretionary {-}{}{}display.h@{lcd\_\discretionary {-}{}{}display.h}!lcd\_\discretionary {-}{}{}command@{lcd\_\discretionary {-}{}{}command}|hyperpage}{51}
+\indexentry{lcd\_\discretionary {-}{}{}command@{lcd\_\discretionary {-}{}{}command}!lcd_display.h@{lcd\_\discretionary {-}{}{}display.h}|hyperpage}{51}
+\indexentry{lcd\_\discretionary {-}{}{}display.h@{lcd\_\discretionary {-}{}{}display.h}!lcd\_\discretionary {-}{}{}data@{lcd\_\discretionary {-}{}{}data}|hyperpage}{51}
+\indexentry{lcd\_\discretionary {-}{}{}data@{lcd\_\discretionary {-}{}{}data}!lcd_display.h@{lcd\_\discretionary {-}{}{}display.h}|hyperpage}{51}
+\indexentry{lcd\_\discretionary {-}{}{}display.h@{lcd\_\discretionary {-}{}{}display.h}!lcd\_\discretionary {-}{}{}gotoxy@{lcd\_\discretionary {-}{}{}gotoxy}|hyperpage}{51}
+\indexentry{lcd\_\discretionary {-}{}{}gotoxy@{lcd\_\discretionary {-}{}{}gotoxy}!lcd_display.h@{lcd\_\discretionary {-}{}{}display.h}|hyperpage}{51}
+\indexentry{lcd\_\discretionary {-}{}{}display.h@{lcd\_\discretionary {-}{}{}display.h}!lcd\_\discretionary {-}{}{}home@{lcd\_\discretionary {-}{}{}home}|hyperpage}{52}
+\indexentry{lcd\_\discretionary {-}{}{}home@{lcd\_\discretionary {-}{}{}home}!lcd_display.h@{lcd\_\discretionary {-}{}{}display.h}|hyperpage}{52}
+\indexentry{lcd\_\discretionary {-}{}{}display.h@{lcd\_\discretionary {-}{}{}display.h}!lcd\_\discretionary {-}{}{}init@{lcd\_\discretionary {-}{}{}init}|hyperpage}{52}
+\indexentry{lcd\_\discretionary {-}{}{}init@{lcd\_\discretionary {-}{}{}init}!lcd_display.h@{lcd\_\discretionary {-}{}{}display.h}|hyperpage}{52}
+\indexentry{lcd\_\discretionary {-}{}{}display.h@{lcd\_\discretionary {-}{}{}display.h}!lcd\_\discretionary {-}{}{}putc@{lcd\_\discretionary {-}{}{}putc}|hyperpage}{52}
+\indexentry{lcd\_\discretionary {-}{}{}putc@{lcd\_\discretionary {-}{}{}putc}!lcd_display.h@{lcd\_\discretionary {-}{}{}display.h}|hyperpage}{52}
+\indexentry{lcd\_\discretionary {-}{}{}display.h@{lcd\_\discretionary {-}{}{}display.h}!lcd\_\discretionary {-}{}{}puts@{lcd\_\discretionary {-}{}{}puts}|hyperpage}{53}
+\indexentry{lcd\_\discretionary {-}{}{}puts@{lcd\_\discretionary {-}{}{}puts}!lcd_display.h@{lcd\_\discretionary {-}{}{}display.h}|hyperpage}{53}
+\indexentry{lcd\_\discretionary {-}{}{}display.h@{lcd\_\discretionary {-}{}{}display.h}!lcd\_\discretionary {-}{}{}puts\_\discretionary {-}{}{}p@{lcd\_\discretionary {-}{}{}puts\_\discretionary {-}{}{}p}|hyperpage}{53}
+\indexentry{lcd\_\discretionary {-}{}{}puts\_\discretionary {-}{}{}p@{lcd\_\discretionary {-}{}{}puts\_\discretionary {-}{}{}p}!lcd_display.h@{lcd\_\discretionary {-}{}{}display.h}|hyperpage}{53}
+\indexentry{menu.h@{menu.h}|hyperpage}{54}
+\indexentry{smarties2.c@{smarties2.c}|hyperpage}{56}
+\indexentry{smarties2.c@{smarties2.c}!main@{main}|hyperpage}{56}
+\indexentry{main@{main}!smarties2.c@{smarties2.c}|hyperpage}{56}
+\indexentry{smarties2.h@{smarties2.h}|hyperpage}{58}
+\indexentry{system.c@{system.c}|hyperpage}{59}
+\indexentry{system.c@{system.c}!catcher\_\discretionary {-}{}{}rotate\_\discretionary {-}{}{}absolute@{catcher\_\discretionary {-}{}{}rotate\_\discretionary {-}{}{}absolute}|hyperpage}{61}
+\indexentry{catcher\_\discretionary {-}{}{}rotate\_\discretionary {-}{}{}absolute@{catcher\_\discretionary {-}{}{}rotate\_\discretionary {-}{}{}absolute}!system.c@{system.c}|hyperpage}{61}
+\indexentry{system.c@{system.c}!catcher\_\discretionary {-}{}{}rotate\_\discretionary {-}{}{}relative@{catcher\_\discretionary {-}{}{}rotate\_\discretionary {-}{}{}relative}|hyperpage}{61}
+\indexentry{catcher\_\discretionary {-}{}{}rotate\_\discretionary {-}{}{}relative@{catcher\_\discretionary {-}{}{}rotate\_\discretionary {-}{}{}relative}!system.c@{system.c}|hyperpage}{61}
+\indexentry{system.c@{system.c}!revolver\_\discretionary {-}{}{}rotate\_\discretionary {-}{}{}relative@{revolver\_\discretionary {-}{}{}rotate\_\discretionary {-}{}{}relative}|hyperpage}{62}
+\indexentry{revolver\_\discretionary {-}{}{}rotate\_\discretionary {-}{}{}relative@{revolver\_\discretionary {-}{}{}rotate\_\discretionary {-}{}{}relative}!system.c@{system.c}|hyperpage}{62}
+\indexentry{system.c@{system.c}!sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}disable@{sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}disable}|hyperpage}{62}
+\indexentry{sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}disable@{sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}disable}!system.c@{system.c}|hyperpage}{62}
+\indexentry{system.c@{system.c}!sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}enable@{sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}enable}|hyperpage}{62}
+\indexentry{sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}enable@{sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}enable}!system.c@{system.c}|hyperpage}{62}
+\indexentry{system.c@{system.c}!sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}is\_\discretionary {-}{}{}lb\_\discretionary {-}{}{}blocked@{sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}is\_\discretionary {-}{}{}lb\_\discretionary {-}{}{}blocked}|hyperpage}{62}
+\indexentry{sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}is\_\discretionary {-}{}{}lb\_\discretionary {-}{}{}blocked@{sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}is\_\discretionary {-}{}{}lb\_\discretionary {-}{}{}blocked}!system.c@{system.c}|hyperpage}{62}
+\indexentry{system.c@{system.c}!sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}rotate@{sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}rotate}|hyperpage}{63}
+\indexentry{sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}rotate@{sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}rotate}!system.c@{system.c}|hyperpage}{63}
+\indexentry{system.c@{system.c}!sys\_\discretionary {-}{}{}enter\_\discretionary {-}{}{}submenu@{sys\_\discretionary {-}{}{}enter\_\discretionary {-}{}{}submenu}|hyperpage}{63}
+\indexentry{sys\_\discretionary {-}{}{}enter\_\discretionary {-}{}{}submenu@{sys\_\discretionary {-}{}{}enter\_\discretionary {-}{}{}submenu}!system.c@{system.c}|hyperpage}{63}
+\indexentry{system.c@{system.c}!sys\_\discretionary {-}{}{}enter\_\discretionary {-}{}{}topmenu@{sys\_\discretionary {-}{}{}enter\_\discretionary {-}{}{}topmenu}|hyperpage}{63}
+\indexentry{sys\_\discretionary {-}{}{}enter\_\discretionary {-}{}{}topmenu@{sys\_\discretionary {-}{}{}enter\_\discretionary {-}{}{}topmenu}!system.c@{system.c}|hyperpage}{63}
+\indexentry{system.c@{system.c}!sys\_\discretionary {-}{}{}get\_\discretionary {-}{}{}out\_\discretionary {-}{}{}pos@{sys\_\discretionary {-}{}{}get\_\discretionary {-}{}{}out\_\discretionary {-}{}{}pos}|hyperpage}{63}
+\indexentry{sys\_\discretionary {-}{}{}get\_\discretionary {-}{}{}out\_\discretionary {-}{}{}pos@{sys\_\discretionary {-}{}{}get\_\discretionary {-}{}{}out\_\discretionary {-}{}{}pos}!system.c@{system.c}|hyperpage}{63}
+\indexentry{system.c@{system.c}!sys\_\discretionary {-}{}{}pause@{sys\_\discretionary {-}{}{}pause}|hyperpage}{64}
+\indexentry{sys\_\discretionary {-}{}{}pause@{sys\_\discretionary {-}{}{}pause}!system.c@{system.c}|hyperpage}{64}
+\indexentry{system.c@{system.c}!sys\_\discretionary {-}{}{}reference\_\discretionary {-}{}{}measure\_\discretionary {-}{}{}blue@{sys\_\discretionary {-}{}{}reference\_\discretionary {-}{}{}measure\_\discretionary {-}{}{}blue}|hyperpage}{64}
+\indexentry{sys\_\discretionary {-}{}{}reference\_\discretionary {-}{}{}measure\_\discretionary {-}{}{}blue@{sys\_\discretionary {-}{}{}reference\_\discretionary {-}{}{}measure\_\discretionary {-}{}{}blue}!system.c@{system.c}|hyperpage}{64}
+\indexentry{system.c@{system.c}!sys\_\discretionary {-}{}{}reference\_\discretionary {-}{}{}measure\_\discretionary {-}{}{}restore@{sys\_\discretionary {-}{}{}reference\_\discretionary {-}{}{}measure\_\discretionary {-}{}{}restore}|hyperpage}{64}
+\indexentry{sys\_\discretionary {-}{}{}reference\_\discretionary {-}{}{}measure\_\discretionary {-}{}{}restore@{sys\_\discretionary {-}{}{}reference\_\discretionary {-}{}{}measure\_\discretionary {-}{}{}restore}!system.c@{system.c}|hyperpage}{64}
+\indexentry{system.c@{system.c}!sys\_\discretionary {-}{}{}resume@{sys\_\discretionary {-}{}{}resume}|hyperpage}{64}
+\indexentry{sys\_\discretionary {-}{}{}resume@{sys\_\discretionary {-}{}{}resume}!system.c@{system.c}|hyperpage}{64}
+\indexentry{system.c@{system.c}!sys\_\discretionary {-}{}{}revolver\_\discretionary {-}{}{}is\_\discretionary {-}{}{}lb\_\discretionary {-}{}{}blocked@{sys\_\discretionary {-}{}{}revolver\_\discretionary {-}{}{}is\_\discretionary {-}{}{}lb\_\discretionary {-}{}{}blocked}|hyperpage}{64}
+\indexentry{sys\_\discretionary {-}{}{}revolver\_\discretionary {-}{}{}is\_\discretionary {-}{}{}lb\_\discretionary {-}{}{}blocked@{sys\_\discretionary {-}{}{}revolver\_\discretionary {-}{}{}is\_\discretionary {-}{}{}lb\_\discretionary {-}{}{}blocked}!system.c@{system.c}|hyperpage}{64}
+\indexentry{system.c@{system.c}!sys\_\discretionary {-}{}{}revolver\_\discretionary {-}{}{}rotate@{sys\_\discretionary {-}{}{}revolver\_\discretionary {-}{}{}rotate}|hyperpage}{65}
+\indexentry{sys\_\discretionary {-}{}{}revolver\_\discretionary {-}{}{}rotate@{sys\_\discretionary {-}{}{}revolver\_\discretionary {-}{}{}rotate}!system.c@{system.c}|hyperpage}{65}
+\indexentry{system.c@{system.c}!sys\_\discretionary {-}{}{}speed\_\discretionary {-}{}{}down@{sys\_\discretionary {-}{}{}speed\_\discretionary {-}{}{}down}|hyperpage}{65}
+\indexentry{sys\_\discretionary {-}{}{}speed\_\discretionary {-}{}{}down@{sys\_\discretionary {-}{}{}speed\_\discretionary {-}{}{}down}!system.c@{system.c}|hyperpage}{65}
+\indexentry{system.c@{system.c}!sys\_\discretionary {-}{}{}speed\_\discretionary {-}{}{}up@{sys\_\discretionary {-}{}{}speed\_\discretionary {-}{}{}up}|hyperpage}{65}
+\indexentry{sys\_\discretionary {-}{}{}speed\_\discretionary {-}{}{}up@{sys\_\discretionary {-}{}{}speed\_\discretionary {-}{}{}up}!system.c@{system.c}|hyperpage}{65}
+\indexentry{system.h@{system.h}|hyperpage}{66}
+\indexentry{system.h@{system.h}!COL\_\discretionary {-}{}{}SENS\_\discretionary {-}{}{}TCS\_\discretionary {-}{}{}SET\_\discretionary {-}{}{}FILTER@{COL\_\discretionary {-}{}{}SENS\_\discretionary {-}{}{}TCS\_\discretionary {-}{}{}SET\_\discretionary {-}{}{}FILTER}|hyperpage}{74}
+\indexentry{COL\_\discretionary {-}{}{}SENS\_\discretionary {-}{}{}TCS\_\discretionary {-}{}{}SET\_\discretionary {-}{}{}FILTER@{COL\_\discretionary {-}{}{}SENS\_\discretionary {-}{}{}TCS\_\discretionary {-}{}{}SET\_\discretionary {-}{}{}FILTER}!system.h@{system.h}|hyperpage}{74}
+\indexentry{system.h@{system.h}!COL\_\discretionary {-}{}{}SENS\_\discretionary {-}{}{}TCS\_\discretionary {-}{}{}SET\_\discretionary {-}{}{}FREQ\_\discretionary {-}{}{}SCALE@{COL\_\discretionary {-}{}{}SENS\_\discretionary {-}{}{}TCS\_\discretionary {-}{}{}SET\_\discretionary {-}{}{}FREQ\_\discretionary {-}{}{}SCALE}|hyperpage}{74}
+\indexentry{COL\_\discretionary {-}{}{}SENS\_\discretionary {-}{}{}TCS\_\discretionary {-}{}{}SET\_\discretionary {-}{}{}FREQ\_\discretionary {-}{}{}SCALE@{COL\_\discretionary {-}{}{}SENS\_\discretionary {-}{}{}TCS\_\discretionary {-}{}{}SET\_\discretionary {-}{}{}FREQ\_\discretionary {-}{}{}SCALE}!system.h@{system.h}|hyperpage}{74}
+\indexentry{system.h@{system.h}!common\_\discretionary {-}{}{}stat\_\discretionary {-}{}{}t@{common\_\discretionary {-}{}{}stat\_\discretionary {-}{}{}t}|hyperpage}{75}
+\indexentry{common\_\discretionary {-}{}{}stat\_\discretionary {-}{}{}t@{common\_\discretionary {-}{}{}stat\_\discretionary {-}{}{}t}!system.h@{system.h}|hyperpage}{75}
+\indexentry{stat\_\-idle@{stat\_\-idle}!system.h@{system.h}|hyperpage}{75}
+\indexentry{system.h@{system.h}!stat\_\-idle@{stat\_\-idle}|hyperpage}{75}
+\indexentry{stat\_\-start\_\-working@{stat\_\-start\_\-working}!system.h@{system.h}|hyperpage}{75}
+\indexentry{system.h@{system.h}!stat\_\-start\_\-working@{stat\_\-start\_\-working}|hyperpage}{75}
+\indexentry{stat\_\-working@{stat\_\-working}!system.h@{system.h}|hyperpage}{75}
+\indexentry{system.h@{system.h}!stat\_\-working@{stat\_\-working}|hyperpage}{75}
+\indexentry{stat\_\-stop\_\-working@{stat\_\-stop\_\-working}!system.h@{system.h}|hyperpage}{75}
+\indexentry{system.h@{system.h}!stat\_\-stop\_\-working@{stat\_\-stop\_\-working}|hyperpage}{75}
+\indexentry{stat\_\-finished@{stat\_\-finished}!system.h@{system.h}|hyperpage}{75}
+\indexentry{system.h@{system.h}!stat\_\-finished@{stat\_\-finished}|hyperpage}{75}
+\indexentry{system.h@{system.h}!lightbarrier\_\discretionary {-}{}{}status\_\discretionary {-}{}{}t@{lightbarrier\_\discretionary {-}{}{}status\_\discretionary {-}{}{}t}|hyperpage}{75}
+\indexentry{lightbarrier\_\discretionary {-}{}{}status\_\discretionary {-}{}{}t@{lightbarrier\_\discretionary {-}{}{}status\_\discretionary {-}{}{}t}!system.h@{system.h}|hyperpage}{75}
+\indexentry{lb\_\-free@{lb\_\-free}!system.h@{system.h}|hyperpage}{75}
+\indexentry{system.h@{system.h}!lb\_\-free@{lb\_\-free}|hyperpage}{75}
+\indexentry{lb\_\-blocked@{lb\_\-blocked}!system.h@{system.h}|hyperpage}{75}
+\indexentry{system.h@{system.h}!lb\_\-blocked@{lb\_\-blocked}|hyperpage}{75}
+\indexentry{system.h@{system.h}!program\_\discretionary {-}{}{}t@{program\_\discretionary {-}{}{}t}|hyperpage}{75}
+\indexentry{program\_\discretionary {-}{}{}t@{program\_\discretionary {-}{}{}t}!system.h@{system.h}|hyperpage}{75}
+\indexentry{prog\_\-none@{prog\_\-none}!system.h@{system.h}|hyperpage}{76}
+\indexentry{system.h@{system.h}!prog\_\-none@{prog\_\-none}|hyperpage}{76}
+\indexentry{prog\_\-rotate\_\-catcher@{prog\_\-rotate\_\-catcher}!system.h@{system.h}|hyperpage}{76}
+\indexentry{system.h@{system.h}!prog\_\-rotate\_\-catcher@{prog\_\-rotate\_\-catcher}|hyperpage}{76}
+\indexentry{prog\_\-rotate\_\-revolver@{prog\_\-rotate\_\-revolver}!system.h@{system.h}|hyperpage}{76}
+\indexentry{system.h@{system.h}!prog\_\-rotate\_\-revolver@{prog\_\-rotate\_\-revolver}|hyperpage}{76}
+\indexentry{prog\_\-color\_\-tcs@{prog\_\-color\_\-tcs}!system.h@{system.h}|hyperpage}{76}
+\indexentry{system.h@{system.h}!prog\_\-color\_\-tcs@{prog\_\-color\_\-tcs}|hyperpage}{76}
+\indexentry{prog\_\-set\_\-colors\_\-blue@{prog\_\-set\_\-colors\_\-blue}!system.h@{system.h}|hyperpage}{76}
+\indexentry{system.h@{system.h}!prog\_\-set\_\-colors\_\-blue@{prog\_\-set\_\-colors\_\-blue}|hyperpage}{76}
+\indexentry{prog\_\-set\_\-colors\_\-green@{prog\_\-set\_\-colors\_\-green}!system.h@{system.h}|hyperpage}{76}
+\indexentry{system.h@{system.h}!prog\_\-set\_\-colors\_\-green@{prog\_\-set\_\-colors\_\-green}|hyperpage}{76}
+\indexentry{prog\_\-set\_\-colors\_\-red@{prog\_\-set\_\-colors\_\-red}!system.h@{system.h}|hyperpage}{76}
+\indexentry{system.h@{system.h}!prog\_\-set\_\-colors\_\-red@{prog\_\-set\_\-colors\_\-red}|hyperpage}{76}
+\indexentry{prog\_\-set\_\-colors\_\-yellow@{prog\_\-set\_\-colors\_\-yellow}!system.h@{system.h}|hyperpage}{76}
+\indexentry{system.h@{system.h}!prog\_\-set\_\-colors\_\-yellow@{prog\_\-set\_\-colors\_\-yellow}|hyperpage}{76}
+\indexentry{prog\_\-set\_\-colors\_\-orange@{prog\_\-set\_\-colors\_\-orange}!system.h@{system.h}|hyperpage}{76}
+\indexentry{system.h@{system.h}!prog\_\-set\_\-colors\_\-orange@{prog\_\-set\_\-colors\_\-orange}|hyperpage}{76}
+\indexentry{prog\_\-set\_\-colors\_\-brown@{prog\_\-set\_\-colors\_\-brown}!system.h@{system.h}|hyperpage}{76}
+\indexentry{system.h@{system.h}!prog\_\-set\_\-colors\_\-brown@{prog\_\-set\_\-colors\_\-brown}|hyperpage}{76}
+\indexentry{prog\_\-set\_\-colors\_\-purple@{prog\_\-set\_\-colors\_\-purple}!system.h@{system.h}|hyperpage}{76}
+\indexentry{system.h@{system.h}!prog\_\-set\_\-colors\_\-purple@{prog\_\-set\_\-colors\_\-purple}|hyperpage}{76}
+\indexentry{prog\_\-set\_\-colors\_\-pink@{prog\_\-set\_\-colors\_\-pink}!system.h@{system.h}|hyperpage}{76}
+\indexentry{system.h@{system.h}!prog\_\-set\_\-colors\_\-pink@{prog\_\-set\_\-colors\_\-pink}|hyperpage}{76}
+\indexentry{prog\_\-set\_\-colors\_\-restore@{prog\_\-set\_\-colors\_\-restore}!system.h@{system.h}|hyperpage}{76}
+\indexentry{system.h@{system.h}!prog\_\-set\_\-colors\_\-restore@{prog\_\-set\_\-colors\_\-restore}|hyperpage}{76}
+\indexentry{system.h@{system.h}!rotary\_\discretionary {-}{}{}encoder\_\discretionary {-}{}{}status\_\discretionary {-}{}{}t@{rotary\_\discretionary {-}{}{}encoder\_\discretionary {-}{}{}status\_\discretionary {-}{}{}t}|hyperpage}{76}
+\indexentry{rotary\_\discretionary {-}{}{}encoder\_\discretionary {-}{}{}status\_\discretionary {-}{}{}t@{rotary\_\discretionary {-}{}{}encoder\_\discretionary {-}{}{}status\_\discretionary {-}{}{}t}!system.h@{system.h}|hyperpage}{76}
+\indexentry{ROTENC\_\-NONE@{ROTENC\_\-NONE}!system.h@{system.h}|hyperpage}{76}
+\indexentry{system.h@{system.h}!ROTENC\_\-NONE@{ROTENC\_\-NONE}|hyperpage}{76}
+\indexentry{ROTENC\_\-PUSH@{ROTENC\_\-PUSH}!system.h@{system.h}|hyperpage}{76}
+\indexentry{system.h@{system.h}!ROTENC\_\-PUSH@{ROTENC\_\-PUSH}|hyperpage}{76}
+\indexentry{ROTENC\_\-A@{ROTENC\_\-A}!system.h@{system.h}|hyperpage}{76}
+\indexentry{system.h@{system.h}!ROTENC\_\-A@{ROTENC\_\-A}|hyperpage}{76}
+\indexentry{ROTENC\_\-B@{ROTENC\_\-B}!system.h@{system.h}|hyperpage}{76}
+\indexentry{system.h@{system.h}!ROTENC\_\-B@{ROTENC\_\-B}|hyperpage}{76}
+\indexentry{ROTENC\_\-BOTH@{ROTENC\_\-BOTH}!system.h@{system.h}|hyperpage}{76}
+\indexentry{system.h@{system.h}!ROTENC\_\-BOTH@{ROTENC\_\-BOTH}|hyperpage}{76}
+\indexentry{system.h@{system.h}!smartie\_\discretionary {-}{}{}color\_\discretionary {-}{}{}t@{smartie\_\discretionary {-}{}{}color\_\discretionary {-}{}{}t}|hyperpage}{76}
+\indexentry{smartie\_\discretionary {-}{}{}color\_\discretionary {-}{}{}t@{smartie\_\discretionary {-}{}{}color\_\discretionary {-}{}{}t}!system.h@{system.h}|hyperpage}{76}
+\indexentry{col\_\-blue@{col\_\-blue}!system.h@{system.h}|hyperpage}{76}
+\indexentry{system.h@{system.h}!col\_\-blue@{col\_\-blue}|hyperpage}{76}
+\indexentry{col\_\-green@{col\_\-green}!system.h@{system.h}|hyperpage}{76}
+\indexentry{system.h@{system.h}!col\_\-green@{col\_\-green}|hyperpage}{76}
+\indexentry{col\_\-red@{col\_\-red}!system.h@{system.h}|hyperpage}{77}
+\indexentry{system.h@{system.h}!col\_\-red@{col\_\-red}|hyperpage}{77}
+\indexentry{col\_\-yellow@{col\_\-yellow}!system.h@{system.h}|hyperpage}{77}
+\indexentry{system.h@{system.h}!col\_\-yellow@{col\_\-yellow}|hyperpage}{77}
+\indexentry{col\_\-orange@{col\_\-orange}!system.h@{system.h}|hyperpage}{77}
+\indexentry{system.h@{system.h}!col\_\-orange@{col\_\-orange}|hyperpage}{77}
+\indexentry{col\_\-brown@{col\_\-brown}!system.h@{system.h}|hyperpage}{77}
+\indexentry{system.h@{system.h}!col\_\-brown@{col\_\-brown}|hyperpage}{77}
+\indexentry{col\_\-purple@{col\_\-purple}!system.h@{system.h}|hyperpage}{77}
+\indexentry{system.h@{system.h}!col\_\-purple@{col\_\-purple}|hyperpage}{77}
+\indexentry{col\_\-pink@{col\_\-pink}!system.h@{system.h}|hyperpage}{77}
+\indexentry{system.h@{system.h}!col\_\-pink@{col\_\-pink}|hyperpage}{77}
+\indexentry{col\_\-unknown@{col\_\-unknown}!system.h@{system.h}|hyperpage}{77}
+\indexentry{system.h@{system.h}!col\_\-unknown@{col\_\-unknown}|hyperpage}{77}
+\indexentry{system.h@{system.h}!system\_\discretionary {-}{}{}mode\_\discretionary {-}{}{}t@{system\_\discretionary {-}{}{}mode\_\discretionary {-}{}{}t}|hyperpage}{77}
+\indexentry{system\_\discretionary {-}{}{}mode\_\discretionary {-}{}{}t@{system\_\discretionary {-}{}{}mode\_\discretionary {-}{}{}t}!system.h@{system.h}|hyperpage}{77}
+\indexentry{SYS\_\-MODE\_\-INIT@{SYS\_\-MODE\_\-INIT}!system.h@{system.h}|hyperpage}{77}
+\indexentry{system.h@{system.h}!SYS\_\-MODE\_\-INIT@{SYS\_\-MODE\_\-INIT}|hyperpage}{77}
+\indexentry{SYS\_\-MODE\_\-PAUSE@{SYS\_\-MODE\_\-PAUSE}!system.h@{system.h}|hyperpage}{77}
+\indexentry{system.h@{system.h}!SYS\_\-MODE\_\-PAUSE@{SYS\_\-MODE\_\-PAUSE}|hyperpage}{77}
+\indexentry{SYS\_\-MODE\_\-RUNNING@{SYS\_\-MODE\_\-RUNNING}!system.h@{system.h}|hyperpage}{77}
+\indexentry{system.h@{system.h}!SYS\_\-MODE\_\-RUNNING@{SYS\_\-MODE\_\-RUNNING}|hyperpage}{77}
+\indexentry{system.h@{system.h}!catcher\_\discretionary {-}{}{}rotate\_\discretionary {-}{}{}absolute@{catcher\_\discretionary {-}{}{}rotate\_\discretionary {-}{}{}absolute}|hyperpage}{77}
+\indexentry{catcher\_\discretionary {-}{}{}rotate\_\discretionary {-}{}{}absolute@{catcher\_\discretionary {-}{}{}rotate\_\discretionary {-}{}{}absolute}!system.h@{system.h}|hyperpage}{77}
+\indexentry{system.h@{system.h}!catcher\_\discretionary {-}{}{}rotate\_\discretionary {-}{}{}relative@{catcher\_\discretionary {-}{}{}rotate\_\discretionary {-}{}{}relative}|hyperpage}{77}
+\indexentry{catcher\_\discretionary {-}{}{}rotate\_\discretionary {-}{}{}relative@{catcher\_\discretionary {-}{}{}rotate\_\discretionary {-}{}{}relative}!system.h@{system.h}|hyperpage}{77}
+\indexentry{system.h@{system.h}!revolver\_\discretionary {-}{}{}rotate\_\discretionary {-}{}{}relative@{revolver\_\discretionary {-}{}{}rotate\_\discretionary {-}{}{}relative}|hyperpage}{78}
+\indexentry{revolver\_\discretionary {-}{}{}rotate\_\discretionary {-}{}{}relative@{revolver\_\discretionary {-}{}{}rotate\_\discretionary {-}{}{}relative}!system.h@{system.h}|hyperpage}{78}
+\indexentry{system.h@{system.h}!sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}disable@{sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}disable}|hyperpage}{78}
+\indexentry{sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}disable@{sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}disable}!system.h@{system.h}|hyperpage}{78}
+\indexentry{system.h@{system.h}!sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}enable@{sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}enable}|hyperpage}{78}
+\indexentry{sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}enable@{sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}enable}!system.h@{system.h}|hyperpage}{78}
+\indexentry{system.h@{system.h}!sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}is\_\discretionary {-}{}{}lb\_\discretionary {-}{}{}blocked@{sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}is\_\discretionary {-}{}{}lb\_\discretionary {-}{}{}blocked}|hyperpage}{78}
+\indexentry{sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}is\_\discretionary {-}{}{}lb\_\discretionary {-}{}{}blocked@{sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}is\_\discretionary {-}{}{}lb\_\discretionary {-}{}{}blocked}!system.h@{system.h}|hyperpage}{78}
+\indexentry{system.h@{system.h}!sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}rotate@{sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}rotate}|hyperpage}{79}
+\indexentry{sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}rotate@{sys\_\discretionary {-}{}{}catcher\_\discretionary {-}{}{}rotate}!system.h@{system.h}|hyperpage}{79}
+\indexentry{system.h@{system.h}!sys\_\discretionary {-}{}{}enter\_\discretionary {-}{}{}submenu@{sys\_\discretionary {-}{}{}enter\_\discretionary {-}{}{}submenu}|hyperpage}{79}
+\indexentry{sys\_\discretionary {-}{}{}enter\_\discretionary {-}{}{}submenu@{sys\_\discretionary {-}{}{}enter\_\discretionary {-}{}{}submenu}!system.h@{system.h}|hyperpage}{79}
+\indexentry{system.h@{system.h}!sys\_\discretionary {-}{}{}enter\_\discretionary {-}{}{}topmenu@{sys\_\discretionary {-}{}{}enter\_\discretionary {-}{}{}topmenu}|hyperpage}{79}
+\indexentry{sys\_\discretionary {-}{}{}enter\_\discretionary {-}{}{}topmenu@{sys\_\discretionary {-}{}{}enter\_\discretionary {-}{}{}topmenu}!system.h@{system.h}|hyperpage}{79}
+\indexentry{system.h@{system.h}!sys\_\discretionary {-}{}{}get\_\discretionary {-}{}{}out\_\discretionary {-}{}{}pos@{sys\_\discretionary {-}{}{}get\_\discretionary {-}{}{}out\_\discretionary {-}{}{}pos}|hyperpage}{79}
+\indexentry{sys\_\discretionary {-}{}{}get\_\discretionary {-}{}{}out\_\discretionary {-}{}{}pos@{sys\_\discretionary {-}{}{}get\_\discretionary {-}{}{}out\_\discretionary {-}{}{}pos}!system.h@{system.h}|hyperpage}{79}
+\indexentry{system.h@{system.h}!sys\_\discretionary {-}{}{}pause@{sys\_\discretionary {-}{}{}pause}|hyperpage}{80}
+\indexentry{sys\_\discretionary {-}{}{}pause@{sys\_\discretionary {-}{}{}pause}!system.h@{system.h}|hyperpage}{80}
+\indexentry{system.h@{system.h}!sys\_\discretionary {-}{}{}reference\_\discretionary {-}{}{}measure\_\discretionary {-}{}{}blue@{sys\_\discretionary {-}{}{}reference\_\discretionary {-}{}{}measure\_\discretionary {-}{}{}blue}|hyperpage}{80}
+\indexentry{sys\_\discretionary {-}{}{}reference\_\discretionary {-}{}{}measure\_\discretionary {-}{}{}blue@{sys\_\discretionary {-}{}{}reference\_\discretionary {-}{}{}measure\_\discretionary {-}{}{}blue}!system.h@{system.h}|hyperpage}{80}
+\indexentry{system.h@{system.h}!sys\_\discretionary {-}{}{}reference\_\discretionary {-}{}{}measure\_\discretionary {-}{}{}restore@{sys\_\discretionary {-}{}{}reference\_\discretionary {-}{}{}measure\_\discretionary {-}{}{}restore}|hyperpage}{80}
+\indexentry{sys\_\discretionary {-}{}{}reference\_\discretionary {-}{}{}measure\_\discretionary {-}{}{}restore@{sys\_\discretionary {-}{}{}reference\_\discretionary {-}{}{}measure\_\discretionary {-}{}{}restore}!system.h@{system.h}|hyperpage}{80}
+\indexentry{system.h@{system.h}!sys\_\discretionary {-}{}{}resume@{sys\_\discretionary {-}{}{}resume}|hyperpage}{80}
+\indexentry{sys\_\discretionary {-}{}{}resume@{sys\_\discretionary {-}{}{}resume}!system.h@{system.h}|hyperpage}{80}
+\indexentry{system.h@{system.h}!sys\_\discretionary {-}{}{}revolver\_\discretionary {-}{}{}is\_\discretionary {-}{}{}lb\_\discretionary {-}{}{}blocked@{sys\_\discretionary {-}{}{}revolver\_\discretionary {-}{}{}is\_\discretionary {-}{}{}lb\_\discretionary {-}{}{}blocked}|hyperpage}{80}
+\indexentry{sys\_\discretionary {-}{}{}revolver\_\discretionary {-}{}{}is\_\discretionary {-}{}{}lb\_\discretionary {-}{}{}blocked@{sys\_\discretionary {-}{}{}revolver\_\discretionary {-}{}{}is\_\discretionary {-}{}{}lb\_\discretionary {-}{}{}blocked}!system.h@{system.h}|hyperpage}{80}
+\indexentry{system.h@{system.h}!sys\_\discretionary {-}{}{}revolver\_\discretionary {-}{}{}rotate@{sys\_\discretionary {-}{}{}revolver\_\discretionary {-}{}{}rotate}|hyperpage}{81}
+\indexentry{sys\_\discretionary {-}{}{}revolver\_\discretionary {-}{}{}rotate@{sys\_\discretionary {-}{}{}revolver\_\discretionary {-}{}{}rotate}!system.h@{system.h}|hyperpage}{81}
+\indexentry{system.h@{system.h}!sys\_\discretionary {-}{}{}speed\_\discretionary {-}{}{}down@{sys\_\discretionary {-}{}{}speed\_\discretionary {-}{}{}down}|hyperpage}{81}
+\indexentry{sys\_\discretionary {-}{}{}speed\_\discretionary {-}{}{}down@{sys\_\discretionary {-}{}{}speed\_\discretionary {-}{}{}down}!system.h@{system.h}|hyperpage}{81}
+\indexentry{system.h@{system.h}!sys\_\discretionary {-}{}{}speed\_\discretionary {-}{}{}up@{sys\_\discretionary {-}{}{}speed\_\discretionary {-}{}{}up}|hyperpage}{81}
+\indexentry{sys\_\discretionary {-}{}{}speed\_\discretionary {-}{}{}up@{sys\_\discretionary {-}{}{}speed\_\discretionary {-}{}{}up}!system.h@{system.h}|hyperpage}{81}

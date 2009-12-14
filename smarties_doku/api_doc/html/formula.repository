@@ -1,0 +1,4 @@
+\form#0:\[ T_{Compare Match} = (F_{CPU})^{-1} \cdot Prescaler \cdot (Register_{OutputCompare}) \]
+\form#1:\[ Distance = \sqrt{ {blue_{unknown} - blue_{avarage} }^2 \cdot { green_{unknown} - green_{avarage} }^2 \cdot { red_{unknown} - red_{avarage} }^2 } \]
+\form#2:\[ Distance = \sqrt{ ( {blue_{new} - blue_{ava} } )^2 + { (green_{new} - green_{ava} })^2 + { red_{new} - red_{ava} })^2 } \]
+\form#3:\[ Distance = \sqrt{ ( {blue_{new} - blue_{ava} } )^2 + { (green_{new} - green_{ava} })^2 + { ( red_{new} - red_{ava} })^2 } \]

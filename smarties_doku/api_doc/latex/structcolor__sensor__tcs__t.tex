@@ -1,0 +1,72 @@
+\hypertarget{structcolor__sensor__tcs__t}{
+\section{color\_\-sensor\_\-tcs\_\-t Struct Reference}
+\label{structcolor__sensor__tcs__t}\index{color\_\-sensor\_\-tcs\_\-t@{color\_\-sensor\_\-tcs\_\-t}}
+}
+Describes the TCS230 color sensor.  
+
+
+{\tt \#include $<$system.h$>$}
+
+\subsection*{Data Fields}
+\begin{CompactItemize}
+\item 
+\hypertarget{structcolor__sensor__tcs__t_6cf7d985b536f4551302359ddb90c802}{
+common\_\-stat \hyperlink{structcolor__sensor__tcs__t_6cf7d985b536f4551302359ddb90c802}{status}}
+\label{structcolor__sensor__tcs__t_6cf7d985b536f4551302359ddb90c802}
+
+\begin{CompactList}\small\item\em The current status of the color sensor. \item\end{CompactList}\item 
+\hypertarget{structcolor__sensor__tcs__t_a7f30fead1929b6ef4c7923fff04ec46}{
+common\_\-stat \hyperlink{structcolor__sensor__tcs__t_a7f30fead1929b6ef4c7923fff04ec46}{status\_\-last}}
+\label{structcolor__sensor__tcs__t_a7f30fead1929b6ef4c7923fff04ec46}
+
+\begin{CompactList}\small\item\em The status before current status. \item\end{CompactList}\item 
+\hypertarget{structcolor__sensor__tcs__t_645722a2409effbe46339525eba50542}{
+smartie\_\-color \hyperlink{structcolor__sensor__tcs__t_645722a2409effbe46339525eba50542}{color}}
+\label{structcolor__sensor__tcs__t_645722a2409effbe46339525eba50542}
+
+\begin{CompactList}\small\item\em The value from the last color detection. \item\end{CompactList}\item 
+\hypertarget{structcolor__sensor__tcs__t_e9113cc53cd30cde0c6a1cdbdef7898d}{
+int16\_\-t \hyperlink{structcolor__sensor__tcs__t_e9113cc53cd30cde0c6a1cdbdef7898d}{time}}
+\label{structcolor__sensor__tcs__t_e9113cc53cd30cde0c6a1cdbdef7898d}
+
+\begin{CompactList}\small\item\em Especially for the TCS frequency mesurement. In milliseconds. \item\end{CompactList}\item 
+\hypertarget{structcolor__sensor__tcs__t_932f2edbd620800cb115897b50537616}{
+int16\_\-t \hyperlink{structcolor__sensor__tcs__t_932f2edbd620800cb115897b50537616}{filter\_\-freq\_\-blue}}
+\label{structcolor__sensor__tcs__t_932f2edbd620800cb115897b50537616}
+
+\begin{CompactList}\small\item\em The clock frequency in kHz measured with blue filter on. \item\end{CompactList}\item 
+\hypertarget{structcolor__sensor__tcs__t_492b9a4317c14731f6a79d1b44372bcf}{
+int16\_\-t \hyperlink{structcolor__sensor__tcs__t_492b9a4317c14731f6a79d1b44372bcf}{filter\_\-freq\_\-green}}
+\label{structcolor__sensor__tcs__t_492b9a4317c14731f6a79d1b44372bcf}
+
+\begin{CompactList}\small\item\em The clock frequency in kHz measured with green filter on. \item\end{CompactList}\item 
+\hypertarget{structcolor__sensor__tcs__t_a82029dfdc10172be6206df50c80eb08}{
+int16\_\-t \hyperlink{structcolor__sensor__tcs__t_a82029dfdc10172be6206df50c80eb08}{filter\_\-freq\_\-red}}
+\label{structcolor__sensor__tcs__t_a82029dfdc10172be6206df50c80eb08}
+
+\begin{CompactList}\small\item\em The clock frequency in kHz measured with red filter on. \item\end{CompactList}\item 
+\hypertarget{structcolor__sensor__tcs__t_1960e5bd9f79595e67082119b3aaa15a}{
+int16\_\-t \hyperlink{structcolor__sensor__tcs__t_1960e5bd9f79595e67082119b3aaa15a}{filter\_\-freq\_\-none}}
+\label{structcolor__sensor__tcs__t_1960e5bd9f79595e67082119b3aaa15a}
+
+\begin{CompactList}\small\item\em The clock frequency in kHz measured with no filter on. Could be interpreted as general brightness. \item\end{CompactList}\item 
+\hypertarget{structcolor__sensor__tcs__t_747977dacfa4ab5d769ac72ad0db2ce6}{
+int16\_\-t \hyperlink{structcolor__sensor__tcs__t_747977dacfa4ab5d769ac72ad0db2ce6}{slopes}}
+\label{structcolor__sensor__tcs__t_747977dacfa4ab5d769ac72ad0db2ce6}
+
+\begin{CompactList}\small\item\em The amount of slopes recognised during \hyperlink{system_8h_293abcb660a47e6482b3ae3438f3e0d6}{COL\_\-SENS\_\-TCS\_\-SAMPLE\_\-TIME}. \item\end{CompactList}\item 
+\hypertarget{structcolor__sensor__tcs__t_5711e6b7dd97725d47387d57767f76f3}{
+int16\_\-t \hyperlink{structcolor__sensor__tcs__t_5711e6b7dd97725d47387d57767f76f3}{distance}}
+\label{structcolor__sensor__tcs__t_5711e6b7dd97725d47387d57767f76f3}
+
+\begin{CompactList}\small\item\em Needed for the distance to an reference value. \item\end{CompactList}\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+Describes the TCS230 color sensor. 
+
+Definition at line 405 of file system.h.
+
+The documentation for this struct was generated from the following file:\begin{CompactItemize}
+\item 
+\hyperlink{system_8h}{system.h}\end{CompactItemize}

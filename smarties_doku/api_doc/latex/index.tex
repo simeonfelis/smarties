@@ -1,0 +1,127 @@
+\hypertarget{index_intro}{}\section{License}\label{index_intro}
+GPL2 Licence\hypertarget{index_install}{}\section{Description}\label{index_install}
+This is the Source code's API and flow documentation for Smarties2\hypertarget{index_arch}{}\section{Architecture}\label{index_arch}
+Goal of this application is a state machine controlled by status flags. The \hyperlink{smarties2_8c_840291bc02cba5474a4cb46a9b9566fe}{main()} function controls the program flow by reading and setting status flags. These status flags are polled each millisecond in an timer interrupt routine. This timer interrupt routine reads and sets the IO ports and sets corresponding status flags.
+
+Following image clarifies the structure of the software:
+
+ \begin{Image}
+\begin{center}
+\includegraphics[width=15cm]{api-layer.png}\caption{Layers of the software stacke}
+\end{center}
+\end{Image}
+
+
+The task of the differen layers, high level, abstraction layer and low level can be described like in following image:
+
+ \begin{Image}
+\begin{center}
+\includegraphics[width=15cm]{state-machine.png}\caption{Executing the different layers}
+\end{center}
+\end{Image}
+
+
+The state machine is devided into two sections, the mode and steps. Modes are represented as an enum \hyperlink{system_8h_6e4cea4b6246f491c526211f5405627d}{system\_\-mode\_\-t} and the steps as an struct \hyperlink{structsystem__step__t}{system\_\-step\_\-t}
+
+The modes are changed depending on the user inputs or after powering on/reseting. The next picture clarifies the modes of the state machine.
+
+ \begin{Image}
+\begin{center}
+\includegraphics[width=10cm]{state-machine-modes.png}\caption{State diagram of the smartie sorter}
+\end{center}
+\end{Image}
+
+
+The mode \hyperlink{system_8h_6e4cea4b6246f491c526211f5405627d564529220e61e848983d8eb9d7f87736}{SYS\_\-MODE\_\-RUNNING} equals the automatic mode, where everything is controlled in several steps. The last step, step III, is a transition step to begin from the start again. See next picture for the overview of the steps.
+
+ \begin{Image}
+\begin{center}
+\includegraphics[width=10cm]{state-machine-steps.png}\caption{Executing steps of the mode SYS\_\-MODE\_\-RUNNING}
+\end{center}
+\end{Image}
+
+
+Each steps starts several tasks and waits until they are finished. Then the next step will be entered.
+
+To see what is happening exactly in the different steps, please have a look at the sourcecode.
+
+The modes, steps and all input/output related parts of the Smartie sorter are administrated within structs. The structs are organized like in the following picture.
+
+ \begin{Image}
+\begin{center}
+\includegraphics[width=15cm]{structsmartie__sorter__t__coll__graph.png}\caption{Brief overview of several objects (elements) of the smartie sorter}
+\end{center}
+\end{Image}
+
+
+For the detailed overview and description please refere to the code and documentation of \hyperlink{structsmartie__sorter__t}{smartie\_\-sorter\_\-t}.
+
+The system related IO actions are all defined in \hyperlink{system_8h}{system.h} There are controlled\begin{itemize}
+\item moving the revolver\item moving the catcher\item user input controlls\end{itemize}
+
+
+Minor configurations are made in \hyperlink{smarties2_8h}{smarties2.h}\hypertarget{index_prog_flow}{}\section{Progam flow}\label{index_prog_flow}
+The application entry point is located at \hyperlink{smarties2_8c_840291bc02cba5474a4cb46a9b9566fe}{main()} in \hyperlink{smarties2_8c}{smarties2.c} file.\begin{itemize}
+\item The main function first performs the initialization\item It handles the modes of the smartie sorter\item It handles the state machine\item It handles the programs executed by the menu during \hyperlink{system_8h_6e4cea4b6246f491c526211f5405627df1c8a041b6d3d46002d02ed0645a8ba2}{SYS\_\-MODE\_\-PAUSE}\end{itemize}
+
+
+The LCD controlling is done with the \hyperlink{lcd__display_8h}{lcd\_\-display.h}
+
+The Menu structure is described in \hyperlink{menu_8h}{menu.h}\hypertarget{index_col_detect}{}\section{Color detection}\label{index_col_detect}
+The color sensor TCS230 delivers 4 output values:\begin{itemize}
+\item Blue (with blue filter)\item Green (with green filter)\item Red (with red filter)\item Brigthness (with no filter)\end{itemize}
+
+
+The smartie color detection is done by calculating the smallest distance to a next smartie.
+
+For reference measures some values for each channel are recorded to gain a avarage value. They can be represented in an 3 Dimensional graph. For color detection the avarage value for each channel is used.
+
+   
+
+\begin{Image}
+\begin{center}
+\includegraphics[width=\textwidth]{plot_tilted.png}\caption{Smartie color RGB valus}
+\end{center}
+\end{Image}
+ \begin{Image}
+\begin{center}
+\includegraphics[width=\textwidth]{plot_top.png}\caption{Smartie color RGB valus from top}
+\end{center}
+\end{Image}
+ \begin{Image}
+\begin{center}
+\includegraphics[width=\textwidth]{plot_front.png}\caption{Smartie color RGB valus from front}
+\end{center}
+\end{Image}
+ \begin{Image}
+\begin{center}
+\includegraphics[width=\textwidth]{plot_side.png}\caption{Smartie color RGB valus from side}
+\end{center}
+\end{Image}
+
+
+If a smartie color's red, green and blue cannel are measured the distance to each reference smartie is worked out by following formula:
+
+\[ Distance = \sqrt{ ( {blue_{new} - blue_{ava} } )^2 + { (green_{new} - green_{ava} })^2 + { ( red_{new} - red_{ava} })^2 } \]
+
+The smartie sorter uses reference values which are gained during this software development. However the user can callibrate the reference values new without destroying the system default values.
+
+The color tables with avarage values are stored in the EEprom memory. In the EEProm memory there are stored system default values as well as newly callibrated values. When the system default values are restored, all callibrated colors are overwritten.
+
+Only the blue, green and red channel is respected. A survey brought up that the brightness of the surrounding has no influence to the color measurent. The most important factor is temperature, as the smarties fat drifts out when they are getting to warm (above 24 Deg C). Then, the smartie's colors become brighter.\hypertarget{index_adv_col_det}{}\section{Advanced color detecection}\label{index_adv_col_det}
+The first try with color detectin was made with reference tables. For each smartie was a minimum and maximum value for each channel stored. However, this method was too unrelyable.
+
+More methods for calculating the correct smartie color are prepared in the code. They can be enabled by compiler switches. Enabling all methods could possible fill all data memory, as a lot of reference data is necessary, which are preferable stored as floats.
+
+Another try was to calculate the normalized distance from the new, unknown smartie to the reference values. However this method didn't show good results, probably because the Orange, Red, Pink and Brown smarties are nearly all on a vector in one direction (see figure above or the 3D gnuplot).
+
+Another idea (not implemented) for color detecting was respecting the color drift of smarties with the temperature. To respect this, smarties must be mesured in a temperature range from 15 Deg C to 25 Deg C and measure the unfilterd color channel (Brightness). Then, estimate the polynomial function of the three channels blue, green, red with the brightness as coefficient. The result is a curve in a 3 Dimensional space for each smartie color, and the axes are the three color channels. The next step is to calculate the orthogonal distance from a new, unknown smartie to all the curves. The curve which has the smallest orthogonal distance should belong to the corresponding smartie.
+
+With this method it could also be possible to estimate the temperature of the surrounding, not with +-1 Deg C, but you could say that the surrounding is cold, warm or too warm. Maybe too warm for smarties, which should be kept below 25 Deg C.\hypertarget{index_Programs}{}\section{Programs}\label{index_Programs}
+During \hyperlink{system_8h_6e4cea4b6246f491c526211f5405627df1c8a041b6d3d46002d02ed0645a8ba2}{SYS\_\-MODE\_\-PAUSE} various programs can be started from the menu. For controlling the state machines programs, the enum \hyperlink{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc55}{program\_\-t} is used.
+
+Usually programs are executed completely in the background and only their progress or results are displayed during the state machine proceeds.
+
+However, Programs can also take control over the user inputs and display. Some programs need to be completely finished before the state machine may proceed (e. g. \hyperlink{system_8h_6cfd37e27dfa4a49be0ab6d983f4fc55e7156e0e78e0f3ce9f2ce0d7bbe8bac5}{prog\_\-set\_\-colors\_\-blue})
+
+The state of programs are controlled in \hyperlink{smarties2_8c_840291bc02cba5474a4cb46a9b9566fe}{main()} 
